@@ -38,17 +38,21 @@ We suppose the following mechanism
 	\partial_t[\lbrace\mychem{Li}^6E\rbrace_{out}] & = & 
 	k_a^6[\mathtt{Li}^6_{out}][E] - (k_d^6+k_f^6) [\lbrace\mychem{Li}^6E\rbrace_{out}]
 	+k_r^6[\lbrace\mychem{Li}^6E\rbrace_{in}]
+	= k_a^6 \left([\mathtt{Li}^6_{out}][E] -K_m^6 [\lbrace\mychem{Li}^6E\rbrace_{out}] + C_6 [\lbrace\mychem{Li}^6E\rbrace_{in}\right)
 	\\
 	\partial_t[\lbrace\mychem{Li}^7E\rbrace_{out}] & = & 
 	k_a^7[\mathtt{Li}^7_{out}][E] - (k_d^7+k_f^7) [\lbrace\mychem{Li}^7E\rbrace_{out}]
 	+k_r^7[\lbrace\mychem{Li}^7E\rbrace_{in}]
+	= k_a^7 \left([\mathtt{Li}^7_{out}][E] -K_m^7 [\lbrace\mychem{Li}^7E\rbrace_{out}] + C_7 [\lbrace\mychem{Li}^7E\rbrace_{in}\right)
 	\\
 	\\
 	\partial_t[\lbrace\mychem{Li}^6E\rbrace_{in}] & = & 
 	k_f^6 [\lbrace\mychem{Li}^6E\rbrace_{out}] - (k_r^6+k_t^6) [\lbrace\mychem{Li}^6E\rbrace_{in}]
+	= k_f^6 \left( [\lbrace\mychem{Li}^6E\rbrace_{out}] - \alpha_6 [\lbrace\mychem{Li}^6E\rbrace_{in}]\right)
 	\\
 	\partial_t[\lbrace\mychem{Li}^7E\rbrace_{in}] & = & 
 	k_f^7 [\lbrace\mychem{Li}^6E\rbrace_{out}] - (k_r^7+k_t^7) [\lbrace\mychem{Li}^7E\rbrace_{in}]
+	= k_f^7 \left( [\lbrace\mychem{Li}^7E\rbrace_{out}] - \alpha_7 [\lbrace\mychem{Li}^7E\rbrace_{in}]\right)
 	\\
 	\end{array}
 	\right. 

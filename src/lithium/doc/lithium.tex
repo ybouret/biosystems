@@ -51,12 +51,13 @@ We suppose the following mechanism
 	= k_f^6 \left( [\lbrace\mychem{Li}^6E\rbrace_{out}] - \alpha_6 [\lbrace\mychem{Li}^6E\rbrace_{in}]\right)
 	\\
 	\partial_t[\lbrace\mychem{Li}^7E\rbrace_{in}] & = & 
-	k_f^7 [\lbrace\mychem{Li}^6E\rbrace_{out}] - (k_r^7+k_t^7) [\lbrace\mychem{Li}^7E\rbrace_{in}]
+	k_f^7 [\lbrace\mychem{Li}^7E\rbrace_{out}] - (k_r^7+k_t^7) [\lbrace\mychem{Li}^7E\rbrace_{in}]
 	= k_f^7 \left( [\lbrace\mychem{Li}^7E\rbrace_{out}] - \alpha_7 [\lbrace\mychem{Li}^7E\rbrace_{in}]\right)
 	\\
 	\end{array}
 	\right. 
 \end{equation}
+\centerline{\it Remarks: $\alpha^x$ depends on turnover!!!!}
 
 \subsection{Steady-State Approximation}
 After induction time, we assume that intermediates are at there steady state level
@@ -81,9 +82,43 @@ so that we have three remaining equations
 \begin{equation}
 	\left\lbrace
 	\begin{array}{rcl}
-	0 & = & 
+	0 & = & [\mathtt{Li}^6_{out}][E] + \left( J_m^6 - \alpha_6 K_m^6 \right) [\lbrace\mychem{Li}^6E\rbrace_{in}]\\
+	0  & = & [\mathtt{Li}^7_{out}][E] + \left( J_m^7 - \alpha_7 K_m^7 \right) [\lbrace\mychem{Li}^7E\rbrace_{in}]\\
+	E_0 & = & [E] + (1+\alpha_6) [\lbrace\mychem{Li}^6E\rbrace_{in}] + (1+\alpha_7) [\lbrace\mychem{Li}^7E\rbrace_{in}]\\
 	\end{array}
 	\right.
 \end{equation}
+We define
+\begin{equation}
+L_m^x = \alpha_x K_m^x - J_m^x = \dfrac{ (k_f^x+k_d^x) k_t^x + k_d^x k_r^x}{k_a^x k_f^x}
+\end{equation}
+\centerline{\it Remarks: $L_m^x$ depends on turnover!!!!}
+and we get
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	0   & = & [\mathtt{Li}^6_{out}][E] - L_m^6 [\lbrace\mychem{Li}^6E\rbrace_{in}]\\
+	0   & = & [\mathtt{Li}^7_{out}][E] - L_m^7 [\lbrace\mychem{Li}^7E\rbrace_{in}]\\
+	E_0 & = & [E] + (1+\alpha_6) [\lbrace\mychem{Li}^6E\rbrace_{in}] + (1+\alpha_7) [\lbrace\mychem{Li}^7E\rbrace_{in}]\\
+	\end{array}
+	\right.
+\end{equation}
+Finally, we get
+\begin{equation}
+	E_0 = [E] \left( 1 + \dfrac{1+\alpha_6}{L_m^6} [\mathtt{Li}^6_{out}] + \dfrac{1+\alpha_7}{L_m^7} [\mathtt{Li}^7_{out}] \right)
+\end{equation}
+and the intake rates:
+\begin{equation}
+	\left\lbrace
+	\begin{array}{rclcl}
+	\partial_t [\mychem{Li}^6_{in}] & = & k_t^6[\lbrace\mychem{Li}^6E\rbrace_{in}] & = & 
+	\dfrac{k_t^6E_0[\mathtt{Li}^6_{out}]}{L_m^6\left( 1 + \dfrac{1+\alpha_6}{L_m^6} [\mathtt{Li}^6_{out}] + \dfrac{1+\alpha_7}{L_m^7} [\mathtt{Li}^7_{out}] \right)} \\
+	\\
+	\partial_t [\mychem{Li}^7_{in}] & = & k_t^7[\lbrace\mychem{Li}^7E\rbrace_{in}] & = & 
+	\dfrac{k_t^7E_0[\mathtt{Li}^7_{out}]}{L_m^7\left( 1 + \dfrac{1+\alpha_6}{L_m^7} [\mathtt{Li}^6_{out}] + \dfrac{1+\alpha_7}{L_m^7} [\mathtt{Li}^7_{out}] \right)} \\
+	\end{array}
+	\right.
+\end{equation}
+
 
 \end{document}

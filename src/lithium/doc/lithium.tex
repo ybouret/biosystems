@@ -1,0 +1,68 @@
+\documentclass[aps,onecolumn]{revtex4}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{mathptmx}
+\usepackage{xfrac}
+\usepackage{xcolor}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\begin{document}
+
+\section{Equations}
+\subsection{Assumed mechanism}
+We suppose the following mechanism
+\begin{equation}
+	\mychem{Li}^{x}_{out} + E \xrightleftharpoons[k_d^{x}]{k_a^{x}}
+	\lbrace\mychem{Li}^xE\rbrace_{out} 
+	\xrightleftharpoons[k_r^{x}]{k_f^{x}} 
+	\lbrace\mychem{Li}^xE\rbrace_{in}
+	\xrightarrow{k_t^x} E + \mychem{Li}^{x}_{in}
+\end{equation}
+
+\subsection{Full differential system}
+\begin{equation}
+	\left\lbrace
+	\begin{array}{ccl}
+	\partial_t [\mychem{Li}^6_{in}] & = &k_t^6[\lbrace\mychem{Li}^6E\rbrace_{in}  \\
+	\partial_t [\mychem{Li}^7_{in}] & = &k_t^7[\lbrace\mychem{Li}^7E\rbrace_{in}  \\
+	\\
+	\partial_t [E] & = &
+	-\left(k_a^6[\mychem{Li}^6_{out}]+k_a^7[\mychem{Li}^7_{out}]\right)[E] 
+	+\left(k_d^6[\lbrace\mychem{Li}^6E\rbrace_{out}]+k_d^7[\lbrace\mychem{Li}^7E\rbrace_{out}]\right)
+	+\left(k_t^6[\lbrace\mychem{Li}^6E\rbrace_{in} ]+k_t^7[\lbrace\mychem{Li}^7E\rbrace_{in} ]\right)
+	\\
+	\\
+	\partial_t[\lbrace\mychem{Li}^6E\rbrace_{out}] & = & 
+	k_a^6[\mathtt{Li}^6_{out}][E] - (k_d^6+k_f^6) [\lbrace\mychem{Li}^6E\rbrace_{out}]
+	+k_r^6[\lbrace\mychem{Li}^6E\rbrace_{in}]
+	\\
+	\partial_t[\lbrace\mychem{Li}^7E\rbrace_{out}] & = & 
+	k_a^7[\mathtt{Li}^7_{out}][E] - (k_d^7+k_f^7) [\lbrace\mychem{Li}^7E\rbrace_{out}]
+	+k_r^7[\lbrace\mychem{Li}^7E\rbrace_{in}]
+	\\
+	\\
+	\partial_t[\lbrace\mychem{Li}^6E\rbrace_{in}] & = & 
+	k_f^6 [\lbrace\mychem{Li}^6E\rbrace_{out}] - (k_r^6+k_t^6) [\lbrace\mychem{Li}^6E\rbrace_{in}]
+	\\
+	\partial_t[\lbrace\mychem{Li}^7E\rbrace_{in}] & = & 
+	k_7^6 [\lbrace\mychem{Li}^6E\rbrace_{out}] - (k_r^7+k_t^7) [\lbrace\mychem{Li}^7E\rbrace_{in}]
+	\\
+	\end{array}
+	\right. 
+\end{equation}
+
+\subsection{Steady-State Approximation}
+After induction time, we assume that intermediates are at there steady state level
+and
+\begin{equation}
+	E_0 = [E] 
+	+ [\lbrace\mychem{Li}^6E\rbrace_{out}]
+	+ [\lbrace\mychem{Li}^7E\rbrace_{out}]
+	+ [\lbrace\mychem{Li}^6E\rbrace_{in}]
+	+ [\lbrace\mychem{Li}^7E\rbrace_{in}]
+\end{equation}
+
+\end{document}

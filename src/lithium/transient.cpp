@@ -79,7 +79,7 @@ public:
     void equations( array<double> &dYdt, const double, const array<double> &Y )
     {
         tao::ld(dYdt,0);
-        const double &EE      = Y[_EE];
+        const double  EE      = Y[_EE];
         const double  Li6_out = Y[_Li6_out];
         const double  Li7_out = Y[_Li7_out];
 
@@ -130,8 +130,13 @@ public:
     
     inline void step(const double t1,const double t2)
     {
-        double ctrl = (t2-t1)/10.0;
+        double ctrl = (t2-t1)/100.0;
         odeint(eqs,C,t1,t2,ctrl,NULL);
+    }
+
+    inline void prolog( ios::ostream &fp ) const
+    {
+        fp("#t E(2) Li6_out(3) Li6EE_out(4) Li6EE_in(5) Li6_in(6) Li7_out(7) Li7EE_out(8) Li7EE_in(9) Li7_in(10)\n");
     }
 
     inline void save(const double t, ios::ostream &fp) const
@@ -162,13 +167,13 @@ YOCTO_PROGRAM_START()
     LiSystem sys(VM);
 
     ios::wcstream fp("sim.dat");
-
+    sys.prolog(fp);
     sys.initialize();
     double t1 = 0;
     const double dt = 0.01;
     size_t it = 0;
     sys.save(t1,fp);
-    while(t1<10)
+    while(t1<2)
     {
         const double t2 = ++it * dt;
         sys.step(t1, t2);

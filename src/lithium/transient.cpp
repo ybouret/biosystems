@@ -164,16 +164,18 @@ YOCTO_PROGRAM_START()
         Lua::Config::DoFile(L,argv[i]);
     }
 
+    const double Tmax = Lua::Config::Get<lua_Number>(L,"Tmax");
+
     LiSystem sys(VM);
 
     ios::wcstream fp("sim.dat");
     sys.prolog(fp);
     sys.initialize();
-    double t1 = 0;
+    double       t1 = 0;
     const double dt = 0.01;
     size_t it = 0;
     sys.save(t1,fp);
-    while(t1<2)
+    while(t1<Tmax)
     {
         const double t2 = ++it * dt;
         sys.step(t1, t2);

@@ -3,9 +3,9 @@ CREATE := ./create.sh
 all:
 
 clean:
-	@echo "-- removing temporary files" && rm -f *.bin *.dat *.vtk *.csv
+	@echo "-- removing temporary files" && rm -f *.bin *.dat *.vtk *.csv && rm -rf bin/
 	@echo "-- removing junk..." && find . -name '*~' | xargs rm -f
-
+	@${MAKE} -C src/lithium/doc clean 
 
 veryclean: clean
 	@echo "-- removing out of sources builds" && cd forge && touch targets && ( cat targets | xargs rm -rf ) && rm -f targets

@@ -48,6 +48,8 @@ public:
     const double   kr7;
     const double   kt7;
 
+    double         ratio0;
+
 #define LiLoad(NAME) NAME( Lua::Config::Get<lua_Number>(L, #NAME ) )
 
     explicit LiSystem( Lua::State &VM) :
@@ -67,7 +69,8 @@ public:
     LiLoad(kd7),
     LiLoad(kf7),
     LiLoad(kr7),
-    LiLoad(kt7)
+    LiLoad(kt7),
+    ratio0(0)
     {
         odeint.start(C.size());
     }
@@ -126,6 +129,13 @@ public:
         C[_Li6_out] = Li6_ini;
         C[_Li7_out] = Li7_ini;
         C[_EE]      = E_ini;
+        ratio0      = 0;
+
+        if(Li7_ini>0)
+        {
+            ratio0 = Li6_ini/Li7_ini;
+        }
+
     }
     
     inline void step(const double t1,const double t2)
@@ -136,7 +146,7 @@ public:
 
     inline void prolog( ios::ostream &fp ) const
     {
-        fp("#t E(2) Li6_out(3) Li6EE_out(4) Li6EE_in(5) Li6_in(6) Li7_out(7) Li7EE_out(8) Li7EE_in(9) Li7_in(10)\n");
+        fp("#t E(2) Li6_out(3) Li6EE_out(4) Li6EE_in(5) Li6_in(6) Li7_out(7) Li7EE_out(8) Li7EE_in(9) Li7_in(10) delta\n");
     }
 
     inline void save(const double t, ios::ostream &fp) const
@@ -145,6 +155,17 @@ public:
         for(size_t i=1;i<=C.size();++i)
         {
             fp(" %.15g", C[i]);
+        }
+        const double Li7 = C[_Li7_in];
+        if(Li7>0)
+        {
+            const double ratio1 = C[_Li6_in]/Li7;
+            double       delta7 = 0;
+            if(ratio0>0)
+            {
+                delta7 = (ratio1-ratio0)/ratio0;
+            }
+            fp(" %g", delta7);
         }
         fp("\n");
     }

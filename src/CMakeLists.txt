@@ -1,7 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 PROJECT(biosystems)
-SET(YROOT "$ENV{HOME}/program/yocto4/sdk" )
+SET(YROOT "$ENV{HOME}/program/yocto/sdk" )
 
 SET(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/..)
 
@@ -10,7 +10,7 @@ IF( "${YROOT}" STREQUAL "" )
 ENDIF( "${YROOT}" STREQUAL "" )
 
 MESSAGE(STATUS "YROOT=${YROOT}")
-INCLUDE("${YROOT}/share/yocto/rules.cmake")
+INCLUDE("${YROOT}/share/yocto/yocto.cmake")
 INCLUDE_DIRECTORIES("${YROOT}/include")
 LINK_DIRECTORIES("${YROOT}/lib")
 

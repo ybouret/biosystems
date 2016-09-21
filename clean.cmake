@@ -13,6 +13,7 @@ __ADD_PATTERN(*.dat)
 __ADD_PATTERN(*.bin)
 __ADD_PATTERN(*.png)
 __ADD_PATTERN(*.jpg)
+__ADD_PATTERN(*.xyz)
 
 IF(APPLE)
 MESSAGE("=======> collecting MacOS dumps")

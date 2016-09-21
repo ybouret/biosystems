@@ -3,6 +3,7 @@
 #include "yocto/math/point3d.hpp"
 #include "yocto/sequence/vector.hpp"
 #include "yocto/code/utils.hpp"
+#include "yocto/ios/ocstream.hpp"
 
 using namespace yocto;
 using namespace math;
@@ -23,8 +24,12 @@ static void SetupGeometry()
     zmin = -L;
 }
 
+
 #define IN_BOX 0x0001
 #define IN_CYL 0x0002
+
+#define LI7 7
+#define LI6 6
 
 class Particle
 {
@@ -32,7 +37,9 @@ public:
     Point     r;
     Real      step_length;
     int       flags;
-    inline Particle() throw() : r(), step_length(0), flags(0)
+    int       type;
+
+    inline Particle() throw() : r(), step_length(0), flags(0), type(0)
     {
     }
 
@@ -84,6 +91,26 @@ public:
             p.r.y   = clamp<Real>(ymin,ymin + L * ran(),ymax);
             p.r.z   = clamp<Real>(zmin,zmin + L * ran(),0);
             p.flags = IN_BOX;
+            p.type  = LI7;
+        }
+    }
+
+    void append_to( const string &filename, const Real tau = 0) const
+    {
+        ios::acstream fp(filename);
+        const unsigned n = particles.size();
+        fp("%u\n",n);
+        fp("t=%.15g\n", tau);
+        for(size_t i=1;i<=n;++i)
+        {
+            const Particle &p = particles[i];
+            switch(p.type)
+            {
+                case LI7: fp("LI7"); break;
+                case LI6: fp("LI6"); break;
+                default:  fp("H");   break;
+            }
+            fp(" %.7g %.7g %.7g\n", p.r.x, p.r.y, p.r.z);
         }
     }
 
@@ -119,8 +146,10 @@ YOCTO_PROGRAM_START()
     Radius = 0;
     SetupGeometry();
 
-    Simulation sim(10000);
+    Simulation sim(100);
     sim.initialize();
+    ios::ocstream::overwrite("sim.xyz");
+    sim.append_to("sim.xyz");
     sim.step();
     
 }

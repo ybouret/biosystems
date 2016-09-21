@@ -45,7 +45,11 @@ private:
 class Processor
 {
 public:
-    inline Processor() throw()
+    bool init;
+    size_t offset;
+    size_t length;
+    
+    inline Processor() throw() : init(true)
     {
     }
 
@@ -56,9 +60,14 @@ public:
     inline
     void run( threading::context &ctx, array<Particle> &particles, void *) throw()
     {
-        size_t offset = 1;
-        size_t length = particles.size();
-        ctx.split(offset, length);
+        if(init)
+        {
+            offset = 1;
+            length = particles.size();
+            ctx.split(offset, length);
+            init = false;
+        }
+        
         
     }
 
@@ -111,6 +120,8 @@ YOCTO_PROGRAM_START()
 
     Simulation sim(10);
 
-
+    sim.cpu.call(sim.particles, NULL);
+    
+    
 }
 YOCTO_PROGRAM_END()

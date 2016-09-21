@@ -121,4 +121,11 @@ and the intake rates:
 \end{equation}
 
 
+\section{Diffusion}
+The diffusion coefficient is inversely proportional to the square root of the mass. The Langevin equation for a species $i$ is
+\begin{equation}
+	\vec{r}_i\left(t+\delta t\right) = \vec{r}_i\left(t\right)  + \dfrac{\delta t}{m_i\xi_i} \vec{f}(t) + \delta \vec{r}_i^G, \;\;\xi_i = \dfrac{k_BT}{m_iD_i}
+\end{equation}
+and each component of $\vec{r}_i^G$ is a zero mean Gaussian with a variance of $2D_i\delta t$.\\
+The random walk version is that the a particle move on a sphere of radius $\sqrt{D_i\delta t}$ a each step...
 \end{document}

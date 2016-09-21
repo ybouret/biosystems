@@ -56,17 +56,28 @@ public:
     virtual ~Simulation() throw() {}
 
     vector<Particle>                      particles;
+    threading::crew                       engine;
     uniform_generator<Real,rand32_kiss>   ran;
     threading::kernel                     kStep;
-    threading::crew                       engine;
-    
+
     explicit Simulation(const size_t n) :
     particles(n),
+    engine(true),
     ran(),
-    kStep(this, & Simulation::StepCall ),
-    engine(true)
+    kStep(this, & Simulation::StepCall )
     {
-        for(size_t i=n;i>0;--i)
+
+        for(size_t i=0;i<engine.size;++i)
+        {
+            threading::context &ctx = engine[i];
+            ctx.create_range(n);
+        }
+    }
+
+
+    void initialize()
+    {
+        for(size_t i=particles.size();i>0;--i)
         {
             Particle &p = particles[i];
             p.r.x   = clamp<Real>(xmin,xmin + L * ran(),xmax);
@@ -74,17 +85,29 @@ public:
             p.r.z   = clamp<Real>(zmin,zmin + L * ran(),0);
             p.flags = IN_BOX;
         }
-        for(size_t i=0;i<engine.size;++i)
-        {
-            threading::context &ctx = engine[i];
-        }
     }
 
     void StepCall( threading::context &context  ) throw()
     {
-        
+        const Range &range = context.data.as<Range>();
+        if(false)
+        {
+            //YOCTO_LOCK(context.access);
+            //std::cerr << range << std::endl;
+        }
+        for(size_t i=range.offset,count=range.length;count>0;--count,++i)
+        {
+            Particle &p = particles[i];
+            p.move();
+        }
     }
-    
+
+
+    void step()
+    {
+        engine(kStep);
+    }
+
 private:
     YOCTO_DISABLE_COPY_AND_ASSIGN(Simulation);
 };
@@ -96,8 +119,9 @@ YOCTO_PROGRAM_START()
     Radius = 0;
     SetupGeometry();
 
-    Simulation sim(10);
-    
+    Simulation sim(10000);
+    sim.initialize();
+    sim.step();
     
 }
 YOCTO_PROGRAM_END()

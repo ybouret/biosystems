@@ -51,6 +51,8 @@ private:
 class Simulation
 {
 public:
+    typedef threading::context Context;
+    typedef Context::range     Range;
     virtual ~Simulation() throw() {}
 
     vector<Particle>                      particles;
@@ -64,14 +66,17 @@ public:
     kStep(this, & Simulation::StepCall ),
     engine(true)
     {
-        
-        for(size_t i=particles.size();i>0;--i)
+        for(size_t i=n;i>0;--i)
         {
             Particle &p = particles[i];
             p.r.x   = clamp<Real>(xmin,xmin + L * ran(),xmax);
             p.r.y   = clamp<Real>(ymin,ymin + L * ran(),ymax);
             p.r.z   = clamp<Real>(zmin,zmin + L * ran(),0);
             p.flags = IN_BOX;
+        }
+        for(size_t i=0;i<engine.size;++i)
+        {
+            threading::context &ctx = engine[i];
         }
     }
 
@@ -92,7 +97,6 @@ YOCTO_PROGRAM_START()
     SetupGeometry();
 
     Simulation sim(10);
-    
     
     
 }

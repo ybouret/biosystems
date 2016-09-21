@@ -1,5 +1,5 @@
 #include "yocto/program.hpp"
-#include "yocto/threading/vpu.hpp"
+#include "yocto/threading/crew.hpp"
 #include "yocto/math/point3d.hpp"
 #include "yocto/sequence/vector.hpp"
 #include "yocto/code/utils.hpp"
@@ -12,7 +12,7 @@ typedef float         Real;
 typedef point3d<Real> Point;
 
 static Real L=0, xmin=0, xmax=0, ymin=0, ymax=0, zmin=0;
-static Real H=0, Radius=0;
+static Real H = 0, Radius=0;
 
 static void SetupGeometry()
 {
@@ -38,42 +38,15 @@ public:
 
     inline ~Particle() throw() {}
 
+    void move()
+    {
+        
+    }
+    
 private:
     YOCTO_DISABLE_ASSIGN(Particle);
 };
 
-class Processor
-{
-public:
-    bool init;
-    size_t offset;
-    size_t length;
-    
-    inline Processor() throw() : init(true)
-    {
-    }
-
-    inline ~Processor() throw()
-    {
-    }
-
-    inline
-    void run( threading::context &ctx, array<Particle> &particles, void *) throw()
-    {
-        if(init)
-        {
-            offset = 1;
-            length = particles.size();
-            ctx.split(offset, length);
-            init = false;
-        }
-        
-        
-    }
-
-private:
-    YOCTO_DISABLE_COPY_AND_ASSIGN(Processor);
-};
 
 class Simulation
 {
@@ -82,21 +55,16 @@ public:
 
     vector<Particle>                      particles;
     uniform_generator<Real,rand32_kiss>   ran;
-    threading::processing_unit<Processor> cpu;
-
+    threading::kernel                     kStep;
+    threading::crew                       engine;
+    
     explicit Simulation(const size_t n) :
     particles(n),
     ran(),
-    cpu( new threading::crew(true) )
+    kStep(this, & Simulation::StepCall ),
+    engine(true)
     {
-        // prepare processors
-        for(size_t i=0;i<cpu.cores;++i)
-        {
-            cpu.push_back();// create Processor()
-        }
-        cpu.compile<Particle>();
-
-
+        
         for(size_t i=particles.size();i>0;--i)
         {
             Particle &p = particles[i];
@@ -107,6 +75,11 @@ public:
         }
     }
 
+    void StepCall( threading::context &context  ) throw()
+    {
+        
+    }
+    
 private:
     YOCTO_DISABLE_COPY_AND_ASSIGN(Simulation);
 };
@@ -119,8 +92,7 @@ YOCTO_PROGRAM_START()
     SetupGeometry();
 
     Simulation sim(10);
-
-    sim.cpu.call(sim.particles, NULL);
+    
     
     
 }

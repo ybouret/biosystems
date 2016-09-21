@@ -170,16 +170,19 @@ public:
             p.r.z   = clamp<Real>(zmin,zmin + L * ran(),0);
             p.flags = IN_BOX;
             p.type  = Li7;
+            if(ran.get<double>()<0.4) p.type = Li6;
         }
 
+        const Real step_length7 = 0.5;
+        const Real step_length6 = step_length7 * sqrt(7.0/6.0);
         for(size_t i=particles.size();i>0;--i)
         {
             Particle &p = particles[i];
             p.step_length = 0;
             switch(p.type)
             {
-                case Li6: break;
-                case Li7: p.step_length = 0.5; break;
+                case Li6: p.step_length = step_length6; break;
+                case Li7: p.step_length = step_length7; break;
                 default:  break;
             }
         }
@@ -197,8 +200,8 @@ public:
             const Particle &p = particles[i];
             switch(p.type)
             {
-                case Li7: fp("Li7"); break;
-                case Li6: fp("Li6"); break;
+                case Li7: fp("Li"); break;
+                case Li6: fp("He"); break;
                 default:  fp("H");   break;
             }
             fp(" %.7g %.7g %.7g\n", p.r.x, p.r.y, p.r.z);
@@ -233,7 +236,7 @@ private:
 
 YOCTO_PROGRAM_START()
 {
-    L = 1;
+    L = 4;
     H = 1;
     SetupGeometry();
 

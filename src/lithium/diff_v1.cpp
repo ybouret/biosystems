@@ -39,8 +39,11 @@ public:
     size_t          offset;
     size_t          length;
     mutable Rand32  ran;
+    mutable Real    tau;
+    mutable vector<Real>    tau6;
+    mutable vector<Real>    tau7;
 
-    RunTime() throw() : offset(0), length(0), ran()
+    RunTime() throw() : offset(0), length(0), ran(), tau(0)
     {
         ran.wseed();
     }
@@ -54,6 +57,10 @@ public:
         offset = 1;
         length = n;
         ctx.split<size_t>(offset,length);
+        tau6.free();
+        tau7.free();
+        tau6.ensure(length);
+        tau7.ensure(length);
     }
 
 private:
@@ -68,14 +75,21 @@ public:
     int       flags;
     int       type;
 
-    inline Particle() throw() : r(), step_length(0), flags(0), type(0)
+    inline Particle() throw() : r(), step_length(0),  flags(0), type(0)
     {
     }
 
     inline ~Particle() throw() {}
 
-    void move(Rand32 &ran)
+    void move(const Real      tau,
+              Rand32         &ran,
+              sequence<Real> &tau6,
+              sequence<Real> &tau7)
     {
+
+
+        if(flags<=0) return;
+
         // create displacement
         Point dr = Point::on_unit_sphere(ran);
         dr *= step_length;
@@ -89,37 +103,58 @@ public:
             {
                 const Real dz = zmin - tgt.z;
                 tgt.z = zmin + dz;
-                goto CHECK_BOX;
+                src=tgt; goto CHECK_BOX;
             }
 
             if(tgt.x>xmax)
             {
                 const Real dx = tgt.x - xmax;
                 tgt.x = xmax - dx;
-                goto CHECK_BOX;
+                src=tgt; goto CHECK_BOX;
             }
 
             if(tgt.x<xmin)
             {
                 const Real dx = xmin - tgt.x;
                 tgt.x = xmin + dx;
-                goto CHECK_BOX;
+                src=tgt; goto CHECK_BOX;
             }
 
             if(tgt.y>ymax)
             {
                 const Real dy = tgt.y - ymax;
                 tgt.y = ymax - dy;
-                goto CHECK_BOX;
+                src=tgt; goto CHECK_BOX;
             }
 
             if(tgt.y<ymin)
             {
                 const Real dy = ymin - tgt.y;
                 tgt.y = ymin + dy;
-                goto CHECK_BOX;
+                src=tgt; goto CHECK_BOX;
             }
 
+            if(tgt.z>0)
+            {
+                // do we enter the cylinder
+                dr = tgt-src;
+                const Real  lam = clamp<Real>(0,-src.z/dr.z,1);
+                const Point I   = src + lam * dr;
+                const Real  r   = Hypotenuse(I.x,I.y);
+                if(r<1)
+                {
+                    flags = 0;
+                    switch(type)
+                    {
+                        case Li6: tau6.push_back(tau); break;
+                        case Li7: tau7.push_back(tau); break;
+                        default:
+                            break;
+                    }
+                }
+                tgt.z=-tgt.z;
+                src=tgt; goto CHECK_BOX;
+            }
 
         }
 
@@ -144,11 +179,13 @@ public:
     vector<Particle>                      particles;
     threading::crew                       engine;
     threading::kernel                     kStep;
+    size_t                                active;
 
     explicit Simulation(const size_t n) :
     particles(n),
     engine(true),
-    kStep(this, & Simulation::StepCall )
+    kStep(this, & Simulation::StepCall ),
+    active(0)
     {
 
         for(size_t i=0;i<engine.size;++i)
@@ -162,7 +199,8 @@ public:
     void initialize()
     {
         Rand32 &ran = engine[0].data.as<RunTime>().ran;
-        for(size_t i=particles.size();i>0;--i)
+        active = particles.size();
+        for(size_t i=active;i>0;--i)
         {
             Particle &p = particles[i];
             p.r.x   = clamp<Real>(xmin,xmin + L * ran(),xmax);
@@ -170,10 +208,10 @@ public:
             p.r.z   = clamp<Real>(zmin,zmin + L * ran(),0);
             p.flags = IN_BOX;
             p.type  = Li7;
-            if(ran.get<double>()<0.4) p.type = Li6;
+            if(ran.get<double>()<0.5) p.type = Li6;
         }
 
-        const Real step_length7 = 0.5;
+        const Real step_length7 = 0.1;
         const Real step_length6 = step_length7 * sqrt(7.0/6.0);
         for(size_t i=particles.size();i>0;--i)
         {
@@ -192,12 +230,13 @@ public:
     void append_to( const string &filename, const Real tau = 0) const
     {
         ios::acstream fp(filename);
-        const unsigned n = particles.size();
-        fp("%u\n",n);
+        fp("%u\n",unsigned(active));
         fp("t=%.15g\n", tau);
-        for(size_t i=1;i<=n;++i)
+        for(size_t i=1;i<=particles.size();++i)
         {
             const Particle &p = particles[i];
+            if(p.flags<=0) continue;
+
             switch(p.type)
             {
                 case Li7: fp("Li"); break;
@@ -208,26 +247,45 @@ public:
         }
     }
 
-    void StepCall( threading::context &context  ) throw()
+    void StepCall( threading::context &context) throw()
     {
-        const RunTime &range = context.data.as<RunTime>();
+        const RunTime &rt = context.data.as<RunTime>();
         if(false)
         {
             //YOCTO_LOCK(context.access);
             //std::cerr << range << std::endl;
         }
-        Rand32 &ran = range.ran;
-        for(size_t i=range.offset,count=range.length;count>0;--count,++i)
+        Rand32 &ran = rt.ran;
+        rt.tau6.free();
+        rt.tau7.free();
+        for(size_t i=rt.offset,count=rt.length;count>0;--count,++i)
         {
             Particle &p = particles[i];
-            p.move(ran);
+            p.move(rt.tau,ran,rt.tau6,rt.tau7);
         }
     }
 
 
-    void step()
+    void step(const Real tau)
     {
+        for(size_t i=0;i<engine.size;++i)
+        {
+            const RunTime &rt = engine[i].data.as<RunTime>();
+            rt.tau = tau;
+        }
+
         engine(kStep);
+
+        for(size_t i=0;i<engine.size;++i)
+        {
+            const RunTime &rt = engine[i].data.as<RunTime>();
+            const array<Real> &tau6 = rt.tau6;
+            const array<Real> &tau7 = rt.tau7;
+            assert(tau6.size()+tau7.size()<=active);
+            active -= tau6.size();
+            active -= tau7.size();
+        }
+        std::cerr << "#active=" << active << std::endl;
     }
 
 private:
@@ -245,10 +303,14 @@ YOCTO_PROGRAM_START()
     ios::ocstream::overwrite("sim.xyz");
     sim.append_to("sim.xyz");
 
-    for(size_t i=0;i<200;++i)
+    const Real dtau = 1;
+    for(size_t i=1;i<=20000;++i)
     {
-        sim.step();
-        sim.append_to("sim.xyz");
+        sim.step(dtau*i);
+        if(0==(i%100))
+        {
+            sim.append_to("sim.xyz");
+        }
     }
     
 }

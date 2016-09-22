@@ -36,6 +36,7 @@ YOCTO_PROGRAM_START()
 
     const double Ddt   = 1.0;    // scaling
     const double gvar  = 2*Ddt;  // gaussian variance
+    const double fac   = sqrt(gvar);
 
     // 1D
     {
@@ -49,7 +50,6 @@ YOCTO_PROGRAM_START()
         double var=compute_variance(X,ave);
         std::cerr << "1D uniform: average=" << ave << ", variance=" << var << std::endl;
 
-        const double fac = sqrt(gvar);
         for(size_t i=1;;)
         {
             double a,b;
@@ -104,9 +104,33 @@ YOCTO_PROGRAM_START()
         r_var/=N;
 
         std::cerr << "2D uniform: average=" << ave << ", variance=" << var << std::endl;
-        std::cerr << "r_var=" << r_var << std::endl;
-        P2D decr(floor(gvar/var.x+0.5),floor(gvar/var.y+0.5));
-        std::cerr << "decrease=" << decr << std::endl;
+        std::cerr << "2D uniform r_var=" << r_var << std::endl;
+
+        for(size_t i=1;i<=N;++i)
+        {
+            double a,b;
+            ran.gaussian(a,b);
+            a *= fac;
+            b *= fac;
+            X[i] = a;
+            Y[i] = b;
+        }
+
+        P2D aveG,varG;
+        varG.x = compute_variance(X,aveG.x);
+        varG.y = compute_variance(Y,aveG.y);
+        double r_varG = 0;
+        for(size_t i=1;i<=N;++i)
+        {
+            r_varG += Square(X[i]-ave.x) + Square(Y[i]-ave.y);
+        }
+        r_varG/=N;
+        std::cerr << "2D gaussian: average=" << aveG << ", variance=" << varG << std::endl;
+        std::cerr << "2D uniform r_var=" << r_varG << std::endl;
+
+
+        P2D decr(floor(varG.x/var.x+0.5),floor(varG.y/var.y+0.5));
+        std::cerr << "decrease=" << decr << ", r_decrease=" << floor(r_varG/r_var+0.5) << std::endl;
     }
 
     // 2D

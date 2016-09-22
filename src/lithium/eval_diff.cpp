@@ -124,7 +124,7 @@ YOCTO_PROGRAM_START()
         P3D ave,var;
         var.x = compute_variance(X,ave.x);
         var.y = compute_variance(Y,ave.y);
-        var.z = compute_variance(Y,ave.z);
+        var.z = compute_variance(Z,ave.z);
         double r_var = 0;
         for(size_t i=1;i<=N;++i)
         {

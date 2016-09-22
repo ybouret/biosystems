@@ -48,7 +48,6 @@ YOCTO_PROGRAM_START()
         }
         double ave=0;
         double var=compute_variance(X,ave);
-        std::cerr << "1D uniform: average=" << ave << ", variance=" << var << std::endl;
 
         for(size_t i=1;;)
         {
@@ -76,9 +75,10 @@ YOCTO_PROGRAM_START()
         }
         double aveG = 0;
         double varG = compute_variance(X,aveG);
-        std::cerr << "1D gaussian: average=" << aveG << ", variance=" << varG << std::endl;
 
-        std::cerr << "decrease=" << floor(varG/var+0.5) << std::endl;
+        std::cerr << "1D uniform : average=" << ave << ", variance=" << var << std::endl;
+        std::cerr << "1D gaussian: average=" << aveG << ", variance=" << varG << std::endl;
+        std::cerr << "1D decrease=" << floor(varG/var+0.5) << std::endl;
 
     }
 
@@ -103,8 +103,6 @@ YOCTO_PROGRAM_START()
         }
         r_var/=N;
 
-        std::cerr << "2D uniform: average=" << ave << ", variance=" << var << std::endl;
-        std::cerr << "2D uniform r_var=" << r_var << std::endl;
 
         for(size_t i=1;i<=N;++i)
         {
@@ -125,12 +123,15 @@ YOCTO_PROGRAM_START()
             r_varG += Square(X[i]-ave.x) + Square(Y[i]-ave.y);
         }
         r_varG/=N;
+
+        std::cerr << "2D uniform:  average=" << ave << ", variance=" << var << std::endl;
+        std::cerr << "2D uniform   r_var  =" << r_var << std::endl;
         std::cerr << "2D gaussian: average=" << aveG << ", variance=" << varG << std::endl;
-        std::cerr << "2D uniform r_var=" << r_varG << std::endl;
+        std::cerr << "2D uniform   r_var  =" << r_varG << std::endl;
 
 
         P2D decr(floor(varG.x/var.x+0.5),floor(varG.y/var.y+0.5));
-        std::cerr << "decrease=" << decr << ", r_decrease=" << floor(r_varG/r_var+0.5) << std::endl;
+        std::cerr << "2D decrease=" << decr << ", r_decrease=" << floor(r_varG/r_var+0.5) << std::endl;
     }
 
     // 2D
@@ -156,10 +157,45 @@ YOCTO_PROGRAM_START()
         }
         r_var/=N;
 
-        std::cerr << "3D uniform: average=" << ave << ", variance=" << var << std::endl;
-        std::cerr << "r_var=" << r_var << std::endl;
-        P3D decr(floor(gvar/var.x+0.5),floor(gvar/var.y+0.5),floor(gvar/var.z+0.5));
-        std::cerr << "decrease=" << decr << std::endl;
+        const size_t ng = (2*(3*N)+1)/2;
+        vector<double> g(ng,as_capacity);
+        for(size_t i=0;i<ng/2;++i)
+        {
+            double a,b;
+            ran.gaussian(a,b);
+            a *= fac;
+            b *= fac;
+            g.push_back(a);
+            g.push_back(b);
+        }
+        assert(g.size()==ng);
+
+        for(size_t i=1,j=1;i<=N;++i)
+        {
+            X[i] = g[j++];
+            Y[i] = g[j++];
+            Z[i] = g[j++];
+        }
+        P3D aveG,varG;
+        varG.x = compute_variance(X,aveG.x);
+        varG.y = compute_variance(Y,aveG.y);
+        varG.z = compute_variance(Z,aveG.z);
+        double r_varG = 0;
+        for(size_t i=1;i<=N;++i)
+        {
+            r_varG += Square(X[i]-ave.x) + Square(Y[i]-ave.y) + Square(Z[i]-ave.z);
+        }
+        r_varG/=N;
+
+
+
+        std::cerr << "3D uniform:  average=" << ave << ", variance=" << var << std::endl;
+        std::cerr << "3D uniform   r_var="   << r_var << std::endl;
+        std::cerr << "3D gaussian: average=" << aveG << ", variance=" << varG << std::endl;
+        std::cerr << "3D gaussian  r_var="   << r_varG << std::endl;
+
+        P3D decr(floor(varG.x/var.x+0.5),floor(varG.y/var.y+0.5),floor(varG.z/var.z+0.5));
+        std::cerr << "3D decrease=" << decr << std::endl;
     }
 
 

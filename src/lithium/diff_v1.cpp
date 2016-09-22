@@ -191,14 +191,14 @@ public:
         for(size_t i=0;i<engine.size;++i)
         {
             threading::context &ctx = engine[i];
-            ctx.data.make<RunTime>().prepare(ctx,n);
+            ctx.make<RunTime>().prepare(ctx,n);
         }
     }
 
 
     void initialize()
     {
-        Rand32 &ran = engine[0].data.as<RunTime>().ran;
+        Rand32 &ran = engine[0].as<RunTime>().ran;
         active = particles.size();
         for(size_t i=active;i>0;--i)
         {
@@ -249,7 +249,7 @@ public:
 
     void StepCall( threading::context &context) throw()
     {
-        const RunTime &rt = context.data.as<RunTime>();
+        const RunTime &rt = context.as<RunTime>();
         if(false)
         {
             //YOCTO_LOCK(context.access);
@@ -270,7 +270,7 @@ public:
     {
         for(size_t i=0;i<engine.size;++i)
         {
-            const RunTime &rt = engine[i].data.as<RunTime>();
+            const RunTime &rt = engine[i].as<RunTime>();
             rt.tau = tau;
         }
 
@@ -278,7 +278,7 @@ public:
 
         for(size_t i=0;i<engine.size;++i)
         {
-            const RunTime &rt = engine[i].data.as<RunTime>();
+            const RunTime &rt = engine[i].as<RunTime>();
             const array<Real> &tau6 = rt.tau6;
             const array<Real> &tau7 = rt.tau7;
             assert(tau6.size()+tau7.size()<=active);

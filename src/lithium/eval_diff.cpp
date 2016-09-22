@@ -47,13 +47,13 @@ YOCTO_PROGRAM_START()
         double var=compute_variance(X,ave);
         std::cerr << "1D uniform: average=" << ave << ", variance=" << var << std::endl;
 
-        
+        const double fac = sqrt(sigma);
         for(size_t i=1;;)
         {
             double a,b;
             ran.gaussian(a,b);
-            a *= sigma;
-            b *= sigma;
+            a *= fac;
+            b *= fac;
             if(i<=N)
             {
                 X[i++] = a;

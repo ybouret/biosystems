@@ -9,13 +9,14 @@
 
 int             Iter_rest          = 5;
 int             amplitude          = 100;
-float           frequency          = 1;
-int             nb_point           = 100;
-int             nb_cycle           = 5;
-int             Iter_move          = nb_point * nb_cycle;
-float           interFrame_period  = 1000/frequency/nb_point;
-unsigned int    servo_period       = 15000;
-int             angle_shift        = 0;
+float           frequency          = 1;        // 2pi/omega
+int             nb_point           = 100;      // number of info points
+//int             nb_cycle           = 5;        // swimming #cycles
+int nb_cycle=0;
+int             Iter_move          = nb_point * nb_cycle; // assign one position per 'move'
+float           interFrame_period  = 1000/frequency/nb_point; // time between two points in ms
+unsigned int    servo_period       = 15000;                   // microseconds
+int             angle_shift        = 0;                       // servo neutral position correction
 
 //______________________________________________________________________________
 //
@@ -42,18 +43,21 @@ const float       pi             = 3.1415926535;
 Servo             myservo;
 const int         angle_init     = 90-angle_shift;
 unsigned int      last_servo     = 0;
-float             sweep          = 2*pi*frequency;
+float             sweep          = 2*pi*frequency; // omega
 int               angle          = angle_init;
 float             ang;
 float             dt;
 unsigned int      count;
 unsigned int      last_interFrame;
-bool              flag_interFrame = false;
+bool              flag_interFrame = false; // signal to serial not to record picture
 float             tension1;
 float             tension2;
 float             tension;
 unsigned int      t               = micros();
 unsigned int      t0              = millis();
+
+bool              init_start=true;
+unsigned int      t_start_mu=0;
 
 //______________________________________________________________________________
 //
@@ -76,6 +80,8 @@ void setup()
     count           = 0;
     last_interFrame = millis();
     last_servo      = micros();
+    t  = millis();
+    t0 = millis();
 }
 
 //______________________________________________________________________________
@@ -92,7 +98,8 @@ void performIO(const int pinInterFrameValue)
     tension2 = analogRead(pin_tensionSortie);
     tension  = tension2-tension1;
     
-    Serial.print(micros());
+    
+    Serial.print(micros()-t_start_mu);
     Serial.print("\t");
     Serial.print(voltage);
     Serial.print("\t");
@@ -111,6 +118,15 @@ void performIO(const int pinInterFrameValue)
 //______________________________________________________________________________
 void loop()
 {
+    if(init_start)
+    {
+        t_start_mu = micros();
+        Serial.println(t_start_mu);
+        //Serial.println(1000*interFrame_period*0.5);
+        init_start = false;
+        last_interFrame = millis();
+    }
+    
     if(count<=maxIter)
     {
         //______________________________________________________________________
@@ -153,14 +169,15 @@ void loop()
         {
             //__________________________________________________________________
             //
-            // Resting
+            // Resting: no camera, physical constants out
             //__________________________________________________________________
             if(t-last_interFrame>interFrame_period*0.5)
             {
-                flag_interFrame = false;
+                flag_interFrame = false; // no picture
                 angle = angle_init;
                 myservo.write(angle);
-                performIO(LOW);
+                Serial.println(micros()-t_start_mu);
+                //performIO(LOW);
                 count++;
                 last_interFrame = t;
             }

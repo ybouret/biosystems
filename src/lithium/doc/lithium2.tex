@@ -1,0 +1,29 @@
+\documentclass[aps,onecolumn]{revtex4}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{mathptmx}
+\usepackage{xfrac}
+\usepackage{xcolor}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+\begin{document}
+
+\begin{equation}
+	 \mychem{Li}_{out}^{x} +  \mychem{E}_{out}  
+	 \xrightleftharpoons[k_d^x]{k_a^x} 
+	 \left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} 
+	  \xrightleftharpoons[k_r^x]{k_f^x} 
+	  \left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in}  
+	   \xrightarrow[-\mychem{H}^+_{in},+\mychem{H}^+_{out}]{k_E^x} \mychem{E}_{out}  + \mychem{Li}_{in}^{x}
+\end{equation}
+
+\begin{equation}
+	\partial_t \myconc{\mychem{Li}_{in}^x} = k_E^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} }
+\end{equation}
+
+
+\end{document}

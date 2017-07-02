@@ -22,7 +22,24 @@
 \end{equation}
 
 \begin{equation}
-	\partial_t \myconc{\mychem{Li}_{in}^x} = k_E^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} }
+\begin{array}{rcl}
+	\partial_t \myconc{\mychem{Li}_{in}^x} & = & k_E^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} } \\
+	\partial_t \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} } & = & 
+	-\left(k_E^x+k_r^x\right) \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} }
+	+k_f^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} }
+	\\
+	\partial_t \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} } & = &
+	-\left(k_d^x+k_f^x\right) \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} } 
+	+k_r^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} }
+	+k_a^x \myconc{\mychem{Li_{out}^x}} \myconc{E_{out}}
+	\\
+	\partial_t  \myconc{E_{out}} & = & k_E^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} }
+	+k_d^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} }
+		-k_a^x \myconc{\mychem{Li_{out}^x}} \myconc{E_{out}}
+	\\
+	E_0 & = & \myconc{E_{out}} + \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} } 
+	+ \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} }\\
+\end{array}
 \end{equation}
 
 

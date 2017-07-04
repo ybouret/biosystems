@@ -48,7 +48,7 @@
 
 
 \begin{equation}
-	\LiEout{x} + \LiEin{x} = \left(1+\dfrac{k_r^x}{k_f^x} +\dfrac{k_E^x}{k_f^x}  \right) \LiEin{x}
+	\LiEout{x} + \LiEin{x} = \left(1+\dfrac{k_r^x}{k_f^x} +\dfrac{k_E^x}{k_f^x}  \right) \LiEin{x} = \Xi_x \LiEin{x}
 \end{equation}
 
 \begin{equation}
@@ -59,16 +59,32 @@ k_a^x \myconc{\mychem{Li^x}} \myconc{E} & =  \left(k_d^x+k_f^x\right) \left(\dfr
 \end{equation}
 so that
 \begin{equation}
-	\LiEin{x} = \dfrac{k_a^x \myconc{\mychem{Li^x}} }{\left\lbrack k_E^x \left(1+\dfrac{k_d^x}{k_f^x} \right) + \dfrac{k_d^xk_r^x}{k_f^x} \right\rbrack} \myconc{E}
+	\LiEin{x} = \dfrac{k_a^x \myconc{\mychem{Li_x}} }{\left\lbrack k_E^x \left(1+\dfrac{k_d^x}{k_f^x} \right) + \dfrac{k_d^xk_r^x}{k_f^x} \right\rbrack} \myconc{E}
+	%= \dfrac{k_a^x}{\Omega_x} \myconc{\mychem{Li_x}} \myconc{E}
 \end{equation}
+or
+\begin{equation}
+	\LiEin{x} = \dfrac{\myconc{\mychem{Li_x}} \myconc{E}}{\left\lbrack \dfrac{k_E^x}{k_a^x} \left(1+\dfrac{k_d^x}{k_f^x} \right) + \dfrac{k_d^xk_r^x}{k_a^xk_f^x} \right\rbrack}
+	= \dfrac{\myconc{\mychem{Li_x}}\myconc{E}}{\phi K_E^x + K_M^x}
+\end{equation}
+
 and that
 \begin{equation}
-	\LiEin{x} + \LiEout{x} = k_a^x\dfrac{ \left(1+\dfrac{k_r^x}{k_f^x} +\dfrac{k_E^x}{k_f^x}  \right) }{\left\lbrack k_E^x \left(1+\dfrac{k_d^x}{k_f^x} \right) + \dfrac{k_d^xk_r^x}{k_f^x} \right\rbrack} \myconc{\mychem{Li_x}} \myconc{E} = \Lambda_x \myconc{\mychem{Li_x}} \myconc{E}
+	\LiEin{x} + \LiEout{x} = \dfrac{ \Xi_x }{\phi K_E^x + K_M^x} \myconc{\mychem{Li_x}} \myconc{E} = \Lambda_x \myconc{\mychem{Li_x}} \myconc{E}
 \end{equation}
 
 \begin{equation}
 	\myconc{E} = \dfrac{E_0}{\left(1+\Lambda_6 \myconc{\mychem{Li_6}} + \Lambda_7 \myconc{\mychem{Li_7}}\right)}
 \end{equation}
+and finally
+\begin{equation}
+	\partial_t \myconc{\mychem{Li}^{in}_x} = \dfrac{k_E^x E_0}{\phi K_E^x + K_M^x} \dfrac{\myconc{Li_x}}{1+\Lambda_6 \myconc{\mychem{Li_6}} + \Lambda_7 \myconc{\mychem{Li_7}}}
+\end{equation}
+and
+\begin{equation}
+	\partial_t \myconc{\mychem{Li}^{in}_x} = V_x \dfrac{\phi}{\phi K_E^x + K_M^x}
+\end{equation}
+
 \end{document}
 
 

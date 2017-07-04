@@ -10,39 +10,66 @@
 
 \newcommand{\mychem}[1]{\mathtt{#1}}
 \newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+\newcommand{\LiEin}[1]{\myconc{\left\lbrace\mychem{Li}_{#1}\mychem{E}\right\rbrace_{in}}}
+\newcommand{\LiEout}[1]{\myconc{\left\lbrace\mychem{Li}_{#1}\mychem{E}\right\rbrace_{out}}}
+
 \begin{document}
 
 \begin{equation}
-	 \mychem{Li}^{x} +  \mychem{E}  
+	 \mychem{Li}_{x} +  \mychem{E}  
 	 \xrightleftharpoons[k_d^x]{k_a^x} 
-	 \left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} 
+	 \left\lbrace\mychem{Li}_{x}\mychem{E}\right\rbrace_{out} 
 	  \xrightleftharpoons[k_r^x]{k_f^x} 
-	  \left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in}  
-	   \xrightarrow[-\mychem{H}^+_{in},+\mychem{H}^+_{out}]{k_E^x} \mychem{E}  + \mychem{Li}_{in}^{x}
+	  \left\lbrace\mychem{Li}_{x}\mychem{E}\right\rbrace_{in}  
+	   \xrightarrow[-\mychem{H}^+_{in},+\mychem{H}^+_{out}]{k_E^x} \mychem{E}  + \mychem{Li}_{x}^{in}
 \end{equation}
 
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \myconc{\mychem{Li}_{in}^x} & = & k_E^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} } \\
-	\partial_t \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} } & = & 
-	-\left(k_E^x+k_r^x\right) \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} }
-	+k_f^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} }
+	\partial_t \myconc{\mychem{Li}^{in}_x} & = & k_E^x \LiEin{x} \\
+	\partial_t \LiEin{x} & = & 
+	-\left(k_E^x+k_r^x\right) \LiEin{x}+k_f^x \LiEout{x}
 	\\
-	\partial_t \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} } & = &
-	-\left(k_d^x+k_f^x\right) \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} } 
-	+k_r^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} }
-	+k_a^x \myconc{\mychem{Li^x}} \myconc{E}
+	\partial_t \LiEout{x} & = &
+	-\left(k_d^x+k_f^x\right) \LiEout{x}
+	+k_r^x \LiEin{x}
+	+k_a^x \myconc{\mychem{Li_x}} \myconc{E}
 	\\
-%	\partial_t  \myconc{E} & = & k_E^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} }
-%	+k_d^x \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} }
-%		-k_a^x \myconc{\mychem{Li_{out}^x}} \myconc{E}
-%	\\
-	E_0 & = & \myconc{E} + \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{in} } 
-	+ \myconc{\left\lbrace\mychem{Li}^{x}\mychem{E}\right\rbrace_{out} }\\
+	E_0 & = & \myconc{E} + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEin{7}\\
 \end{array}
 \right.
 \end{equation}
+
+\begin{equation}
+	\LiEout{x} = \left(\dfrac{k_E^x}{k_f^x} + \dfrac{k_r^x}{k_f^x} \right) \LiEin{x}	
+\end{equation}
+
+
+
+\begin{equation}
+	\LiEout{x} + \LiEin{x} = \left(1+\dfrac{k_r^x}{k_f^x} +\dfrac{k_E^x}{k_f^x}  \right) \LiEin{x}
+\end{equation}
+
+\begin{equation}
+\begin{array}{rl}
+k_a^x \myconc{\mychem{Li^x}} \myconc{E} & =  \left(k_d^x+k_f^x\right) \left(\dfrac{k_E^x}{k_f^x} + \dfrac{k_r^x}{k_f^x} \right) \LiEin{x} - k_r^x \LiEin{x}\\
+& = \left\lbrack k_E^x \left(1+\dfrac{k_d^x}{k_f^x} \right) + \dfrac{k_d^xk_r^x}{k_f^x} \right\rbrack \LiEin{x}\\
+\end{array}
+\end{equation}
+so that
+\begin{equation}
+	\LiEin{x} = \dfrac{k_a^x \myconc{\mychem{Li^x}} }{\left\lbrack k_E^x \left(1+\dfrac{k_d^x}{k_f^x} \right) + \dfrac{k_d^xk_r^x}{k_f^x} \right\rbrack} \myconc{E}
+\end{equation}
+and that
+\begin{equation}
+	\LiEin{x} + \LiEout{x} = k_a^x\dfrac{ \left(1+\dfrac{k_r^x}{k_f^x} +\dfrac{k_E^x}{k_f^x}  \right) }{\left\lbrack k_E^x \left(1+\dfrac{k_d^x}{k_f^x} \right) + \dfrac{k_d^xk_r^x}{k_f^x} \right\rbrack} \myconc{\mychem{Li_x}} \myconc{E} = \Lambda_x \myconc{\mychem{Li_x}} \myconc{E}
+\end{equation}
+
+\begin{equation}
+	\myconc{E} = \dfrac{E_0}{\left(1+\Lambda_6 \myconc{\mychem{Li_6}} + \Lambda_7 \myconc{\mychem{Li_7}}\right)}
+\end{equation}
+\end{document}
 
 
 \end{document}

@@ -1,0 +1,45 @@
+\documentclass[aps,onecolumn,12pt]{revtex4}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{mathptmx}
+\usepackage{xfrac}
+\usepackage{xcolor}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+\newcommand{\LiEin}[1]{\myconc{\left\lbrace\mychem{Li}_{#1}\mychem{E}\right\rbrace_{in}}}
+\newcommand{\LiEout}[1]{\myconc{\left\lbrace\mychem{Li}_{#1}\mychem{E}\right\rbrace_{out}}}
+\newcommand{\LiIn}[1]{\myconc{\mychem{Li}_{#1}^{in}}}
+\newcommand{\LiOut}[1]{\myconc{\mychem{Li}_{#1}}}
+\newcommand{\EHin}{\myconc{\mychem{EH}_{in}}}
+\newcommand{\Eout}{\myconc{\mychem{E}}}
+
+\begin{document}
+
+\begin{equation}
+	 \mychem{Li}_{x} +  \mychem{E}  
+	 \xrightleftharpoons[k_d^x]{k_a^x} 
+	 \left\lbrace\mychem{Li}_{x}\mychem{E}\right\rbrace_{out} 
+	  \xrightleftharpoons[k_r^x]{k_f^x} 
+	  \left\lbrace\mychem{Li}_{x}\mychem{E}\right\rbrace_{in}  
+	  \xrightleftharpoons[k_q^x]{\mychem{H}_i,\;k_p^x} \underbrace{\mychem{EH}_{in}}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{out}} + \mychem{Li}_{x}^{in}
+\end{equation}
+
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t\LiIn{x} & = & k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} - k_q^x \EHin \LiIn{x} \\
+\partial_t \EHin & = & k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} - k_q^x \EHin \LiIn{x} - k_h \EHin \\
+\partial_t \LiEin{x} & = & -k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} + k_q^x \EHin \LiIn{x}
++ k_f^x \LiEout{x} - k_r^x \LiEin{x}\\
+\partial_t \LiEout{x} & = & k_r^x \LiEin{x} - (k_f^x+k_d^x) \LiEout{x} + k_a \LiOut{x} \Eout \\
+E_0 & = & \Eout + \EHin + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEin{7}\\
+\end{array}
+\right.
+\end{equation}
+
+\end{document}
+

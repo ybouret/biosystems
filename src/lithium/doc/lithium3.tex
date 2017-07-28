@@ -46,5 +46,35 @@ E_0 & = & \Eout + \EHin + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEout{7}\\
 \right.
 \end{equation}
 
+The steady state concentrations are given by
+\begin{equation}
+\begin{pmatrix}
+	1 & 1 & 1 &1 &1 &1 \\
+	0 & 0 & 0 & 0 & 0 &-(k_h+k_q^6\LiIn{6}+k_q^7\LiIn{7}) \\
+	0 & 0 & 0 & 0 & 0 &0 \\
+	0 & 0 & 0 & 0 & 0 &0 \\
+	0 & 0 & 0 & 0 & 0 &0 \\
+	0 & 0 & 0 & 0 & 0 &0 \\
+\end{pmatrix}
+\cdot
+	\begin{pmatrix}
+	\Eout\\
+	\LiEout{6}\\
+	\LiEout{7}\\
+	\LiEin{6}\\
+	\LiEin{7}\\
+	\EHin\\
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	E_0\\
+	0\\
+	0\\
+	0\\
+	0\\
+	0\\
+	\end{pmatrix}
+\end{equation}
+
 \end{document}
 

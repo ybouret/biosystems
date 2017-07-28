@@ -29,14 +29,19 @@
 \end{equation}
 
 \begin{equation}
+\displaystyle
 \left\lbrace
 \begin{array}{rcl}
-\partial_t\LiIn{x} & = & k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} - k_q^x \EHin \LiIn{x} \\
-\partial_t \EHin & = & k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} - k_q^x \EHin \LiIn{x} - k_h \EHin \\
+\partial_t\LiIn{x}   & = & k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} - k_q^x \EHin \LiIn{x} \\
+\\
+\partial_t \EHin     & = & \sum_{x=6,7}\left( k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} - k_q^x \EHin \LiIn{x}\right) - k_h \EHin \\
+\\
 \partial_t \LiEin{x} & = & -k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} + k_q^x \EHin \LiIn{x}
 + k_f^x \LiEout{x} - k_r^x \LiEin{x}\\
+\\
 \partial_t \LiEout{x} & = & k_r^x \LiEin{x} - (k_f^x+k_d^x) \LiEout{x} + k_a \LiOut{x} \Eout \\
-E_0 & = & \Eout + \EHin + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEin{7}\\
+\\
+E_0 & = & \Eout + \EHin + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEout{7}\\
 \end{array}
 \right.
 \end{equation}

@@ -14,8 +14,9 @@
 \newcommand{\LiEout}[1]{\myconc{\left\lbrace\mychem{Li}_{#1}\mychem{E}\right\rbrace_{out}}}
 \newcommand{\LiIn}[1]{\myconc{\mychem{Li}_{#1}^{in}}}
 \newcommand{\LiOut}[1]{\myconc{\mychem{Li}_{#1}}}
-\newcommand{\EHin}{\myconc{\mychem{EH}_{in}}}
+\newcommand{\EHin}{\myconc{\mychem{EH}}}
 \newcommand{\Eout}{\myconc{\mychem{E}}}
+\newcommand{\Hin}{\myconc{\mychem{H}}}
 
 \begin{document}
 
@@ -34,9 +35,9 @@
 \begin{array}{rcl}
 \partial_t\LiIn{x}   & = & k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} - k_q^x \EHin \LiIn{x} \\
 \\
-\partial_t \EHin     & = & \sum_{x=6,7}\left( k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} - k_q^x \EHin \LiIn{x}\right) - k_h \EHin \\
+\partial_t \EHin     & = & \sum_{x=6,7}\left( k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x}\right) - k_h \EHin \\
 \\
-\partial_t \LiEin{x} & = & -k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} + k_q^x \EHin \LiIn{x}
+\partial_t \LiEin{x} & = & -k_p^x \Hin \LiEin{x} + k_q^x \EHin \LiIn{x}
 + k_f^x \LiEout{x} - k_r^x \LiEin{x}\\
 \\
 \partial_t \LiEout{x} & = & k_r^x \LiEin{x} - (k_f^x+k_d^x) \LiEout{x} + k_a \LiOut{x} \Eout \\
@@ -50,7 +51,7 @@ The steady state concentrations are given by
 \begin{equation}
 \begin{pmatrix}
 	1 & 1 & 1 &1 &1 &1 \\
-	0 & 0 & 0 & 0 & 0 &-(k_h+k_q^6\LiIn{6}+k_q^7\LiIn{7}) \\
+	0 & 0 & 0 & k_p^6\Hin & k_p^7\Hin &-(k_h+k_q^6\LiIn{6}+k_q^7\LiIn{7}) \\
 	0 & 0 & 0 & 0 & 0 &0 \\
 	0 & 0 & 0 & 0 & 0 &0 \\
 	0 & 0 & 0 & 0 & 0 &0 \\

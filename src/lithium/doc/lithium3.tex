@@ -1,4 +1,6 @@
-\documentclass[aps,onecolumn,12pt]{revtex4}
+\documentclass[aps,onecolumn,11pt]{revtex4}
+%\documentclass[11pt]{article}
+%\usepackage[cm]{fullpage}
 \usepackage{graphicx}
 \usepackage{amssymb,amsfonts,amsmath,amsthm}
 \usepackage{chemarr}
@@ -40,7 +42,7 @@
 \partial_t \LiEin{x} & = & -k_p^x \Hin \LiEin{x} + k_q^x \EHin \LiIn{x}
 + k_f^x \LiEout{x} - k_r^x \LiEin{x}\\
 \\
-\partial_t \LiEout{x} & = & k_r^x \LiEin{x} - (k_f^x+k_d^x) \LiEout{x} + k_a \LiOut{x} \Eout \\
+\partial_t \LiEout{x} & = & k_r^x \LiEin{x} - (k_f^x+k_d^x) \LiEout{x} + k_a^x \LiOut{x} \Eout \\
 \\
 E_0 & = & \Eout + \EHin + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEout{7}\\
 \end{array}
@@ -51,12 +53,14 @@ The steady state concentrations are given by
 \begin{equation}
 \begin{pmatrix}
 	1 & 1 & 1 &1 &1 &1 \\
-	0 & 0 & 0 & 0 & 0 &0 \\
-	0 & 0 & 0 & 0 & 0 &0 \\
-	0 & 0 & 0 & 0 & 0 &0 \\
-	0 & 0 & 0 & 0 & 0 &0 \\
-	0 & 0 & 0 & 0 & 0 &0 \\
+	0 & 0 & 0 & k_p^6\Hin & k_p^7\Hin & -(k_h+k_q^6\LiIn{6}+k_q^7\LiIn{7}) \\
+	0 & k_f^6 & 0 & -(k_p^6\Hin+k_r^6) & 0 & k_q^6\LiIn{6} \\
+	0 & 0 & k_f^7 & 0 & -(k_p^7\Hin+k_r^7) & k_q^7\LiIn{7} \\
+	k_a^6\LiOut{6} & -(k_f^6+k_d^6) & 0 & k_r^6 & 0 & 0 \\
+	k_a^7\LiOut{7} & 0 & -(k_f^7+k_d^7) & 0 & k_r^7 & 0 \\
 \end{pmatrix}
+\end{equation}
+\begin{equation}
 \cdot
 	\begin{pmatrix}
 	\Eout\\

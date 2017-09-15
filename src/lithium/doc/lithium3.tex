@@ -36,7 +36,7 @@
 \displaystyle
 \left\lbrace
 \begin{array}{rcl}
-\partial_t\LiIn{x}   & = & k_p^x \myconc{\mychem{H}}_{in} \LiEin{x} - k_q^x \EHin \LiIn{x} \\
+\partial_t\LiIn{x}   & = & k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x} \\
 \\
 \partial_t \EHin     & = & \sum_{x=6,7}\left( k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x}\right) - k_h \EHin \\
 \\
@@ -87,7 +87,7 @@ The steady state concentrations are given by
 \displaystyle
 \left\lbrace
 \begin{array}{rcl}
-\partial_t\LiIn{\nu}   & = & k_p^\nu \myconc{\mychem{H}}_{in} \LiEin{\nu} - k_q^x \EHin \LiIn{\nu} \\
+\partial_t\LiIn{\nu}   & = & k_p^\nu \Hin \LiEin{\nu} - k_q^x \EHin \LiIn{\nu} \\
 \\
 \partial_t \EHin     & = & \left( k_p^\nu \Hin \LiEin{\nu} - k_q^\nu \EHin \LiIn{\nu}\right) - k_h \EHin \\
 \\
@@ -125,6 +125,9 @@ We have the matrix such that
 	M_\nu = 
 	\begin{pmatrix}
 	1 & 1 & 1 & 1\\
+	0 & -(k_h+k_q^\nu\LiIn{\nu}) & k_p^\nu \Hin  & 0\\
+	0 & k_q^\nu\LiIn{\nu} & -(k_p^\nu \Hin+k_r^\nu) & k_f^\nu\\
+	k_a^\nu\LiOut{\nu} & 0 & k_r^\nu & - (k_f^\nu+k_d^\nu)
 	\end{pmatrix}
 \end{equation}
 

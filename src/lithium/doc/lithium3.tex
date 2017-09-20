@@ -51,31 +51,47 @@ E_0 & = & \Eout + \EHin + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEout{7}\\
 \right.
 \end{equation}
 
-\subsection{Steady}
-We have the intrinsic substitutions
+\section{Resolution}
+As it is an intermediate
 \begin{equation}
 	\LiEout{x} = \dfrac{k_r^x}{k_f^x+k_d^x} \LiEin{x} + \dfrac{k_a^x\LiOut{x}}{k_f^x+k_d^x} \Eout
+	= A_x  \LiEin{x} + B_x \Eout
 \end{equation}
-
+Then
 \begin{equation}
-	\EHin = \dfrac{k_p^6 \LiEin{6} + k_p^7 \LiEin{7}}{k_h+k_q^6\LiIn{6}+k_q^7\LiIn{7}}\Hin
+\EHin = \dfrac{k_p^6 \LiEin{6} + k_p^7 \LiEin{7} }{k_h+k_q^6 \LiIn{6} + k_q^7 \LiIn{7} } \Hin
+= C_6 \LiEin{6} + C_7 \LiEin{7}
 \end{equation}
-
+We now have three equations using $F_x=k_q^x\LiIn{x},\;B'_x=k_f^xB_x,\;A'_x=k_f^xA_x$
 \begin{equation}
-\displaystyle
-\left\lbrace
 \begin{array}{rcl}
-\partial_t\LiIn{x}   & = & k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x} \\
-\\
-\partial_t \LiEin{x} & = & -\left(k_p^x \Hin + k_r^x\right) \LiEin{x} + k_q^x \EHin \LiIn{x}
-+ k_f^x \LiEout{x} \\
-\\
-E_0 & = & \Eout + \EHin + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEout{7}\\
+0   & = & B'_6 \Eout + \left(A'_6-D_6+F_6C_6\right) \LiEin{6} + F_6C_7 \LiEin{7} \\
+0   & = & B'_7 \Eout + \left(A'_7-D_7+F_7C_7\right) \LiEin{7} + F_7C_6 \LiEin{6} \\
+E_0 & = & \left(1+B_6+B_7\right)\Eout + \left(1+A_6+C_6\right) \LiEin{6} + \left(1+A_7+C_7\right) \LiEin{7}\\
 \end{array}
-\right.
 \end{equation}
 
+\begin{equation}
+\begin{pmatrix}
+\left(A'_6-D_6+F_6C_6\right) & F_6C_7 & B'_6\\
+F_7C_6 & \left(A'_7-D_7+F_7C_7\right) & B'_7\\
+\left(1+A_6+C_6\right) & \left(1+A_7+C_7\right) & \left(1+B_6+B_7\right)\\
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+	\LiEin{6}\\
+	\LiEin{7}\\
+	\Eout\\
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+	0\\
+	0\\
+	E_0\\
+\end{pmatrix}
+\end{equation}
 
+\end{document}
 
 The steady state concentrations are given by
 \begin{equation}
@@ -108,7 +124,6 @@ The steady state concentrations are given by
 	0\\
 	\end{pmatrix}
 \end{equation}
-\end{document}
 
 \section{One Lithium Only}
 \begin{equation}
@@ -159,11 +174,6 @@ We have the matrix such that
 	\end{pmatrix}
 \end{equation}
 
-\section{Resolution}
-As it is an intermediate
-\begin{equation}
-	\LiEout{x} = \dfrac{k_r^x}{k_f^x+k_d^x} \LiEin{x} + \dfrac{k_a^x\LiOut{x}}{k_f^x+d_d^x} \Eout
-\end{equation}
 
 \end{document}
 

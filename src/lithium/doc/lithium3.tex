@@ -83,18 +83,23 @@ so that
 	\LiEin{x}\\
 \end{pmatrix}
 = \dfrac{1}{\delta_x} 
+\underbrace{
 \begin{pmatrix}
 	\left(k_r^x+k_p^x\Hin\right) & k_r^x\\
 	k_f^x & \left(k_f^x+k_d^x\right)\\
-\end{pmatrix}
+\end{pmatrix}}_{S_x}
+\underbrace{
 \begin{pmatrix}
 	k_a^x & 0 \\
 	0     & k_q^x \\
 	\end{pmatrix}
+		}_{\kappa_x}
+\underbrace{
 	\begin{pmatrix}
 	\LiOut{x} & 0 \\
 	0     & \LiIn{x} \\
 	\end{pmatrix}
+}_{\Lambda_x}
 	\begin{pmatrix}
 	\Eout\\
 	\EHin\\
@@ -103,6 +108,32 @@ so that
 and
 \begin{equation}
 \delta_x = k_d^x k_r^x + k_p^x \Hin \left(k_f^x+k_d^x\right)
+\end{equation}
+We write
+\begin{equation}
+	\begin{pmatrix}
+	\LiEout{x}\\
+	\LiEin{x}\\
+\end{pmatrix}
+= 
+\Theta_x 
+\begin{pmatrix}
+	\Eout\\
+	\EHin\\
+\end{pmatrix}
+=\Theta_x \vec{\mathcal{E}}
+\end{equation}
+We use 
+\begin{equation}
+	\vec{\sigma} = 
+	\begin{pmatrix}
+	1\\
+	1\\
+	\end{pmatrix}
+\end{equation}
+and the matter conservation becomes
+\begin{equation}
+	E_0 = \vec{\sigma}\left(I_2+\Theta_6+\Theta_7\right) \vec{\mathcal{E}}
 \end{equation}
 
 \end{document}

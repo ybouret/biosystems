@@ -146,17 +146,9 @@ and the matter conservation becomes
 
 and using
 \begin{equation}
-	A_x = 
-	\begin{pmatrix}
-	\alpha_x & 0\\
-	0 & k_p^x \Hin \\
-	\end{pmatrix}
-\end{equation}
-and
-\begin{equation}
 	B = 
 	\begin{pmatrix}
-	\beta & 0\\
+	0 & 0\\
 	0 & k_h\\
 	\end{pmatrix}
 \end{equation}
@@ -165,31 +157,20 @@ we get
 \begin{equation}
 	\begin{array}{rcl}
 		0 & = & \sum_{x=6,7}\left( k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x}\right) - k_h \EHin\\
-		  & = & 
-		  \sum_{x=6,7}\left( \mytrn{\vec{p}} \left(A_x\Theta_x\right) \vec{\mathcal{E}}
-		  			 -\mytrn{\vec{p}}\left(\kappa_x\Lambda_x\right)\vec{\mathcal{E}}
-					 \right) - \mytrn{\vec{p}} B \vec{\mathcal{E}}\\
+		  & = &
+			\Hin \left(
+			\mytrn{\vec{p}} 
+			\left(
+			k_p^6\Theta_6 + k_p^7 \Theta_7
+			\right)
+			\vec{\mathcal{E}}
+			\right)
+			-\left(k_h + k_q^6 \LiIn{6} + k_q^7 \LiIn{7} \right) \EHin
+		  \\
 	\end{array}
 \end{equation}
 and finally
-\begin{equation}
- 0 = 	\mytrn{\vec{p}} \left( B +\sum_{x=6,7} \left(\kappa_x\Lambda_x - A_x \Theta_x \right)\right) \vec{\mathcal{E}}
-\end{equation}
 
-We use
-\begin{equation}
-	\kappa_x\Lambda_x - A_x \Theta_x  =
-	\left(I_2 - \dfrac{1}{\delta_x}A_xS_x\right)\kappa_x\Lambda_x
-\end{equation}	
-and find that
-\begin{equation}
-	\mytrn{\vec{p}} \left(I_2 - \dfrac{1}{\delta_x}A_xS_x\right) = 
-	\begin{pmatrix}
-	0 &
-	\dfrac{1}{1+h/J_x} 
-	\\
-	\end{pmatrix}, \;\; J_x = \dfrac{k_d^x k_r^x}{k_p^x\left(k_f^x + k_d^x \right)}
-\end{equation}
 \end{document}
 
 The steady state concentrations are given by

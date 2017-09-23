@@ -19,6 +19,7 @@
 \newcommand{\EHin}{\myconc{\mychem{EH}}}
 \newcommand{\Eout}{\myconc{\mychem{E}}}
 \newcommand{\Hin}{\myconc{\mychem{H}}}
+\newcommand{\mytrn}[1]{{#1}^{\mathsf{T}}}
 
 \begin{document}
 \section{Mechanism}
@@ -54,10 +55,12 @@ E_0 & = & \Eout + \EHin + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEout{7}\\
 We have the intrinsic part that dispatch $\LiEin{x}$ and $\LiEout{x}$
 
 \begin{equation}
+\underbrace{
 \begin{pmatrix}
 	\left(k_f^x+k_d^x\right) & -k_r^x\\
 	-k_f^x & \left(k_r^x+k_p^x\Hin\right)\\
 \end{pmatrix}
+}_{M_x}
 \begin{pmatrix}
 	\LiEout{x}\\
 	\LiEin{x}\\
@@ -129,12 +132,55 @@ We use
 	\begin{pmatrix}
 	1\\
 	1\\
+	\end{pmatrix}, \;\; 
+	\vec{p} = 
+	\begin{pmatrix}
+	0\\
+	1\\
 	\end{pmatrix}
 \end{equation}
 and the matter conservation becomes
 \begin{equation}
-	E_0 = \vec{\sigma}\left(I_2+\Theta_6+\Theta_7\right) \vec{\mathcal{E}}
+	E_0 = \mytrn{\vec{\sigma}}\left(I_2+\Theta_6+\Theta_7\right) \vec{\mathcal{E}}
 \end{equation}
+
+and using
+\begin{equation}
+	A_x = 
+	\begin{pmatrix}
+	\alpha_x & 0\\
+	0 & k_p^x \Hin \\
+	\end{pmatrix}
+\end{equation}
+and
+\begin{equation}
+	B = 
+	\begin{pmatrix}
+	\beta & 0\\
+	0 & k_h\\
+	\end{pmatrix}
+\end{equation}
+
+we get
+\begin{equation}
+	\begin{array}{rcl}
+		0 & = & \sum_{x=6,7}\left( k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x}\right) - k_h \EHin\\
+		  & = & 
+		  \sum_{x=6,7}\left( \mytrn{\vec{p}} \left(A_x\Theta_x\right) \vec{\mathcal{E}}
+		  			 -\mytrn{\vec{p}}\left(\kappa_x\Lambda_x\right)\vec{\mathcal{E}}
+					 \right) - \mytrn{\vec{p}} B \vec{\mathcal{E}}\\
+	\end{array}
+\end{equation}
+and finally
+\begin{equation}
+ 0 = 	\mytrn{\vec{p}} \left( B +\sum_{x=6,7} \left(\kappa_x\Lambda_x - A_x \Theta_x \right)\right) \vec{\mathcal{E}}
+\end{equation}
+
+We use
+\begin{equation}
+	\kappa_x\Lambda_x - A_x \Theta_x  =
+	\left(I_2 - \dfrac{1}{\delta_x}A_xS_x\right)\kappa_x\Lambda_x
+\end{equation}	
 
 \end{document}
 

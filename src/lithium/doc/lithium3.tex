@@ -110,7 +110,7 @@ so that
 \end{equation}
 and
 \begin{equation}
-\delta_x = k_d^x k_r^x + k_p^x \Hin \left(k_f^x+k_d^x\right)
+\delta_x = k_d^x k_r^x + k_p^x \Hin \left(k_f^x+k_d^x\right) = \Pi_{dr}^x + \Hin \left( \Pi_{fp}^x + \Pi_{dp}^x \right)
 \end{equation}
 We write
 \begin{equation}
@@ -188,6 +188,7 @@ we get
 
 We are left with
 \begin{equation}
+\left\lbrace
 \begin{array}{rcl}
 	0 & = & \left\lbrack \dfrac{1}{\delta_6}
 	\begin{pmatrix} 
@@ -212,12 +213,13 @@ We are left with
 	\left(I_2+\dfrac{1}{\delta_6}S_6\kappa_6\Lambda_6 
 	+\dfrac{1}{\delta_7}S_7\kappa_7\Lambda_7 \right) \vec{\mathcal{E}}\\
 \end{array}
+\right.
 \end{equation}
 and we got
 \begin{equation}
 	\mytrn{\vec{\sigma}} S_6 =
 	\begin{pmatrix}
-	\left(k_f^6+k_r^6\right) + k_p^6 \Hin & \left(k_f^6+k_r^6\right) + k_d^6\\
+	\left(k_f^6+k_r^6 + k_p^6 \Hin \right) & \left(k_f^6+k_r^6 + k_d^6\right)\\
 	\end{pmatrix}
 \end{equation}
 

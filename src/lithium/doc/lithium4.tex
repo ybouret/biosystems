@@ -121,20 +121,6 @@ and
 \begin{equation}
 \delta_x = k_d^x k_r^x + k_{p'}^x\left(k_f^x+k_d^x\right) 
 \end{equation}
-We write
-\begin{equation}
-	\begin{pmatrix}
-	\LiEout{x}\\
-	\LiEin{x}\\
-\end{pmatrix}
-= 
-\Theta_x 
-\begin{pmatrix}
-	\Eout\\
-	\EHin\\
-\end{pmatrix}
-=\Theta_x \vec{\mathcal{E}}
-\end{equation}
 We use 
 \begin{equation}
 	\vec{\sigma} = 
@@ -150,218 +136,69 @@ We use
 \end{equation}
 and the matter conservation becomes
 \begin{equation}
-	E_0 = \mytrn{\vec{\sigma}}\left(I_2+\Theta_6+\Theta_7\right) \vec{\mathcal{E}}
+	E_0 = \mytrn{\vec{\sigma}}\left(I_2+\dfrac{1}{\delta_6}S_6\kappa_6+\dfrac{1}{\delta_7}S_7\kappa_7\right) \vec{\mathcal{E}}
 \end{equation}
 
-and using
-\begin{equation}
-	B = 
-	\begin{pmatrix}
-	0 & 0\\
-	0 & k_h\\
-	\end{pmatrix}
-\end{equation}
-
-we get
+We also get
 \begin{equation}
 	\begin{array}{rcl}
-		0 & = & \sum_{x=6,7}\left( k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x}\right) - k_h \EHin\\
-		  & = &
-			\Hin \left(
-			\mytrn{\vec{p}} 
-			\left(
-			k_p^6\Theta_6 + k_p^7 \Theta_7
-			\right)
-			\vec{\mathcal{E}}
-			\right)
-			-\left(k_h + k_q^6 \LiIn{6} + k_q^7 \LiIn{7} \right) \EHin
-		  \\
-		  & = & \Hin \left(
-			\mytrn{\vec{p}} 
-			\left(
-			k_p^6\Theta_6 + k_p^7 \Theta_7
-			\right)
-			\vec{\mathcal{E}}
-			\right)
-			-\mytrn{\vec{p}} \left(B+\kappa_6\Lambda_6+\kappa_7\Lambda_7\right) \vec{\mathcal{E}}
-\\
- & = & 
- \mytrn{\vec{p}} \left\lbrack
-  \dfrac{1}{\delta_6} \left(k_p^6 \Hin S_6 -\delta_6I_2\right)\kappa_6\Lambda_6 
- +\dfrac{1}{\delta_7} \left(k_p^7 \Hin S_7 -\delta_7I_2\right)\kappa_7\Lambda_7 
- - B
- \right\rbrack \vec{\mathcal{E}}
- \\
+	0 & = & \displaystyle\sum_{x=6,7}\left( k_{p'}^x \LiEin{x} - k_{q'}^x \EHin \right) - k_h \EHin\\
+	\\
+	  & = & \displaystyle\sum_{x=6,7}\left(\dfrac{1}{\delta_x} \mytrn{\vec{p}} 
+	  \left(
+	  	(k_{p'}^xS_x - \delta_x I_2) \kappa_x
+	  \right) \vec{\mathcal{E}} \right) - k_h \EHin\\
+	  \\
+	  & = & \displaystyle\sum_{x=6,7}\left( \dfrac{1}{\delta_x} 
+	  \begin{pmatrix}
+	  k_{p'}^x k_f^x & -k_d^x k_r^x\\
+	  \end{pmatrix}
+	  \kappa_x\vec{\mathcal{E}} 
+	  \right)- k_h \EHin\\
+	  \\
+	  & = & \displaystyle\sum_{x=6,7} \left\lbrack \dfrac{1}{\delta_x}
+	  \begin{pmatrix}
+	  k_{p'}^x k_f^x k_{a'}^x & -k_d^x k_r^x k_{q'}^x\\
+	  \end{pmatrix} 
+	  \begin{pmatrix}
+	  \Eout\\
+	  \EHin\\
+	  \end{pmatrix}
+	  \right\rbrack - k_h \EHin
 	\end{array}
 \end{equation}
-
-We are left with
+Using
 \begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-	0 & = & \left\lbrack \dfrac{1}{\delta_6}
-	\begin{pmatrix} 
-	k_f^6 k_p^6 \Hin &
-	-k_d^6 k_r^6
-	\end{pmatrix}
-	\kappa_6\Lambda_6 
-	+ 
-	\dfrac{1}{\delta_7}
-	\begin{pmatrix} 
-	k_f^7 k_p^7 \Hin &
-	-k_d^7 k_r^7
-	\end{pmatrix}
-	\kappa_7\Lambda_7 
-	-
-	\begin{pmatrix} 
-	0 &  k_h
-	\end{pmatrix}
-	\right\rbrack \vec{\mathcal{E}}
-	\\
-	E_0 & = & \mytrn{\vec{\sigma}}
-	\left(I_2+\dfrac{1}{\delta_6}S_6\kappa_6\Lambda_6 
-	+\dfrac{1}{\delta_7}S_7\kappa_7\Lambda_7 \right) \vec{\mathcal{E}}\\
-\end{array}
-\right.
+	\alpha_x = k_{p'}^x k_f^x k_{a'}^x,\;\;\beta_x=k_d^x k_r^x k_{q'}^x
 \end{equation}
-and we got
+we get
 \begin{equation}
-	\mytrn{\vec{\sigma}} S_6 =
+	\EHin = \Eout
+	\dfrac{\dfrac{\alpha_6}{\delta_6}+\dfrac{\alpha_7}{\delta_7}}
+	{k_h+\dfrac{\beta_6}{\delta_6}+\dfrac{\beta_7}{\delta_7}}
+\end{equation}
+
+We note that
+\begin{equation}
+	\mytrn{\sigma}{S_x} =
 	\begin{pmatrix}
-	\left(k_f^6+k_r^6 + k_p^6 \Hin \right) & \left(k_f^6+k_r^6 + k_d^6\right)\\
-	\end{pmatrix}
-\end{equation}
-
-\end{document}
-
-The steady state concentrations are given by
-\begin{equation}
-\begin{pmatrix}
-	1 & 1 & 1 &1 &1 &1 \\
-	0 & 0 & 0 & k_p^6\Hin & k_p^7\Hin & -(k_h+k_q^6\LiIn{6}+k_q^7\LiIn{7}) \\
-	0 & k_f^6 & 0 & -(k_p^6\Hin+k_r^6) & 0 & k_q^6\LiIn{6} \\
-	0 & 0 & k_f^7 & 0 & -(k_p^7\Hin+k_r^7) & k_q^7\LiIn{7} \\
-	k_a^6\LiOut{6} & -(k_f^6+k_d^6) & 0 & k_r^6 & 0 & 0 \\
-	k_a^7\LiOut{7} & 0 & -(k_f^7+k_d^7) & 0 & k_r^7 & 0 \\
-\end{pmatrix}
-\end{equation}
-\begin{equation}
-\cdot
-	\begin{pmatrix}
-	\Eout\\
-	\LiEout{6}\\
-	\LiEout{7}\\
-	\LiEin{6}\\
-	\LiEin{7}\\
-	\EHin\\
+	k_r^x + k_f^x + k_{p'}^x & k_r^x + k_f^x + k_d^x\\
 	\end{pmatrix}
 	=
 	\begin{pmatrix}
-	E_0\\
-	0\\
-	0\\
-	0\\
-	0\\
-	0\\
+		\gamma_x & \eta_x\\
 	\end{pmatrix}
 \end{equation}
-
-
-
-\section{Resolution}
-As it is an intermediate
+and that
 \begin{equation}
-	\LiEout{x} = \dfrac{k_r^x}{k_f^x+k_d^x} \LiEin{x} + \dfrac{k_a^x\LiOut{x}}{k_f^x+k_d^x} \Eout
-	= A_x  \LiEin{x} + B_x \Eout
-\end{equation}
-Then
-\begin{equation}
-\EHin = \dfrac{k_p^6 \LiEin{6} + k_p^7 \LiEin{7} }{k_h+k_q^6 \LiIn{6} + k_q^7 \LiIn{7} } \Hin
-= C_6 \LiEin{6} + C_7 \LiEin{7}
-\end{equation}
-We now have three equations using $F_x=k_q^x\LiIn{x},\;B'_x=k_f^xB_x,\;A'_x=k_f^xA_x$
-\begin{equation}
-\begin{array}{rcl}
-0   & = & B'_6 \Eout + \left(A'_6-D_6+F_6C_6\right) \LiEin{6} + F_6C_7 \LiEin{7} \\
-0   & = & B'_7 \Eout + \left(A'_7-D_7+F_7C_7\right) \LiEin{7} + F_7C_6 \LiEin{6} \\
-E_0 & = & \left(1+B_6+B_7\right)\Eout + \left(1+A_6+C_6\right) \LiEin{6} + \left(1+A_7+C_7\right) \LiEin{7}\\
-\end{array}
-\end{equation}
-
-\begin{equation}
-\begin{pmatrix}
-\left(A'_6-D_6+F_6C_6\right) & F_6C_7 & B'_6\\
-F_7C_6 & \left(A'_7-D_7+F_7C_7\right) & B'_7\\
-\left(1+A_6+C_6\right) & \left(1+A_7+C_7\right) & \left(1+B_6+B_7\right)\\
-\end{pmatrix}
-\cdot
-\begin{pmatrix}
-	\LiEin{6}\\
-	\LiEin{7}\\
-	\Eout\\
-\end{pmatrix} 
-= 
-\begin{pmatrix}
-	0\\
-	0\\
-	E_0\\
-\end{pmatrix}
-\end{equation}
-
-\section{One Lithium Only}
-\begin{equation}
-\displaystyle
-\left\lbrace
-\begin{array}{rcl}
-\partial_t\LiIn{\nu}   & = & k_p^\nu \Hin \LiEin{\nu} - k_q^x \EHin \LiIn{\nu} \\
-\\
-\partial_t \EHin     & = & \left( k_p^\nu \Hin \LiEin{\nu} - k_q^\nu \EHin \LiIn{\nu}\right) - k_h \EHin \\
-\\
-\partial_t \LiEin{\nu} & = & -\left(k_p^\nu \Hin+k_r^\nu\right) \LiEin{\nu} + k_q^\nu \EHin \LiIn{\nu}
-+ k_f^\nu \LiEout{\nu} \\ % - k_r^\nu \LiEin{\nu}\\
-\\
-\partial_t \LiEout{\nu} & = & k_r^\nu \LiEin{\nu} - (k_f^\nu+k_d^\nu) \LiEout{\nu} + k_a^\nu \LiOut{\nu} \Eout \\
-\\
-E_0 & = & \Eout + \EHin + \LiEin{\nu} + \LiEout{\nu}\\
-\end{array}
-\right.
-\end{equation}
-
-
-We use the vector of unknowms
-\begin{equation}
-\vec{Y}_\nu = 
-	\begin{pmatrix}
-	\Eout\\
-	\EHin\\
-	\LiEin{\nu}\\
-	\LiEout{\nu}
+	\mytrn{\sigma}{S_x}\kappa_x = \begin{pmatrix}
+		\gamma'_x = \gamma_x k_{a'}^x & \eta'_x = \eta_x k_{q'}^x\\
 	\end{pmatrix}
 \end{equation}
-We have the matrix such that
+we get
 \begin{equation}
-	M_\nu \cdot \vec{Y}_\nu = 
-	\begin{pmatrix}
-	E_0\\
-	0\\
-	0\\
-	0
-	\end{pmatrix}
+
 \end{equation}
-
-\begin{equation}
-	M_\nu = 
-	\begin{pmatrix}
-	1 & 1 & 1 & 1\\
-	0 & -(k_h+k_q^\nu\LiIn{\nu}) & k_p^\nu \Hin  & 0\\
-	0 & k_q^\nu\LiIn{\nu} & -(k_p^\nu \Hin+k_r^\nu) & k_f^\nu\\
-	k_a^\nu\LiOut{\nu} & 0 & k_r^\nu & - (k_f^\nu+k_d^\nu)
-	\end{pmatrix}
-\end{equation}
-
-
-
-
 
 \end{document}
 

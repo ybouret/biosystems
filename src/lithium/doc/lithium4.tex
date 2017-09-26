@@ -40,7 +40,7 @@
 \begin{array}{rcl}
 \partial_t\LiIn{x}   & = & k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x} \\
 \\
-\partial_t \EHin     & = & \sum_{x=6,7}\left( k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x}\right) - k_h \EHin \\
+\partial_t \EHin     & = & \displaystyle\sum_{x=6,7}\left( k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x}\right) - k_h \EHin \\
 \\
 \partial_t \LiEin{x} & = & -\left(k_p^x \Hin + k_r^x\right) \LiEin{x} + k_q^x \EHin \LiIn{x}
 + k_f^x \LiEout{x} \\
@@ -58,7 +58,7 @@ That we rewrite as
 \begin{array}{rcl}
 \partial_t\LiIn{x}   & = & k_{p'}^x \LiEin{x} - k_{q'}^x \EHin  \\
 \\
-\partial_t \EHin     & = & \sum_{x=6,7}\left( k_{p'}^x \LiEin{x} - k_{q'}^x \EHin \right) - k_h \EHin \\
+\partial_t \EHin     & = & \displaystyle\sum_{x=6,7}\left( k_{p'}^x \LiEin{x} - k_{q'}^x \EHin \right) - k_h \EHin \\
 \\
 \partial_t \LiEin{x} & = & -\left(k_{p'}^x + k_r^x\right) \LiEin{x} + k_{q'}^x \EHin
 + k_f^x \LiEout{x} \\
@@ -214,6 +214,16 @@ we get
 \end{equation}
 \begin{equation}
 	\EHin = E_0 \dfrac{\rho}{\lambda + \mu \rho}
+\end{equation}
+then
+\begin{equation}
+\begin{array}{rcl}
+	\partial_t\LiIn{x} & = & \dfrac{1}{\delta_x}\left(\alpha_x \Eout - \beta_x \EHin \right)\\
+	\\
+	 & = & \dfrac{E_0}{\delta_x\left(\lambda + \mu \rho\right)}
+	 \left(\alpha_x - \rho \beta_x\right)
+	 \\
+\end{array}
 \end{equation}
 
 \end{document}

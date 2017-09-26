@@ -1,0 +1,279 @@
+\documentclass[aps,onecolumn,11pt]{revtex4}
+%\documentclass[11pt]{article}
+%\usepackage[cm]{fullpage}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{mathptmx}
+\usepackage{xfrac}
+\usepackage{xcolor}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+\newcommand{\LiEin}[1]{\myconc{\left\lbrace\mychem{Li}_{#1}\mychem{E}\right\rbrace_{in}}}
+\newcommand{\LiEout}[1]{\myconc{\left\lbrace\mychem{Li}_{#1}\mychem{E}\right\rbrace_{out}}}
+\newcommand{\LiIn}[1]{\myconc{\mychem{Li}_{#1}^{in}}}
+\newcommand{\LiOut}[1]{\myconc{\mychem{Li}_{#1}^{out}}}
+\newcommand{\EHin}{\myconc{\mychem{EH}}}
+\newcommand{\Eout}{\myconc{\mychem{E}}}
+\newcommand{\Hin}{\myconc{\mychem{H}}}
+\newcommand{\mytrn}[1]{{#1}^{\mathsf{T}}}
+
+\begin{document}
+\section{Mechanism}
+\begin{equation}
+	 \mychem{Li}_{x} +  \mychem{E}  
+	 \xrightleftharpoons[k_d^x]{k_a^x} 
+	 \left\lbrace\mychem{Li}_{x}\mychem{E}\right\rbrace_{out} 
+	  \xrightleftharpoons[k_r^x]{k_f^x} 
+	  \left\lbrace\mychem{Li}_{x}\mychem{E}\right\rbrace_{in}  
+	  \xrightleftharpoons[k_q^x]{\mychem{H}_i,\;k_p^x} \underbrace{\mychem{EH}_{in}}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{out}} + \mychem{Li}_{x}^{in}
+\end{equation}
+
+\section{Full System}
+\subsection{Description}
+\begin{equation}
+\displaystyle
+\left\lbrace
+\begin{array}{rcl}
+\partial_t\LiIn{x}   & = & k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x} \\
+\\
+\partial_t \EHin     & = & \displaystyle\sum_{x=6,7}\left( k_p^x \Hin \LiEin{x} - k_q^x \EHin \LiIn{x}\right) - k_h \EHin \\
+\\
+\partial_t \LiEin{x} & = & -\left(k_p^x \Hin + k_r^x\right) \LiEin{x} + k_q^x \EHin \LiIn{x}
++ k_f^x \LiEout{x} \\
+\\
+\partial_t \LiEout{x} & = & k_r^x \LiEin{x} - (k_f^x+k_d^x) \LiEout{x} + k_a^x \LiOut{x} \Eout \\
+\\
+E_0 & = & \Eout + \EHin + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEout{7}\\
+\end{array}
+\right.
+\end{equation}
+That we rewrite as
+\begin{equation}
+\displaystyle
+\left\lbrace
+\begin{array}{rcl}
+\partial_t\LiIn{x}   & = & k_{p'}^x \LiEin{x} - k_{q'}^x \EHin  \\
+\\
+\partial_t \EHin     & = & \displaystyle\sum_{x=6,7}\left( k_{p'}^x \LiEin{x} - k_{q'}^x \EHin \right) - k_h \EHin \\
+\\
+\partial_t \LiEin{x} & = & -\left(k_{p'}^x + k_r^x\right) \LiEin{x} + k_{q'}^x \EHin
++ k_f^x \LiEout{x} \\
+\\
+\partial_t \LiEout{x} & = & k_r^x \LiEin{x} - (k_f^x+k_d^x) \LiEout{x} + k_{a'}^x  \Eout \\
+\\
+E_0 & = & \Eout + \EHin + \LiEin{6} + \LiEout{6} + \LiEin{7}+\LiEout{7}\\
+\end{array}
+\right.
+\end{equation}
+
+\subsection{Forward Resolution}
+We have the intrinsic part that dispatch $\LiEin{x}$ and $\LiEout{x}$
+
+\begin{equation}
+\underbrace{
+\begin{pmatrix}
+	\left(k_f^x+k_d^x\right) & -k_r^x\\
+	-k_f^x & \left(k_r^x+k_{p'}^x\right)\\
+\end{pmatrix}
+}_{M_x}
+\begin{pmatrix}
+	\LiEout{x}\\
+	\LiEin{x}\\
+\end{pmatrix}
+=
+	\begin{pmatrix}
+	k_{a'}^x & 0 \\
+	0     & k_{q'}^x \\
+	\end{pmatrix}
+	\begin{pmatrix}
+	\Eout\\
+	\EHin\\
+	\end{pmatrix}
+\end{equation}
+so that
+\begin{equation}
+	\begin{pmatrix}
+	\LiEout{x}\\
+	\LiEin{x}\\
+\end{pmatrix}
+= \dfrac{1}{\delta_x} 
+\underbrace{
+\begin{pmatrix}
+	\left(k_r^x+k_{p'}^x\right) & k_r^x\\
+	k_f^x & \left(k_f^x+k_d^x\right)\\
+\end{pmatrix}}_{S_x}
+\underbrace{
+\begin{pmatrix}
+	k_{a'}^x & 0 \\
+	0     & k_{q'}^x \\
+	\end{pmatrix}
+		}_{\kappa_x}
+	\begin{pmatrix}
+	\Eout\\
+	\EHin\\
+	\end{pmatrix}
+\end{equation}
+and
+\begin{equation}
+\delta_x = k_d^x k_r^x + k_{p'}^x\left(k_f^x+k_d^x\right) 
+\end{equation}
+We use 
+\begin{equation}
+	\vec{\sigma} = 
+	\begin{pmatrix}
+	1\\
+	1\\
+	\end{pmatrix}, \;\; 
+	\vec{p} = 
+	\begin{pmatrix}
+	0\\
+	1\\
+	\end{pmatrix}
+\end{equation}
+and the matter conservation becomes
+\begin{equation}
+	E_0 = \mytrn{\vec{\sigma}}\left(I_2+\dfrac{1}{\delta_6}S_6\kappa_6+\dfrac{1}{\delta_7}S_7\kappa_7\right) \vec{\mathcal{E}}
+\end{equation}
+
+We also get
+\begin{equation}
+	\begin{array}{rcl}
+	0 & = & \displaystyle\sum_{x=6,7}\left( k_{p'}^x \LiEin{x} - k_{q'}^x \EHin \right) - k_h \EHin\\
+	\\
+	  & = & \displaystyle\sum_{x=6,7}\left(\dfrac{1}{\delta_x} \mytrn{\vec{p}} 
+	  \left(
+	  	(k_{p'}^xS_x - \delta_x I_2) \kappa_x
+	  \right) \vec{\mathcal{E}} \right) - k_h \EHin\\
+	  \\
+	  & = & \displaystyle\sum_{x=6,7}\left( \dfrac{1}{\delta_x} 
+	  \begin{pmatrix}
+	  k_{p'}^x k_f^x & -k_d^x k_r^x\\
+	  \end{pmatrix}
+	  \kappa_x\vec{\mathcal{E}} 
+	  \right)- k_h \EHin\\
+	  \\
+	  & = & \displaystyle\sum_{x=6,7} \left\lbrack \dfrac{1}{\delta_x}
+	  \begin{pmatrix}
+	  k_{p'}^x k_f^x k_{a'}^x & -k_d^x k_r^x k_{q'}^x\\
+	  \end{pmatrix} 
+	  \begin{pmatrix}
+	  \Eout\\
+	  \EHin\\
+	  \end{pmatrix}
+	  \right\rbrack - k_h \EHin
+	\end{array}
+\end{equation}
+Using
+\begin{equation}
+	\alpha_x = k_{p'}^x k_f^x k_{a'}^x,\;\;\beta_x=k_d^x k_r^x k_{q'}^x
+\end{equation}
+we get
+\begin{equation}
+	\EHin = \Eout
+	\dfrac{\dfrac{\alpha_6}{\delta_6}+\dfrac{\alpha_7}{\delta_7}}
+	{k_h+\dfrac{\beta_6}{\delta_6}+\dfrac{\beta_7}{\delta_7}}
+	= \rho \Eout
+\end{equation}
+
+We note that
+\begin{equation}
+	\mytrn{\sigma}{S_x} =
+	\begin{pmatrix}
+	k_r^x + k_f^x + k_{p'}^x & k_r^x + k_f^x + k_d^x\\
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		\gamma_x & \eta_x\\
+	\end{pmatrix}
+\end{equation}
+and that
+\begin{equation}
+	\mytrn{\sigma}{S_x}\kappa_x = \begin{pmatrix}
+		\gamma'_x = \gamma_x k_{a'}^x & \eta'_x = \eta_x k_{q'}^x\\
+	\end{pmatrix}
+\end{equation}
+we get
+\begin{equation}
+	E_0 = \left\lbrack
+	1 + \dfrac{\gamma'_6}{\delta_6} + \dfrac{\gamma'_7}{\delta_7}
+	\right\rbrack \Eout
+	+
+	\left\lbrack
+	1 + \dfrac{\eta'_6}{\delta_6} + \dfrac{\eta'_7}{\delta_7}
+	\right\rbrack \EHin
+	= \lambda\Eout + \mu\EHin = \left(\lambda + \mu \rho\right) \Eout
+\end{equation}
+
+\subsection{Reverse Resolution}
+\begin{equation}
+	\Eout = \dfrac{E_0}{\lambda + \mu \rho}
+\end{equation}
+\begin{equation}
+	\EHin = E_0 \dfrac{\rho}{\lambda + \mu \rho}
+\end{equation}
+then
+\begin{equation}
+\begin{array}{rcl}
+	\partial_t\LiIn{x} & = & \dfrac{1}{\delta_x}\left(\alpha_x \Eout - \beta_x \EHin \right)\\
+	\\
+	 & = & \dfrac{E_0}{\delta_x\left(\lambda + \mu \rho\right)}
+	 \left(\alpha_x - \rho \beta_x\right)
+	 \\
+\end{array}
+\end{equation}
+with
+\begin{equation}
+\begin{array}{rclcl}
+	\alpha_x & = & k_{p'}^x k_f^x k_{a'}^x & &\\
+	\beta_x  & = & k_d^x k_r^x k_{q'}^x    & &\\
+	\delta_x & = & k_d^x k_r^x + k_{p'}^x\left(k_f^x+k_d^x\right) & & \\
+	k_{p'}^x & = & k_p \Hin & & \\
+	k_{a'}^x & = & k_a \LiOut{x} & & \\
+	k_{q'}^x & = & k_a \LiIn{x}  & & \\
+	\\
+	\rho     & = & \dfrac{\dfrac{\alpha_6}{\delta_6}+\dfrac{\alpha_7}{\delta_7}}
+	{k_h+\dfrac{\beta_6}{\delta_6}+\dfrac{\beta_7}{\delta_7}} & & \\
+	\\
+	\lambda  & = & 1 + \dfrac{\gamma'_6}{\delta_6} + \dfrac{\gamma'_7}{\delta_7},& & \gamma'_x = \gamma_x k_{a'}^x  \\
+	\\
+	\mu      & = & 1 + \dfrac{\eta'_6}{\delta_6} + \dfrac{\eta'_7}{\delta_7}, & & \eta'_x = \eta_x k_{q'}^x\\
+	\gamma_x & = & k_r^x + k_f^x + k_{p'}^x  & & \\
+	\eta_x   & = & k_r^x + k_f^x + k_d^x & & \\
+\end{array}
+\end{equation}
+
+\subsection{Checking}
+\begin{equation}
+\begin{pmatrix}
+	1 & 1 & 1 & 1 & 1 & 1\\
+	0 & k_{q'}^6 & k_f^6 & -(k_{p'}^6+k_r^6) & 0 & 0\\
+	0 & k_{q'}^7 & 0 & 0 & k_f^7 & -(k_{p'}^7+k_r^7)\\
+	k_{a'}^6 & 0 & -(k_f^6+k_d^6) & k_r^6 & 0 & 0\\
+	k_{a'}^7 & 0 & 0 & 0 & -(k_f^7+k_d^7) & k_r^7\\
+	0 & k_h+k_{q'}^6+k_{q'}^7 & 0 & k_{p'}^6 & 0 & k_{p'}^7\\
+\end{pmatrix}
+\begin{pmatrix}
+\Eout\\
+\EHin\\
+\LiEout{6}\\
+\LiEin{6}\\
+\LiEout{7}\\
+\LiEin{7}\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+E_0\\
+0\\
+0\\
+0\\
+0\\
+0\\
+\end{pmatrix}
+\end{equation}
+
+\end{document}
+

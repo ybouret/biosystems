@@ -225,6 +225,26 @@ then
 	 \\
 \end{array}
 \end{equation}
+with
+\begin{equation}
+\begin{array}{rclcl}
+	\alpha_x & = & k_{p'}^x k_f^x k_{a'}^x & &\\
+	\beta_x  & = & k_d^x k_r^x k_{q'}^x    & &\\
+	\delta_x & = & k_d^x k_r^x + k_{p'}^x\left(k_f^x+k_d^x\right) & & \\
+	k_{p'}^x & = & k_p \Hin & & \\
+	k_{a'}^x & = & k_a \LiOut{x} & & \\
+	k_{q'}^x & = & k_a \LiIn{x}  & & \\
+	\\
+	\rho     & = & \dfrac{\dfrac{\alpha_6}{\delta_6}+\dfrac{\alpha_7}{\delta_7}}
+	{k_h+\dfrac{\beta_6}{\delta_6}+\dfrac{\beta_7}{\delta_7}} & & \\
+	\\
+	\lambda  & = & 1 + \dfrac{\gamma'_6}{\delta_6} + \dfrac{\gamma'_7}{\delta_7},& & \gamma'_x = \gamma_x k_{a'}^x  \\
+	\\
+	\mu      & = & 1 + \dfrac{\eta'_6}{\delta_6} + \dfrac{\eta'_7}{\delta_7}, & & \eta'_x = \eta_x k_{q'}^x\\
+	\gamma_x & = & k_r^x + k_f^x + k_{p'}^x  & & \\
+	\eta_x   & = & k_r^x + k_f^x + k_d^x & & \\
+\end{array}
+\end{equation}
 
 \end{document}
 

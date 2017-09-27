@@ -220,20 +220,20 @@ then
 \begin{array}{rcl}
 	\partial_t\LiIn{x} & = & \dfrac{1}{\delta_x}\left(\alpha_x \Eout - \beta_x \EHin \right)\\
 	\\
-	 & = & \dfrac{E_0}{\delta_x\left(\lambda + \mu \rho\right)}
-	 \left(\alpha_x - \rho \beta_x\right)
+	 & = & \dfrac{E_0}{\left(\lambda + \mu \rho\right)}
+	 \left(\dfrac{\alpha_x}{\delta_x} - \rho \dfrac{\beta_x}{\delta_x}\right)
 	 \\
 \end{array}
 \end{equation}
 with
 \begin{equation}
 \begin{array}{rclcl}
-	\alpha_x & = & k_{p'}^x k_f^x k_{a'}^x & &\\
-	\beta_x  & = & k_d^x k_r^x k_{q'}^x    & &\\
-	\delta_x & = & k_d^x k_r^x + k_{p'}^x\left(k_f^x+k_d^x\right) & & \\
+	\alpha_x & = & k_{p'}^x k_f^x k_{a'}^x &  = &  k_{p}^x k_f^x k_{a}^x \Hin\LiOut{x}\\
+	\beta_x  & = & k_d^x k_r^x k_{q'}^x    & = & k_d^x k_r^x k_{q}^x \LiIn{x}\\
+	\delta_x & = & k_d^x k_r^x + k_{p'}^x\left(k_f^x+k_d^x\right) & = & k_d^x k_r^x + k_{p}^x\left(k_f^x+k_d^x\right)\Hin\\
 	k_{p'}^x & = & k_p \Hin & & \\
 	k_{a'}^x & = & k_a \LiOut{x} & & \\
-	k_{q'}^x & = & k_a \LiIn{x}  & & \\
+	k_{q'}^x & = & k_q \LiIn{x}  & & \\
 	\\
 	\rho     & = & \dfrac{\dfrac{\alpha_6}{\delta_6}+\dfrac{\alpha_7}{\delta_7}}
 	{k_h+\dfrac{\beta_6}{\delta_6}+\dfrac{\beta_7}{\delta_7}} & & \\
@@ -245,6 +245,58 @@ with
 	\eta_x   & = & k_r^x + k_f^x + k_d^x & & \\
 \end{array}
 \end{equation}
+
+\section{Expressions}
+
+\begin{equation}
+	\dfrac{\alpha_x}{\delta_x} 
+	= \dfrac{k_{p}^x k_f^x k_{a}^x \Hin\LiOut{x}}{k_d^x k_r^x + k_{p}^x\left(k_f^x+k_d^x\right)\Hin}
+	= \dfrac{A^x}{K_A^x+\Hin} \Hin \LiOut{x}
+\end{equation}
+
+\begin{equation}
+	\dfrac{\beta_x}{\delta_x} 
+	= \dfrac{k_d^x k_r^x k_{q}^x \LiIn{x}}{k_d^x k_r^x + k_{p}^x\left(k_f^x+k_d^x\right)\Hin}
+	= \dfrac{B^x}{K_B^x+\Hin} \LiIn{x}
+\end{equation}
+
+\begin{equation}
+	\dfrac{\gamma'_x}{\delta_x}
+	=\dfrac{k_r^x + k_f^x + k_p^x \Hin }{k_d^x k_r^x + k_{p}^x\left(k_f^x+k_d^x\right)\Hin} k_a^x \LiOut{x}
+	= G_x \dfrac{1+\dfrac{\Hin}{H_G^x}}{K_G^x+\Hin} \LiOut{x}
+\end{equation}
+	
+\begin{equation}
+	\dfrac{\eta'_x}{\delta_x}
+	=\dfrac{k_r^x + k_f^x + k_d^x}{k_d^x k_r^x + k_{p}^x\left(k_f^x+k_d^x\right)\Hin} k_q^x \LiIn{x}
+	= \dfrac{J^x}{K_J^x+\Hin} \LiIn{x}
+\end{equation}
+	
+\begin{equation}
+	\lambda = 1 + \dfrac{\gamma'_6}{\delta_6} + \dfrac{\gamma'_7}{\delta_7} 
+	= 1 + \sum_{6,7}\left(G_x \dfrac{1+\dfrac{\Hin}{H_G^x}}{K_G^x+\Hin}\LiOut{x} \right) 
+\end{equation}
+	
+\begin{equation}
+	\mu = 	1 + \dfrac{\eta'_6}{\delta_6} + \dfrac{\eta'_7}{\delta_7}
+	= 1 + \sum_{6,7} \left( \dfrac{J^x}{K_J^x+\Hin} \LiIn{x} \right)
+\end{equation}
+
+\begin{equation}
+\rho = \dfrac{\dfrac{\alpha_6}{\delta_6}+\dfrac{\alpha_7}{\delta_7}}
+	{k_h+\dfrac{\beta_6}{\delta_6}+\dfrac{\beta_7}{\delta_7}}
+	= \Hin \dfrac
+	{\displaystyle\sum_{6,7} \left(\dfrac{A^x}{K_A^x+\Hin}  \LiOut{x}\right)}
+	{\displaystyle k_h+\sum_{6,7}\left(\dfrac{B^x}{K_B^x+\Hin} \LiIn{x}\right)}
+\end{equation}
+
+and
+\begin{equation}
+	\partial_t\LiIn{x} = \dfrac{E_0}{\left(\lambda + \mu \rho\right)}
+	\left(\dfrac{\alpha_x}{\delta_x} - \rho \dfrac{\beta_x}{\delta_x}\right)
+\end{equation}
+
+\end{document}
 
 \subsection{Checking}
 \begin{equation}

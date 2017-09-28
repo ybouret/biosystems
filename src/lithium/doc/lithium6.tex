@@ -251,7 +251,7 @@ with
 \begin{equation}
 	\dfrac{\alpha_x}{\delta_x} 
 	= \dfrac{k_{p}^x k_f^x k_{a}^x \Hin\LiOut{x}}{k_d^x k_r^x + k_{p}^x\left(k_f^x+k_d^x\right)\Hin}
-	= \dfrac{A^x}{K_A^x+\Hin} \Hin \LiOut{x}
+	= \dfrac{A^x\Hin}{K_A^x+\Hin}  \LiOut{x}
 \end{equation}
 
 \begin{equation}
@@ -285,16 +285,53 @@ with
 \begin{equation}
 \rho = \dfrac{\dfrac{\alpha_6}{\delta_6}+\dfrac{\alpha_7}{\delta_7}}
 	{k_h+\dfrac{\beta_6}{\delta_6}+\dfrac{\beta_7}{\delta_7}}
-	= \Hin \dfrac
-	{\displaystyle\sum_{6,7} \left(\dfrac{A^x}{K_A^x+\Hin}  \LiOut{x}\right)}
+	=  \dfrac
+	{\displaystyle\sum_{6,7} \left(\dfrac{A^x\Hin}{K_A^x+\Hin}  \LiOut{x}\right)}
 	{\displaystyle k_h+\sum_{6,7}\left(\dfrac{B^x}{K_B^x+\Hin} \LiIn{x}\right)}
+	= \dfrac{\rho_n}{\rho_d}
 \end{equation}
 
 and
 \begin{equation}
 	\partial_t\LiIn{x} = \dfrac{E_0}{\left(\lambda + \mu \rho\right)}
 	\left(\dfrac{\alpha_x}{\delta_x} - \rho \dfrac{\beta_x}{\delta_x}\right)
+	= \dfrac{E_0}
+	{\rho_d\lambda+\rho_n\mu}
+	\left(\rho_d\dfrac{\alpha_x}{\delta_x} - \rho_n \dfrac{\beta_x}{\delta_x}\right)
 \end{equation}
+
+For a given $\Hin$
+\begin{equation}
+	\begin{array}{rcl}
+	\lambda & = & 1 + G'_6 \LiOut{6} + G'_7 \LiOut{7} \\
+	\mu     & = & 1 + J'_6 \LiIn{6} + J'_7 \LiIn{7} \\
+	\\
+	\dfrac{\alpha_x}{\delta_x} & = & A'_x \LiOut{x}\\
+	\\
+	\dfrac{\beta_x}{\delta_x}  & = & B'_x \LiIn{x}\\
+	\rho_d & = & k_h + B'_6 \LiIn{6} + B'_7 \LiIn{7}\\
+	\rho_n & = & A'_6 \LiOut{6} + A'_7 \LiOut{7}\\
+	\end{array}
+\end{equation}
+
+\begin{equation}
+	\begin{array}{rcl}
+	\partial_t \LiIn{6} & = &E_0
+	\dfrac{
+	 \left(k_h + B'_6 \LiIn{6} + B'_7 \LiIn{7}\right) A'_6 \LiOut{6}
+	 -\left(A'_6 \LiOut{6} + A'_7 \LiOut{7}\right) B'_6 \LiIn{6}
+	}
+	{
+	\begin{array}{cl}
+	&\left(k_h + B'_6 \LiIn{6} + B'_7 \LiIn{7}\right) \left(1 + G'_6 \LiOut{6} + G'_7 \LiOut{7}\right)\\
+	+&\left(A'_6 \LiOut{6} + A'_7 \LiOut{7}\right)\left(1 + J'_6 \LiIn{6} + J'_7 \LiIn{7}\right)\\
+	\end{array}
+	}
+	
+	\\
+	\end{array}
+\end{equation}
+
 
 \end{document}
 

@@ -1,0 +1,57 @@
+\documentclass[aps,onecolumn,11pt]{revtex4}
+%\documentclass[11pt]{article}
+%\usepackage[cm]{fullpage}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{mathptmx}
+\usepackage{xfrac}
+\usepackage{xcolor}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+
+\newcommand{\spLi}[1]{{~^{\mychem{#1}}\mychem{Li}}}
+\newcommand{\Li}[1]{\myconc{\spLi{#1}}}
+
+\newcommand{\spEout}{\mychem{E}}
+\newcommand{\Eout}{\myconc{\spEout}}
+
+\newcommand{\spLiEin}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{in}}}
+\newcommand{\LiEin}[1]{\myconc{\spLiEin{#1}}}
+
+\newcommand{\spLiEout}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{out}}}
+\newcommand{\LiEout}[1]{\myconc{\spLiEout{#1}}}
+
+\newcommand{\spLiIn}[1]{{\spLi{#1}}_{\mathrm{in}}}
+\newcommand{\LiIn}[1]{\myconc{\spLiIn{#1}}}
+
+\newcommand{\spLiOut}[1]{{\spLi{#1}}_{\mathrm{out}}}
+\newcommand{\LiOut}[1]{\myconc{\spLiOut{#1}}}
+
+\newcommand{\spEHin}{\mychem{EH}}
+\newcommand{\EHin}{\myconc{\spEHin}}
+
+\begin{document}
+
+\section{Mechanism}
+$$
+	\delta^7Li = \left(
+		\dfrac{\left(\dfrac{Li^7}{Li^6}\right)_{sample}}
+		{\left(\dfrac{Li^7}{Li^6}\right)_{standard}}
+		 -1 
+	\right) \times 1000
+$$
+
+\begin{equation}
+	 \spLi{x} +  \spEout  
+	 \xrightleftharpoons[k_d^x]{k_a^x} 
+	 \spLiEout{x}
+	  \xrightleftharpoons[k_r^x]{k_f^x} 
+	  \spLiEin{x} 
+	  \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \spLiIn{x}
+\end{equation}
+
+\end{document}

@@ -34,7 +34,7 @@
 \newcommand{\spEHin}{\mychem{EH}}
 \newcommand{\EHin}{\myconc{\spEHin}}
 \newcommand{\spproton}{\mychem{H}}
-\newcommand{\proton}{\mathrm{h}}
+\newcommand{\proton}{\myconc{\spproton}}
 
 \begin{document}
 
@@ -49,7 +49,7 @@ $$
 
 
 \begin{equation}
-	 \spLi{x} +  \spEout  
+	 \spLiOut{x} +  \spEout  
 	 \xrightleftharpoons[k_d^x]{k_a^x} 
 	 \spLiEout{x}
 	  \xrightleftharpoons[k_r^x]{k_f^x} 
@@ -61,15 +61,16 @@ $$
 \begin{itemize}
 \item The flip stage is slower than the enzyme interaction with lithium.
 \item $\proton$ is a parameter
+\item $\LiOut{6}$ and  $\LiOut{7}$ are parameters
 \end{itemize}
 
-Accordingly, we consider that we have the two equations
+Accordingly, we consider that we have the four equations
 \begin{equation}
 %\left\lbrace
 	\begin{array}{rcll}
-	 \spLi{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiEout{x}, & J_x = \dfrac{\LiEout{x}}{\Li{x} \Eout} = \dfrac{k_a^x}{k_d^x}\\
-	% \\
-	% \spLiEin{x} & \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} & {\spEHin}+ \spLiIn{x}, &K_x = \dfrac{\EHin \LiIn{x}}{\LiEin{x}\proton} = \dfrac{k_p^x}{k_q^x} \\
+	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiEout{x}, & J_x = \dfrac{\LiEout{x}}{\LiOut{x} \Eout} = \dfrac{k_a^x}{k_d^x}\\
+	 \\
+	 \spLiEin{x} & \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} & {\spEHin}+ \spLiIn{x}, &K_x = \dfrac{\EHin \LiIn{x}}{\LiEin{x}\proton} = \dfrac{k_p^x}{k_q^x} \\
 	\end{array}
 	%\right.
 \end{equation}
@@ -81,11 +82,9 @@ We have the vector of concentrations
 	%\proton\\
 	\Eout\\
 	\EHin\\
-	\Li{6}\\
 	\LiEout{6}\\
 	\LiEin{6}\\
 	\LiIn{6}\\
-	\Li{7}\\
 	\LiEout{7}\\
 	\LiEin{7}\\
 	\LiIn{7}\\
@@ -95,31 +94,11 @@ The chemical coupling 2-vector is
 \begin{equation}
 \vec{\Gamma} = 
 \begin{pmatrix}
-J_6 \Li{6} \Eout - \LiEout{6}\\
-J_7 \Li{7} \Eout - \LiEout{7}\\
-%K_6 \LiEin{6}\proton - \EHin \LiIn{6}\\
-%K_7 \LiEin{7}\proton - \EHin \LiIn{7}\\
+J_6 \LiOut{6} \Eout - \LiEout{6}\\
+J_7 \LiOut{7} \Eout - \LiEout{7}\\
+K_6 \LiEin{6}\proton - \EHin \LiIn{6}\\
+K_7 \LiEin{7}\proton - \EHin \LiIn{7}\\
 \end{pmatrix}
-\end{equation}
-and the topology  $4\times11$ matrix is
-\begin{equation}
-\nu = 
-\left(
-\begin{array}{ccccccccccc}
-0 & -1 & 0 & -1 & 1 & 0 & 0 & 0 & 0 & 0 & 0\\
-0 & -1 & 0 & 0 & 0 & 0 & 0 & -1 & 1 & 0 & 0\\
--1 & 0 & 1 & 0 & 0 & -1 & 1 & 0 & 0 &0 &0\\
--1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & -1 & 1\\
-\end{array}
-\right)
-\end{equation}
-The Jacobian is
-\begin{equation}
-\left(
-\begin{array}{ccccccccccc}
-0&J_6\LiOut{6}&0&J_6\Eout&-1&0&0&0&0&0&0\\
-\end{array}
-\right)
 \end{equation}
 
 \end{document}

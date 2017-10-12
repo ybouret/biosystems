@@ -34,11 +34,11 @@ public:
     rho_7(0.8)
     {
         odeint.start(NVAR);
-        lambda[EH]  = 0;
+        lambda[EH]  = 1;
         lambda[Li6] = 1;
         lambda[Li7] = 1;
 
-        mu[1][1] = 1+rho_h; mu[1][2] = 1.0-rho_7; mu[1][3] = rho_7;
+        mu[1][1] = 1+rho_h;     mu[1][2] = 1.0-rho_7; mu[1][3] = rho_7;
         mu[2][1] = lambda[Li6]; mu[2][2] = lambda[Li6]; mu[2][3] = 0;
         mu[3][1] = lambda[Li7]; mu[3][2] = 0; mu[3][2] = lambda[Li7];
 
@@ -63,11 +63,14 @@ YOCTO_PROGRAM_START()
     LiSystem       LiSys;
     vector<double> Z(NVAR);
 
+    ios::wcstream fp("output.dat");
+    fp("%g %g %g %g\n", 0.0, 0.0, 0.0, 0.0);
     double dtau = 0.001;
-    for(double tau=0;tau<=1;tau+=0.001)
+    for(double tau=0;tau<=10;tau+=0.001)
     {
         double ctrl = 0;
         LiSys.odeint(LiSys.diffeq,Z,tau,tau+dtau,ctrl,NULL);
+        fp("%g %g %g %g\n", tau+dtau, Z[1], Z[2], Z[3]);
     }
 
 }

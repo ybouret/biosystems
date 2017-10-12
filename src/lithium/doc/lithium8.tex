@@ -193,19 +193,22 @@ leading to
 \begin{equation}
 	\partial_t \vec{Z} = \omega_0
 	\left\lbrack
+	\underbrace{
 	\begin{pmatrix}
 	1\\
 	\lambda_6 = \frac{E_0}{K_6'}\\
 	\lambda_7 = \frac{E_0}{K_7'}\\
-	\end{pmatrix}
+	\end{pmatrix}}_{\vec{\lambda}}
 	-
+	\underbrace{
 	\begin{pmatrix}
-	1+\frac{k_h}{\omega_0} & \rho_6 & \rho_7\\
+	1+\rho_h & \rho_6 & \rho_7\\
 	\lambda_6 & \lambda_6 & 0 \\
 	\lambda_7 & 0      & \lambda_7\\
 	\end{pmatrix}
+	}_{\mu}
 	\vec{Z}
-	\right\rbrack
+	\right\rbrack, \;\; \rho_h = \frac{k_h}{\omega_0}
 \end{equation}
 and we now rescale in time
 \begin{equation}

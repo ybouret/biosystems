@@ -142,4 +142,75 @@ at $t=0$,
 	\end{pmatrix}
 \end{equation}
 
+Firstly, we obtain
+\begin{equation}
+	\vec{Y} = 
+	\begin{pmatrix}
+	\EHin\\
+	\LiIn{6}\\
+	\LiIn{7}\\
+	\end{pmatrix}
+	,\;\;
+	\partial_t \vec{Y} = \vec{F}\left(\vec{Y}\right) 
+\end{equation}
+the we use a first order approximation
+\begin{equation}
+		\partial_t \vec{Y} \simeq \vec{F}_0 + \Omega\cdot\vec{Y}
+\end{equation}
+which admits a non trivial steady state solution
+\begin{equation}
+	\vec{Y}^\star = \begin{pmatrix}
+	0\\
+	K_6' \rho_6\\
+	K_7'\rho_7\\
+	\end{pmatrix}
+\end{equation}
+when we define
+\begin{equation}
+	\begin{array}{rcl}
+	\omega_6 & = & \frac{J_6' k_f^6}{1+J_6'+J_7'}\\
+	\omega_7 & = & \frac{J_7' k_f^7}{1+J_6'+J_7'}\\
+	\omega_0 & = & \omega_6+\omega_6\\
+	\rho_6   & = & \frac{\omega_6}{\omega_0}\\
+	\rho_7   & = & \frac{\omega_7}{\omega_0}\\
+	1        & = & \rho_6 + \rho_7\\
+	\end{array}
+\end{equation}
+So we rescale the concentration using
+\begin{equation}
+	S = 
+	\begin{pmatrix}
+	\frac{1}{E_0} & 0 & 0 \\
+	0 & \frac{1}{\LiIn{6}^\star}&0\\
+	0 & 0 & \frac{1}{\LiIn{7}^\star}\\
+	\end{pmatrix}
+\end{equation}
+and
+\begin{equation}
+	\vec{Z} = S \vec{Y},\;\;\vec{Z}^\star = \begin{pmatrix} 0\\1\\1\\ \end{pmatrix}
+\end{equation}
+leading to
+\begin{equation}
+	\partial_t \vec{Z} = \omega_0
+	\left\lbrack
+	\begin{pmatrix}
+	1\\
+	\lambda_6 = \frac{E_0}{K_6'}\\
+	\lambda_7 = \frac{E_0}{K_7'}\\
+	\end{pmatrix}
+	-
+	\begin{pmatrix}
+	1+\frac{k_h}{\omega_0} & \rho_6 & \rho_7\\
+	\lambda_6 & \lambda_6 & 0 \\
+	\lambda_7 & 0      & \lambda_7\\
+	\end{pmatrix}
+	\vec{Z}
+	\right\rbrack
+\end{equation}
+and we now rescale in time
+\begin{equation}
+\tau = \omega_0 t, \;\; \partial_\tau \vec{Z} = \vec{\lambda} - \mu \vec{Z}
+\end{equation}
+
+
 \end{document}

@@ -181,34 +181,41 @@ So we rescale the concentration using
 	S = 
 	\begin{pmatrix}
 	\frac{1}{E_0} & 0 & 0 \\
-	0 & \frac{1}{\LiIn{6}^\star}&0\\
-	0 & 0 & \frac{1}{\LiIn{7}^\star}\\
+	0 & \frac{1}{\alpha_6}&0\\
+	0 & 0 & \frac{1}{\alpha_7}\\
 	\end{pmatrix}
 \end{equation}
 and
 \begin{equation}
-	\vec{Z} = S \vec{Y},\;\;\vec{Z}^\star = \begin{pmatrix} 0\\1\\1\\ \end{pmatrix}
+	\vec{Z} = S \vec{Y}%,\;\;\vec{Z}^\star = \begin{pmatrix} 0\\1\\1\\ \end{pmatrix}
 \end{equation}
-leading to
+With
 \begin{equation}
-	\partial_t \vec{Z} = \omega_0
-	\left\lbrack
+\begin{array}{rcl}
+	\omega_6 & = & \frac{J_6'k_f^6}{1+J_6'+J7'}\\
+	\omega_7 & = & \frac{J_7'k_f^7}{1+J_6'+J7'}\\
+	\omega_0 & = & \omega_6+\omega_7\\
+\end{array}
+\end{equation}
+
+\begin{equation}
+	\frac{1}{\omega_0}\partial_t \vec{Z} = 
 	\underbrace{
 	\begin{pmatrix}
 	1\\
-	\lambda_6 = \frac{E_0}{K_6'}\\
-	\lambda_7 = \frac{E_0}{K_7'}\\
+	\frac{E_0}{\alpha_6}\rho_6\\
+	\frac{E_0}{\alpha_7}\rho_7\\
 	\end{pmatrix}}_{\vec{\lambda}}
 	-
 	\underbrace{
 	\begin{pmatrix}
-	1+\rho_h & \rho_6 & \rho_7\\
-	\lambda_6 & \lambda_6 & 0 \\
-	\lambda_7 & 0      & \lambda_7\\
+	1+\rho_h & \frac{\alpha_6}{K_6'} & \frac{\alpha_7}{K_7'}\\
+	\frac{E_0}{\alpha_6}\rho_6 & \frac{E_0}{K_6'} & 0 \\
+	\frac{E_0}{\alpha_7}\rho_7 & 0      & \frac{E_0}{K_7'}\\
 	\end{pmatrix}
 	}_{\mu}
 	\vec{Z}
-	\right\rbrack, \;\; \rho_h = \frac{k_h}{\omega_0}
+	 ,\;\; \rho_h = \frac{k_h}{\omega_0}
 \end{equation}
 and we now rescale in time
 \begin{equation}

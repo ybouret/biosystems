@@ -153,7 +153,10 @@ Firstly, we obtain
 	,\;\;
 	\partial_t \vec{Y} = \vec{F}\left(\vec{Y}\right) 
 \end{equation}
-the we use a first order approximation
+
+\section{First Order Approximation}
+\subsection{Expression}
+We use a first order approximation
 \begin{equation}
 		\partial_t \vec{Y} \simeq \vec{F}_0 + \Omega\cdot\vec{Y}
 \end{equation}
@@ -220,6 +223,24 @@ With
 and we now rescale in time
 \begin{equation}
 \tau = \omega_0 t, \;\; \partial_\tau \vec{Z} = \vec{\lambda} - \mu \vec{Z}
+\end{equation}
+
+\subsection{Choices}
+If we use $\alpha_6=\LiIn{6}^\star$ and $\alpha_7=\LiIn{7}^\star$ then we get
+\begin{equation}
+\vec{\lambda} =
+\begin{pmatrix}
+1\\
+\lambda_6\\
+\lambda_7\\
+\end{pmatrix}
+,\;\;
+\mu=
+\begin{pmatrix}
+1+\rho_h & \rho_6 & \rho_7\\
+\lambda_6 & \lambda_6 & 0 \\
+\lambda_7 & 0 & \lambda_7\\
+\end{pmatrix}
 \end{equation}
 
 

@@ -243,5 +243,19 @@ If we use $\alpha_6=\LiIn{6}^\star$ and $\alpha_7=\LiIn{7}^\star$ then we get
 \end{pmatrix}
 \end{equation}
 
+\section{"Real" Steady States}
+\begin{equation}
+	\begin{array}{rcl}
+	\partial_t  \Eout & = & \sigma_h  + \sum_x\left(\sigma_d^x - \sigma_a^x\right)\\
+	\partial_t  \LiEout{x} & = & \sigma_a^x+\sigma_r^x - \sigma_d^x-\sigma_f^x\\
+	\partial_t  \LiEin{x}  & = & \sigma_f^x + \sigma_q^x - \sigma_r^x - \sigma_p^x\\
+	\partial_t  \LiIn{x}   & = &  \sigma_p^x - \sigma_q^x\\
+	\partial_t  \EHin & = & -\sigma_h + \sum_x\left(\sigma_p^x - \sigma_q^x\right)\\
+	\end{array}
+\end{equation}
+and
+\begin{equation}
+	E_0 = \Eout + \EHin + \sum_x \left(\LiEout{x} + \LiEin{x} \right)
+\end{equation}
 
 \end{document}

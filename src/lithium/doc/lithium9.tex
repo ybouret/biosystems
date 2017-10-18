@@ -54,7 +54,7 @@ $$
 	 \spLiEout{x}
 	  \xrightleftharpoons[k_r^x]{k_f^x} 
 	  \spLiEin{x} 
-	  \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \spLiIn{x}
+	  \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightarrow[]{k_l^x} \spLiOut{x}}
 \end{equation}
 
 \section{Hypothesis}
@@ -125,9 +125,15 @@ in the matter conservation
 \end{array}
 \right.
 \end{equation}
+so that
+\begin{equation}
+	\Eout = \dfrac{E_0 - \EHin \left( 1 + \dfrac{\LiIn{6}}{K'_6} + \dfrac{\LiIn{7}}{K'_7}\right)}
+	{1+J'_6+J'_7}
+\end{equation}
 
+\section{Starting Points and Rates}
 
-at $t=0$,
+At $t=0$,
 \begin{equation}
 	\vec{X}_0 = 
 	\begin{pmatrix}
@@ -139,8 +145,44 @@ at $t=0$,
 	\LiEout{7} & = & \frac{J_7 \LiOut{7} E_0} {1+J_6 \LiOut{6} + J_7 \LiOut{7}}   \\
 	\LiEin{7}  & = & 0 \\
 	\LiIn{7}   & = & 0 \\
-	\end{pmatrix}
+	\end{pmatrix}.
 \end{equation}
+
+At any time, the rates are
+\begin{equation}
+\vec{\rho} = 
+\begin{pmatrix}
+	\sigma_h\\
+	-\sigma_h\\
+	\sigma_r^6-\sigma_f^6\\
+	\sigma_f^6-\sigma_r^6\\
+	-\sigma_l^6\\
+	\sigma_r^7-\sigma_f^7\\
+	\sigma_f^7-\sigma_r^7\\
+	-\sigma_l^7\\
+\end{pmatrix}
+\end{equation}
+and the steady state conditions become
+\begin{equation}
+	\left\lbrace
+	\begin{array}{rcl}
+		\sigma_l^x & = & \sigma_f^x - \sigma_r^6x\\
+		\sigma_h   & = & \sigma_l^6 + \sigma_l^7\\
+	\end{array}
+	\right.
+\end{equation}
+
+We get
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	k_l^x \left(\LiIn{x}-\theta_x\right) & = & k_f^x J'_x \Eout - k_r^x \EHin \dfrac{\LiIn{x}}{K'_x}\\
+	k_h \EHin & = & k_l^6 \left(\LiIn{6}-\theta_6\right) + k_l^7 \left(\LiIn{7}-\theta_7\right)\\
+	\end{array}
+\right.
+\end{equation}
+
+\end{document}
 
 Firstly, we obtain
 \begin{equation}
@@ -248,11 +290,11 @@ If we use $\alpha_6=\LiIn{6}^\star$ and $\alpha_7=\LiIn{7}^\star$ then we get
 \section{"Real" Steady States}
 \begin{equation}
 	\begin{array}{rcl}
-	\partial_t  \Eout & = & \sigma_h  + \sum_x\left(\sigma_d^x - \sigma_a^x\right)\\
+	\partial_t  \Eout      & = & \sigma_h  + \sum_x\left(\sigma_d^x - \sigma_a^x\right)\\
 	\partial_t  \LiEout{x} & = & \sigma_a^x+\sigma_r^x - \sigma_d^x-\sigma_f^x\\
 	\partial_t  \LiEin{x}  & = & \sigma_f^x + \sigma_q^x - \sigma_r^x - \sigma_p^x\\
 	\partial_t  \LiIn{x}   & = &  \sigma_p^x - \sigma_q^x - \sigma_l^x\\
-	\partial_t  \EHin & = & -\sigma_h + \sum_x\left(\sigma_p^x - \sigma_q^x\right)\\
+	\partial_t  \EHin      & = & -\sigma_h + \sum_x\left(\sigma_p^x - \sigma_q^x\right)\\
 	\end{array}
 \end{equation}
 and

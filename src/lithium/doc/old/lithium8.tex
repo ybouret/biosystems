@@ -1,0 +1,263 @@
+\documentclass[aps,onecolumn,11pt]{revtex4}
+%\documentclass[11pt]{article}
+%\usepackage[cm]{fullpage}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{mathptmx}
+\usepackage{xfrac}
+\usepackage{xcolor}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+
+\newcommand{\spLi}[1]{{~^{\mychem{#1}}\mychem{Li}}}
+\newcommand{\Li}[1]{\myconc{\spLi{#1}}}
+
+\newcommand{\spEout}{\mychem{E}}
+\newcommand{\Eout}{\myconc{\spEout}}
+
+\newcommand{\spLiEin}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{in}}}
+\newcommand{\LiEin}[1]{\myconc{\spLiEin{#1}}}
+
+\newcommand{\spLiEout}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{out}}}
+\newcommand{\LiEout}[1]{\myconc{\spLiEout{#1}}}
+
+\newcommand{\spLiIn}[1]{{\spLi{#1}}_{\mathrm{in}}}
+\newcommand{\LiIn}[1]{\myconc{\spLiIn{#1}}}
+
+\newcommand{\spLiOut}[1]{{\spLi{#1}}_{\mathrm{out}}}
+\newcommand{\LiOut}[1]{\myconc{\spLiOut{#1}}}
+
+\newcommand{\spEHin}{\mychem{EH}}
+\newcommand{\EHin}{\myconc{\spEHin}}
+\newcommand{\spproton}{\mychem{H}}
+\newcommand{\proton}{\myconc{\spproton}}
+
+\begin{document}
+
+\section{Mechanism}
+$$
+	\delta^7Li = \left(
+		\dfrac{\left(\dfrac{Li^7}{Li^6}\right)_{sample}}
+		{\left(\dfrac{Li^7}{Li^6}\right)_{standard}}
+		 -1 
+	\right) \times 1000
+$$
+
+
+\begin{equation}
+	 \spLiOut{x} +  \spEout  
+	 \xrightleftharpoons[k_d^x]{k_a^x} 
+	 \spLiEout{x}
+	  \xrightleftharpoons[k_r^x]{k_f^x} 
+	  \spLiEin{x} 
+	  \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \spLiIn{x}
+\end{equation}
+
+\section{Hypothesis}
+\begin{itemize}
+\item The flip stage is slower than the enzyme interaction with lithium.
+\item $\proton$ is a parameter
+\item $\LiOut{6}$ and  $\LiOut{7}$ are parameters
+\end{itemize}
+
+Accordingly, we consider that we have the four equations
+\begin{equation}
+%\left\lbrace
+	\begin{array}{rcll}
+	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiEout{x}, & J_x = \dfrac{\LiEout{x}}{\LiOut{x} \Eout} = \dfrac{k_a^x}{k_d^x}\\
+	 \\
+	 \spLiEin{x} & \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} & {\spEHin}+ \spLiIn{x}, &K_x = \dfrac{\EHin \LiIn{x}}{\LiEin{x}\proton} = \dfrac{k_p^x}{k_q^x} \\
+	\end{array}
+	%\right.
+\end{equation}
+
+We have the vector of concentrations
+\begin{equation}
+	\vec{X} = 
+	\begin{pmatrix}
+	\Eout\\
+	\EHin\\
+	\LiEout{6}\\
+	\LiEin{6}\\
+	\LiIn{6}\\
+	\LiEout{7}\\
+	\LiEin{7}\\
+	\LiIn{7}\\
+	\end{pmatrix}
+\end{equation}
+The chemical coupling 4-vector is
+\begin{equation}
+\vec{\Gamma} = 
+\begin{pmatrix}
+J_6 \LiOut{6} \Eout - \LiEout{6}\\
+J_7 \LiOut{7} \Eout - \LiEout{7}\\
+K_6 \LiEin{6}\proton - \EHin \LiIn{6}\\
+K_7 \LiEin{7}\proton - \EHin \LiIn{7}\\
+\end{pmatrix}
+\end{equation}
+
+We will substitute
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\LiEout{x} & = & J_x \LiOut{x} \Eout\\
+	\\
+	\LiEin{x}  & = & \dfrac{\EHin \LiIn{x}}{K_x\proton}\\
+\end{array}
+\right.
+\end{equation}
+in the matter conservation
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	E_0 & = &\displaystyle \Eout + \EHin + \sum_x \left(\LiEout{x}+\LiEin{x}\right)\\
+	\\
+	& = & \Eout \left\lbrack1+J_6 \LiOut{6} + J_7 \LiOut{7}\right\rbrack + 
+	\EHin 
+	\left\lbrack
+		1+\dfrac{1}{h}\left(\dfrac{\LiIn{6}}{K_6}+\dfrac{\LiIn{7}}{K_7}\right)
+	\right\rbrack
+	\\
+\end{array}
+\right.
+\end{equation}
+
+
+at $t=0$,
+\begin{equation}
+	\vec{X}_0 = 
+	\begin{pmatrix}
+	\Eout_0    & = & \frac{E_0}{1+J_6 \LiOut{6} + J_7 \LiOut{7}}  \\
+	\EHin_0    & = & 0 \\
+	\LiEout{6} & = & \frac{J_6 \LiOut{6} E_0} {1+J_6 \LiOut{6} + J_7 \LiOut{7}} \\
+	\LiEin{6}  & = & 0 \\
+	\LiIn{6}   & = & 0 \\
+	\LiEout{7} & = & \frac{J_7 \LiOut{7} E_0} {1+J_6 \LiOut{6} + J_7 \LiOut{7}}   \\
+	\LiEin{7}  & = & 0 \\
+	\LiIn{7}   & = & 0 \\
+	\end{pmatrix}
+\end{equation}
+
+Firstly, we obtain
+\begin{equation}
+	\vec{Y} = 
+	\begin{pmatrix}
+	\EHin\\
+	\LiIn{6}\\
+	\LiIn{7}\\
+	\end{pmatrix}
+	,\;\;
+	\partial_t \vec{Y} = \vec{F}\left(\vec{Y}\right) 
+\end{equation}
+
+\section{First Order Approximation}
+\subsection{Expression}
+We use a first order approximation
+\begin{equation}
+		\partial_t \vec{Y} \simeq \vec{F}_0 + \Omega\cdot\vec{Y}
+\end{equation}
+which admits a non trivial steady state solution
+\begin{equation}
+	\vec{Y}^\star = \begin{pmatrix}
+	0\\
+	K_6' \rho_6\\
+	K_7'\rho_7\\
+	\end{pmatrix}
+\end{equation}
+when we define
+\begin{equation}
+	\begin{array}{rcl}
+	\omega_6 & = & \frac{J_6' k_f^6}{1+J_6'+J_7'}\\
+	\omega_7 & = & \frac{J_7' k_f^7}{1+J_6'+J_7'}\\
+	\omega_0 & = & \omega_6+\omega_6\\
+	\rho_6   & = & \frac{\omega_6}{\omega_0}\\
+	\rho_7   & = & \frac{\omega_7}{\omega_0}\\
+	1        & = & \rho_6 + \rho_7\\
+	\end{array}
+\end{equation}
+So we rescale the concentration using
+\begin{equation}
+	S = 
+	\begin{pmatrix}
+	\frac{1}{E_0} & 0 & 0 \\
+	0 & \frac{1}{\alpha_6}&0\\
+	0 & 0 & \frac{1}{\alpha_7}\\
+	\end{pmatrix}
+\end{equation}
+and
+\begin{equation}
+	\vec{Z} = S \vec{Y}%,\;\;\vec{Z}^\star = \begin{pmatrix} 0\\1\\1\\ \end{pmatrix}
+\end{equation}
+With
+\begin{equation}
+\begin{array}{rcl}
+	\omega_6 & = & \frac{J_6'k_f^6}{1+J_6'+J7'}\\
+	\omega_7 & = & \frac{J_7'k_f^7}{1+J_6'+J7'}\\
+	\omega_0 & = & \omega_6+\omega_7\\
+\end{array}
+\end{equation}
+
+\begin{equation}
+	\frac{1}{\omega_0}\partial_t \vec{Z} = 
+	\underbrace{
+	\begin{pmatrix}
+	1\\
+	\frac{E_0}{\alpha_6}\rho_6\\
+	\frac{E_0}{\alpha_7}\rho_7\\
+	\end{pmatrix}}_{\vec{\lambda}}
+	-
+	\underbrace{
+	\begin{pmatrix}
+	1+\rho_h & \frac{\alpha_6}{K_6'} & \frac{\alpha_7}{K_7'}\\
+	\frac{E_0}{\alpha_6}\rho_6 & \frac{E_0}{K_6'} & 0 \\
+	\frac{E_0}{\alpha_7}\rho_7 & 0      & \frac{E_0}{K_7'}\\
+	\end{pmatrix}
+	}_{\mu}
+	\vec{Z}
+	 ,\;\; \rho_h = \frac{k_h}{\omega_0}
+\end{equation}
+and we now rescale in time
+\begin{equation}
+\tau = \omega_0 t, \;\; \partial_\tau \vec{Z} = \vec{\lambda} - \mu \vec{Z}
+\end{equation}
+
+\subsection{Choices}
+If we use $\alpha_6=\LiIn{6}^\star$ and $\alpha_7=\LiIn{7}^\star$ then we get
+\begin{equation}
+\vec{\lambda} =
+\begin{pmatrix}
+1\\
+\lambda_6\\
+\lambda_7\\
+\end{pmatrix}
+,\;\;
+\mu=
+\begin{pmatrix}
+1+\rho_h & \rho_6 & \rho_7\\
+\lambda_6 & \lambda_6 & 0 \\
+\lambda_7 & 0 & \lambda_7\\
+\end{pmatrix}
+\end{equation}
+
+\end{document}
+
+\section{"Real" Steady States}
+\begin{equation}
+	\begin{array}{rcl}
+	\partial_t  \Eout & = & \sigma_h  + \sum_x\left(\sigma_d^x - \sigma_a^x\right)\\
+	\partial_t  \LiEout{x} & = & \sigma_a^x+\sigma_r^x - \sigma_d^x-\sigma_f^x\\
+	\partial_t  \LiEin{x}  & = & \sigma_f^x + \sigma_q^x - \sigma_r^x - \sigma_p^x\\
+	\partial_t  \LiIn{x}   & = &  \sigma_p^x - \sigma_q^x - \sigma_l^x\\
+	\partial_t  \EHin & = & -\sigma_h + \sum_x\left(\sigma_p^x - \sigma_q^x\right)\\
+	\end{array}
+\end{equation}
+and
+\begin{equation}
+	E_0 = \Eout + \EHin + \sum_x \left(\LiEout{x} + \LiEin{x} \right)
+\end{equation}
+
+\end{document}

@@ -1,0 +1,245 @@
+\documentclass[aps,onecolumn,11pt]{revtex4}
+%\documentclass[11pt]{article}
+%\usepackage[cm]{fullpage}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{mathptmx}
+\usepackage{xfrac}
+\usepackage{xcolor}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+
+\newcommand{\spLi}[1]{{~^{\mychem{#1}}\mychem{Li}}}
+\newcommand{\Li}[1]{\myconc{\spLi{#1}}}
+
+\newcommand{\spEout}{\mychem{E}}
+\newcommand{\Eout}{\myconc{\spEout}}
+
+\newcommand{\spLiEin}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{in}}}
+\newcommand{\LiEin}[1]{\myconc{\spLiEin{#1}}}
+
+\newcommand{\spLiEout}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{out}}}
+\newcommand{\LiEout}[1]{\myconc{\spLiEout{#1}}}
+
+\newcommand{\spLiIn}[1]{{\spLi{#1}}_{\mathrm{in}}}
+\newcommand{\LiIn}[1]{\myconc{\spLiIn{#1}}}
+
+\newcommand{\spLiOut}[1]{{\spLi{#1}}_{\mathrm{out}}}
+\newcommand{\LiOut}[1]{\myconc{\spLiOut{#1}}}
+
+\newcommand{\spEHin}{\mychem{EH}}
+\newcommand{\EHin}{\myconc{\spEHin}}
+\newcommand{\spproton}{\mychem{H}}
+\newcommand{\proton}{\myconc{\spproton}}
+
+\newcommand{\mytrn}[1]{{#1}^{\mathsf{T}}}
+\newcommand{\mymat}[1]{{\bm{#1}}}
+\newcommand{\mydet}[1]{{\left|{#1}\right|}}
+
+\begin{document}
+
+\section{Mechanism}
+$$
+	\delta^7Li = \left(
+		\dfrac{\left(\dfrac{Li^7}{Li^6}\right)_{sample}}
+		{\left(\dfrac{Li^7}{Li^6}\right)_{standard}}
+		 -1 
+	\right) \times 1000
+$$
+
+
+\begin{equation}
+	 \spLiOut{x} +  \spEout  
+	 \xrightleftharpoons[k_d^x]{k_a^x} 
+	 \spLiEout{x}
+	  \xrightleftharpoons[k_r^x]{k_f^x} 
+	  \spLiEin{x} 
+	  \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightarrow[]{k_l^x} \spLiOut{x}}
+\end{equation}
+
+\section{Hypothesis}
+\begin{itemize}
+\item The flip stage is slower than the enzyme interaction with lithium.
+\item $\proton$ is a parameter
+\item $\LiOut{6}$ and  $\LiOut{7}$ are parameters
+\end{itemize}
+
+Accordingly, we consider that we have the four equations
+\begin{equation}
+%\left\lbrace
+	\begin{array}{rcll}
+	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiEout{x}, & J_x = \dfrac{\LiEout{x}}{\LiOut{x} \Eout} = \dfrac{k_a^x}{k_d^x}\\
+	 \\
+	 \spLiEin{x} & \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} & {\spEHin}+ \spLiIn{x}, &K_x = \dfrac{\EHin \LiIn{x}}{\LiEin{x}\proton} = \dfrac{k_p^x}{k_q^x} \\
+	\end{array}
+	%\right.
+\end{equation}
+
+We have the vector of concentrations
+\begin{equation}
+	\vec{X} = 
+	\begin{pmatrix}
+	\Eout\\
+	\EHin\\
+	\LiEout{6}\\
+	\LiEin{6}\\
+	\LiIn{6}\\
+	\LiEout{7}\\
+	\LiEin{7}\\
+	\LiIn{7}\\
+	\end{pmatrix}
+\end{equation}
+The chemical coupling 4-vector is
+\begin{equation}
+\vec{\Gamma} = 
+\begin{pmatrix}
+J_6 \LiOut{6} \Eout - \LiEout{6}\\
+J_7 \LiOut{7} \Eout - \LiEout{7}\\
+K_6 \LiEin{6}\proton - \EHin \LiIn{6}\\
+K_7 \LiEin{7}\proton - \EHin \LiIn{7}\\
+\end{pmatrix}
+\end{equation}
+
+We will substitute
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\LiEout{x} & = & J_x \LiOut{x} \Eout\\
+	\\
+	\LiEin{x}  & = & \dfrac{\EHin \LiIn{x}}{K_x\proton}\\
+\end{array}
+\right.
+\end{equation}
+in the matter conservation
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	E_0 & = &\displaystyle \Eout + \EHin + \sum_x \left(\LiEout{x}+\LiEin{x}\right)\\
+	\\
+	& = & \Eout \left\lbrack1+J_6 \LiOut{6} + J_7 \LiOut{7}\right\rbrack + 
+	\EHin 
+	\left\lbrack
+		1+\dfrac{1}{h}\left(\dfrac{\LiIn{6}}{K_6}+\dfrac{\LiIn{7}}{K_7}\right)
+	\right\rbrack
+	\\
+\end{array}
+\right.
+\end{equation}
+so that
+\begin{equation}
+	\Eout = \dfrac{E_0 - \EHin \left( 1 + \dfrac{\LiIn{6}}{K'_6} + \dfrac{\LiIn{7}}{K'_7}\right)}
+	{1+J'_6+J'_7}
+\end{equation}
+
+\section{Starting Points and Rates}
+
+At $t=0$,
+\begin{equation}
+	\vec{X}_0 = 
+	\begin{pmatrix}
+	\Eout_0    & = & \frac{E_0}{1+J_6 \LiOut{6} + J_7 \LiOut{7}}  \\
+	\EHin_0    & = & 0 \\
+	\LiEout{6} & = & \frac{J_6 \LiOut{6} E_0} {1+J_6 \LiOut{6} + J_7 \LiOut{7}} \\
+	\LiEin{6}  & = & 0 \\
+	\LiIn{6}   & = & 0 \\
+	\LiEout{7} & = & \frac{J_7 \LiOut{7} E_0} {1+J_6 \LiOut{6} + J_7 \LiOut{7}}   \\
+	\LiEin{7}  & = & 0 \\
+	\LiIn{7}   & = & 0 \\
+	\end{pmatrix}.
+\end{equation}
+
+At any time, the rates are
+\begin{equation}
+\vec{\rho} = 
+\begin{pmatrix}
+	\sigma_h\\
+	-\sigma_h\\
+	\sigma_r^6-\sigma_f^6\\
+	\sigma_f^6-\sigma_r^6\\
+	-\sigma_l^6\\
+	\sigma_r^7-\sigma_f^7\\
+	\sigma_f^7-\sigma_r^7\\
+	-\sigma_l^7\\
+\end{pmatrix}
+\end{equation}
+and the steady state conditions become
+\begin{equation}
+	\left\lbrace
+	\begin{array}{rcl}
+		\sigma_l^x & = & \sigma_f^x - \sigma_r^6x\\
+		\sigma_h   & = & \sigma_l^6 + \sigma_l^7\\
+	\end{array}
+	\right.
+\end{equation}
+
+We get
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	k_l^x \left(\LiIn{x}-\theta_x\right) & = & k_f^x J'_x \Eout - k_r^x \EHin \dfrac{\LiIn{x}}{K'_x}\\
+	k_h \EHin & = & k_l^6 \left(\LiIn{6}-\theta_6\right) + k_l^7 \left(\LiIn{7}-\theta_7\right)\\
+	\end{array}
+\right.
+\end{equation}
+
+\section{Asymptotic method}
+We note that we have two decoupled systems,
+so that with
+\begin{equation}
+	\mymat{\Phi} = \partial_{\vec{X}} \vec{\Gamma}
+\end{equation}
+
+\begin{equation}
+\mymat{W} = \mytrn{\mymat{\nu}} \mymat{\Phi} = 
+\begin{pmatrix}
+	-(1+J'_6) & -J'_6 & 0 & 0\\
+	-J'_7 & -(1+J'_7) & 0 & 0\\
+	0 & 0 & -(\LiIn{6}+K'_6+\EHin) & -\LiIn{6}\\
+	0 & 0 & -\LiIn{7} & -(\LiIn{7}+K'_7+\EHin) & \\
+\end{pmatrix}
+= \begin{pmatrix}
+\mymat{W}_U & \mymat{0}\\
+\mymat{0} & \mymat{W}_L\\
+\end{pmatrix}
+\end{equation}
+
+Using the ORTHOGONAL matrices
+\begin{equation}
+\mymat{P}_U = 
+\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+\end{pmatrix},\;\;
+\mymat{P}_L = 
+\begin{pmatrix}
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1\\
+\end{pmatrix}
+\end{equation}
+we have
+\begin{equation}
+\mymat{W}_U = \mymat{P}_U \mymat{W} \mytrn{\mymat{P}}_U, \;\;
+\mymat{W}_L = \mymat{P}_L \mymat{W} \mytrn{\mymat{P}}_L
+\end{equation}
+and
+\begin{equation}
+\mymat{W}^{-1} = 
+\begin{pmatrix}
+\dfrac{1}{\mydet{\mymat{W}_U}} \mymat{W}_U^\ast & \mymat{0} \\
+\mymat{0} & \dfrac{1}{\mydet{\mymat{W}_L}} \mymat{W}_L^\ast \\
+\end{pmatrix}
+=
+\dfrac{1}{\mydet{\mymat{W}_U}} \mytrn{\mymat{P}}_U \mymat{W}_U^\ast \mymat{P}_U
++
+\dfrac{1}{\mydet{\mymat{W}_L}} \mytrn{\mymat{P}}_L \mymat{W}_L^\ast \mymat{P}_L
+\end{equation}
+and we get
+\begin{equation}
+\partial_t \vec{X} = \left(\mymat{1} - \mytrn{\mymat{\nu}} \mymat{W}^{-1} \mymat{\Phi} \right) \vec{\rho}
+\end{equation}
+
+\end{document}

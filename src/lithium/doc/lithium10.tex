@@ -36,7 +36,7 @@
 \newcommand{\spproton}{\mychem{H}}
 \newcommand{\proton}{\myconc{\spproton}}
 
-\newcommand{\mytrn}[1]{{#1}^{\mathsf{T}}}
+\newcommand{\mytrn}[1]{{#1}^{\!\mathsf{T}}}
 \newcommand{\mymat}[1]{{\bm{#1}}}
 \newcommand{\mydet}[1]{{\left|{#1}\right|}}
 
@@ -240,6 +240,29 @@ and
 and we get
 \begin{equation}
 \partial_t \vec{X} = \left(\mymat{1} - \mytrn{\mymat{\nu}} \mymat{W}^{-1} \mymat{\Phi} \right) \vec{\rho}
+\end{equation}
+
+So we have $8$ species, $4$ equilibria an matter conservation, so that we have 3 degrees of freedom.
+Using $\EHin$, $\LiIn{6}$ and $\LiIn{7}$, we will live in $\mymat{W}_L$ space only.
+We use the projection matrix
+\begin{equation}
+	\mymat{Q} = 
+	\begin{pmatrix}
+	0 & 1 & 0 & 0 &0 & 0 & 0 & 0\\
+	0 & 0 & 0 & 0 &1 & 0 & 0 & 0\\
+	0 & 0 & 0 & 0 &1 & 0 & 0 & 1\\
+	\end{pmatrix}
+\end{equation}
+so that
+\begin{equation}
+	\vec{Y} = \mymat{Q}\vec{X}
+\end{equation}
+and
+\begin{equation}
+	\partial_t \vec{Y} = 
+	\left(
+	\mymat{Q} - \mymat{Q} \mytrn{\mymat{\nu}} \mymat{W}^{-1} \mymat{\Phi} \right)
+	 \vec{\rho}
 \end{equation}
 
 \end{document}

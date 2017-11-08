@@ -10,9 +10,20 @@
 // Board Setup
 //
 //_____________________________________________________________________________
-const int            pinServo      = 9;  //!< Servo command
-const int            pinFrame      = 12; //!< Frame capture control
-const unsigned long  baudrate      = 115200;
+const int            pinServo        = 9;  //!< Servo command
+const int            pinFrame        = 12; //!< Frame capture control
+const int            pinVoltageInput = 2;  //!< input Voltage in 2
+const unsigned long  baudrate        = 115200;
+
+//_____________________________________________________________________________
+//
+//
+// global functions and macros
+//
+//_____________________________________________________________________________
+#define TSYS()          (micros())
+#define TSYS2TIME(tmx)  ( 1.0e-6f * (float)(tmx))
+#define GetCurrentTime() TSYS2TIME( TSYS( ) )
 
 //_____________________________________________________________________________
 //
@@ -40,17 +51,22 @@ static inline void ServoRest()
     ServoSetAngle(servo_angle_init);
 }
 
+static inline void ServoSetup()
+{
+  ServoRest();
+  servo_last_time = GetCurrentTime();  
+}
 
+static inline void ServoLoop()
+{
+    const float local_time = GetCurrentTime();
+    if( local_time - servo_last_time >= servo_rate )
+    {
+      Serial.print("servo@t=");Serial.println(local_time);
+      servo_last_time = GetCurrentTime();
+    }
+}
 
-//_____________________________________________________________________________
-//
-//
-// global functions and macros
-//
-//_____________________________________________________________________________
-#define TSYS()          (micros())
-#define TSYS2TIME(tmx)  ( 1.0e-6f * (float)(tmx))
-#define GetCurrentTime() TSYS2TIME( TSYS( ) )
 
 
 //_____________________________________________________________________________
@@ -59,8 +75,10 @@ static inline void ServoRest()
 // chained list management
 //
 //_____________________________________________________________________________
-float store_last_time  = 0.0f; //!< 
-float store_rate       = 0.5f; //!< storing new position
+#define NODES             8
+static const float store_delay = 1.0f;
+static const float store_rate  = store_delay/NODES;
+static float       store_last_time   = 0.0f; //!< 
 
 struct Node 
 {
@@ -68,6 +86,7 @@ struct Node
   struct Node *prev;
   float        time;
   float        angle;
+  float        value;
 };
 
 struct List 
@@ -77,15 +96,15 @@ struct List
   unsigned      size;
 };
 
-#define NODES 8
 struct Node nodes[NODES];
 struct List history = { NULL, NULL, 0 };
 
-static void list_push_back(struct Node *node)
+static inline void list_push_back(struct Node *node, const float time)
 {
    node->prev  = node->next = 0;
-   node->time  = 0;
+   node->time  = time;
    node->angle = servo_angle_init;
+   node->value = 0;
    if(history.size<=0)
    {
       history.head = history.tail = node;
@@ -99,7 +118,7 @@ static void list_push_back(struct Node *node)
    ++history.size;
 }
 
-static void list_store(const float time, const float angle)
+static inline void list_store(const float time, const float angle, const float value)
 {
     struct Node *node = history.tail;
     
@@ -114,17 +133,44 @@ static void list_store(const float time, const float angle)
     history.head = node;
     node->time  = time;
     node->angle = angle;
+    node->value = value;
 }
 
-static void list_print()
+static inline void list_print()
 {
   Serial.print("#"); Serial.print(history.size);
   for(const struct Node *node = history.head;node!=NULL;node=node->next)
   {
-    Serial.print(" (");Serial.print(node->time);Serial.print(",");Serial.print(node->angle);Serial.print(")");
+    Serial.print(" (");
+    Serial.print(node->time);
+    Serial.print(",");Serial.print(node->angle);
+    Serial.print(",");Serial.print(node->value);
+    Serial.print(")");
   }
   Serial.println("");
 }
+
+static inline void StoreSetup()
+{
+    for(int i=0;i<NODES;++i)
+    {
+        list_push_back( &nodes[i], -(i*store_rate)  );
+        history.tail->angle = servo_angle_init + 45 * sin( 2*3.14 * history.tail->time / store_delay );
+    }
+    
+}
+
+static inline void StoreLoop()
+{
+    const float local_time = GetCurrentTime();
+    if(local_time-store_last_time>=store_rate)
+    {
+      list_store(local_time,servo.read(),analogRead(pinVoltageInput));
+      list_print();
+      store_last_time = GetCurrentTime();
+    }
+}
+
 //_____________________________________________________________________________
 //
 //
@@ -141,10 +187,10 @@ void setup()
 
     //_________________________________________________________________________
     //
-    // Serial communication setup: TODO check init values 900,2100
+    // Servo communication setup: TODO check init values 900,2100
     //_________________________________________________________________________
     servo.attach(pinServo,900,2100);
-    ServoSetAngle(servo_angle_init);
+    
 
     //_________________________________________________________________________
     //
@@ -155,21 +201,10 @@ void setup()
 
     //_________________________________________________________________________
     //
-    // prepare the list
+    // prepare the objects
     //_________________________________________________________________________
-    for(unsigned i=0;i<NODES;++i)
-    {
-        list_push_back( &nodes[i] );
-    }
-
-    //_________________________________________________________________________
-    //
-    // and rest a little...
-    //_________________________________________________________________________
-    delay(1000);
-
-    servo_last_time = GetCurrentTime();
-    store_last_time = GetCurrentTime();
+    StoreSetup();
+    ServoSetup();
 }
 
 
@@ -180,31 +215,7 @@ void setup()
 //_____________________________________________________________________________
 void loop()
 {
-    // get current time
-    const float local_curr_time = GetCurrentTime();
-
-    // check servo
-    if( (local_curr_time-servo_last_time)>=servo_rate && local_curr_time <= 10 )
-    {   
-        Serial.print("Current Time:");
-        Serial.print(local_curr_time) ;
-        Serial.println("");
-        servo_last_time = GetCurrentTime();
-    }
-
-    // check store
-    if( (local_curr_time-store_last_time)>=store_rate )
-    {
-        Serial.print("Store ");
-        Serial.print(local_curr_time);
-        Serial.print(",");
-        Serial.print(servo_last_angle);
-        Serial.println("");
-        list_store(local_curr_time,servo_last_angle);
-        store_last_time = local_curr_time;
-        list_print();
-    }
-  
-    
-
+    StoreLoop();
+    ServoLoop();
 }
+

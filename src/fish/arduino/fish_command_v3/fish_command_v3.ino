@@ -12,7 +12,7 @@
 //_____________________________________________________________________________
 const int            pinServo        = 9;  //!< Servo command
 const int            pinFrame        = 12; //!< Frame capture control
-const int            pinVoltageInput = 2;  //!< input Voltage in 2
+const int            pinValueInput   = 0;  //!< input a value 
 const unsigned long  baudrate        = 115200;
 Servo                servo;
 
@@ -34,10 +34,14 @@ Servo                servo;
 // chained list management
 //
 //_____________________________________________________________________________
-#define NODES             16
-static const float store_delay = 1.0f;
-static const float store_rate  = store_delay/NODES;
-static float       store_last_time   = 0.0f; //!< 
+#define NODES             6
+static const float store_delay = 0.5f;
+
+// (NODES-1)*store_rate > store_delay, resolution is microseconds
+static const unsigned long store_rate_extra_microseconds = 50;
+static const unsigned long store_rate_microseconds       = (unsigned long)( (1.0e6f*store_delay)/(NODES-1) + store_rate_extra_microseconds);
+static const float         store_rate        = ( (float)store_rate_microseconds)*1.0e-6f;
+static float               store_last_time   = 0.0f; 
 
 struct Node 
 {
@@ -98,11 +102,12 @@ static inline void list_store(const float time, const float angle, const float v
 static inline void list_print()
 {
   Serial.print("#"); Serial.print(history.size);
+  Serial.print(" dt="); Serial.print(store_rate);
   for(const struct Node *node = history.head;node!=NULL;node=node->next)
   {
     Serial.print(" (");
     Serial.print(node->time);
-    Serial.print(",");Serial.print(node->angle);
+    //Serial.print(",");Serial.print(node->angle);
     Serial.print(",");Serial.print(node->value);
     Serial.print(")");
   }
@@ -114,8 +119,8 @@ static inline void StoreSetup()
     for(int i=0;i<NODES;++i)
     {
         const float time  = -((i+1)*store_rate);
-        const float angle = 90.0f + 45.0f * sin( 2*3.14 * time / store_delay );
-        list_push_back( &nodes[i], time, angle  );
+        //const float angle = 90.0f + 45.0f * sin( 2*3.14 * time / store_delay );
+        list_push_back( &nodes[i], time, 90.0f  );
     }
     
 }
@@ -125,8 +130,10 @@ static inline void StoreLoop()
     const float local_time = GetCurrentTime();
     if(local_time-store_last_time>=store_rate)
     {
-      list_store(local_time,servo.read(),analogRead(pinVoltageInput));
-      list_print();
+      const int    analogValue = analogRead(pinValueInput); // 0..1023
+      const float  value       = ( (float)analogValue ) / 1023.0f;
+      list_store(local_time,servo.read(),value);
+      //list_print();
       store_last_time = GetCurrentTime();
     }
 }
@@ -138,22 +145,16 @@ static inline void StoreLoop()
 //
 //_____________________________________________________________________________
 float servo_angle_init  = 90.0f; //!< resting angle
-float servo_angle_shift =  0.0f; //!< adjust in real world
 float servo_swim_time   =  0.0f; //!< time where it starts to swim
 float servo_last_time   =  0.0f;
 float servo_last_angle  = servo_angle_init;
 
-float servo_rate       = 0.2f; //!< servo interaction rate
+float servo_rate       = 0.0f; //!< servo interaction rate
 
-
-static inline void ServoSetAngle(const float angle)
-{
-    servo.write(angle+servo_angle_shift);
-}
 
 static inline void ServoRest()
 {
-    ServoSetAngle(servo_angle_init);
+    servo.write(servo_angle_init);
 }
 
 static inline void ServoSetup()
@@ -167,9 +168,11 @@ static inline void ServoLoop()
     const float local_time = GetCurrentTime();
     if( local_time - servo_last_time >= servo_rate )
     {
-      Serial.print("servo@t=");Serial.println(local_time);
-      ServoSetAngle(history.tail->angle);
-      ServoRest();
+      
+      //ServoSetAngle(history.tail->angle);
+      const float angle = 15.0f + 160.0f * history.tail->value;
+      //Serial.print("servo@angle=");Serial.println(angle);
+      servo.write( angle  );
       servo_last_time = GetCurrentTime();
     }
 }

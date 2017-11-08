@@ -7,7 +7,7 @@
 //_____________________________________________________________________________
 //
 //
-// Board Setup
+// Board Setup, and servo with its init angle
 //
 //_____________________________________________________________________________
 static const int            pinServo        = 9;  //!< Servo command
@@ -23,6 +23,9 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 // global functions and macros
 //
 //_____________________________________________________________________________
+#define DELAY      1
+#define NODES      50
+
 #define TSYS()          (micros())
 #define TSYS2TIME(tmx)  ( 1.0e-6f * (float)(tmx))
 #define GetCurrentTime() TSYS2TIME( TSYS( ) )
@@ -32,17 +35,19 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 //_____________________________________________________________________________
 //
 //
-// chained list management
+// Storage Management
 //
 //_____________________________________________________________________________
-#define NODES             6
-static const float store_delay = 1.0f;
 
+//-----------------------------------------------------------------------------
+// we compute the store_rate so that
 // (NODES-1)*store_rate > store_delay, resolution is microseconds
+//-----------------------------------------------------------------------------
+static const float store_delay = (float)(DELAY);
 static const unsigned long store_rate_extra_microseconds = 100;
 static const unsigned long store_rate_microseconds       = (unsigned long)( (1.0e6f*store_delay)/(NODES-1) + store_rate_extra_microseconds);
-static const float         store_rate        = ( (float)store_rate_microseconds)*1.0e-6f;
-static float               store_last_time   = 0.0f; 
+static const float         store_rate                    = ( (float)store_rate_microseconds)*1.0e-6f;
+static float               store_last_time               = 0.0f; 
 
 struct Node 
 {
@@ -63,6 +68,9 @@ struct List
 struct Node nodes[NODES];
 struct List store = { NULL, NULL, 0 };
 
+//-----------------------------------------------------------------------------
+// used to initialize the list
+//-----------------------------------------------------------------------------
 static inline void store_push_back(struct Node *node, const float time, const float angle)
 {
    node->prev  = node->next = 0;
@@ -82,6 +90,9 @@ static inline void store_push_back(struct Node *node, const float time, const fl
    ++store.size;
 }
 
+//-----------------------------------------------------------------------------
+// replace the last value, and put it in front of the list
+//-----------------------------------------------------------------------------
 static inline void list_store(const float time, const float angle, const float value)
 {
     struct Node *node = store.tail;
@@ -102,6 +113,9 @@ static inline void list_store(const float time, const float angle, const float v
     node->value  = value;
 }
 
+//-----------------------------------------------------------------------------
+// used to debug only
+//-----------------------------------------------------------------------------
 static inline void list_print()
 {
   Serial.print("#");    Serial.print(store.size);
@@ -120,6 +134,9 @@ static inline void list_print()
   Serial.println("");
 }
 
+//-----------------------------------------------------------------------------
+// initialize the store
+//-----------------------------------------------------------------------------
 static inline void StoreSetup()
 {
     for(int i=0;i<NODES;++i)
@@ -130,6 +147,9 @@ static inline void StoreSetup()
     
 }
 
+//-----------------------------------------------------------------------------
+// called during the loop() function: store time, angle, value
+//-----------------------------------------------------------------------------
 static inline void StoreLoop()
 {
     const float local_time = GetCurrentTime();
@@ -138,19 +158,20 @@ static inline void StoreLoop()
       const int    analogValue = analogRead(pinValueInput); // 0..1023
       const float  value       = ( (float)analogValue ) / 1023.0f;
       list_store(local_time,servo.read(),value);
-      list_print();
+      //list_print();
       store_last_time = GetCurrentTime();
     }
 }
 
+//-----------------------------------------------------------------------------
 // compute an interpolated node:time/angle/value
+//-----------------------------------------------------------------------------
 static inline void StoreQuery(struct Node *data)
 {
   const float  t          = GetCurrentTime() - store_delay;
   const struct Node *curr = store.tail;
 
-  // the local time is saved
-  data->time = t;
+  data->time = t; //!< the local time is saved
   if(curr->time>=t)
   {
     // timing is too short, shouldn't happen: this is a failsafe
@@ -173,6 +194,7 @@ static inline void StoreQuery(struct Node *data)
       }
       else 
       {
+        // test bracketing
         const float p_time = prev->time;
         const float c_time = curr->time;
         if(p_time>=t&&t>=c_time)
@@ -202,36 +224,49 @@ static inline void StoreQuery(struct Node *data)
 // Servo/fish commamnd
 //
 //_____________________________________________________________________________
-float servo_swim_time   =  0.0f; //!< time where it starts to swim
 float servo_last_time   =  0.0f;
 float servo_last_angle  = servo_angle_init;
+float servo_rate        = 0.05f; //!< servo interaction rate
 
-float servo_rate       = 0.1f; //!< servo interaction rate
-
-
+//-----------------------------------------------------------------------------
+// shortcut...
+//-----------------------------------------------------------------------------
 static inline void ServoRest()
 {
     servo.write(servo_angle_init);
 }
 
+//-----------------------------------------------------------------------------
+// Servo and its data initialisation
+//-----------------------------------------------------------------------------
 static inline void ServoSetup()
 {
   ServoRest();
   servo_last_time = GetCurrentTime();  
 }
 
+//-----------------------------------------------------------------------------
+// Servo loop function, compute the new angle
+//-----------------------------------------------------------------------------
 static inline void ServoLoop()
 {
     const float local_time = GetCurrentTime();
+    const float curr_angle = servo.read();
     if( local_time - servo_last_time >= servo_rate )
     {
+      Serial.print("angle: ");Serial.print(curr_angle); Serial.print("->"); Serial.println(servo_last_angle);
+      // we use the memory store to extract data with delay...
       struct Node data;
       StoreQuery(&data);
-      Serial.print("data.value=");Serial.println(data.value);
-      const float angle = 15.0f + 160.0f * data.value;
+
+      // we have data.value, data.angle, and data.time if necessary
+      //Serial.print("data.value=");Serial.println(data.value);
+      const float angle = 10.0f + 170.0f * data.value;
       servo.write( angle  );
-      servo_last_time = GetCurrentTime();
+      servo_last_time  = GetCurrentTime();
+      servo_last_angle = angle;
     }
+   
 }
 
 

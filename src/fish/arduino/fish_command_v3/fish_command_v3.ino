@@ -26,7 +26,7 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 //_____________________________________________________________________________
 
 //-----------------------------------------------------------------------------
-// DELAY: the delay time..
+// DELAY: the delay time in seconds
 // NODES: the number of nodes to reach the delay => sampling precision
 //        is about DELAY/NODES
 //-----------------------------------------------------------------------------
@@ -34,7 +34,7 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 #define NODES      50
 
 //-----------------------------------------------------------------------------
-// timing macros
+// timing macros, GetCurrentTime is in seconds
 //-----------------------------------------------------------------------------
 #define TSYS()          (micros())
 #define TSYS2TIME(tmx)  ( 1.0e-6f * (float)(tmx))
@@ -162,6 +162,14 @@ static inline void StoreSetup()
 
 }
 
+static inline
+float ReadForcing()
+{
+    const int    analogValue = analogRead(pinValueInput);        //!< in 0:1023
+    const float  value       = ( (float)analogValue ) / 1023.0f; //!< in 0:1.0f
+    return value;
+}
+
 //-----------------------------------------------------------------------------
 // called during the loop() function: store time, angle, value
 //-----------------------------------------------------------------------------
@@ -170,9 +178,7 @@ static inline void StoreLoop()
   const float local_time = GetCurrentTime();
   if (local_time - store_last_time >= store_rate)
   {
-    const int    analogValue = analogRead(pinValueInput);        //!< in 0:1023
-    const float  value       = ( (float)analogValue ) / 1023.0f; //!< in 0:1.0f
-    list_store(local_time, servo.read(), value);
+    list_store(local_time, servo.read(), ReadForcing());
     //list_print();
     store_last_time = GetCurrentTime();
   }
@@ -236,12 +242,12 @@ static inline void StoreQuery(struct Node *data)
 //-----------------------------------------------------------------------------
 // example of function
 //-----------------------------------------------------------------------------
-static const float alpha = 50;
+static const float alpha = 50.0f;
 static inline float ThetaDot()
 {
   struct Node data;
   StoreQuery(&data);
-  return -alpha * (data.value - 0.5);
+  return -alpha * (data.value - 0.5f);
 }
 
 
@@ -293,8 +299,12 @@ static inline void ServoLoop()
   if ( local_time - servo_last_time >= servo_rate )
   {
     // do something with the servo
-    Serial.println(theta);
+    Serial.print("theta=");Serial.print(theta);
+    Serial.print(", forcing=");Serial.print(ReadForcing());
+    Serial.println("");
+    
     servo.write( theta  );
+    
 
     // save info
     servo_last_time  = GetCurrentTime();
@@ -345,7 +355,7 @@ void setup()
 
 //_____________________________________________________________________________
 //
-//
+// Main loop
 //
 //_____________________________________________________________________________
 void loop()

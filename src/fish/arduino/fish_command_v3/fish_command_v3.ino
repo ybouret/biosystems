@@ -23,7 +23,7 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 // global functions and macros
 //
 //_____________________________________________________________________________
-#define DELAY      1
+#define DELAY      2.0
 #define NODES      50
 
 #define TSYS()          (micros())
@@ -43,7 +43,7 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 // we compute the store_rate so that
 // (NODES-1)*store_rate > store_delay, resolution is microseconds
 //-----------------------------------------------------------------------------
-static const float store_delay = (float)(DELAY);
+static const float         store_delay                   = (float)(DELAY);
 static const unsigned long store_rate_extra_microseconds = 100;
 static const unsigned long store_rate_microseconds       = (unsigned long)( (1.0e6f*store_delay)/(NODES-1) + store_rate_extra_microseconds);
 static const float         store_rate                    = ( (float)store_rate_microseconds)*1.0e-6f;
@@ -155,8 +155,8 @@ static inline void StoreLoop()
     const float local_time = GetCurrentTime();
     if(local_time-store_last_time>=store_rate)
     {
-      const int    analogValue = analogRead(pinValueInput); // 0..1023
-      const float  value       = ( (float)analogValue ) / 1023.0f;
+      const int    analogValue = analogRead(pinValueInput);        //!< in 0..1023
+      const float  value       = ( (float)analogValue ) / 1023.0f; //!< in 0..1.0f
       list_store(local_time,servo.read(),value);
       //list_print();
       store_last_time = GetCurrentTime();
@@ -218,15 +218,24 @@ static inline void StoreQuery(struct Node *data)
   }
 }
 
+static const float alpha = 50;
+static inline float ThetaDot()
+{
+  struct Node data;
+  StoreQuery(&data);
+  return -alpha*(data.value-0.5);
+}
+
+
 //_____________________________________________________________________________
 //
 //
 // Servo/fish commamnd
 //
 //_____________________________________________________________________________
-float servo_last_time   =  0.0f;
+float servo_last_time   = 0.0f;
 float servo_last_angle  = servo_angle_init;
-float servo_rate        = 0.05f; //!< servo interaction rate
+float servo_rate        = 0.1f; //!< servo interaction rate
 
 //-----------------------------------------------------------------------------
 // shortcut...
@@ -248,23 +257,33 @@ static inline void ServoSetup()
 //-----------------------------------------------------------------------------
 // Servo loop function, compute the new angle
 //-----------------------------------------------------------------------------
+static float old_t = 0.0;
+static float theta = servo_angle_init;
 static inline void ServoLoop()
 {
     const float local_time = GetCurrentTime();
-    const float curr_angle = servo.read();
+
+    {
+      const float dt = local_time - old_t;
+      old_t  = local_time;
+      theta += ThetaDot() * dt;
+      if(theta>=180.0f) theta=180.0f;
+      if(theta<=0.0f)   theta=0.0f;
+    }
+    
     if( local_time - servo_last_time >= servo_rate )
     {
-      Serial.print("angle: ");Serial.print(curr_angle); Serial.print("->"); Serial.println(servo_last_angle);
+      //Serial.print("angle: ");Serial.print(curr_angle); Serial.print("->"); Serial.println(servo_last_angle);
       // we use the memory store to extract data with delay...
-      struct Node data;
-      StoreQuery(&data);
+      //struct Node data;
+      //StoreQuery(&data);
 
       // we have data.value, data.angle, and data.time if necessary
       //Serial.print("data.value=");Serial.println(data.value);
-      const float angle = 10.0f + 170.0f * data.value;
-      servo.write( angle  );
+      servo.write( theta  );
       servo_last_time  = GetCurrentTime();
-      servo_last_angle = angle;
+      servo_last_angle = theta;
+      Serial.println(theta);
     }
    
 }
@@ -289,8 +308,8 @@ void setup()
     //
     // Servo communication setup: TODO check init values 900,2100
     //_________________________________________________________________________
-    servo.attach(pinServo,900,2100);
-    
+    //servo.attach(pinServo,900,2100);
+    servo.attach(pinServo,600,2250);
 
     //_________________________________________________________________________
     //
@@ -305,6 +324,7 @@ void setup()
     //_________________________________________________________________________
     StoreSetup();
     ServoSetup();
+    old_t = GetCurrentTime();
 }
 
 
@@ -315,7 +335,14 @@ void setup()
 //_____________________________________________________________________________
 void loop()
 {
-    StoreLoop();
-    ServoLoop();
+      StoreLoop();
+      ServoLoop();
+
+    /*
+      servo.write(0);
+      delay(500);
+      servo.write(180);
+      delay(500);
+   */
 }
 

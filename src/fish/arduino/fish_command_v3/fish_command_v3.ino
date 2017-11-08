@@ -14,6 +14,7 @@ const int            pinServo        = 9;  //!< Servo command
 const int            pinFrame        = 12; //!< Frame capture control
 const int            pinVoltageInput = 2;  //!< input Voltage in 2
 const unsigned long  baudrate        = 115200;
+Servo                servo;
 
 //_____________________________________________________________________________
 //
@@ -25,48 +26,6 @@ const unsigned long  baudrate        = 115200;
 #define TSYS2TIME(tmx)  ( 1.0e-6f * (float)(tmx))
 #define GetCurrentTime() TSYS2TIME( TSYS( ) )
 
-//_____________________________________________________________________________
-//
-//
-// Servo/fish commamnd
-//
-//_____________________________________________________________________________
-Servo servo;
-float servo_angle_init  = 90.0f; //!< resting angle
-float servo_angle_shift =  0.0f; //!< adjust in real world
-float servo_swim_time   =  0.0f; //!< time where it starts to swim
-float servo_last_time   =  0.0f;
-float servo_last_angle  = servo_angle_init;
-
-float servo_rate       = 0.2f; //!< servo interaction rate
-
-
-static inline void ServoSetAngle(const float angle)
-{
-    servo.write(angle+servo_angle_shift);
-}
-
-static inline void ServoRest()
-{
-    ServoSetAngle(servo_angle_init);
-}
-
-static inline void ServoSetup()
-{
-  ServoRest();
-  servo_last_time = GetCurrentTime();  
-}
-
-static inline void ServoLoop()
-{
-    const float local_time = GetCurrentTime();
-    if( local_time - servo_last_time >= servo_rate )
-    {
-      Serial.print("servo@t=");Serial.println(local_time);
-      servo_last_time = GetCurrentTime();
-    }
-}
-
 
 
 //_____________________________________________________________________________
@@ -75,7 +34,7 @@ static inline void ServoLoop()
 // chained list management
 //
 //_____________________________________________________________________________
-#define NODES             8
+#define NODES             16
 static const float store_delay = 1.0f;
 static const float store_rate  = store_delay/NODES;
 static float       store_last_time   = 0.0f; //!< 
@@ -99,11 +58,11 @@ struct List
 struct Node nodes[NODES];
 struct List history = { NULL, NULL, 0 };
 
-static inline void list_push_back(struct Node *node, const float time)
+static inline void list_push_back(struct Node *node, const float time, const float angle)
 {
    node->prev  = node->next = 0;
    node->time  = time;
-   node->angle = servo_angle_init;
+   node->angle = angle;
    node->value = 0;
    if(history.size<=0)
    {
@@ -154,8 +113,9 @@ static inline void StoreSetup()
 {
     for(int i=0;i<NODES;++i)
     {
-        list_push_back( &nodes[i], -(i*store_rate)  );
-        history.tail->angle = servo_angle_init + 45 * sin( 2*3.14 * history.tail->time / store_delay );
+        const float time  = -((i+1)*store_rate);
+        const float angle = 90.0f + 45.0f * sin( 2*3.14 * time / store_delay );
+        list_push_back( &nodes[i], time, angle  );
     }
     
 }
@@ -170,6 +130,51 @@ static inline void StoreLoop()
       store_last_time = GetCurrentTime();
     }
 }
+
+//_____________________________________________________________________________
+//
+//
+// Servo/fish commamnd
+//
+//_____________________________________________________________________________
+float servo_angle_init  = 90.0f; //!< resting angle
+float servo_angle_shift =  0.0f; //!< adjust in real world
+float servo_swim_time   =  0.0f; //!< time where it starts to swim
+float servo_last_time   =  0.0f;
+float servo_last_angle  = servo_angle_init;
+
+float servo_rate       = 0.2f; //!< servo interaction rate
+
+
+static inline void ServoSetAngle(const float angle)
+{
+    servo.write(angle+servo_angle_shift);
+}
+
+static inline void ServoRest()
+{
+    ServoSetAngle(servo_angle_init);
+}
+
+static inline void ServoSetup()
+{
+  ServoRest();
+  servo_last_time = GetCurrentTime();  
+}
+
+static inline void ServoLoop()
+{
+    const float local_time = GetCurrentTime();
+    if( local_time - servo_last_time >= servo_rate )
+    {
+      Serial.print("servo@t=");Serial.println(local_time);
+      ServoSetAngle(history.tail->angle);
+      ServoRest();
+      servo_last_time = GetCurrentTime();
+    }
+}
+
+
 
 //_____________________________________________________________________________
 //

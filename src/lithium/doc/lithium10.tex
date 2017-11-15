@@ -266,7 +266,12 @@ and
 \begin{equation}
 	\partial_t \vec{Y} = 
 	\left(
-	\mymat{Q} - \mymat{Q} \mytrn{\mymat{\nu}} \mymat{W}^{-1} \mymat{\Phi} \right)
+	\mymat{Q} - \mymat{Q} \mytrn{\mymat{\nu}} \mymat{W}^{-1} \mymat{\Phi} \right) \vec{\rho}
+	=
+	\dfrac{1}{\mydet{\mymat{W}_L}}
+	\left(
+		\mydet{\mymat{W}_L}\mymat{Q} - \mymat{Q} \mytrn{\mymat{\nu}} \mytrn{\mymat{P}}_L \mymat{W}_L^\ast \mymat{P}_L \mymat{\Phi} 
+	\right)
 	 \vec{\rho}
 \end{equation}
 

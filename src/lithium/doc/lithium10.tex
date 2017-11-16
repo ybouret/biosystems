@@ -275,4 +275,15 @@ and
 	 \vec{\rho}
 \end{equation}
 
+\section{Channel Simulation}
+We take a channel with an attraction zone of size $R$ and length $H$. We take a particle with a 3D diffusion coefficient $D$
+and we want to make a simulation with a time step $\delta t$, so that the length travelled by the particle is
+\begin{equation}
+	\delta l = \sqrt{D\delta t}
+\end{equation}
+We used adimensional units so that 
+\begin{equation}
+	\delta \tau = \dfrac{D\delta t}{R^2},\;\;\delta \lambda = \dfrac{\delta l}{R} = \sqrt{\delta \tau}
+\end{equation}
+
 \end{document}

@@ -9,9 +9,13 @@ TARGET_LINK_YOCTO(diff_v1 mk)
 ADD_EXECUTABLE(eval_diff eval_diff.cpp)
 TARGET_LINK_YOCTO(eval_diff mk)
 
-ENDIF()
-
 ADD_EXECUTABLE(sim8 sim8.cpp)
 TARGET_LINK_YOCTO(sim8 mk)
 
-INSTALL( TARGETS sim8  RUNTIME DESTINATION bin )
+ENDIF()
+
+ADD_EXECUTABLE(particles particles.cpp)
+TARGET_LINK_YOCTO(particles mk)
+
+
+INSTALL( TARGETS particles RUNTIME DESTINATION bin )

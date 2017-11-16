@@ -7,14 +7,16 @@
 #include "yocto/sequence/vector.hpp"
 #include "yocto/parallel/basic.hpp"
 #include "yocto/random/default.hpp"
+#include "yocto/code/rand32.hpp"
 #include "yocto/ios/ocstream.hpp"
+#include "yocto/code/utils.hpp"
 
-using namespace yocto;
+using namespace         yocto;
 typedef point3d<double> Vertex;
+typedef point2d<double> V2D;
+typedef Random::Default RandomGenerator;
 
-
-
-static Vertex Box(1,1,1);// initial: [-Box.x/2,Box.x/2]x[-Box.y/2,Box.y/2]x[-Box.z,0]
+static Vertex Box(10,10,4);// initial: [-Box.x/2,Box.x/2]x[-Box.y/2,Box.y/2]x[-Box.z,0]
 
 static inline double __ANINT( double x ) throw() { return floor(x+0.5); }
 
@@ -24,7 +26,8 @@ class Particle : public object
 public:
     enum Status
     {
-        Reservoir
+        Reservoir,
+        Channel
     };
     Particle *next;
     Particle *prev;
@@ -64,6 +67,51 @@ public:
         }
     }
 
+    bool checkReservoirToChannel(const Vertex &r_old,
+                                 const Vertex &delta)  throw()
+    {
+        assert(r_old.z<=0);
+        if(r.z>0)
+        {
+            // find intersection
+            const double alpha = clamp<double>(0,-r_old.z/delta.z,1);
+            const Vertex I(r_old.x+alpha*delta.x,r_old.y+alpha*delta.y,0);
+            if(I.x*I.x+I.y*I.y<=1.0)
+            {
+                r      = I;
+                status = Channel;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    inline int move(const double h, Random::Uniform &ran) throw()
+    {
+
+        switch(status)
+        {
+            case Reservoir: {
+                const Vertex delta = h* ran.getUnit3D<Vertex>();
+                const Vertex r_old = r;
+                r += delta;
+                checkReservoirToChannel(r_old,delta);
+                setInReservoir();
+            } break;
+
+            case Channel:
+                break;
+        }
+        return 0;
+    }
+
 private:
     YOCTO_DISABLE_COPY_AND_ASSIGN(Particle);
 };
@@ -75,11 +123,12 @@ class Worker : public counted_object
 public:
     typedef arc_ptr<Worker> Pointer;
 
-    Particles particles;
-    Particles inactive;
-    unit_t    changed; //!< last
+    Particles       particles;
+    Particles       inactive;
+    unit_t          changed; //!< last
+    RandomGenerator ran;
 
-    inline Worker() throw() : particles(), inactive(), changed(0)
+    inline Worker() throw() : particles(), inactive(), changed(0), ran( Random::SimpleBits() )
     {
     }
 
@@ -91,7 +140,7 @@ public:
     {
         for(Particle *p = particles.head; p; p=p->next )
         {
-
+            p->move(0.2, ran);
         }
     }
 
@@ -128,7 +177,7 @@ public:
     Particles       particles;  //!< original particles
     Particles       inactive;   //!< if any
     Workers         workers;    //!< workers, one per thread
-    Random::Default ran;
+    RandomGenerator ran;
     inline explicit Simulation(const size_t numParticles,const size_t numThreads) :
     particles(),
     inactive(),
@@ -232,9 +281,10 @@ YOCTO_PROGRAM_START()
         ios::wcstream fp("output.xyz");
         sim.saveXYZ(fp);
     }
-    for(size_t iter=0;iter<=10;++iter)
+    for(size_t iter=1;iter<=100000;++iter)
     {
         simd.run(k);
+        if(iter%1000==0)
         {
             ios::acstream fp("output.xyz");
             sim.saveXYZ(fp);

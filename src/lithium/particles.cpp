@@ -93,8 +93,11 @@ public:
         }
     }
 
-    inline int move(const double h, Random::Uniform &ran) throw()
+    inline int move(const double     h,
+                    Random::Uniform &ran,
+                    unit_t          &count) throw()
     {
+
 
         switch(status)
         {
@@ -102,7 +105,11 @@ public:
                 const Vertex delta = h* ran.getUnit3D<Vertex>();
                 const Vertex r_old = r;
                 r += delta;
-                checkReservoirToChannel(r_old,delta);
+                if( checkReservoirToChannel(r_old,delta) )
+                {
+                    ++count;
+                    return 1;
+                }
                 setInReservoir();
             } break;
 
@@ -125,10 +132,10 @@ public:
 
     Particles       particles;
     Particles       inactive;
-    unit_t          changed; //!< last
+    unit_t          count; //!< last
     RandomGenerator ran;
 
-    inline Worker() throw() : particles(), inactive(), changed(0), ran( Random::SimpleBits() )
+    inline Worker() throw() : particles(), inactive(), count(0), ran( Random::SimpleBits() )
     {
     }
 
@@ -138,9 +145,10 @@ public:
 
     inline void step() throw()
     {
+        count = 0;
         for(Particle *p = particles.head; p; p=p->next )
         {
-            p->move(0.2, ran);
+            p->move(0.2, ran,count);
         }
     }
 
@@ -200,7 +208,7 @@ public:
         {
             particles.merge_back(workers[i]->particles);
             particles.merge_back(workers[i]->inactive );
-            workers[i]->changed = 0;
+            workers[i]->count = 0; //TODO: no necessary?
         }
         particles.merge_back(inactive);
         const size_t np = particles.size;
@@ -242,6 +250,16 @@ public:
         workers[ctx.indx]->step();
     }
 
+    inline unit_t collect() const throw()
+    {
+        unit_t count = 0;
+        for(size_t i=workers.size();i>0;--i)
+        {
+            count += workers[i]->count;
+        }
+        return count;
+    }
+
     inline void saveXYZ( ios::ostream &fp ) const
     {
         unsigned np = 0;
@@ -271,9 +289,9 @@ private:
 
 YOCTO_PROGRAM_START()
 {
-    threading::SIMD simd(true);
-
-    Simulation        sim( 1000, simd.size );
+    threading::SIMD  crew(true);
+    const size_t     NP = 10000;
+    Simulation        sim( NP, crew.size );
     threading::kernel k( &sim, & Simulation::step );
 
     sim.setup();
@@ -281,15 +299,31 @@ YOCTO_PROGRAM_START()
         ios::wcstream fp("output.xyz");
         sim.saveXYZ(fp);
     }
+
+    unit_t count = 0;
+    {
+        ios::wcstream fp("count.dat");
+        fp("0 0\n");
+    }
+
     for(size_t iter=1;iter<=100000;++iter)
     {
-        simd.run(k);
+        crew.run(k);
+        const unit_t local_count = sim.collect();
+        if(local_count!=0)
+        {
+            count += local_count;
+            ios::acstream fp("count.dat");
+            fp("%u %g\n", unsigned(iter), double(count)/NP);
+        }
         if(iter%1000==0)
         {
             ios::acstream fp("output.xyz");
             sim.saveXYZ(fp);
         }
     }
+
+
 
 }
 YOCTO_PROGRAM_END()

@@ -10,6 +10,8 @@
 #include "yocto/comparator.hpp"
 #include "yocto/parallel/basic.hpp"
 #include "yocto/ios/ocstream.hpp"
+#include "yocto/math/round.hpp"
+#include "yocto/code/utils.hpp"
 
 using namespace yocto;
 
@@ -18,7 +20,7 @@ typedef point3d<double> Vertex;
 typedef Random::Default RandomGenerator;
 
 // global parameters
-Vertex Box(10,10,10);
+Vertex Box(5,5,5);
 
 
 
@@ -253,25 +255,41 @@ private:
 YOCTO_PROGRAM_START()
 {
     threading::SIMD   engine(true);
-    Simulation        sim(1000,engine.size,0.1);
+    Simulation        sim(10000,engine.size,0.1);
     threading::kernel kernelRun( &sim, &Simulation::run);
 
 
+    double       tau      = 0;
+    const double dtau     = sim.delta_tau;
+    double       tauMax   = 20.0;
+    double       dtauSave = 0.5;
+
+    if(dtauSave<=dtau) dtauSave = dtau;
+    size_t every = floor(dtauSave/dtau);
+    if(every<1) every=1;
+    dtauSave = dtau * every;
+
+    size_t iter = ceil(tauMax/dtau);
+    if(iter<every) iter=every;
+    while( 0!=(iter%every) ) ++iter;
+
+
+
+
+
     sim.setup();
-    double       tau  = 0;
-    const double dtau = sim.delta_tau;
     {
+
         ios::wcstream fp("output.xyz");
         sim.saveXYZ(fp);
     }
 
-    const size_t numIter = ceil(20.0/dtau);
-    std::cerr << "numIter=" << numIter << std::endl;
-    for(size_t i=1;i<=numIter;++i)
+
+    for(size_t i=1;i<=iter;++i)
     {
         tau += dtau;
         engine.run(kernelRun);
-        if( (i%10) == 0)
+        if( (i%every) == 0)
         {
             ios::acstream fp("output.xyz");
             sim.saveXYZ(fp);

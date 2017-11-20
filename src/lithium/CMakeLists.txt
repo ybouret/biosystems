@@ -14,8 +14,8 @@ TARGET_LINK_YOCTO(sim8 mk)
 
 ENDIF()
 
-ADD_EXECUTABLE(particles particles.cpp)
-TARGET_LINK_YOCTO(particles mk)
+ADD_EXECUTABLE(particles2 particles2.cpp)
+TARGET_LINK_YOCTO(particles2 mk)
 
 
-INSTALL( TARGETS particles RUNTIME DESTINATION bin )
+INSTALL( TARGETS particles2 RUNTIME DESTINATION bin )

@@ -12,6 +12,7 @@
 #include "yocto/ios/ocstream.hpp"
 #include "yocto/math/round.hpp"
 #include "yocto/code/utils.hpp"
+#include "yocto/eta.hpp"
 
 using namespace yocto;
 
@@ -20,7 +21,7 @@ typedef point3d<double> Vertex;
 typedef Random::Default RandomGenerator;
 
 // global parameters
-Vertex Box(5,5,5);
+Vertex Box(2,2,2);
 
 
 
@@ -138,13 +139,25 @@ public:
     }
 
     void detectImpact(const double     delta_lam,
-                        Random::Uniform &ran) throw()
+                      Random::Uniform &ran) throw()
     {
         count = 0;
-        for(Particle *p = running.head; p; p=p->next)
+        Particles tmp;
+        while(running.size>0)
         {
-            count += p->moveAndDetectImpact(delta_lam,ran);
+            Particle *p = running.pop_back();
+            const int ans = p->moveAndDetectImpact(delta_lam,ran);
+            if(ans!=0)
+            {
+                count += ans;
+                waiting.push_back(p);
+            }
+            else
+            {
+                tmp.push_front(p);
+            }
         }
+        tmp.swap_with(running);
     }
 
 private:
@@ -242,62 +255,92 @@ public:
     }
 
     // parallel kernel
-    void run( threading::context &ctx ) throw()
+    inline void run( threading::context &ctx ) throw()
     {
         workers[ctx.indx]->detectImpact(delta_lam,ran);
     }
 
+    inline unit_t getCount() const throw()
+    {
+        unit_t count = 0;
+        for(size_t i=workers.size();i>0;--i)
+        {
+            count += workers[i]->count;
+        }
+        return count;
+    }
 
 private:
     YOCTO_DISABLE_COPY_AND_ASSIGN(Simulation);
 };
+#include "yocto/string/conv.hpp"
 
 YOCTO_PROGRAM_START()
 {
+    double lambda = 0.1;
+    if(argc>1)
+    {
+        lambda = strconv::to_double(argv[1],"lambda");
+    }
+    if(lambda<=0) throw exception("lambda<=0");
+
+    size_t NP = 10000;
     threading::SIMD   engine(true);
-    Simulation        sim(10000,engine.size,0.1);
+    Simulation        sim(NP,engine.size,lambda);
     threading::kernel kernelRun( &sim, &Simulation::run);
 
 
-    double       tau      = 0;
     const double dtau     = sim.delta_tau;
-    double       tauMax   = 20.0;
-    double       dtauSave = 0.5;
+    double       tauMax   = 1;
+    double       dtauSave = 0.01;
 
-    if(dtauSave<=dtau) dtauSave = dtau;
-    size_t every = floor(dtauSave/dtau);
-    if(every<1) every=1;
-    dtauSave = dtau * every;
+    const size_t every = math::simulation_save_every_(dtau, dtauSave);
+    const size_t iter  = math::simulation_iter(tauMax,dtau,every);
 
-    size_t iter = ceil(tauMax/dtau);
-    if(iter<every) iter=every;
-    while( 0!=(iter%every) ) ++iter;
+    std::cerr << "tauMax = " << tauMax << std::endl;
+    std::cerr << "dtau   = " << dtau   << std::endl;
+    std::cerr << "iter   = " << iter   << std::endl;
+    std::cerr << "every  = " << every  << std::endl;
 
+    eta ETA;
+    vector<unit_t> F(iter,0);
+    vector<double> Q(iter,0);
+    const string   dataName = vformat("q%g.dat",dtau);
 
-
-
-
-    sim.setup();
+    for(size_t cycle=1;cycle<=10;++cycle)
     {
-
-        ios::wcstream fp("output.xyz");
-        sim.saveXYZ(fp);
-    }
+        ETA.reset();
+        sim.setup();
 
 
-    for(size_t i=1;i<=iter;++i)
-    {
-        tau += dtau;
-        engine.run(kernelRun);
-        if( (i%every) == 0)
+
+        double all      = 0;
+        double tau      = 0;
+
+        for(size_t i=1;i<=iter;++i)
         {
-            ios::acstream fp("output.xyz");
-            sim.saveXYZ(fp);
-            (std::cerr << ".").flush();
-        }
-    }
-    std::cerr << std::endl;
+            tau += dtau;
+            engine.run(kernelRun);
+            const unit_t count = sim.getCount();
+            F[i] += count;
+            all  += double(F[i])/cycle;
+            Q[i]  = all/NP;
+            if( (i%every) == 0)
+            {
 
+                {
+                    ios::wcstream fp(dataName);
+                    for(size_t j=1;j<=iter;++j)
+                    {
+                        fp("%g %g\n",j*dtau,Q[j]);
+                    }
+                }
+                ETA.progress(double(i)/iter);
+            }
+        }
+        ETA.progress_flush();
+        std::cerr << std::endl;
+    }
 }
 YOCTO_PROGRAM_END()
 

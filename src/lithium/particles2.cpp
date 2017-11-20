@@ -33,11 +33,13 @@ public:
     Particle *next;
     Particle *prev;
     Status    status;
+    int       kind;
 
     inline explicit Particle() throw() :
     r(),
     next(0), prev(0),
-    status(InReservoir)
+    status(InReservoir),
+    kind(0)
     {
     }
 
@@ -81,15 +83,28 @@ public:
                                    Random::Uniform &ran ) throw()
     {
         assert(InReservoir==status);
+        int count = 0;
         Vertex delta = ran.getUnit3D<Vertex>(); delta *= delta_lam;
         Vertex r_old = r;
-
+        assert(r_old.z<=0);
         Vertex r_new = r_old + delta;
+        if(r_new.z>0)
+        {
+            assert(delta.z>0);
+            const double    alpha = -r_old.z/delta.z;
+            point2d<double> Ixy(r_old.x+alpha*delta.x,
+                                r_old.y+alpha*delta.y);
+            if(Ixy.norm2()< 1)
+            {
+                ++count;
+                kind = 1;
+            }
+        }
 
         r = r_new;
         inReservoir();
 
-        return 0;
+        return count;
     }
 
 
@@ -179,6 +194,7 @@ public:
             p->r.y = -Box.y/2 + Box.y * ran();
             p->r.z = -Box.z * ran();
             p->status = Particle::InReservoir;
+            p->kind   = 0;
             p->inReservoir();
         }
 
@@ -216,7 +232,9 @@ public:
         {
             for(const Particle *p=workers[i]->running.head;p;p=p->next)
             {
-                fp("H %g %g %g\n",p->r.x,p->r.y,p->r.z);
+                const char *id = "H";
+                if(p->kind) id = "Li";
+                fp("%s %g %g %g\n",id,p->r.x,p->r.y,p->r.z);
             }
         }
     }
@@ -247,14 +265,13 @@ YOCTO_PROGRAM_START()
         sim.saveXYZ(fp);
     }
 
-    const size_t numIter = ceil(1.0/dtau);
-    const size_t every   = numIter/10;
+    const size_t numIter = ceil(20.0/dtau);
     std::cerr << "numIter=" << numIter << std::endl;
     for(size_t i=1;i<=numIter;++i)
     {
         tau += dtau;
         engine.run(kernelRun);
-        if( (i%every) == 0)
+        if( (i%10) == 0)
         {
             ios::acstream fp("output.xyz");
             sim.saveXYZ(fp);

@@ -178,6 +178,7 @@ and the steady state conditions become
 
 We get
 \begin{equation}
+\label{eq:ss}
 \left\lbrace
 	\begin{array}{rcl}
 	k_l^x \left(\LiIn{x}-\theta_x\right) & = & k_f^x J'_x \Eout - k_r^x \EHin \dfrac{\LiIn{x}}{K'_x}\\
@@ -194,7 +195,38 @@ knowing that
 \section{Long Time Behavior: steady state}
 It has no analytical solution, but it appears that there is no isotope ratio difference at
 long time during the experiments.
-
+As it is impossible to find an analytical solution to \eqref{eq:ss}, we say that
+\begin{equation}
+	\LiIn{6} = \alpha_6 \LiOut{6},\;\;\LiIn{7}=\alpha_7\LiOut{7}
+\end{equation}
+and we linearise the equations to find that
+\begin{equation}
+	\begin{pmatrix}
+	\alpha_6\\
+	\alpha_7\\
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	\alpha_6^0\\
+	\alpha_7^0\\
+	\end{pmatrix}
+	+
+	\mymat{A} 
+	\begin{pmatrix}
+	\LiOut{6}\\
+	\LiOut{7}\\
+	\end{pmatrix}
+	+\cdots.
+\end{equation}
+To ensure that $\alpha_6\approx\alpha_7$, we find to equalities arising from $\alpha_6^0=\alpha_7^0$ and 
+the equality of the first and second row of $\mymat{A}$.
+We get
+\begin{equation}
+\begin{array}{rcl}
+	\dfrac{J_6 k_f^6}{k_l^6}  & = & \dfrac{J_7 k_f^7}{k_l^7}\\
+	\dfrac{J_6K_6k_f^6}{k_r^6} & = & \dfrac{J_7K_7k_f^7}{k_r^7}\\
+\end{array}
+\end{equation}
 
 \section{Asymptotic method}
 We note that we have two decoupled systems,

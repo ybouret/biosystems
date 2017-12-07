@@ -1,0 +1,96 @@
+\documentclass[aps,onecolumn,11pt]{revtex4}
+%\documentclass[11pt]{article}
+%\usepackage[cm]{fullpage}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{mathptmx}
+\usepackage{xfrac}
+\usepackage{xcolor}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+
+\newcommand{\spLi}[1]{{~^{\mychem{#1}}\mychem{Li}}}
+\newcommand{\Li}[1]{\myconc{\spLi{#1}}}
+
+\newcommand{\spEout}{\mychem{E}}
+\newcommand{\Eout}{\myconc{\spEout}}
+
+\newcommand{\spLiEin}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{in}}}
+\newcommand{\LiEin}[1]{\myconc{\spLiEin{#1}}}
+
+\newcommand{\spLiE}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace}
+\newcommand{\LiE}[1]{\myconc{\spLiE{#1}}}
+
+
+\newcommand{\spLiEout}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{out}}}
+\newcommand{\LiEout}[1]{\myconc{\spLiEout{#1}}}
+
+\newcommand{\spLiIn}[1]{{\spLi{#1}}_{\mathrm{in}}}
+\newcommand{\LiIn}[1]{\myconc{\spLiIn{#1}}}
+
+\newcommand{\spLiOut}[1]{{\spLi{#1}}_{\mathrm{out}}}
+\newcommand{\LiOut}[1]{\myconc{\spLiOut{#1}}}
+
+\newcommand{\spEHin}{\mychem{EH}}
+\newcommand{\EHin}{\myconc{\spEHin}}
+\newcommand{\spproton}{\mychem{H}}
+\newcommand{\proton}{\myconc{\spproton}}
+
+\newcommand{\mytrn}[1]{{#1}^{\!\mathsf{T}}}
+\newcommand{\mymat}[1]{{\bm{#1}}}
+\newcommand{\mydet}[1]{{\left|{#1}\right|}}
+
+\begin{document}
+
+\section{Mechanism}
+$$
+	\delta^7Li = \left(
+		\dfrac{\left(\dfrac{Li^7}{Li^6}\right)_{sample}}
+		{\left(\dfrac{Li^7}{Li^6}\right)_{standard}}
+		 -1 
+	\right) \times 1000
+$$
+
+
+\begin{equation}
+	 \spLiOut{x} +  \spEout  
+	 \xrightleftharpoons[k_d^x]{k_a^x} 
+	 \spLiE{x}
+	  \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightarrow[]{k_l^x} \spLiOut{x}}
+\end{equation}
+
+\section{Hypothesis}
+\begin{itemize}
+\item The flip stage is slower than the enzyme interaction with lithium.
+\item $\proton$ is a parameter
+\item $\LiOut{6}$ and  $\LiOut{7}$ are parameters
+\end{itemize}
+
+
+We have the vector of concentrations
+\begin{equation}
+	\vec{X} = 
+	\begin{pmatrix}
+	\Eout\\
+	\EHin\\
+	\LiE{6}\\
+	\LiIn{6}\\
+	\LiE{7}\\
+	\LiIn{7}\\
+	\end{pmatrix},\;\;
+	\partial_t \vec{X} =
+	\begin{pmatrix}
+	\sum_x\left(v_d^x-v_a^x\right) + v_h\\
+	\sum_x\left(v_p^x-v_q^x\right) - v_h\\
+	v_a^6-v_d^6+v_q^6-v_p^6\\
+	v_p^6-v_q^6-v_l^6\\
+	v_a^7-v_d^7+v_q^7-v_p^7\\
+	v_p^7-v_q^7-v_l^7\\
+	\end{pmatrix}
+\end{equation}
+
+\end{document}

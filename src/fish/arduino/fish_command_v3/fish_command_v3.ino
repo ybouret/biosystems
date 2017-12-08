@@ -22,7 +22,7 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 //_____________________________________________________________________________
 //
 //
-// global functions and macros
+// Global Functions and Macros
 //
 //_____________________________________________________________________________
 
@@ -48,9 +48,11 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 // Forces: supposed to be between 0 and 5 volts
 //
 //-----------------------------------------------------------------------------
-static float FnRange = 5.0f;
-static float FnInit  = 2.50f; //!< initial normal force reading
-static float FtInit  = 2.50f; //!< initial tangential force reading
+static float FnRange = 5.0f;  //!< force range in Volts
+static float FnInit  = 2.50f; //!< initial normal force reading (means 0 force)
+static float FtInit  = 2.50f; //!< initial tangential force reading (means 0 force)
+
+
 
 //_____________________________________________________________________________
 //
@@ -88,22 +90,21 @@ struct List
   unsigned      size;
 };
 
-// device memory dependent #NODES
+//! device memory dependent #NODES
 static struct Node nodes[NODES];
 
-// the data store
+//! the data store
 static struct List store = { NULL, NULL, 0 };
 
 //-----------------------------------------------------------------------------
 // used to initialize the store
 //-----------------------------------------------------------------------------
-static inline void store_push_back(struct Node *node,
-                                   const float  time,
-                                   const float  angle)
+static inline void __store_init(struct Node *node,
+                                const float  time)
 {
   node->prev  = node->next = 0;
   node->time  = time;
-  node->angle = angle;
+  node->angle = servo_angle_init;
   node->Fn    = FnInit;
   node->Ft    = FtInit;
   if (store.size <= 0)
@@ -122,10 +123,10 @@ static inline void store_push_back(struct Node *node,
 //-----------------------------------------------------------------------------
 // replace the last value, and put it in front of the list
 //-----------------------------------------------------------------------------
-static inline void list_store(const float time,
-                              const float angle,
-                              const float Fn,
-                              const float Ft)
+static inline void StoreUpdate(const float time,
+                               const float angle,
+                               const float Fn,
+                               const float Ft)
 {
   struct Node *node = store.tail;
 
@@ -169,7 +170,7 @@ static inline void list_print()
 
 //-----------------------------------------------------------------------------
 //
-//! initialize the store
+//! initialize the store with "resting" nodes
 //
 //-----------------------------------------------------------------------------
 static inline void StoreSetup()
@@ -177,7 +178,7 @@ static inline void StoreSetup()
   for (int i = 0; i < NODES; ++i)
   {
     const float time  = -((i + 1) * store_rate);
-    store_push_back( &nodes[i], time, servo_angle_init  );
+    __store_init( &nodes[i], time );
   }
 
 }
@@ -189,6 +190,8 @@ static inline void StoreSetup()
 //-----------------------------------------------------------------------------
 static const float AnalogInputToVolts = (FnRange / 1023.0f);
 #define READ_FORCE_ON(PIN) ( AnalogInputToVolts * ( (float) analogRead(PIN) ) )
+#define READ_FORCE_N() READ_FORCE_ON(pinFn)
+#define READ_FORCE_T() READ_FORCE_ON(pinFt)
 
 //-----------------------------------------------------------------------------
 // called during the loop() function: store time, angle, values
@@ -200,9 +203,9 @@ static inline void StoreLoop()
   const float local_time = GetCurrentTime();
   if (local_time - store_last_time >= store_rate)
   {
-    const float Fn = READ_FORCE_ON(pinFn);
-    const float Ft = READ_FORCE_ON(pinFt);
-    list_store(local_time, servo.read(), Fn, Ft);
+    const float Fn = READ_FORCE_N();
+    const float Ft = READ_FORCE_T();
+    StoreUpdate(local_time, servo.read(), Fn, Ft);
     store_last_time = GetCurrentTime();
   }
 }
@@ -232,7 +235,8 @@ static inline void StoreQuery(struct Node *data)
     {
       if (NULL == prev)
       {
-        // couldn't bracket, shouldn't happen: this is a failsafe
+        // couldn't bracket, delay is probably too small
+        // this is a failsafe
         data->angle = curr->angle;
         data->Fn    = curr->Fn;
         data->Ft    = curr->Ft;
@@ -293,7 +297,7 @@ static inline float ThetaSuivi()
 //_____________________________________________________________________________
 float servo_last_time   = 0.0f;
 float servo_last_angle  = servo_angle_init;
-float servo_rate        = 0.1f; //!< servo interaction rate
+float servo_rate        = 0.01f; //!< servo interaction rate
 
 //-----------------------------------------------------------------------------
 // shortcut...
@@ -319,40 +323,74 @@ static inline void ServoSetup()
 //-----------------------------------------------------------------------------
 static float old_t = 0.0;
 static float theta = servo_angle_init;
+static const float theta_min =   0.0f;
+static const float theta_max = 180.0f;
 
 static inline void ServoLoop()
 {
   const float local_time = GetCurrentTime();
 
-  // where theta is set
+  //__________________________________________________
+  //
+  // where theta is computed, AT EVERY CALL
+  //__________________________________________________
   {
     const float dt = local_time - old_t;
     old_t  = local_time;
     //theta += ThetaDot() * dt;
     theta = ThetaSuivi();
-    if (theta >= 180.0f) theta = 180.0f;
-    if (theta <= 0.0f)   theta = 0.0f;
+    if (theta >= theta_max) theta = theta_max;
+    if (theta <= theta_min) theta = theta_min;
   }
 
-  // when servo is set
+  //__________________________________________________
+  //
+  // when servo is set, at every servo_rate
+  //__________________________________________________
+
   if ( local_time - servo_last_time >= servo_rate )
   {
-    // do something with the servo
-    Serial.print("th="); Serial.print(theta);
-    Serial.print(", Fn="); Serial.print(READ_FORCE_ON(pinFn));
-    Serial.print(", Ft="); Serial.print(READ_FORCE_ON(pinFt));
-    Serial.println("");
-
     servo.write( theta  );
 
-
-    // save info
-    servo_last_time  = GetCurrentTime();
+    servo_last_time  = local_time;
     servo_last_angle = theta;
   }
 
 }
 
+//_____________________________________________________________________________
+//
+//
+// Serial IO
+//
+//_____________________________________________________________________________
+static float serial_last_time = 0.0f;
+static float serial_rate      = 0.2f; //!< in seconds
+
+void SerialSetup()
+{
+  serial_last_time = GetCurrentTime();
+}
+
+void SerialLoop()
+{
+  const float local_time = GetCurrentTime();
+  if ( local_time - serial_last_time >= serial_rate )
+  {
+    // print useful info on serial: always the time
+    Serial.print("t="); Serial.print(local_time);
+
+    // physics
+    Serial.print(" theta="); Serial.print( servo.read()   );
+    Serial.print(" Fn=");    Serial.print( READ_FORCE_N() );
+    Serial.print(" Ft=");    Serial.print( READ_FORCE_T() );
+
+    // done !
+    Serial.println("");
+    // update
+    serial_last_time = local_time;
+  }
+}
 
 
 //_____________________________________________________________________________
@@ -373,8 +411,8 @@ void setup()
   //
   // Servo communication setup: TODO check init values 900,2100
   //_________________________________________________________________________
-  //servo.attach(pinServo,900,2100);
-  servo.attach(pinServo, 600, 2250);
+  servo.attach(pinServo, 900, 2100);
+  //servo.attach(pinServo, 600, 2250);
 
   //_________________________________________________________________________
   //
@@ -389,6 +427,7 @@ void setup()
   //_________________________________________________________________________
   StoreSetup();
   ServoSetup();
+  SerialSetup();
   old_t = GetCurrentTime();
 }
 
@@ -400,14 +439,18 @@ void setup()
 //_____________________________________________________________________________
 void loop()
 {
-#if 1
+#if 0
   StoreLoop();
   ServoLoop();
+  SerialLoop();
 #else
-  servo.write(0);
-  delay(500);
-  servo.write(180);
-  delay(500);
+  const float sweep_deg = 50.0f * GetCurrentTime();
+  const float sweep_rad = ((float)M_PI) * sweep_deg / 180.0f;
+  const float angle     = 90.0f + 180.0f * sin( sweep_rad );
+  servo.write(angle);
+  delay(100);
+  //Serial.println(servo.read());
+  SerialLoop();
 #endif
 
 }

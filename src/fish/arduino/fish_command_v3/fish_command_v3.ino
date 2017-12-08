@@ -31,8 +31,8 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 // NODES: the number of nodes to reach the delay => sampling precision
 //        is about DELAY/NODES
 //-----------------------------------------------------------------------------
-#define DELAY      1.5
-#define NODES      50
+#define DELAY      1
+#define NODES      100
 
 //-----------------------------------------------------------------------------
 //
@@ -285,7 +285,7 @@ static inline float ThetaSuivi()
 {
   struct Node data;
   StoreQuery(&data);
-  return  3 * (data.Fn - FnInit) * 160 + 90; //avec gbf
+  return  0.6 * (data.Fn - FnInit) * 160 + 90; //avec gbf
   // return 90;
 }
 
@@ -296,7 +296,7 @@ static inline float ThetaSuivi()
 //
 //_____________________________________________________________________________
 float servo_last_time   = 0.0f;
-float servo_rate        = 0.01f; //!< servo interaction rate
+float servo_rate        = 0.00f; //!< servo interaction rate
 
 //-----------------------------------------------------------------------------
 // shortcut...
@@ -370,7 +370,7 @@ static inline void ServoLoop()
 //
 //_____________________________________________________________________________
 static float serial_last_time = 0.0f;
-static float serial_rate      = 0.2f; //!< in seconds
+static float serial_rate      = 0.1f; //!< in seconds
 
 void SerialSetup()
 {
@@ -444,12 +444,12 @@ void setup()
 //_____________________________________________________________________________
 void loop()
 {
-#if 0
+#if 1
   StoreLoop();
   ServoLoop();
   SerialLoop();
 #else
-  const float sweep_deg = 50.0f * GetCurrentTime();
+  const float sweep_deg = 500.0f * GetCurrentTime();
   const float sweep_rad = ((float)M_PI) * sweep_deg / 180.0f;
   const float angle     = 90.0f + 90.0f * sin( sweep_rad );
   Serial.println(angle);

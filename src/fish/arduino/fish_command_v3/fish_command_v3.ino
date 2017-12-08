@@ -12,7 +12,8 @@
 //_____________________________________________________________________________
 static const int            pinServo        = 9;      //!< Servo command channel (output PWM)
 static const int            pinFrame        = 12;     //!< Frame capture control (output PWM)
-static const int            pinValueInput   = 0;      //!< Value Input a value   (input Analog)
+static const int            pinFn           = 1;      //!< Normal   Force    (input Analog)
+static const int            pinFt           = 4;      //!< Tangentil Force   (input Analog)
 static const unsigned long  baudrate        = 115200; //!< check with Serial monitor/Python
 
 static Servo                servo;
@@ -34,13 +35,22 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 #define NODES      50
 
 //-----------------------------------------------------------------------------
+//
 // timing macros, GetCurrentTime is in seconds
+//
 //-----------------------------------------------------------------------------
 #define TSYS()          (micros())
 #define TSYS2TIME(tmx)  ( 1.0e-6f * (float)(tmx))
 #define GetCurrentTime() TSYS2TIME( TSYS( ) )
 
-
+//-----------------------------------------------------------------------------
+//
+// Forces: supposed to be between 0 and 5 volts
+//
+//-----------------------------------------------------------------------------
+static float FnRange = 5.0f;
+static float FnInit  = 2.50f; //!< initial normal force reading
+static float FtInit  = 2.50f; //!< initial tangential force reading
 
 //_____________________________________________________________________________
 //
@@ -62,11 +72,12 @@ static float               store_last_time               = 0.0f;
 // doubly linked node
 struct Node
 {
-  struct Node *next;
-  struct Node *prev;
-  float        time;
-  float        angle;
-  float        value;
+  struct Node *next;  //!< for list
+  struct Node *prev;  //!< for list
+  float        time;  //!< last acquisition time
+  float        angle; //!< last read angle
+  float        Fn;    //!< normal force
+  float        Ft;    //!< tangential force
 };
 
 // doubly linked list
@@ -86,12 +97,15 @@ static struct List store = { NULL, NULL, 0 };
 //-----------------------------------------------------------------------------
 // used to initialize the store
 //-----------------------------------------------------------------------------
-static inline void store_push_back(struct Node *node, const float time, const float angle)
+static inline void store_push_back(struct Node *node,
+                                   const float  time,
+                                   const float  angle)
 {
   node->prev  = node->next = 0;
   node->time  = time;
   node->angle = angle;
-  node->value = 0;
+  node->Fn    = FnInit;
+  node->Ft    = FtInit;
   if (store.size <= 0)
   {
     store.head = store.tail = node;
@@ -108,7 +122,10 @@ static inline void store_push_back(struct Node *node, const float time, const fl
 //-----------------------------------------------------------------------------
 // replace the last value, and put it in front of the list
 //-----------------------------------------------------------------------------
-static inline void list_store(const float time, const float angle, const float value)
+static inline void list_store(const float time,
+                              const float angle,
+                              const float Fn,
+                              const float Ft)
 {
   struct Node *node = store.tail;
 
@@ -125,7 +142,8 @@ static inline void list_store(const float time, const float angle, const float v
   // update node data
   node->time   = time;
   node->angle  = angle;
-  node->value  = value;
+  node->Fn     = Fn;
+  node->Ft     = Ft;
 }
 
 //-----------------------------------------------------------------------------
@@ -143,14 +161,16 @@ static inline void list_print()
     Serial.print(" (");
     Serial.print(node->time);
     //Serial.print(",");Serial.print(node->angle);
-    Serial.print(","); Serial.print(node->value);
+    Serial.print(","); Serial.print(node->Fn);
     Serial.print(")");
   }
   Serial.println("");
 }
 
 //-----------------------------------------------------------------------------
-// initialize the store
+//
+//! initialize the store
+//
 //-----------------------------------------------------------------------------
 static inline void StoreSetup()
 {
@@ -162,24 +182,27 @@ static inline void StoreSetup()
 
 }
 
-static inline
-float ReadForcing()
-{
-    const int    analogValue = analogRead(pinValueInput);        //!< in 0:1023
-    const float  value       = ( (float)analogValue ) / 1023.0f; //!< in 0:1.0f
-    return value;
-}
+//-----------------------------------------------------------------------------
+//
+//! read the forcing in Volts: range is 0:FnRange
+//
+//-----------------------------------------------------------------------------
+static const float AnalogInputToVolts = (FnRange / 1023.0f);
+#define READ_FORCE_ON(PIN) ( AnalogInputToVolts * ( (float) analogRead(PIN) ) )
 
 //-----------------------------------------------------------------------------
-// called during the loop() function: store time, angle, value
+// called during the loop() function: store time, angle, values
 //-----------------------------------------------------------------------------
 static inline void StoreLoop()
 {
+  static const float InputToVolts = 5.0f / 1023.0f;
+
   const float local_time = GetCurrentTime();
   if (local_time - store_last_time >= store_rate)
   {
-    list_store(local_time, servo.read(), ReadForcing());
-    //list_print();
+    const float Fn = READ_FORCE_ON(pinFn);
+    const float Ft = READ_FORCE_ON(pinFt);
+    list_store(local_time, servo.read(), Fn, Ft);
     store_last_time = GetCurrentTime();
   }
 }
@@ -197,7 +220,8 @@ static inline void StoreQuery(struct Node *data)
   {
     // timing is too short, shouldn't happen: this is a failsafe
     data->angle = curr->angle;
-    data->value = curr->value;
+    data->Fn    = curr->Fn;
+    data->Ft    = curr->Ft;
     return;
   }
   else
@@ -210,7 +234,8 @@ static inline void StoreQuery(struct Node *data)
       {
         // couldn't bracket, shouldn't happen: this is a failsafe
         data->angle = curr->angle;
-        data->value = curr->value;
+        data->Fn    = curr->Fn;
+        data->Ft    = curr->Ft;
         return;
       }
       else
@@ -221,11 +246,10 @@ static inline void StoreQuery(struct Node *data)
         if (p_time >= t && t >= c_time)
         {
           // bracketed!
-          const float p_value = prev->value;
-          const float c_value = curr->value;
           const float dt_num  = t - p_time;
           const float dt_den  = c_time - p_time;
-          data->value = prev->value + (dt_num * (curr->value - prev->value)) / dt_den;
+          data->Fn    = prev->Fn    + (dt_num * (curr->Fn    - prev->Fn   )) / dt_den;
+          data->Ft    = prev->Ft    + (dt_num * (curr->Ft    - prev->Ft   )) / dt_den;
           data->angle = prev->angle + (dt_num * (curr->angle - prev->angle)) / dt_den;
           return;
         }
@@ -247,9 +271,19 @@ static inline float ThetaDot()
 {
   struct Node data;
   StoreQuery(&data);
-  return -alpha * (data.value - 0.5f);
+  return -alpha * (data.Fn - 0.5f);
 }
 
+//-----------------------------------------------------------------------------
+// suivi non retarde
+//-----------------------------------------------------------------------------
+static inline float ThetaSuivi()
+{
+  struct Node data;
+  StoreQuery(&data);
+  return  3 * (data.Fn - FnInit) * 160 + 90; //avec gbf
+  // return 90;
+}
 
 //_____________________________________________________________________________
 //
@@ -279,7 +313,9 @@ static inline void ServoSetup()
 }
 
 //-----------------------------------------------------------------------------
+//
 // Servo loop function, compute the new angle
+//
 //-----------------------------------------------------------------------------
 static float old_t = 0.0;
 static float theta = servo_angle_init;
@@ -288,23 +324,27 @@ static inline void ServoLoop()
 {
   const float local_time = GetCurrentTime();
 
+  // where theta is set
   {
     const float dt = local_time - old_t;
     old_t  = local_time;
-    theta += ThetaDot() * dt;
+    //theta += ThetaDot() * dt;
+    theta = ThetaSuivi();
     if (theta >= 180.0f) theta = 180.0f;
     if (theta <= 0.0f)   theta = 0.0f;
   }
 
+  // when servo is set
   if ( local_time - servo_last_time >= servo_rate )
   {
     // do something with the servo
-    Serial.print("theta=");Serial.print(theta);
-    Serial.print(", forcing=");Serial.print(ReadForcing());
+    Serial.print("th="); Serial.print(theta);
+    Serial.print(", Fn="); Serial.print(READ_FORCE_ON(pinFn));
+    Serial.print(", Ft="); Serial.print(READ_FORCE_ON(pinFt));
     Serial.println("");
-    
+
     servo.write( theta  );
-    
+
 
     // save info
     servo_last_time  = GetCurrentTime();

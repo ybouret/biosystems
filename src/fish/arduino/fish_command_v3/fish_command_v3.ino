@@ -275,7 +275,7 @@ static inline float ThetaDot()
 {
   struct Node data;
   StoreQuery(&data);
-  return -alpha * (data.Fn - 0.5f);
+  return -alpha * (data.Fn - FnInit);
 }
 
 //-----------------------------------------------------------------------------
@@ -296,7 +296,6 @@ static inline float ThetaSuivi()
 //
 //_____________________________________________________________________________
 float servo_last_time   = 0.0f;
-float servo_last_angle  = servo_angle_init;
 float servo_rate        = 0.01f; //!< servo interaction rate
 
 //-----------------------------------------------------------------------------
@@ -321,27 +320,34 @@ static inline void ServoSetup()
 // Servo loop function, compute the new angle
 //
 //-----------------------------------------------------------------------------
-static float old_t = 0.0;
+static float old_t = 0.0f;
+static float dt    = 0.0f;
 static float theta = servo_angle_init;
 static const float theta_min =   0.0f;
 static const float theta_max = 180.0f;
 
 static inline void ServoLoop()
 {
+  //__________________________________________________
+  //
+  // get timings
+  //__________________________________________________
   const float local_time = GetCurrentTime();
-
+  dt    = local_time - old_t;
+  old_t = local_time;
+  
   //__________________________________________________
   //
   // where theta is computed, AT EVERY CALL
   //__________________________________________________
-  {
-    const float dt = local_time - old_t;
-    old_t  = local_time;
-    //theta += ThetaDot() * dt;
-    theta = ThetaSuivi();
-    if (theta >= theta_max) theta = theta_max;
-    if (theta <= theta_min) theta = theta_min;
-  }
+  theta = ThetaSuivi();
+  
+  //__________________________________________________
+  //
+  // clamp theta value
+  //__________________________________________________
+  if (theta >= theta_max) theta = theta_max;
+  if (theta <= theta_min) theta = theta_min;
 
   //__________________________________________________
   //
@@ -353,7 +359,6 @@ static inline void ServoLoop()
     servo.write( theta  );
 
     servo_last_time  = local_time;
-    servo_last_angle = theta;
   }
 
 }
@@ -446,9 +451,10 @@ void loop()
 #else
   const float sweep_deg = 50.0f * GetCurrentTime();
   const float sweep_rad = ((float)M_PI) * sweep_deg / 180.0f;
-  const float angle     = 90.0f + 180.0f * sin( sweep_rad );
+  const float angle     = 90.0f + 90.0f * sin( sweep_rad );
+  Serial.println(angle);
   servo.write(angle);
-  delay(100);
+  delay(10);
   //Serial.println(servo.read());
   SerialLoop();
 #endif

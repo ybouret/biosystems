@@ -48,7 +48,7 @@ static const float          servo_angle_init  = 90.0f; //!< resting angle
 // Forces: supposed to be between 0 and 5 volts
 //
 //-----------------------------------------------------------------------------
-static float FnRange = 5.0f;  //!< force range in Volts
+static float FRange  = 5.0f;  //!< force range in Volts
 static float FnInit  = 2.50f; //!< initial normal force reading (means 0 force)
 static float FtInit  = 2.50f; //!< initial tangential force reading (means 0 force)
 
@@ -188,7 +188,7 @@ static inline void StoreSetup()
 //! read the forcing in Volts: range is 0:FnRange
 //
 //-----------------------------------------------------------------------------
-static const float AnalogInputToVolts = (FnRange / 1023.0f);
+static const float AnalogInputToVolts = (FRange / 1023.0f);
 #define READ_FORCE_ON(PIN) ( AnalogInputToVolts * ( (float) analogRead(PIN) ) )
 #define READ_FORCE_N() READ_FORCE_ON(pinFn)
 #define READ_FORCE_T() READ_FORCE_ON(pinFt)
@@ -270,23 +270,26 @@ static inline void StoreQuery(struct Node *data)
 //-----------------------------------------------------------------------------
 // example of function
 //-----------------------------------------------------------------------------
-static const float alpha = 50.0f;
+static const float the_coeff = 50.0f;
 static inline float ThetaDot()
 {
   struct Node data;
   StoreQuery(&data);
-  return -alpha * (data.Fn - FnInit);
+  return -the_coeff * (data.Fn - FnInit);
 }
 
 //-----------------------------------------------------------------------------
 // suivi non retarde
 //-----------------------------------------------------------------------------
+const float alpha = 5.0;
+
 static inline float ThetaSuivi()
 {
   struct Node data;
   StoreQuery(&data);
-  return  0.6 * (data.Fn - FnInit) * 160 + 90; //avec gbf
-  // return 90;
+  const float force_factor = (data.Fn - FnInit) / FRange; //-0.5:0.5
+  const float shift_factor = 180.0f * force_factor;   //-90:90
+  return  alpha * shift_factor + 90; //avec gbf
 }
 
 //_____________________________________________________________________________
@@ -335,13 +338,13 @@ static inline void ServoLoop()
   const float local_time = GetCurrentTime();
   dt    = local_time - old_t;
   old_t = local_time;
-  
+
   //__________________________________________________
   //
   // where theta is computed, AT EVERY CALL
   //__________________________________________________
   theta = ThetaSuivi();
-  
+
   //__________________________________________________
   //
   // clamp theta value
@@ -386,6 +389,7 @@ void SerialLoop()
     Serial.print("t="); Serial.print(local_time);
 
     // physics
+    Serial.print(" alpha="); Serial.print( alpha );
     Serial.print(" theta="); Serial.print( servo.read()   );
     Serial.print(" Fn=");    Serial.print( READ_FORCE_N() );
     Serial.print(" Ft=");    Serial.print( READ_FORCE_T() );

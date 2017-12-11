@@ -92,5 +92,28 @@ We have the vector of concentrations
 	v_p^7-v_q^7-v_l^7\\
 	\end{pmatrix}
 \end{equation}
+And at any time
+\begin{equation} 
+	\label{eq:E0}
+	E_0 = \Eout + \EHin +  \LiE{6} + \LiE{7}
+\end{equation}
+
+\section{Semi Stationary}
+We consider that we have the two equations
+\begin{equation}
+%\left\lbrace
+	\begin{array}{rcll}
+	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiE{x}, & J_x = \dfrac{\LiE{x}}{\LiOut{x} \Eout} = \dfrac{k_a^x}{k_d^x}\\
+	 \end{array}
+\end{equation}
+leading to a constraint vector
+\begin{equation}
+\vec{\Gamma} = 
+\begin{pmatrix}
+	J_6' \Eout - \LiE{6} \\
+	J_7' \Eout - \LiE{7} \\
+\end{pmatrix}
+\end{equation}
+
 
 \end{document}

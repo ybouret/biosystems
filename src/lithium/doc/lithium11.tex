@@ -228,6 +228,20 @@ and
 	e^{- \left(\omega_0+k_h\right)  t} - e^{-k_l^x t}
 	}{ k_l^x  - \left(\omega_0+k_h\right) }
 \end{equation}
-We have the long time behavior
+We have the long time behaviour and the spiking behaviour.
+We get
+\begin{equation}
+	\partial_t \Li{x}_1 = \left(\Lambda_x + V_x - \sigma_x \right) e^{-k_l^x t }
+	+ \dfrac{\sigma_x}{k_l^x  - \left(\omega_0+k_h\right)}
+	\left(k_l^x e^{-k_l^x t} - \left(\omega_0+k_h\right) e^{- \left(\omega_0+k_h\right)  t}\right)
+\end{equation}
+
+\begin{equation}
+	\begin{array}{rl}
+	\partial_t \Li{x}_1 = 0 & \Leftrightarrow 0=\left(\Lambda_x + V_x - \sigma_x \right) 
+	+ \dfrac{\sigma_x}{k_l^x  - \left(\omega_0+k_h\right)}
+	\left(k_l^x   - \left(\omega_0+k_h\right) e^{ \left\lbrack k_l^x - \left(\omega_0+k_h\right)\right\rbrack  t}\right)\\
+	\end{array}
+\end{equation}
 
 \end{document}

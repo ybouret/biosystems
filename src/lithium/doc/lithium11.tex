@@ -99,6 +99,7 @@ And at any time
 \end{equation}
 
 \section{Semi Stationary}
+\subsection{Subsystem}
 We consider that we have the two equations
 \begin{equation}
 %\left\lbrace
@@ -118,5 +119,115 @@ which already imposes to \eqref{eq:E0}
 \begin{equation}
 	E_0 = \EHin + \Eout \left(1+J'_6+J'_7\right)
 \end{equation}
+
+We find, using
+\begin{equation}
+	\vec{Y} = \begin{pmatrix}
+	\EHin\\
+	\Li{6}\\
+	\Li{7}\\
+	\end{pmatrix}
+\end{equation}
+that
+\begin{equation}
+	\partial_t \vec{Y} = \dot{\vec{Y}}_0 - \left\lbrack \mymat{\Omega}\vec{Y} + \vec{F}\left(\vec{Y}\right)\right\rbrack
+\end{equation}
+with
+\begin{equation}
+	\dot{\vec{Y}}_0 = 
+	\begin{pmatrix}
+	V_0\\
+	V_6+\Lambda_6\\
+	V_7+\Lambda_7\\
+	\end{pmatrix},
+	\;\;
+	\left\lbrace
+	\begin{array}{rcl}
+	V_0 & = &E_0 \omega_0\\
+	V_6 & = &E_0 \omega_6\\
+	V_7 & = &E_0 \omega_7\\
+	\omega_x & = & \dfrac{J_x' k_p^x \proton}{1+J_6'+J_7'}\\
+	\Lambda_x & = & k_l^x \theta_x \\
+	\end{array}
+	\right.
+\end{equation}
+
+\begin{equation}
+	\mymat{\Omega} = 
+	\begin{pmatrix}
+	\omega_0 + k_h & 0 & 0 \\
+	\omega_6 & k_l^6 & 0 \\
+	\omega_7 & 0 & k_l^7 \\
+	\end{pmatrix}
+\end{equation}
+
+\begin{equation}
+	\vec{F} = 
+	\begin{pmatrix}
+	k_q^6 \Li{6} \EHin + k_q^7 \Li{7} \EHin \\
+	k_q^6 \Li{6} \EHin\\
+	k_q^7 \Li{7} \EHin\\
+	\end{pmatrix}
+\end{equation}
+
+\subsection{First order solution}
+We solve
+\begin{equation}
+	\partial_t \vec{Y}_1 = \dot{\vec{Y}}_0 - \mymat{\Omega}\vec{Y}_1
+\end{equation}
+We first solve
+\begin{equation}
+	\partial_t \EHin_1 = V_0 - \left(\omega_0+k_h\right)  \EHin_1
+\end{equation}
+into
+\begin{equation}
+	\EHin_1 = E_0 \dfrac{\omega_0}{\omega_0+k_h}
+	\left\lbrack
+		 1-e^{\left(\omega_0+k_h\right) t}
+	\right\rbrack,\;\;\widetilde{\EHin}_1 = E_0 \dfrac{\omega_0}{\omega_0+k_h}
+\end{equation}
+Then we have to solve
+\begin{equation}
+	\partial_t \Li{x}_1 = \Lambda_x + V_x - \omega_x  \EHin_1 - k_l^x \Li{x}_1.
+\end{equation}
+We compute
+\begin{equation}
+	\widetilde{\Li{x}}_1 = \theta_x + \dfrac{E_0}{k_l^x}  \dfrac{\omega_x k_h}{\omega_0+k_h}
+\end{equation}
+%and we recognize the long time solution and a short time solution.
+
+and we get 
+\begin{equation}
+	\Li{x}_1 = A_x(t) e^{-k_l^x t } 
+\end{equation}
+so that
+\begin{equation}
+	A_x = \int_0^t \left(\Lambda_x + V_x - \omega_x  \EHin_1 \right) e^{k_l^x u }\,\mathrm{d}u
+\end{equation}
+With 
+\begin{equation}
+	\sigma_x = E_0 \dfrac{\omega_0\omega_x}{\omega_0+k_h} < V_x = E_0 \omega_x
+\end{equation}
+\begin{equation}
+	A_x = \int_0^t 
+		\left(\Lambda_x + V_x - \sigma_x \right) e^{k_l^x u } 
+		+ \sigma_x e^{\left\lbrack k_l^x  - \left(\omega_0+k_h\right) \right\rbrack u}
+	\,\mathrm{d}u
+\end{equation}
+so that
+\begin{equation}
+	A_x = \dfrac{1}{k_l^x}\left(\Lambda_x + V_x - \sigma_x \right)\left(e^{k_l^x t}-1\right)
+	+ \sigma_x \dfrac{
+	e^{\left\lbrack k_l^x  - \left(\omega_0+k_h\right) \right\rbrack t} - 1
+	}{\left\lbrack k_l^x  - \left(\omega_0+k_h\right) \right\rbrack}
+\end{equation}
+and
+\begin{equation}
+	\Li{x}_1 = \underbrace{\dfrac{1}{k_l^x}\left(\Lambda_x + V_x - \sigma_x \right)}_{\widetilde{\Li{x}}_1}\left(1-e^{-k_l^x t}\right)
+	+\sigma_x \dfrac{
+	e^{- \left(\omega_0+k_h\right)  t} - e^{-k_l^x t}
+	}{ k_l^x  - \left(\omega_0+k_h\right) }
+\end{equation}
+We have the long time behavior
 
 \end{document}

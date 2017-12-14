@@ -244,4 +244,42 @@ We get
 	\end{array}
 \end{equation}
 
+\subsection{time reduction}
+We set $\tau = \left(\omega_0+k_h\right) t$, and we define
+\begin{equation}
+	\left\lbrace
+	\begin{array}{rcl}
+	\eta_j    & = & \dfrac{\omega_j}{\omega_0+k_h}\;\;(\eta_0=\eta_6+\eta_7)\\
+	\lambda_j & = & \dfrac{k_l^j}{\omega_0+k_h}   \\
+	\chi_j    & = & \dfrac{k_q^j}{\omega_0+k_h}   \\
+	\end{array}
+	\right.
+\end{equation}
+so that
+
+
+\begin{equation}
+	\partial_\tau \vec{Y} = 
+	\begin{pmatrix}
+		E_0 \eta_0 \\
+		E_0 \eta_6 + \lambda_6 \theta_6\\
+		E_0 \eta_7 + \lambda_7 \theta_7\\
+	\end{pmatrix}
+	-
+	\begin{pmatrix}
+	1&0&0\\
+	\eta_6&\lambda_6&0\\
+	\eta_7&0&\lambda_7\\
+	\end{pmatrix} 
+	\vec{Y}
+	-
+	\underbrace{
+	\begin{pmatrix}
+	\chi_6 \EHin \Li{6} + \chi_7 \EHin \Li{7}\\
+	\chi_6 \EHin \Li{6} \\
+	\chi_7 \EHin \Li{7} \\
+	\end{pmatrix}
+	}_{\vec{G}\left(\vec{Y}\right)}
+\end{equation}
+
 \end{document}

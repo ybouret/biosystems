@@ -284,4 +284,37 @@ so that
 	}_{\vec{G}\left(\vec{Y}\right)}
 \end{equation}
 
+We find
+\begin{equation}
+	\EHin_1 = E_0\eta_0 \left(1-e^{ -\tau}\right), \;\; \widetilde{\EHin}_1 = E_0\eta_0
+\end{equation}
+then
+\begin{equation}
+	\widetilde{\Li{x}}_1 = \theta_x + E_0\left(1-\eta_0\right) \dfrac{\eta_x}{\lambda_x}
+\end{equation}
+and we solve
+\begin{equation}
+	\Li{x}_1 = A_x(\tau) e^{-\lambda_x \tau}
+\end{equation}
+so that
+\begin{equation}
+	e^{-\lambda_x \tau}\partial_\tau A_x   = E_0\eta_x + \lambda_x \theta_x - \eta_x E_0\eta_0 \left(1-e^{ -\tau}\right)
+	= E_0\eta_x(1-\eta_0) + \lambda_x \theta_x + \eta_x E_0\eta_0 e^{ -\tau}
+\end{equation}
+and
+\begin{equation}
+\begin{array}{rcl}
+	A_x(\tau) &= & \displaystyle \int_{0}^t 
+	\left\lbrack \left(E_0\eta_x(1-\eta_0)  + \lambda_x \theta_x \right) e^{-\lambda_x u}
+	+ \eta_x E_0\eta_0 e^{ (\lambda_x-1)u}\right\rbrack \, \mathrm{d}u\\
+	& = & \widetilde{\Li{x}}_1 \left(e^{\lambda_x \tau}-1\right) 
+	+ E_0\eta_0\eta_x \dfrac{e^{(\lambda_x-1)\tau}-1}{\lambda_x-1}\\
+	\end{array}
+\end{equation}
+and
+\begin{equation}
+	\Li{x}_1 = \widetilde{\Li{x}}_1 \left(1-e^{-\lambda_x \tau}\right) 
+	+ E_0\eta_0\eta_x \dfrac{e^{-\tau}-e^{-\lambda_x\tau}}{\lambda_x-1}
+\end{equation}
+
 \end{document}

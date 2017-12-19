@@ -18,13 +18,23 @@ void setup()
   servo.write(90.0f);
 }
 
+void p(const char *fmt, ... ) {
+  char buf[128]; // resulting string limited to 128 chars
+  va_list args;
+  va_start (args, fmt );
+  vsnprintf(buf, 128, fmt, args);
+  va_end (args);
+  Serial.print(buf);
+}
+
 void processInput()
 {
   const unsigned numWords = medium.findInputWords();
-  Serial.print("#words="); Serial.println(numWords);
-  for(unsigned i=0;i<numWords;++i)
+  //Serial.print("#words="); Serial.println(numWords);
+  p("#words = %4u\n", numWords);
+  for (unsigned i = 0; i < numWords; ++i)
   {
-      Serial.print("\t#"); Serial.print(i); Serial.print("=>'"); Serial.print( medium.getInputWord(i) ); Serial.println("'");
+    Serial.print("\t#"); Serial.print(i); Serial.print("=>'"); Serial.print( medium.getInputWord(i) ); Serial.println("'");
   }
   // cleanup for next input
   medium.resetInput();
@@ -46,5 +56,6 @@ void loop()
 void serialEvent()
 {
   medium.processSerialInput();
+  medium.processSerialOutput();
 }
 

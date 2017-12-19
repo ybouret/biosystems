@@ -30,12 +30,14 @@ void p(const char *fmt, ... ) {
 void processInput()
 {
   const unsigned numWords = medium.findInputWords();
-  //Serial.print("#words="); Serial.println(numWords);
+  medium.print("#words = %4u\n", numWords);
+  /*
   p("#words = %4u\n", numWords);
   for (unsigned i = 0; i < numWords; ++i)
   {
     Serial.print("\t#"); Serial.print(i); Serial.print("=>'"); Serial.print( medium.getInputWord(i) ); Serial.println("'");
   }
+  */
   // cleanup for next input
   medium.resetInput();
 }
@@ -43,11 +45,10 @@ void processInput()
 void loop()
 {
   const float t = Medium_GetCurrentTime();
-  //servo.write( 180.0f * Medium::Triangle( t, period ) );
-  servo.write( 90.0f + 90.0f * Medium::SineWave( t, period ) );
+  servo.write( 180.0f * Medium::Triangle( t, period ) );
+  //servo.write( 90.0f + 90.0f * Medium::SineWave( t, period ) );
   if (medium.inputCompleted() )
   {
-    Serial.print("received '"); Serial.print(medium.input()); Serial.println("'");
     processInput();
   }
 

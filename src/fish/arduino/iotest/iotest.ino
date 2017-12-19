@@ -16,8 +16,6 @@ void setup()
   Serial.begin(baudRate);
   servo.attach(pinServo, lo, hi);
   servo.write(90.0f);
-  Serial.print("sizeof(List)="); Serial.println(sizeof(Medium::List< Medium::NodeOf<int> >));
-  Serial.print("sizeof(CharNode)="); Serial.println(sizeof(Medium::NodeOf<char>));
 }
 
 void processInput()

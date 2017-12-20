@@ -43,10 +43,10 @@ void processInput()
       goto END;
     }
 
-    if( 0 == strcmp(msg, "motion" ) )
+    if ( 0 == strcmp(msg, "motion" ) )
     {
-        motion = atoi(arg);
-        goto END;
+      motion = atoi(arg);
+      goto END;
     }
   }
 
@@ -57,7 +57,7 @@ END:
 
 void loop()
 {
-  const float t = Medium_GetCurrentTime();
+  float t = Medium_GetCurrentTime();
   switch (motion)
   {
     case 0:
@@ -67,6 +67,20 @@ void loop()
     case 1:
       servo.write( 90.0f + 90.0f * Medium::SineWave( t, period ) );
       break;
+
+    case 2: {
+        servo.write(0);
+        delay(1000);
+        t = Medium_GetCurrentTime();
+        servo.write(180);
+        while (Medium_GetCurrentTime() - t < 0.5)
+        {
+          Serial.print(servo.read());
+          Serial.print(" ");
+        }
+        Serial.println(" ");
+        motion = 0;
+      } break;
   }
 
   if (medium.inputCompleted() )

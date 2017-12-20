@@ -8,6 +8,7 @@ static const unsigned long   baudRate   = 115200;
 long lo = 750;
 long hi = 2250;
 float period = 12.0f;
+int   motion = 0;
 
 Medium medium;
 
@@ -20,21 +21,36 @@ void setup()
 
 void processInput()
 {
-  const unsigned numWords = medium.findInputWords();
-  medium.print("#words = %4u\n", numWords);
-  for(unsigned i=0;i<numWords;++i)
+  const unsigned numWords = medium.splitInputWords();
+  Serial.print("#words="); Serial.println(numWords);
+  for (unsigned i = 0; i < numWords; ++i)
   {
-    medium.print("\t=> %s\n", medium.getInputWord(i) );
+    Serial.print("\t"); Serial.println(medium[i]);
   }
 
-  if(2==numWords)
+  if (2 == numWords)
   {
-    const char *msg = medium.getInputWord(0);
-    const char *arg = medium.getInputWord(1);
-    
+    const char *msg = medium[0];
+    const char *arg = medium[1];
+
+    if ( 0 == strcmp(msg, "period") )
+    {
+      const float value = atof(arg);
+      if (value > 0)
+      {
+        period = value;
+      }
+      goto END;
+    }
+
+    if( 0 == strcmp(msg, "motion" ) )
+    {
+        motion = atoi(arg);
+        goto END;
+    }
   }
 
-  END:
+END:
   // cleanup for next input
   medium.resetInput();
 }
@@ -42,14 +58,21 @@ void processInput()
 void loop()
 {
   const float t = Medium_GetCurrentTime();
-  //servo.write( 180.0f * Medium::Triangle( t, period ) );
-  servo.write( 90.0f + 90.0f * Medium::SineWave( t, period ) );
+  switch (motion)
+  {
+    case 0:
+      servo.write( 180.0f * Medium::Triangle( t, period ) );
+      break;
+
+    case 1:
+      servo.write( 90.0f + 90.0f * Medium::SineWave( t, period ) );
+      break;
+  }
+
   if (medium.inputCompleted() )
   {
     processInput();
   }
-  medium.loopCallback();
-
 }
 
 void serialEvent()

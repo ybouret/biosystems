@@ -2,7 +2,9 @@
 #include "yocto/math/pbc.hpp"
 #include "yocto/program.hpp"
 #include "yocto/threading/scheme/simd.hpp"
-#include "yocto/random/default.hpp"
+#include "yocto/randomized/generator.hpp"
+#include "yocto/randomized/uniform-mt.hpp"
+
 #include "yocto/counted-object.hpp"
 #include "yocto/ptr/arc.hpp"
 #include "yocto/sequence/vector.hpp"
@@ -18,7 +20,8 @@ using namespace yocto;
 
 // types definition
 typedef point3d<double> Vertex;
-typedef Random::Default RandomGenerator;
+typedef Randomized::UniformMT DefaultBits;
+typedef Randomized::Generator<double,DefaultBits> IRandom;
 
 // global parameters
 Vertex Box(2,2,2);
@@ -83,11 +86,11 @@ public:
 
 
     inline int moveAndDetectImpact(const double     delta_lam,
-                                   Random::Uniform &ran ) throw()
+                                   IRandom         &ran ) throw()
     {
         assert(InReservoir==status);
         int count = 0;
-        Vertex delta = ran.getUnit3D<Vertex>(); delta *= delta_lam;
+        Vertex delta = ran.onSphere<Vertex>(); delta *= delta_lam;
         Vertex r_old = r;
         assert(r_old.z<=0);
         Vertex r_new = r_old + delta;
@@ -124,14 +127,15 @@ public:
     unit_t          count;
     Particles       running;
     Particles       waiting;
-    RandomGenerator ran;
+    IRandom         ran;
 
     inline explicit Worker() :
     count(0),
     running(),
     waiting(),
-    ran( Random::SimpleBits() )
+    ran( )
     {
+        ran.reseed( Randomized::Bits::Simple() );
     }
 
     inline virtual ~Worker() throw()
@@ -139,7 +143,7 @@ public:
     }
 
     void detectImpact(const double     delta_lam,
-                      Random::Uniform &ran) throw()
+                      IRandom         &ran) throw()
     {
         count = 0;
         Particles tmp;
@@ -174,7 +178,7 @@ public:
     Workers         workers;
     Particles       running;
     Particles       waiting;
-    RandomGenerator ran;
+    IRandom         ran;
 
     inline explicit Simulation(const size_t np,
                                const size_t nw,
@@ -184,8 +188,9 @@ public:
     workers(nw,as_capacity),
     running(),
     waiting(),
-    ran( Random::SimpleBits() )
+    ran(  )
     {
+        ran.reseed( Randomized::Bits::Simple() );
         for(size_t i=np;i>0;--i) { running.push_back( new Particle() ); }
         for(size_t i=nw;i>0;--i) { const Worker::Pointer pW( new Worker() ); workers.push_back(pW); }
     }

@@ -5,7 +5,7 @@
 #define PROBE_DELAY       1.0f
 
 //! PROBE_FREQUENCY in Hz
-#define PROBE_FREQUENCY   25.0f
+#define PROBE_FREQUENCY   5.0f
 
 // Board setup
 #define servo_pin 9
@@ -144,6 +144,40 @@ class memoryList : public _memoryList
       Serial.println(F(""));
     }
 
+    inline void interpolate(const float t, memoryNode *node ) const
+    {
+      const float time = (node->time = t - PROBE_DELAY);
+      //Serial.print(head->time); Serial.print(" "); Serial.print(time); Serial.print(" "); Serial.println(tail->time);
+
+      const memoryNode *curr = tail;
+      if (time <= curr->time)
+      {
+        // shouldn't happen, the last node is too young!
+        memcpy(node->fields, curr->fields, sizeof(memoryNode::fields));
+        node->quality = curr->quality;
+        //Serial.println(">");
+      }
+      else
+      {
+        // bracket the target time
+        const memoryNode *prev = curr->prev;
+        while (NULL != prev)
+        {
+          if ( (curr->time <= time) && (time <= prev->time) )
+          {
+            //Serial.println("+");
+            return;
+          }
+          curr = prev;
+          prev = curr->prev;
+        }
+        // shouldn't happen, the first node is too old!!
+        memcpy(node->fields, curr->fields, sizeof(memoryNode::fields));
+        node->quality = curr->quality;
+        //Serial.println("<");
+      }
+    }
+
   private:
     memoryList(const memoryList &);
     memoryList&operator=(const memoryList &);
@@ -168,12 +202,15 @@ static void Memory_setup()
   // prepare history
   Serial.print(F("Allocating #nodes=")); Serial.println(num_nodes);
   memory.setup(num_nodes);
+
+  // compute effective delay
   const float total_delay = PROBE_DELAY + memory_extra_delay;
   memory_delta_t = total_delay / (num_nodes - 1);
   Serial.print(F("memory_delta_t=")); Serial.println(memory_delta_t, 6);
   memory_last_time = Medium_GetCurrentTime();
 }
 
+// memory priming function
 static void Memory_priming()
 {
   const float t = Medium_GetCurrentTime();
@@ -185,7 +222,7 @@ static void Memory_priming()
   }
 }
 
-static void Memory_running()
+static void Memory_loop()
 {
   const float t = Medium_GetCurrentTime();
   if (t - memory_last_time >= memory_delta_t)
@@ -195,12 +232,23 @@ static void Memory_running()
   }
 }
 
+static void Servo_loop()
+{
+  const float t = Medium_GetCurrentTime();
+  memoryNode  node;
+  memory.interpolate(t, &node);
+  servo.write( 180.0f * Medium::Triangle(t, 10.0f) );
+  servo_last_time = t;
+}
+
 // global setup
 void setup()
 {
   Serial.begin(baudRate);
   while (!Serial);
   Serial.print(F("sizeof(memoryNode) = ")); Serial.println(sizeof(memoryNode));
+  Serial.print(F("sizeof(memoryNode::fields) = ")); Serial.println(sizeof(memoryNode::fields));
+
   Memory_setup();
   Servo_attach();
 }
@@ -224,8 +272,8 @@ void loop()
       break;
 
     case RUNNING:
-      Memory_running();
-      servo.write( 180.0f * Medium::Triangle(t, 10));
+      Memory_loop();
+      Servo_loop();
       break;
 
     case OUT_OF_MEMORY:

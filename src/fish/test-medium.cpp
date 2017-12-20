@@ -6,8 +6,8 @@
 using namespace yocto;
 
 typedef Medium::NodeOf<int>  Node;
-typedef Medium::List< Node > List;
-typedef Medium::Pool< Node > Pool;
+typedef Medium::ListOf<Node> List;
+typedef Medium::PoolOf<Node> Pool;
 
 #define NN 1000
 YOCTO_PROGRAM_START()

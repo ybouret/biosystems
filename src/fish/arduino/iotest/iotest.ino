@@ -21,7 +21,7 @@ void setup()
 
 void processInput()
 {
-  const unsigned numWords = medium.splitInputWords();
+  const unsigned numWords = medium.splitInput();
   Serial.print("#words="); Serial.println(numWords);
   for (unsigned i = 0; i < numWords; ++i)
   {

@@ -15,7 +15,10 @@
 
 
 //! PROBE_FREQUENCY in Hz
-#define PROBE_FREQUENCY   5.0f
+#define PROBE_FREQUENCY   40.0f
+
+//! OUTPUT_FREQUENCY in Hz
+#define OUTPUT_FREQUENCY  5.0f
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -221,7 +224,7 @@ class memoryList : public _memoryList
         memoryNode *node = cache.query();
         node->probe(head);
         push_front(node);
-        node->fields[MEMORY_ANGLE] = Medium::Triangle(node->time, servo_period);
+        node->fields[MEMORY_ANGLE] = 90.0f + 30.0f * Medium::SineWave(node->time, PROBE_DELAY / 2.0f);
       }
       else
       {
@@ -235,7 +238,7 @@ class memoryList : public _memoryList
       memoryNode *node = pop_back();
       node->probe(head);
       push_front(node);
-#if 1
+#if 0
       Serial.print(F("t="));  Serial.print(node->time);
       Serial.print(F(" Q=")); Serial.print(node->quality);
       Serial.println(F(""));
@@ -274,6 +277,7 @@ class memoryList : public _memoryList
               const float yp = fp[i];
               fn[i] = yc + fac * (yp - yc);
             }
+            node->quality = (curr->quality + prev->quality) / 2;
             return;
           }
           curr = prev;
@@ -365,9 +369,15 @@ static void Servo_loop()
   memory.interpolate(t, &node);
   //servo.write( 180.0f * Medium::Triangle(t, servo_period) );
   const float angle = node.fields[MEMORY_ANGLE];
-  Serial.println(angle);
   servo.write(angle);
-  servo_last_time = t;
+  if (t - servo_last_time >= 1.0 / OUTPUT_FREQUENCY)
+  {
+    Serial.print("t=");      Serial.print(t);
+    Serial.print(" angle="); Serial.print(angle);
+    Serial.print(" Q=");     Serial.print(node.quality);
+    Serial.println("");
+    servo_last_time = t;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

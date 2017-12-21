@@ -9,6 +9,7 @@ long lo = 750;
 long hi = 2250;
 float period = 12.0f;
 int   motion = 0;
+float amplitude = 180.0f;
 
 Medium medium;
 
@@ -48,6 +49,16 @@ void processInput()
       motion = atoi(arg);
       goto END;
     }
+
+    if ( 0 == strcmp(msg, "amplitude") )
+    {
+      const float value = atof(arg);
+      if (value > 0)
+      {
+        amplitude = value;
+      }
+      goto END;
+    }
   }
 
 END:
@@ -61,11 +72,11 @@ void loop()
   switch (motion)
   {
     case 0:
-      servo.write( 180.0f * Medium::Triangle( t, period ) );
+      servo.write( amplitude * Medium::Triangle( t, period ) );
       break;
 
     case 1:
-      servo.write( 90.0f + 90.0f * Medium::SineWave( t, period ) );
+      servo.write( 90.0f + amplitude * 0.5f * Medium::SineWave( t, period ) );
       break;
 
     case 2: {
@@ -81,6 +92,9 @@ void loop()
         Serial.println(" ");
         motion = 0;
       } break;
+
+    default:
+      motion = 0;
   }
 
   if (medium.inputCompleted() )

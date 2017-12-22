@@ -146,6 +146,8 @@ We define
 \begin{equation}
 \left\lbrace
 	\begin{array}{rcl}
+		\alpha & = & \dfrac{\EHin}{E_0}\\
+		\\
 		\kappa_x & = & \dfrac{J_x'}{1+J_6'+J_7'} k_p^x\\
 		\\
 		\kappa_0 & = & \kappa_6 + \kappa_7\\
@@ -170,194 +172,27 @@ with the steady state
 \begin{equation}
 	\Li{x}_\infty = \theta_x + E_0 \left[1-\alpha_\infty\right] \dfrac{\kappa_x}{k_l^x} \proton
 \end{equation}
-
+We have to solve an equation in the shape of
+\begin{equation}
+	\partial_t \Li{x} = \Lambda_x + V_x \left(1-\alpha\right) - k_l^x \Li{x} \;\; (V_x = E_0 \kappa_x \proton)
+\end{equation}
+so that
+\begin{equation}
+	\Li{x} = A_x(t) e^{-k_l^x t}
+\end{equation}
+and
+\begin{equation}
+	\partial_t A_x = \left[ \Lambda_x + V_x \left(1-\alpha\right) \right] e^{ k_l^x t}
+\end{equation}
+to yield
+\begin{equation}
+	A(t) = \Li{x}_\infty \left(e^{ k_l^x t } - 1 \right)
+	+ \int_0^t V_x\alpha_\infty e^{ \left[ k_l^x - (k_h+\kappa_0\proton)\right] u} \, \mathrm{d} u
+\end{equation}
+and finally
+\begin{equation}
+	\Li{x} = \Li{x}_\infty \left(1-e^{ -k_l^x t }\right) + 
+	E_0 \kappa_x \proton \alpha_\infty \dfrac{e^{-(k_h+\kappa_0\proton)t} - e^{-k_l^xt} }{k_l^x - (k_h+\kappa_0\proton)}
+\end{equation}
 \end{document}
 
-with
-\begin{equation}
-	\dot{\vec{Y}}_0 = 
-	\begin{pmatrix}
-	V_0\\
-	V_6+\Lambda_6\\
-	V_7+\Lambda_7\\
-	\end{pmatrix},
-	\;\;
-	\left\lbrace
-	\begin{array}{rcl}
-	V_0 & = &E_0 \omega_0\\
-	V_6 & = &E_0 \omega_6\\
-	V_7 & = &E_0 \omega_7\\
-	\omega_x & = & \dfrac{J_x' k_p^x \proton}{1+J_6'+J_7'}\\
-	\Lambda_x & = & k_l^x \theta_x \\
-	\end{array}
-	\right.
-\end{equation}
-
-\begin{equation}
-	\mymat{\Omega} = 
-	\begin{pmatrix}
-	\omega_0 + k_h & 0 & 0 \\
-	\omega_6 & k_l^6 & 0 \\
-	\omega_7 & 0 & k_l^7 \\
-	\end{pmatrix}
-\end{equation}
-
-\begin{equation}
-	\vec{F} = 
-	\begin{pmatrix}
-	k_q^6 \Li{6} \EHin + k_q^7 \Li{7} \EHin \\
-	k_q^6 \Li{6} \EHin\\
-	k_q^7 \Li{7} \EHin\\
-	\end{pmatrix}
-\end{equation}
-
-\subsection{First order solution}
-We solve
-\begin{equation}
-	\partial_t \vec{Y}_1 = \dot{\vec{Y}}_0 - \mymat{\Omega}\vec{Y}_1
-\end{equation}
-We first solve
-\begin{equation}
-	\partial_t \EHin_1 = V_0 - \left(\omega_0+k_h\right)  \EHin_1
-\end{equation}
-into
-\begin{equation}
-	\EHin_1 = E_0 \dfrac{\omega_0}{\omega_0+k_h}
-	\left\lbrack
-		 1-e^{-\left(\omega_0+k_h\right) t}
-	\right\rbrack,\;\;\widetilde{\EHin}_1 = E_0 \dfrac{\omega_0}{\omega_0+k_h}
-\end{equation}
-Then we have to solve
-\begin{equation}
-	\partial_t \Li{x}_1 = \Lambda_x + V_x - \omega_x  \EHin_1 - k_l^x \Li{x}_1.
-\end{equation}
-We compute
-\begin{equation}
-	\widetilde{\Li{x}}_1 = \theta_x + \dfrac{E_0}{k_l^x}  \dfrac{\omega_x k_h}{\omega_0+k_h}
-\end{equation}
-%and we recognize the long time solution and a short time solution.
-
-and we get 
-\begin{equation}
-	\Li{x}_1 = A_x(t) e^{-k_l^x t } 
-\end{equation}
-so that
-\begin{equation}
-	A_x = \int_0^t \left(\Lambda_x + V_x - \omega_x  \EHin_1 \right) e^{k_l^x u }\,\mathrm{d}u
-\end{equation}
-With 
-\begin{equation}
-	\sigma_x = E_0 \dfrac{\omega_0\omega_x}{\omega_0+k_h} < V_x = E_0 \omega_x
-\end{equation}
-\begin{equation}
-	A_x = \int_0^t 
-		\left(\Lambda_x + V_x - \sigma_x \right) e^{k_l^x u } 
-		+ \sigma_x e^{\left\lbrack k_l^x  - \left(\omega_0+k_h\right) \right\rbrack u}
-	\,\mathrm{d}u
-\end{equation}
-so that
-\begin{equation}
-	A_x = \dfrac{1}{k_l^x}\left(\Lambda_x + V_x - \sigma_x \right)\left(e^{k_l^x t}-1\right)
-	+ \sigma_x \dfrac{
-	e^{\left\lbrack k_l^x  - \left(\omega_0+k_h\right) \right\rbrack t} - 1
-	}{\left\lbrack k_l^x  - \left(\omega_0+k_h\right) \right\rbrack}
-\end{equation}
-and
-\begin{equation}
-	\Li{x}_1 = \underbrace{\dfrac{1}{k_l^x}\left(\Lambda_x + V_x - \sigma_x \right)}_{\widetilde{\Li{x}}_1}\left(1-e^{-k_l^x t}\right)
-	+\sigma_x \dfrac{
-	e^{- \left(\omega_0+k_h\right)  t} - e^{-k_l^x t}
-	}{ k_l^x  - \left(\omega_0+k_h\right) }
-\end{equation}
-We have the long time behaviour and the spiking behaviour.
-We get
-\begin{equation}
-	\partial_t \Li{x}_1 = \left(\Lambda_x + V_x - \sigma_x \right) e^{-k_l^x t }
-	+ \dfrac{\sigma_x}{k_l^x  - \left(\omega_0+k_h\right)}
-	\left(k_l^x e^{-k_l^x t} - \left(\omega_0+k_h\right) e^{- \left(\omega_0+k_h\right)  t}\right)
-\end{equation}
-
-\begin{equation}
-	\begin{array}{rl}
-	\partial_t \Li{x}_1 = 0 & \Leftrightarrow 0=\left(\Lambda_x + V_x - \sigma_x \right) 
-	+ \dfrac{\sigma_x}{k_l^x  - \left(\omega_0+k_h\right)}
-	\left(k_l^x   - \left(\omega_0+k_h\right) e^{ \left\lbrack k_l^x - \left(\omega_0+k_h\right)\right\rbrack  t}\right)\\
-	\end{array}
-\end{equation}
-
-\subsection{time reduction}
-We set $\tau = \left(\omega_0+k_h\right) t$, and we define
-\begin{equation}
-	\left\lbrace
-	\begin{array}{rcl}
-	\eta_j    & = & \dfrac{\omega_j}{\omega_0+k_h}\;\;(\eta_0=\eta_6+\eta_7)\\
-	\\
-	\lambda_j & = & \dfrac{k_l^j}{\omega_0+k_h}   \\
-	\\
-	\chi_j    & = & \dfrac{k_q^j}{\omega_0+k_h}   \\
-	\end{array}
-	\right.
-\end{equation}
-so that
-
-
-\begin{equation}
-	\partial_\tau \vec{Y} = 
-	\begin{pmatrix}
-		E_0 \eta_0 \\
-		E_0 \eta_6 + \lambda_6 \theta_6\\
-		E_0 \eta_7 + \lambda_7 \theta_7\\
-	\end{pmatrix}
-	-
-	\begin{pmatrix}
-	1&0&0\\
-	\eta_6&\lambda_6&0\\
-	\eta_7&0&\lambda_7\\
-	\end{pmatrix} 
-	\vec{Y}
-	-
-	\underbrace{
-	\begin{pmatrix}
-	\chi_6 \EHin \Li{6} + \chi_7 \EHin \Li{7}\\
-	\chi_6 \EHin \Li{6} \\
-	\chi_7 \EHin \Li{7} \\
-	\end{pmatrix}
-	}_{\vec{G}\left(\vec{Y}\right)}
-\end{equation}
-
-We find
-\begin{equation}
-	\EHin_1 = E_0\eta_0 \left(1-e^{ -\tau}\right), \;\; \widetilde{\EHin}_1 = E_0\eta_0
-\end{equation}
-then
-\begin{equation}
-	\widetilde{\Li{x}}_1 = \theta_x + E_0\left(1-\eta_0\right) \dfrac{\eta_x}{\lambda_x}
-\end{equation}
-and we solve
-\begin{equation}
-	\Li{x}_1 = A_x(\tau) e^{-\lambda_x \tau}
-\end{equation}
-so that
-\begin{equation}
-	e^{-\lambda_x \tau}\partial_\tau A_x   = E_0\eta_x + \lambda_x \theta_x - \eta_x E_0\eta_0 \left(1-e^{ -\tau}\right)
-	= E_0\eta_x(1-\eta_0) + \lambda_x \theta_x + \eta_x E_0\eta_0 e^{ -\tau}
-\end{equation}
-and
-\begin{equation}
-\begin{array}{rcl}
-	A_x(\tau) &= & \displaystyle \int_{0}^t 
-	\left\lbrack \left(E_0\eta_x(1-\eta_0)  + \lambda_x \theta_x \right) e^{-\lambda_x u}
-	+ \eta_x E_0\eta_0 e^{ (\lambda_x-1)u}\right\rbrack \, \mathrm{d}u\\
-	& = & \widetilde{\Li{x}}_1 \left(e^{\lambda_x \tau}-1\right) 
-	+ E_0\eta_0\eta_x \dfrac{e^{(\lambda_x-1)\tau}-1}{\lambda_x-1}\\
-	\end{array}
-\end{equation}
-and
-\begin{equation}
-	\Li{x}_1 = \widetilde{\Li{x}}_1 \left(1-e^{-\lambda_x \tau}\right) 
-	+ E_0\eta_0\eta_x \dfrac{e^{-\tau}-e^{-\lambda_x\tau}}{\lambda_x-1}
-\end{equation}
-
-
-USE THE DEPENDENCY of $\omega_x$ with outer lithium to check that $k_p^x/k_l^x$ is the same.
-\end{document}

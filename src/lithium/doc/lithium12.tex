@@ -129,25 +129,50 @@ which already imposes to \eqref{eq:E0}
 	E_0 = \EHin + \Eout \left(1+J'_6+J'_7\right)
 \end{equation}
 
-We are left with
-\begin{equation}
-	toto
-\end{equation}
-
-
-
 We find, using
 \begin{equation}
 	\vec{Y} = \begin{pmatrix}
-	\EHin\\
+	\alpha = \EHin/E_0\\
 	\Li{6}\\
 	\Li{7}\\
 	\end{pmatrix}
 \end{equation}
 that
 \begin{equation}
-	\partial_t \vec{Y} = \dot{\vec{Y}}_0 - \left\lbrack \mymat{\Omega}\vec{Y} + \vec{F}\left(\vec{Y}\right)\right\rbrack
+	\partial_t \vec{Y} = \dot{\vec{Y}}_0 - \mymat{\Omega}\vec{Y}
 \end{equation}
+
+We define
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+		\kappa_x & = & \dfrac{J_x'}{1+J_6'+J_7'} k_p^x\\
+		\\
+		\kappa_0 & = & \kappa_6 + \kappa_7\\
+	\end{array}
+\right.
+\end{equation}
+so that
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \alpha  & = & \kappa_0 \proton - \alpha \left(k_h + \kappa_0 \proton\right)\\
+	\partial_t \Li{x}  & = & \left(k_l^x \theta_x + E_0\kappa_x \proton\right) -  \left(E_0\kappa_x \proton \alpha +k_l^x \Li{x}\right)\\
+\end{array}
+\right.
+\end{equation}
+
+The approximation is
+\begin{equation}
+	\alpha(t) = \underbrace{\dfrac{\kappa_0 \proton}{k_h + \kappa_0 \proton}}_{\alpha_\infty\left(\proton\right)}\left[1-e^{\displaystyle-\left(k_h+\kappa_0\proton\right)t}  \right]
+\end{equation}
+with the steady state
+\begin{equation}
+	\Li{x}_\infty = \theta_x + E_0 \left[1-\alpha_\infty\right] \dfrac{\kappa_x}{k_l^x} \proton
+\end{equation}
+
+\end{document}
+
 with
 \begin{equation}
 	\dot{\vec{Y}}_0 = 

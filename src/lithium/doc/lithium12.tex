@@ -9,6 +9,7 @@
 \usepackage{mathptmx}
 \usepackage{xfrac}
 \usepackage{xcolor}
+\usepackage{bookman}
 
 \newcommand{\mychem}[1]{\mathtt{#1}}
 \newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
@@ -67,7 +68,7 @@ $$
 \begin{itemize}
 \item $\proton$ is a slowly varying parameter $h(t)$.
 \item $\LiOut{6}$ and  $\LiOut{7}$ are parameters.
-\item the second order return is negligible w.r.t first order recycling
+\item the second order return is negligible w.r.t first order recycling, ie $k_q^x\simeq0$.
 \end{itemize}
 
 We have the phase space described by
@@ -100,6 +101,14 @@ The "slow" rate vector is
 		-p_7\\
 		p_7-l_7\\
 	\end{pmatrix}
+	,\;\;\text{ with }
+	\left\lbrace
+	\begin{array}{rcl}
+	v_h & = & k_h \EHin\\
+	p_x & = & k_p \proton \LiE{x}\\
+	l_x & = & k_l^x \left(\Li{x}-\theta_x\right)\\
+	\end{array}
+	\right.
 \end{equation}
 
 \section{Semi Stationary}
@@ -111,7 +120,7 @@ We consider that we have the two equations
 	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiE{x}, & J_x = \dfrac{\LiE{x}}{\LiOut{x} \Eout} = \dfrac{k_a^x}{k_d^x}\\
 	 \end{array}
 \end{equation}
-leading to a constraint vector
+leading to a constraint vector $\vec{\Gamma}$
 with 
 \begin{equation}
 	J'_x = J_x \LiOut{x}
@@ -124,23 +133,23 @@ with
 	J_7' \Eout - \LiE{7} \\
 \end{pmatrix}
 \end{equation}
-which already imposes to \eqref{eq:E0}
+which already simplifies the matter conservation \eqref{eq:E0} into
 \begin{equation}
-	E_0 = \EHin + \Eout \left(1+J'_6+J'_7\right)
+	E_0 = \EHin + \Eout \left(1+J'_6+J'_7\right).
 \end{equation}
 
-We find, using
-\begin{equation}
-	\vec{Y} = \begin{pmatrix}
-	\alpha = \EHin/E_0\\
-	\Li{6}\\
-	\Li{7}\\
-	\end{pmatrix}
-\end{equation}
-that
-\begin{equation}
-	\partial_t \vec{Y} = \dot{\vec{Y}}_0 - \mymat{\Omega}\vec{Y}
-\end{equation}
+%We find, using
+%\begin{equation}
+%	\vec{Y} = \begin{pmatrix}
+%	\alpha = \EHin/E_0\\
+%	\Li{6}\\
+%	\Li{7}\\
+%	\end{pmatrix}
+%\end{equation}
+%that
+%\begin{equation}
+%	\partial_t \vec{Y} = \dot{\vec{Y}}_0 - \mymat{\Omega}\vec{Y}
+%\end{equation}
 
 We define
 \begin{equation}
@@ -154,26 +163,36 @@ We define
 	\end{array}
 \right.
 \end{equation}
-so that
+
+We started with 6 species, we have two constraints and matter conservation, so we are left with 3 degrees of freedom whose equations are given by:
 \begin{equation}
+\boxed{
 \left\lbrace
 \begin{array}{rcl}
 	\partial_t \alpha  & = & \kappa_0 \proton - \alpha \left(k_h + \kappa_0 \proton\right)\\
 	\partial_t \Li{x}  & = & \left(k_l^x \theta_x + E_0\kappa_x \proton\right) -  \left(E_0\kappa_x \proton \alpha +k_l^x \Li{x}\right)\\
 \end{array}
 \right.
+}
 \end{equation}
 
 \subsection{Solving}
 
-The approximation is
+The approximation is to use $\proton$ as a parameter, which leads to:
+
 \begin{equation}
+\boxed{
 	\alpha(t) = \underbrace{\dfrac{\kappa_0 \proton}{k_h + \kappa_0 \proton}}_{\alpha_\infty\left(\proton\right)}\left[1-e^{\displaystyle-\left(k_h+\kappa_0\proton\right)t}  \right]
+	}
 \end{equation}
-with the steady state
+
+which is the evolution of the NHE passing from the outer side to the inner side, a "simple" exponential growth/relaxation.\\
+We also get the steady states:
 \begin{equation}
+\boxed{
 	\label{eq:LiInf}
-	\Li{x}_\infty = \theta_x + E_0 \left[1-\alpha_\infty\right] \dfrac{\kappa_x}{k_l^x} \proton
+	\Li{x}_\infty = \theta_x + E_0 \left[1-\alpha_\infty\right].\dfrac{\kappa_x}{k_l^x} \proton
+	}
 \end{equation}
 We have to solve an equation in the shape of
 \begin{equation}
@@ -194,18 +213,22 @@ to yield
 \end{equation}
 and finally
 \begin{equation}
+\boxed{
 	\Li{x} = \Li{x}_\infty \left(1-e^{ -k_l^x t }\right) + 
 	E_0 \kappa_x \proton \alpha_\infty \dfrac{e^{-(k_h+\kappa_0\proton)t} - e^{-k_l^xt} }{k_l^x - (k_h+\kappa_0\proton)}
+	}
 \end{equation}
 
 \subsection{Simplifying}
 \begin{itemize}
 \item
-There is no separation at $t\to\infty$, which means that
+There is no isotopic separation at $t\to\infty$, which means that
 the lithiums just follow the GHK steady state equation.
-It means that
+It follows that
 \begin{equation}
+\boxed{
 	\Li{x}_\infty = \beta \LiOut{x}
+	}
 \end{equation}
 and that in the expression of $\Li{x}_\infty$ in \eqref{eq:LiInf}, the second term is negligible, or equal for $\Li{6}$ and $\Li{7}$.
 \item The leak is expected to be a diffusive process, with almost no difference in diffusion coefficient (see papers),
@@ -213,7 +236,7 @@ so that
 \begin{equation}
 	k_l^6 \simeq k_l^7 \simeq k_l
 \end{equation}
-and we now rescale the problem w.r.t the leak rate using
+and we now rescale the problem w.r.t THE leak rate using
 \begin{equation}
 	\tau = k_l t.
 \end{equation}
@@ -225,6 +248,10 @@ We finally obtain
 	\dfrac{E_0 \kappa_x \proton \alpha_\infty}{k_l}
 	 \dfrac{e^{-\frac{(k_h+\kappa_0\proton)}{k_l}\tau} - e^{-\tau} }{1 - \dfrac{(k_h+\kappa_0\proton)}{k_l}}
 \end{equation}
+and using
+\begin{equation}
+	\sigma_h = \dfrac{(k_h+\kappa_0\proton)}{k_l}
+\end{equation}
 
 \begin{equation}
 	\Li{x} = \beta \LiOut{x} \left(1-e^{ -\tau }\right) + 
@@ -232,6 +259,21 @@ We finally obtain
 	\left[
 	 \dfrac{e^{-\sigma_h\tau} - e^{-\tau} }{1 - \sigma_h}\right]
 \end{equation}
+and remember that $\proton$, $\alpha_\infty$ and $\sigma_h$ are time dependent through $\proton=h(t)$, and all the $\kappa$ terms are linked to the external lithium concentrations, and to the exchange rate $k_p$.
 
+\subsection{Raw interpretation}
+Along with the exponential growth/relaxation of $\Li{x}$ to its steady-state value, there is a bell-shaped function which appears.
+What is interesting is that
+\begin{equation}
+	\left[
+	 \dfrac{e^{-\sigma_h\tau} - e^{-\tau} }{1 - \sigma_h}\right] 
+	 \simeq \tau - \dfrac{1+\sigma_h}{2} \tau^2 + \ldots
+\end{equation}
+The first term shows that there is an intake independent of the recycling, and which is driven by the enzyme, and which, for each lithium, will be proportional to a mix a thermodynamic and kinetic constants.\\
+Globally, the bell-shaped function is peaked for
+\begin{equation}
+	\tau_{max} = \dfrac{\ln(\sigma_h)}{\sigma_h-1}\;\;\;(\tau_{max}=1 \text{ if } \sigma_h=1)
+\end{equation}
+Since the prefactor might be different, there is a possibility to have a significant isotopic separation before $\tau_{max}$ is reached.
 \end{document}
 

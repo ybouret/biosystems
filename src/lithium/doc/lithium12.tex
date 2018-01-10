@@ -164,12 +164,15 @@ so that
 \right.
 \end{equation}
 
+\subsection{Solving}
+
 The approximation is
 \begin{equation}
 	\alpha(t) = \underbrace{\dfrac{\kappa_0 \proton}{k_h + \kappa_0 \proton}}_{\alpha_\infty\left(\proton\right)}\left[1-e^{\displaystyle-\left(k_h+\kappa_0\proton\right)t}  \right]
 \end{equation}
 with the steady state
 \begin{equation}
+	\label{eq:LiInf}
 	\Li{x}_\infty = \theta_x + E_0 \left[1-\alpha_\infty\right] \dfrac{\kappa_x}{k_l^x} \proton
 \end{equation}
 We have to solve an equation in the shape of
@@ -194,5 +197,41 @@ and finally
 	\Li{x} = \Li{x}_\infty \left(1-e^{ -k_l^x t }\right) + 
 	E_0 \kappa_x \proton \alpha_\infty \dfrac{e^{-(k_h+\kappa_0\proton)t} - e^{-k_l^xt} }{k_l^x - (k_h+\kappa_0\proton)}
 \end{equation}
+
+\subsection{Simplifying}
+\begin{itemize}
+\item
+There is no separation at $t\to\infty$, which means that
+the lithiums just follow the GHK steady state equation.
+It means that
+\begin{equation}
+	\Li{x}_\infty = \beta \LiOut{x}
+\end{equation}
+and that in the expression of $\Li{x}_\infty$ in \eqref{eq:LiInf}, the second term is negligible, or equal for $\Li{6}$ and $\Li{7}$.
+\item The leak is expected to be a diffusive process, with almost no difference in diffusion coefficient (see papers),
+so that 
+\begin{equation}
+	k_l^6 \simeq k_l^7 \simeq k_l
+\end{equation}
+and we now rescale the problem w.r.t the leak rate using
+\begin{equation}
+	\tau = k_l t.
+\end{equation}
+\end{itemize}
+
+We finally obtain
+\begin{equation}
+\Li{x} = \beta \LiOut{x} \left(1-e^{ -\tau }\right) + 
+	\dfrac{E_0 \kappa_x \proton \alpha_\infty}{k_l}
+	 \dfrac{e^{-\frac{(k_h+\kappa_0\proton)}{k_l}\tau} - e^{-\tau} }{1 - \dfrac{(k_h+\kappa_0\proton)}{k_l}}
+\end{equation}
+
+\begin{equation}
+	\Li{x} = \beta \LiOut{x} \left(1-e^{ -\tau }\right) + 
+	\dfrac{E_0 \kappa_x \proton \alpha_\infty}{k_l}
+	\left[
+	 \dfrac{e^{-\sigma_h\tau} - e^{-\tau} }{1 - \sigma_h}\right]
+\end{equation}
+
 \end{document}
 

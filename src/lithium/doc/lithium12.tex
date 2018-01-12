@@ -285,9 +285,20 @@ We use the expression to rewrite
 	\dfrac{E_0}{\beta}
 	\dfrac{\proton \alpha_\infty}{1+J_6'+J_7'}
 	}_{\phi_x}
+	\underbrace{
 	\left[
 	 \dfrac{e^{-\sigma_h\tau} - e^{-\tau} }{1 - \sigma_h}\right]
+	 }_{B\left(\tau,\sigma_h\right)}
 	 \right\rbrack
+\end{equation}
+so that
+\begin{equation}
+	\dfrac{\Li{7} }{\Li{6}} = \dfrac{\LiOut{7} }{\LiOut{6}} 
+	\dfrac{\left(1-e^{ -\tau }\right) + \phi_7 B\left(\tau,\sigma_h\right)}{\left(1-e^{ -\tau }\right) + \phi_6 B\left(\tau,\sigma_h\right) } 
+\end{equation}
+and for short times
+\begin{equation}
+	\dfrac{\Li{7} }{\Li{6}} - 1 \simeq \dfrac{\phi_7-\phi_6}{1+\phi_6} \left(1-\dfrac{\sigma}{2\left(1+\phi_6\right)}\tau\right)
 \end{equation}
 
 \end{document}

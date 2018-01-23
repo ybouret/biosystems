@@ -35,6 +35,10 @@ FOREACH(item IN LISTS to_remove)
 	ENDIF()
 ENDFOREACH(item)
 
+IF(IS_DIRECTORY "bin")
+		EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E remove_directory "bin")
+ENDIF()
+
 MESSAGE("")
 
 

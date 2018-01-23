@@ -45,11 +45,13 @@
 \newcommand{\mymat}[1]{{\bm{#1}}}
 \newcommand{\mydet}[1]{{\left|{#1}\right|}}
 
+\newcommand{\ratioLi}{ {\left(\dfrac{\Li{7}}{\Li{6}}\right)} }
+\newcommand{\deltaLi}{ {\delta\!\!\spLi{7}} }
 \begin{document}
 
 \section{Mechanism}
 $$
-	\delta^7Li = \left(
+	\deltaLi = \left(
 		\dfrac{\left(\dfrac{Li^7}{Li^6}\right)_{sample}}
 		{\left(\dfrac{Li^7}{Li^6}\right)_{standard}}
 		 -1 
@@ -303,6 +305,25 @@ with
 	\dfrac{1+\phi_7}{1+\phi_6}
 	- \dfrac{\phi_7-\phi_6}{2\left(1+\phi_6\right)^2} \sigma \tau
 \end{equation}	
+
+We have
+\begin{equation}
+	\delta\spLi{7} = 10^{3}\left\lbrack \dfrac{\ratioLi}{\ratioLi_{ref}} - 1\right\rbrack
+\end{equation}
+so that
+\begin{equation}
+	\ratioLi = \ratioLi_{ref} \left[ 1 + 10^{-3}  \deltaLi \right]
+\end{equation}
+
+\begin{equation}
+	\ratioLi_{out} = \ratioLi_{ref} \left[ 1 + 10^{-3}  \deltaLi_{out} \right]
+\end{equation}
+and
+\begin{equation}
+\boxed{
+	\dfrac{\ratioLi}{\ratioLi_{out}} = \dfrac{1+10^{-3}\deltaLi}{1+10^{-3}\deltaLi_{out}} = \Omega\left(\tau,\phi_6,\phi_7,\sigma\right)
+	}
+\end{equation}
 
 \end{document}
 

@@ -4,6 +4,7 @@
 #include "yocto/math/io/data-set.hpp"
 #include "yocto/ios/icstream.hpp"
 #include "yocto/ios/ocstream.hpp"
+#include "yocto/math/types.hpp"
 
 using namespace yocto;
 using namespace math;
@@ -22,6 +23,7 @@ YOCTO_PROGRAM_START()
 
     vector<double> t;
     vector<double> dLi7;
+
     {
         data_set<double> ds;
         ds.use(1,t);
@@ -35,8 +37,11 @@ YOCTO_PROGRAM_START()
     std::cerr << "dLi7=" << dLi7 << std::endl;
 
     vector<double> Omega(N);
+    vector<double> ln_t(N);
+
     for(size_t i=1;i<=N;++i)
     {
+        ln_t[i]  = Log(t[i]);
         Omega[i] = (1e-3*(dLi7[i]-dLi7_out))/(1.0+1e-3*dLi7_out);
     }
 

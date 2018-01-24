@@ -333,13 +333,45 @@ and
 \end{equation}
 and
 \begin{equation}
-	\tilde\Omega\left(\tau,\phi_6,\phi_7,\sigma\right) \simeq \dfrac{\phi_7-\phi_6}{1+\phi_6} - \dfrac{\phi_7-\phi_6}{2\left(1+\phi_6\right)^2} \sigma \tau
+	\tilde\Omega\left(\tau,\phi_6,\phi_7,\sigma\right) = \Omega\left(\tau,\phi_6,\phi_7,\sigma\right) -1 \simeq \dfrac{\phi_7-\phi_6}{1+\phi_6} - \dfrac{\phi_7-\phi_6}{2\left(1+\phi_6\right)^2} \sigma \tau
 \end{equation}
 
 We have
 \begin{equation}
 	\tilde\Omega = \dfrac{\left(\phi_7-\phi_6\right)B\left(\tau,\sigma_h\right)}{\left(1-e^{ -\tau }\right) + \phi_6 B\left(\tau,\sigma_h\right)}
 \end{equation}	
+using
+\begin{equation}
+	\phi_7 = \left(1+\gamma_7\right)\phi_6
+\end{equation}
+we get
+\begin{equation}
+	 \tilde\Omega\left(\tau,\phi_6,\gamma_7,\sigma\right) = \gamma_7 
+	 \dfrac{\phi_6 B\left(\tau,\sigma_h\right)}{\left(1-e^{ -\tau }\right) + \phi_6 B\left(\tau,\sigma_h\right)}
+	 = \gamma_7 \dfrac{\phi_6}{1+\phi_6} \left[ \dfrac{\left(1+\phi_6\right)B\left(\tau,\sigma_h\right) }{\left(1-e^{ -\tau }\right) + \phi_6 B\left(\tau,\sigma_h\right)} \right]
+\end{equation}
+
+When $\sigma\to1$, we have
+\begin{equation}
+	B\left(\tau,\sigma\to1\right) = - \left[ \dfrac{e^{-\sigma\tau}-e^{-\tau}}{\sigma-1} \right] 
+	= -\left[\partial_\sigma e^{-\sigma\tau} \right]_{\sigma\to1} 
+\end{equation}
+\begin{equation}
+	B\left(\tau,\sigma\to1\right) \simeq -\left[\partial_\sigma e^{-\sigma\tau}\vert_{\sigma\to1} + \left(\sigma-1\right) \partial_\sigma^2 e^{-\sigma\tau}\vert_{\sigma\to1} + \dfrac{\left(\sigma-1\right)^2}{2} \partial_\sigma^3 e^{-\sigma\tau}\vert_{\sigma\to1}\right]
+\end{equation}
+
+\begin{equation}
+	B\left(\tau,\sigma\to1\right) \simeq 
+	-\left[ -\tau e^{-\tau} + \left(\sigma-1\right) \tau^2 e^{-\tau} - \left(\sigma-1\right)^2 \dfrac{\tau^3}{2} e^{-\tau} \right]	
+\end{equation}
+\begin{equation}
+	B\left(\tau,\sigma\to1\right) \simeq 
+	\tau e^{-\tau} 
+	\left[ 
+	1 - \left(\sigma-1\right) \tau \left(1-\dfrac{\left(\sigma-1\right) \tau}{2} \right)
+	\right]	
+\end{equation}
+
 
 \end{document}
 

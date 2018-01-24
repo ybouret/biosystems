@@ -81,13 +81,13 @@ public:
     inline double Fit(const double u, const array<double> &a )
     {
         const double du     = a[1];
-        const double factor = a[2];
+        const double gamma7 = a[2];
         const double phi6   = a[3];
         const double sigma  = a[4];
 
         //const double fac6 = phi6 / (1.0+phi6);
         const double tau  = exp(u-du);
-        return factor * Core(tau,phi6,sigma);
+        return gamma7 * phi6/(1.0+phi6) * Core(tau,phi6,sigma);
     }
 
 };
@@ -145,19 +145,20 @@ YOCTO_PROGRAM_START()
     vector<bool>   used( aorg.size(), false );
     vector<double> aerr( aorg.size(), 0 );
     double &du     = aorg[1];
-    double &factor = aorg[2];
+    double &gamma7 = aorg[2];
     double &phi6   = aorg[3];
     double &sigma  = aorg[4];
 
     samples.prepare( aorg.size() );
 
-    factor = Omega[1];
+    const double Omega0 = Omega[1];
     sigma  = 2;
     phi6   = 0.1;
-
+    const double fac6 = phi6/(1.0+phi6);
+    gamma7 = Omega0/fac6;
     {
         vector<double> uh;
-        linear_find(0.5*factor,uh,u, Omega);
+        linear_find(0.5*Omega0,uh,u, Omega);
         std::cerr << "uh=" << uh << std::endl;
         if(uh.size()<=0)
         {
@@ -165,7 +166,7 @@ YOCTO_PROGRAM_START()
         }
         du = tao::sum(uh)/uh.size();
     }
-    std::cerr << "factor=" << factor << std::endl;
+    std::cerr << "gamma7=" << gamma7 << std::endl;
     std::cerr << "du    =" << du     << std::endl;
 
     sample.computeD2(F,aorg);
@@ -184,6 +185,9 @@ YOCTO_PROGRAM_START()
         throw exception("couldn't find du");
     }
     GLS<double>::display(std::cerr,aorg,aerr);
+
+    return 0;
+
     {
         ios::wcstream fp("fit1.dat");
         for(size_t i=1;i<=N;++i)
@@ -226,6 +230,8 @@ YOCTO_PROGRAM_START()
             fp("%.15g %.15g %.15g\n", u[i], Omega[i], OmegaFit[i]);
         }
     }
+
+
 
 }
 YOCTO_PROGRAM_END()

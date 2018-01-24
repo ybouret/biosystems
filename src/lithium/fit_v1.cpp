@@ -90,6 +90,19 @@ public:
         return gamma7 * phi6/(1.0+phi6) * Core(tau,phi6,sigma);
     }
 
+    void saveFit(const char *fn, const array<double> &U, const array<double> &a)
+    {
+        ios::wcstream fp(fn);
+        const double umin = U[1];
+        const double umax = U[U.size()];
+        const size_t M = 1000;
+        for(size_t i=0;i<=M;++i)
+        {
+            const double u = umin + i * (umax-umin) / double(M);
+            fp("%g %g\n", u, Fit(u,a) );
+        }
+    }
+
 };
 
 
@@ -152,8 +165,8 @@ YOCTO_PROGRAM_START()
     samples.prepare( aorg.size() );
 
     const double Omega0 = Omega[1];
-    sigma  = 2;
-    phi6   = 0.1;
+    sigma  = 10;
+    phi6   = 1;
     const double fac6 = phi6/(1.0+phi6);
     gamma7 = Omega0/fac6;
     {
@@ -177,7 +190,6 @@ YOCTO_PROGRAM_START()
             fp("%.15g %.15g %.15g\n", u[i], Omega[i], OmegaFit[i]);
         }
     }
-
     std::cerr << "du standalone" << std::endl;
     used[1] = true;
     if( !samples.fit_with(F,aorg,used,aerr) )
@@ -185,8 +197,9 @@ YOCTO_PROGRAM_START()
         throw exception("couldn't find du");
     }
     GLS<double>::display(std::cerr,aorg,aerr);
+    Li.saveFit("omfit0.dat",u,aorg);
 
-    return 0;
+
 
     {
         ios::wcstream fp("fit1.dat");
@@ -195,6 +208,8 @@ YOCTO_PROGRAM_START()
             fp("%.15g %.15g %.15g\n", u[i], Omega[i], OmegaFit[i]);
         }
     }
+    Li.saveFit("omfit1.dat",u,aorg);
+
 
     std::cerr << "sigma/phi6" << std::endl;
     used[1] = false;
@@ -213,6 +228,9 @@ YOCTO_PROGRAM_START()
             fp("%.15g %.15g %.15g\n", u[i], Omega[i], OmegaFit[i]);
         }
     }
+    Li.saveFit("omfit2.dat",u,aorg);
+
+
     std::cerr << "all" << std::endl;
     used[1] = true;
     used[4] = true;
@@ -230,7 +248,11 @@ YOCTO_PROGRAM_START()
             fp("%.15g %.15g %.15g\n", u[i], Omega[i], OmegaFit[i]);
         }
     }
+    Li.saveFit("omfit3.dat",u,aorg);
 
+
+
+    return 0;
 
 
 }

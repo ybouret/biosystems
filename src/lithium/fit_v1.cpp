@@ -20,54 +20,56 @@ class Lithium
 {
 public:
 
-    static double BumpFull(const double tau, const double sigma)
+    static double peak_full(const double tau, const double sigma)
     {
         return ( exp(-tau) - exp( -sigma * tau ) )/(sigma-1.0);
     }
 
-    static double BumpZero(const double tau, const double sigma)
+    static double peak_zero(const double tau, const double sigma)
     {
         const double st = (sigma-1.0) * tau;
         return tau * exp( -tau ) * ( 1.0 - st*(1.0-0.5*st) );
     }
 
-    static double Bump(const double tau, const double sigma)
+    static double peak(const double tau, const double sigma)
     {
         if( Fabs(sigma-1.0)<1e-6 )
         {
-            return BumpZero(tau,sigma);
+            return peak_zero(tau,sigma);
         }
         else
         {
-            return BumpFull(tau,sigma);
+            return peak_full(tau,sigma);
         }
     }
 
-    static void TestBump()
+#if 1
+    static void TestPeak()
     {
         const double sigma[] = { 0.9, 0.99, 0.999, 1.001, 1.01, 1.1 };
         const double dtau = 0.001;
-        ios::wcstream fp("bump.dat");
+        ios::wcstream fp("peak.dat");
         for(size_t i=0;i<sizeof(sigma)/sizeof(sigma[0]);++i)
         {
             const double sig = sigma[i];
             for(double tau=dtau;tau<=5.0;tau+=dtau)
             {
-                fp("%g %g %g\n", tau, BumpFull(tau,sig), BumpZero(tau,sig));
+                fp("%g %g %g\n", tau, peak_full(tau,sig), peak_zero(tau,sig));
             }
             fp("\n");
         }
     }
+#endif
 
-    static double Grow(const double tau)
+    static double grow(const double tau)
     {
         return (1.0-exp(-tau));
     }
 
-    static double Core(const double tau, const double phi6, const double sigma )
+    static double omega(const double tau, const double phi6, const double sigma )
     {
-        const double B = Bump(tau,sigma);
-        return (1.0+phi6)*B/(Grow(tau)+phi6*B);
+        const double B = peak(tau,sigma);
+        return (1.0+phi6)*B/(grow(tau)+phi6*B);
     }
 
     Lithium()
@@ -78,6 +80,7 @@ public:
     {
     }
 
+#if 0
     inline double Fit(const double u, const array<double> &a )
     {
         const double du     = a[1];
@@ -102,6 +105,7 @@ public:
             fp("%g %g\n", u, Fit(u,a) );
         }
     }
+#endif
 
 };
 
@@ -109,7 +113,8 @@ public:
 
 YOCTO_PROGRAM_START()
 {
-    Lithium::TestBump();
+    Lithium::TestPeak();
+
     if(argc<=2) throw exception("usage: %s dLi7_out dLi7.dat",program);
 
     dLi7_out = strconv::to_double(argv[1],"dLi7_out");
@@ -153,6 +158,7 @@ YOCTO_PROGRAM_START()
     Lithium Li;
     GLS<double>::Samples samples(1);
     GLS<double>::Sample &sample = samples.append(u,Omega,OmegaFit);
+#if 0
     GLS<double>::Function F( &Li, & Lithium::Fit );
     vector<double> aorg(4);
     vector<bool>   used( aorg.size(), false );
@@ -249,7 +255,7 @@ YOCTO_PROGRAM_START()
         }
     }
     Li.saveFit("omfit3.dat",u,aorg);
-
+#endif
 
 
     return 0;

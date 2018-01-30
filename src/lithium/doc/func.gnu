@@ -16,4 +16,8 @@ max_bump_long(sigma) = 1.0/(sigma+log(sigma));
 
 xlx(x,a)=a+x+log(x+exp(exp(1)-a-1)-1)
 
+bump_der_num(tau,sigma) = (1-sigma-exp(sigma*tau)+sigma*exp(tau))*exp(-(sigma*tau+tau))/(sigma-1);
+
+
+
 set samples 16384

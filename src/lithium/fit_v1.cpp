@@ -150,7 +150,7 @@ YOCTO_PROGRAM_START()
         ios::wcstream fp("omega.dat");
         for(size_t i=1;i<=N;++i)
         {
-            fp("%.15g %.15g %.15g\n", u[i], Omega[i], dLi7[i]);
+            fp("%.15g %.15g %.15g %.15g\n", u[i], Omega[i], dLi7[i], t[i]);
         }
     }
 

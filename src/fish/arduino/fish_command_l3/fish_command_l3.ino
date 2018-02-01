@@ -9,7 +9,7 @@
 
 
 //! OUTPUT_FREQUENCY in Hz
-#define OUTPUT_FREQUENCY  5.0f
+#define OUTPUT_FREQUENCY  2.0f
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -51,7 +51,7 @@ class RoboFish : public Servo
       last_output(-1),
       period(5.0f),
       amplitude(90.0f),
-      motion( Medium::Triangle )
+      motion( Medium::CosWave )
     {}
 
     //! destructor
@@ -72,13 +72,17 @@ class RoboFish : public Servo
       const float real_dt = t - last_output;
       if (real_dt >= dt_output)
       {
-        const float Fn = read_force(pinFn);
-        const float Ft = read_force(pinFt);
+        const float Fn      = read_force(pinFn);
+        const float Ft      = read_force(pinFt);
+        const int   quality = (int)floorf( (100.0f * dt_output / real_dt) + 0.5f );
+
+#if 1
         Serial.print(F("t="));      Serial.print(t);
         Serial.print(F(" angle=")); Serial.print(angle);
         Serial.print(F(" Fn="));    Serial.print(Fn);
         Serial.print(F(" Ft="));    Serial.print(Ft);
-        Serial.println(F(""));
+        Serial.print(F(" q="));      Serial.println(quality);
+#endif
         last_output = t;
       }
     }
@@ -96,36 +100,53 @@ static Medium    medium;
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-//! table of commands into flash memory
-static  const char * const PROGMEM commands[]  =
-{
-  "period"
-};
 
-//! command aliases
-#define __PERIOD commands[0]
 
-static void processInput()
+static void on_period(const char *value)
 {
-  const unsigned numWords = medium.splitInput();
-  if (2 == numWords)
+  const float tmp = atof(value);
+  if (tmp > 0)
   {
-    const char *cmd = medium[0];
-    if ( Medium_streq(__PERIOD, cmd) )
-    {
-      const float tmp = atof(medium[1]);
-      if (tmp > 0)
-      {
-        fish.period = tmp;
-      }
-      goto END_INPUT;
-    }
+    fish.period = tmp;
+  }
+  Serial.print("period="); Serial.println(fish.period);
+}
+
+static void on_amplitude(const char *value)
+{
+  const float tmp = atof(value);
+  if (tmp > 0)
+  {
+    fish.amplitude = tmp;
+  }
+  Serial.print("amplitude="); Serial.println(fish.amplitude);
+}
+
+static void on_motion(const char *value)
+{
+  if (Medium_streq(value, "tri"))
+  {
+    fish.motion = Medium::TriangleWave; Serial.println("TriangleWave");
+    return;
   }
 
-  goto END_INPUT;
-END_INPUT:
-  medium.resetInput();
+  if (Medium_streq(value, "cos"))
+  {
+    fish.motion = Medium::CosWave;  Serial.println("CosWave");
+    return;
+  }
+
 }
+
+
+static const Medium::Parameter PROGMEM __params[]  =
+{
+  MEDIUM_PARAM(period),
+  MEDIUM_PARAM(motion),
+  MEDIUM_PARAM(amplitude)
+};
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -158,15 +179,12 @@ void loop()
 {
   fish.loop();
   // I/O
-  if (medium.inputCompleted() )
-  {
-    processInput();
-  }
+  medium.processInput(MEDIUM_PARAMETERS(__params));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-// global I/O
+// Global I/O
 //
 ////////////////////////////////////////////////////////////////////////////////
 void serialEvent()

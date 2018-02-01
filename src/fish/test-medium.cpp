@@ -2,6 +2,7 @@
 #include "medium.h"
 #include "yocto/program.hpp"
 #include "yocto/code/alea.hpp"
+#include "yocto/ios/ocstream.hpp"
 
 using namespace yocto;
 
@@ -41,7 +42,12 @@ YOCTO_PROGRAM_START()
 
     Medium medium;
 
-
+    ios::wcstream fp("waves.dat");
+    const double period=10;
+    for(double x=-2*period;x<=2*period;x+=0.01)
+    {
+        fp("%g %g %g\n",x,Medium::TriangleWave(x,period),Medium::CosWave(x,period));
+    }
 }
 YOCTO_PROGRAM_END()
 

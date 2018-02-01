@@ -75,10 +75,10 @@ static Servo servo;
 static float         servo_angle_mini = 0.0f;
 static float         servo_angle_maxi = 180.0f;
 static float         servo_angle_init = 90.0f;
-static unsigned long servo_pwm_lower = 750;
-static unsigned long servo_pwm_upper = 2250;
-static float         servo_last_time = 0.0f;
-static float         servo_period    = 10.0f;
+static unsigned long servo_pwm_lower  = 750;
+static unsigned long servo_pwm_upper  = 2250;
+static float         servo_last_time  = 0.0f;
+static float         servo_period     = 10.0f;
 
 //______________________________________________________________________________
 //
@@ -117,6 +117,7 @@ static float FtInit  = 2.50f; //!< default tangential force reading (means 0 for
 //______________________________________________________________________________
 
 #define MEMORY_FIELDS 3
+
 #define MEMORY_ANGLE  0
 #define MEMORY_FN     1
 #define MEMORY_FT     2
@@ -139,7 +140,7 @@ struct memoryNode
   memoryNode *prev;                  //!< for list
   float       time;                  //!< recorded time
   float       fields[MEMORY_FIELDS]; //!< space for fields
-  int         quality;               //!< quality
+  int         quality;               //!< quality: do we respect delta_t
 
   //! probe current time and fields
   /**

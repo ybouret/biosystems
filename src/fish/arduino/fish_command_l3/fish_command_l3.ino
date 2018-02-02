@@ -139,7 +139,7 @@ static void on_motion(const char *value)
 }
 
 
-static const Medium::Parameter PROGMEM __params[]  =
+static const Medium::Parameter __params[]  =
 {
   MEDIUM_PARAM(period),
   MEDIUM_PARAM(motion),
@@ -180,6 +180,33 @@ void loop()
   fish.loop();
   // I/O
   medium.processInput(MEDIUM_PARAMETERS(__params));
+#if 0
+  if ( medium.inputCompleted() )
+  {
+    Serial.println("---> got input");
+
+    if (2 == medium.splitInput(NULL))
+    {
+      const char   *cmd  = medium.getField(0);
+      const unsigned num_params = sizeof(__params) / sizeof(__params[0]);
+      for (unsigned i = 0; i < num_params; ++i)
+      {
+
+        const Medium::Parameter &info = __params[i];
+        Serial.print("\ttesting"); Serial.println(info.name);
+        if ( Medium_streq(info.name, cmd) )
+        {
+          const char *value_string = medium.getField(1);
+          info.proc(value_string);
+          goto END_INPUT;
+        }
+      }
+    }
+
+END_INPUT:
+    medium.resetInput();
+  }
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

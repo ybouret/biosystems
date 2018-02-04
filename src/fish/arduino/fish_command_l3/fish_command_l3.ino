@@ -109,7 +109,7 @@ static void on_period(const char *value)
   {
     fish.period = tmp;
   }
-  Serial.print("period="); Serial.println(fish.period);
+  Serial.print(F("period=")); Serial.println(fish.period);
 }
 
 static void on_amplitude(const char *value)
@@ -119,7 +119,7 @@ static void on_amplitude(const char *value)
   {
     fish.amplitude = tmp;
   }
-  Serial.print("amplitude="); Serial.println(fish.amplitude);
+  Serial.print(F("amplitude=")); Serial.println(fish.amplitude);
 }
 
 static void on_motion(const char *value)
@@ -138,14 +138,37 @@ static void on_motion(const char *value)
 
 }
 
+static const char PROGMEM periodID[] = "period";
+static const Medium::Callback  PROGMEM periodCB   = on_period;
 
-static const Medium::Parameter __params[]  =
+static const Medium::Parameter
+//PROGMEM
+__params[]  =
 {
   MEDIUM_PARAM(period),
   MEDIUM_PARAM(motion),
   MEDIUM_PARAM(amplitude)
 };
 
+static const char PROGMEM string_a[] = "period";
+static const char PROGMEM string_b[] = "motion";
+
+struct Info
+{
+  const char * PROGMEM name;
+  int                  indx;  
+};
+
+static const Info PROGMEM infos[] =
+{
+  { string_a, 67}
+};
+
+static const char * const PROGMEM Data [] =
+{
+  string_a,
+  string_b
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -168,6 +191,35 @@ void setup()
 
   // prepare the timings
   fish.last_output = Medium_GetCurrentTime();
+
+#if 0
+  Serial.print("sizeof(param)="); Serial.println(sizeof(Medium::Parameter));
+  for (size_t i = 0; i < sizeof(__params) / sizeof(__params[0]); ++i)
+  {
+    Medium::Parameter p = {NULL, ""};
+    //memcpy_P(&p, pgm_read_word( (&__params[i]) ), sizeof(Medium::Parameter));
+    memcpy(&p, &__params[i], sizeof(Medium::Parameter));
+    Serial.print("name="); Serial.println(p.name);
+  }
+#endif
+
+#if 0
+  for (size_t i = 0; i < sizeof(Data) / sizeof(Data[0]); ++i)
+  {
+    char buffer[16];
+    strcpy_P(buffer, (const char *)pgm_read_word( Data + i ));
+    Serial.print("Data="); Serial.println(buffer);
+  }
+#endif
+
+ #if 0
+  for (size_t i = 0; i < sizeof(infos) / sizeof(infos[0]); ++i)
+  {
+    char buffer[16];
+    strcpy_P(buffer, (const char *)pgm_read_word( infos[i].name ));
+    Serial.print("Data="); Serial.println(buffer);
+  }
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

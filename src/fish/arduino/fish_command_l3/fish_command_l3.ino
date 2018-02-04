@@ -81,7 +81,7 @@ class RoboFish : public Servo
         Serial.print(F(" angle=")); Serial.print(angle);
         Serial.print(F(" Fn="));    Serial.print(Fn);
         Serial.print(F(" Ft="));    Serial.print(Ft);
-        Serial.print(F(" q="));      Serial.println(quality);
+        Serial.print(F(" q="));     Serial.println(quality);
 #endif
         last_output = t;
       }
@@ -99,7 +99,6 @@ static Medium    medium;
 // input processing
 //
 ////////////////////////////////////////////////////////////////////////////////
-
 
 
 static void on_period(const char *value)
@@ -122,52 +121,31 @@ static void on_amplitude(const char *value)
   Serial.print(F("amplitude=")); Serial.println(fish.amplitude);
 }
 
+static const char PROGMEM __tri[] = "tri";
+static const char PROGMEM __cos[] = "cos";
+
 static void on_motion(const char *value)
 {
-  if (Medium_streq(value, "tri"))
+
+  if (Medium_streq_P(value, __tri))
   {
-    fish.motion = Medium::TriangleWave; Serial.println("TriangleWave");
+    fish.motion = Medium::TriangleWave; Serial.println(F("TriangleWave"));
     return;
   }
 
-  if (Medium_streq(value, "cos"))
+  if (Medium_streq_P(value, __cos))
   {
-    fish.motion = Medium::CosWave;  Serial.println("CosWave");
+    fish.motion = Medium::CosWave;  Serial.println(F("CosWave"));
     return;
   }
 
 }
 
-static const char PROGMEM periodID[] = "period";
-static const Medium::Callback  PROGMEM periodCB   = on_period;
-
-static const Medium::Parameter
-//PROGMEM
-__params[]  =
+static const Medium::Parameter __params[]  =
 {
   MEDIUM_PARAM(period),
   MEDIUM_PARAM(motion),
   MEDIUM_PARAM(amplitude)
-};
-
-static const char PROGMEM string_a[] = "period";
-static const char PROGMEM string_b[] = "motion";
-
-struct Info
-{
-  const char * PROGMEM name;
-  int                  indx;  
-};
-
-static const Info PROGMEM infos[] =
-{
-  { string_a, 67}
-};
-
-static const char * const PROGMEM Data [] =
-{
-  string_a,
-  string_b
 };
 
 
@@ -192,34 +170,6 @@ void setup()
   // prepare the timings
   fish.last_output = Medium_GetCurrentTime();
 
-#if 0
-  Serial.print("sizeof(param)="); Serial.println(sizeof(Medium::Parameter));
-  for (size_t i = 0; i < sizeof(__params) / sizeof(__params[0]); ++i)
-  {
-    Medium::Parameter p = {NULL, ""};
-    //memcpy_P(&p, pgm_read_word( (&__params[i]) ), sizeof(Medium::Parameter));
-    memcpy(&p, &__params[i], sizeof(Medium::Parameter));
-    Serial.print("name="); Serial.println(p.name);
-  }
-#endif
-
-#if 0
-  for (size_t i = 0; i < sizeof(Data) / sizeof(Data[0]); ++i)
-  {
-    char buffer[16];
-    strcpy_P(buffer, (const char *)pgm_read_word( Data + i ));
-    Serial.print("Data="); Serial.println(buffer);
-  }
-#endif
-
- #if 0
-  for (size_t i = 0; i < sizeof(infos) / sizeof(infos[0]); ++i)
-  {
-    char buffer[16];
-    strcpy_P(buffer, (const char *)pgm_read_word( infos[i].name ));
-    Serial.print("Data="); Serial.println(buffer);
-  }
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -232,33 +182,6 @@ void loop()
   fish.loop();
   // I/O
   medium.processInput(MEDIUM_PARAMETERS(__params));
-#if 0
-  if ( medium.inputCompleted() )
-  {
-    Serial.println("---> got input");
-
-    if (2 == medium.splitInput(NULL))
-    {
-      const char   *cmd  = medium.getField(0);
-      const unsigned num_params = sizeof(__params) / sizeof(__params[0]);
-      for (unsigned i = 0; i < num_params; ++i)
-      {
-
-        const Medium::Parameter &info = __params[i];
-        Serial.print("\ttesting"); Serial.println(info.name);
-        if ( Medium_streq(info.name, cmd) )
-        {
-          const char *value_string = medium.getField(1);
-          info.proc(value_string);
-          goto END_INPUT;
-        }
-      }
-    }
-
-END_INPUT:
-    medium.resetInput();
-  }
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -8,24 +8,33 @@ import time;
 
 #______________________________________________________________________________
 #
-# global variables
+# create arduino as a serial interface
 #______________________________________________________________________________
 
-print("---> initialize serial com");
+print("---> Initialize serial com");
 serial_bauds = 115200;
 serial_path  = '/dev/cu.usbmodem1421';
 arduino     = serial.Serial(port=serial_path,baudrate=serial_bauds);
-print("---> waiting");
-#todo: test Arduino is ready using Serial API
+print("---> Cleanup Arduino");
 arduino.setDTR(False);
 time.sleep(1);
 arduino.flushInput();
 arduino.setDTR(True);
-#time.sleep(1);
 
-fields=[];
-t=float(0);
+#______________________________________________________________________________
+#
+# global variables
+#______________________________________________________________________________
+fields   = [];
+t        = float(0);
+warmup   = 5;
+record   = 10;
+filename = "output.dat";
 
+#______________________________________________________________________________
+#
+# SendCommand function
+#______________________________________________________________________________
 def SendCommand(cmd):
     global arduino;
     output = (str(cmd) );
@@ -45,7 +54,7 @@ def ReadFields():
     global arduino;
     fields = [];
     line = str(arduino.readline()).strip();
-    print("<%s>"%line);
+    print("arduino:<%s>"%line);
     if len(line) <= 0:
         return False; # empty line
     if '#' == line[0]:
@@ -63,18 +72,15 @@ def ReadFields():
     
 #______________________________________________________________________________
 #
-# run: SEND A COMMENT FROM ARDUINO IN SETUP!!!
+# saving data
 #______________________________________________________________________________   
-ReadFields();
-
-SendCommand("period 4");
-filename = "output.dat";
 headers  = False; 
 
-while arduino.is_open:
-    if not ReadFields():
-        continue;
-        
+def SaveData() :
+    global headers;
+    global filename;
+    global fields;
+    global t;
     output_range= range(1,len(fields));
     #__________________________________________________________________________
     #
@@ -100,19 +106,36 @@ while arduino.is_open:
             fp.write(' ');
             fp.write(fields[f].split('=')[1]);
         fp.write('\n');
-            
-    #print(fields);
-    if t>=5: 
-        break;
-        
-print("---> done");
-SendCommand("period 11");
+    return;
+    
+#______________________________________________________________________________
+#
+# run: SEND A COMMENT FROM ARDUINO IN SETUP!!!
+#______________________________________________________________________________  
+print("---> Running");
 ReadFields();
-SendCommand("amplitude 45");
+SendCommand("period 4");
+SendCommand("motion tri");
+run_time = warmup+record;
+while arduino.is_open:
+    if not ReadFields():
+        continue;
+        
+    if(t<=warmup):
+        continue;
+        
+    SaveData();
+    
+    if t>=run_time: 
+        break;
+print("---> done");
+
+SendCommand("period 10");
+ReadFields();
+SendCommand("amplitude 30");
 ReadFields();
 SendCommand("motion tri");
 ReadFields();
 
-fp.close();
 arduino.close();
 

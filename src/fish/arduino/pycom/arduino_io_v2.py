@@ -45,7 +45,7 @@ def ReadFields():
     global arduino;
     fields = [];
     line = str(arduino.readline()).strip();
-    print("input:<%s>"%line);
+    print("<%s>"%line);
     if len(line) <= 0:
         return False; # empty line
     if '#' == line[0]:
@@ -67,13 +67,14 @@ def ReadFields():
 #______________________________________________________________________________   
 ReadFields();
 
-SendCommand("period 11");
+SendCommand("period 4");
 filename = "output.dat";
 headers  = False; 
 
 while arduino.is_open:
     if not ReadFields():
         continue;
+        
     output_range= range(1,len(fields));
     #__________________________________________________________________________
     #
@@ -105,6 +106,13 @@ while arduino.is_open:
         break;
         
 print("---> done");
+SendCommand("period 11");
+ReadFields();
+SendCommand("amplitude 45");
+ReadFields();
+SendCommand("motion tri");
+ReadFields();
+
 fp.close();
 arduino.close();
 

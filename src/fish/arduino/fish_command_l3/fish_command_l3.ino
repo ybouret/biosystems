@@ -9,7 +9,7 @@
 
 
 //! OUTPUT_FREQUENCY in Hz
-#define OUTPUT_FREQUENCY  5.0f
+#define OUTPUT_FREQUENCY  10.0f
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -84,6 +84,7 @@ class RoboFish : public Servo
         Serial.print(F(" q="));     Serial.println(quality);
 #endif
         last_output = t;
+        //Serial.println(F("#comment"));
       }
     }
 
@@ -108,7 +109,7 @@ static void on_period(const char *value)
   {
     fish.period = tmp;
   }
-  Serial.print(F("period=")); Serial.println(fish.period);
+  Serial.print(F("#period=")); Serial.println(fish.period);
 }
 
 static void on_amplitude(const char *value)
@@ -118,7 +119,7 @@ static void on_amplitude(const char *value)
   {
     fish.amplitude = tmp;
   }
-  Serial.print(F("amplitude=")); Serial.println(fish.amplitude);
+  Serial.print(F("#amplitude=")); Serial.println(fish.amplitude);
 }
 
 static const char PROGMEM __tri[] = "tri";
@@ -129,13 +130,13 @@ static void on_motion(const char *value)
 
   if (Medium_streq_P(value, __tri))
   {
-    fish.motion = Medium::TriangleWave; Serial.println(F("TriangleWave"));
+    fish.motion = Medium::TriangleWave; Serial.println(F("#TriangleWave"));
     return;
   }
 
   if (Medium_streq_P(value, __cos))
   {
-    fish.motion = Medium::CosWave;  Serial.println(F("CosWave"));
+    fish.motion = Medium::CosWave;  Serial.println(F("#CosWave"));
     return;
   }
 
@@ -165,11 +166,13 @@ void setup()
   Servo &servo = fish;
   servo.detach();
   servo.attach(pinServo); // TODO: check PWN parameters
-  servo.write(90.0f);
+  servo.write(90.0f+fish.amplitude);
 
   // prepare the timings
   fish.last_output = Medium_GetCurrentTime();
 
+  //send a comment line to help Serial sync!!!
+  Serial.println(F("#ready!"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

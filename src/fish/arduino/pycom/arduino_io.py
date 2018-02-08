@@ -5,10 +5,10 @@ import time;
 
 print("---> initialize serial com");
 serial_bauds = 115200;
-serial_path  = '/dev/cu.usbmodem21';
+serial_path  = '/dev/cu.usbmodem1421';
 serialIO     = serial.Serial(port=serial_path,baudrate=serial_bauds);
 print("---> waiting");
-time.sleep(0.5);
+time.sleep(2);
 
 print("---> sending parameters");
 serialIO.write("period 5\n".encode());
@@ -42,11 +42,12 @@ print("time_start=%g"%time_start);
 #read other lines, assuming well formatted
 #______________________________________________________________________________
 while True:
-     # read a string line, stripping trailing whitespaces
+    # read a string line, stripping trailing whitespaces
     fields     = str(serialIO.readline()).strip().split();
+    print(fields);
     num_fields = len(fields);
     if num_fields<=2:
-        print("bad number of fields");
+        print("bad number of fields=%d"%num_fields);
         break; #error
     time_info = fields[0].split('=');
     if len(time_info) != 2:
@@ -58,8 +59,7 @@ while True:
     t = float(time_info[1]);
     if t-time_start>5:
         break; # normal ending
-    # process fields for saving
-    print(fields);
+
     
 print("---> done");
 serialIO.close();

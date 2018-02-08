@@ -50,7 +50,7 @@ class RoboFish : public Servo
       dt_output(1.0f / OUTPUT_FREQUENCY),
       last_output(-1),
       period(5.0f),
-      amplitude(90.0f),
+      amplitude(10.0f),
       motion( Medium::CosWave )
     {}
 

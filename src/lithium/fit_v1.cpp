@@ -158,6 +158,28 @@ YOCTO_PROGRAM_START()
     Lithium Li;
     GLS<double>::Samples samples(1);
     GLS<double>::Sample &sample = samples.append(u,Omega,OmegaFit);
+    (void)sample;
+
+    const size_t   nvar = 4;
+    samples.prepare(nvar);
+    vector<double> aorg(nvar);
+    vector<double> aerr(nvar);
+    vector<bool>   used(nvar);
+
+    double &du = aorg[1];
+    const double Omega0 = Omega[1];
+    {
+        vector<double> uh;
+        linear_find(0.5*Omega0,uh,u, Omega);
+        std::cerr << "uh=" << uh << std::endl;
+        if(uh.size()<=0)
+        {
+            throw exception("couldn't find half value for Omega");
+        }
+        du = tao::sum(uh)/uh.size();
+    }
+    std::cerr << "du approx " << du << std::endl;
+    
 #if 0
     GLS<double>::Function F( &Li, & Lithium::Fit );
     vector<double> aorg(4);

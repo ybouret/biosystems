@@ -73,7 +73,7 @@ YOCTO_PROGRAM_START()
     aorg[2] = log(2.0)/t[N];
     sample.computeD2(F,aorg);
     {
-        ios::wcstream fp("intra0.txt");
+        ios::wcstream fp("intra0.dat");
         for(size_t i=1;i<=N;++i)
         {
             fp("%g %g %g\n", t[i], C[i], Cfit[i]);
@@ -89,7 +89,7 @@ YOCTO_PROGRAM_START()
     }
     GLS<double>::display(std::cerr, aorg, aerr);
     {
-        ios::wcstream fp("intra1.txt");
+        ios::wcstream fp("intra1.dat");
         for(size_t i=1;i<=N;++i)
         {
             fp("%g %g %g\n", t[i], C[i], Cfit[i]);
@@ -103,7 +103,7 @@ YOCTO_PROGRAM_START()
     }
     GLS<double>::display(std::cerr, aorg, aerr);
     {
-        ios::wcstream fp("intra2.txt");
+        ios::wcstream fp("intra2.dat");
         for(size_t i=1;i<=N;++i)
         {
             fp("%g %g %g\n", t[i], C[i], Cfit[i]);

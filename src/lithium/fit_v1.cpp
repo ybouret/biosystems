@@ -80,20 +80,25 @@ public:
     {
     }
 
-#if 0
+#if 1
+#define I_DU   1
+#define I_GAM7 2
+#define I_PHI6 3
+#define I_SIG  4
+
     inline double Fit(const double u, const array<double> &a )
     {
-        const double du     = a[1];
-        const double gamma7 = a[2];
-        const double phi6   = a[3];
-        const double sigma  = a[4];
+        const double du     = a[I_DU];
+        const double gamma7 = a[I_GAM7];
+        const double phi6   = a[I_PHI6];
+        const double sigma  = a[I_SIG];
 
         //const double fac6 = phi6 / (1.0+phi6);
         const double tau  = exp(u-du);
-        return gamma7 * phi6/(1.0+phi6) * Core(tau,phi6,sigma);
+        return gamma7 * phi6/(1.0+phi6) * omega(tau,phi6,sigma);
     }
 
-    void saveFit(const char *fn, const array<double> &U, const array<double> &a)
+    void saveFit(const string &fn, const array<double> &U, const array<double> &a)
     {
         ios::wcstream fp(fn);
         const double umin = U[1];
@@ -150,13 +155,14 @@ YOCTO_PROGRAM_START()
         ios::wcstream fp("omega.dat");
         for(size_t i=1;i<=N;++i)
         {
-            fp("%.15g %.15g %.15g %.15g\n", u[i], Omega[i], dLi7[i], t[i]);
+            //fp("%.15g %.15g %.15g %.15g\n", u[i], Omega[i], dLi7[i], t[i]);
+            fp("%.15g %.15g %.15g %.15g\n", t[i], Omega[i], u[i], Log( Fabs(Omega[i])));
         }
     }
 
-#if 0
 
     Lithium Li;
+    GLS<double>::Function F( &Li, & Lithium::Fit );
     GLS<double>::Samples samples(1);
     GLS<double>::Sample &sample = samples.append(u,Omega,OmegaFit);
     (void)sample;
@@ -167,7 +173,13 @@ YOCTO_PROGRAM_START()
     vector<double> aerr(nvar);
     vector<bool>   used(nvar);
 
-    double &du = aorg[1];
+    double &du     = aorg[I_DU];
+    double &gamma7 = aorg[I_GAM7];
+    double &phi6   = aorg[I_PHI6];
+    double &sigma  = aorg[I_SIG];
+
+
+
     const double Omega0 = Omega[1];
     {
         vector<double> uh;
@@ -180,10 +192,56 @@ YOCTO_PROGRAM_START()
         du = tao::sum(uh)/uh.size();
     }
     std::cerr << "du approx " << du << std::endl;
-#endif
+
+
+    phi6   = 10;
+    gamma7 = Omega0 * (1+phi6)/phi6;
+    const string param_name = "param.dat";
+    ios::ocstream::overwrite(param_name);
+
+    for(sigma=1.5;sigma<=20;sigma+=0.5)
+    {
+
+        const string fn = vformat("sig%g.dat",sigma);
+        Li.saveFit( fn, u, aorg);
+
+        std::cerr << "Fit du alone..." << std::endl;
+        used.make(nvar,false);
+        used[I_DU] = true;
+        if( !samples.fit_with(F,aorg,used,aerr) )
+        {
+            throw exception("couldn't find du");
+        }
+        GLS<double>::display(std::cerr,aorg,aerr);
+        Li.saveFit( fn, u, aorg);
+
+        std::cerr << "Fit phi/gam..." << std::endl;
+        used.make(nvar,false);
+        used[I_PHI6] = true;
+        used[I_GAM7] = true;
+        if( !samples.fit_with(F,aorg,used,aerr) )
+        {
+            throw exception("couldn't find phi/gam");
+        }
+        GLS<double>::display(std::cerr,aorg,aerr);
+        Li.saveFit( fn, u, aorg);
+
+        std::cerr << "Fit all..." << std::endl;
+        used[I_DU]= true;
+        if( !samples.fit_with(F,aorg,used,aerr) )
+        {
+            throw exception("couldn't findall");
+        }
+        GLS<double>::display(std::cerr,aorg,aerr);
+        Li.saveFit( fn, u, aorg);
+        {
+            ios::acstream fp(param_name);
+            fp("%.15g %.15g %.15g %.15g\n", sigma, du, phi6, gamma7);
+        }
+    }
+
 
 #if 0
-    GLS<double>::Function F( &Li, & Lithium::Fit );
     vector<double> aorg(4);
     vector<bool>   used( aorg.size(), false );
     vector<double> aerr( aorg.size(), 0 );
@@ -194,7 +252,6 @@ YOCTO_PROGRAM_START()
 
     samples.prepare( aorg.size() );
 
-    const double Omega0 = Omega[1];
     sigma  = 10;
     phi6   = 1;
     const double fac6 = phi6/(1.0+phi6);

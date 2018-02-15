@@ -154,6 +154,7 @@ YOCTO_PROGRAM_START()
         }
     }
 
+#if 0
 
     Lithium Li;
     GLS<double>::Samples samples(1);
@@ -179,7 +180,8 @@ YOCTO_PROGRAM_START()
         du = tao::sum(uh)/uh.size();
     }
     std::cerr << "du approx " << du << std::endl;
-    
+#endif
+
 #if 0
     GLS<double>::Function F( &Li, & Lithium::Fit );
     vector<double> aorg(4);

@@ -49,6 +49,11 @@ void setup_LIDARS()
   digitalWrite(MY_LIDAR_CTRL1, LOW);
   digitalWrite(MY_LIDAR_CTRL2, LOW);
   delay(MY_LIDAR_DELAY);
+
+  //________________________________________________________________________________
+  //
+  // wake up everyone: this is a reset...
+  //________________________________________________________________________________
   digitalWrite(MY_LIDAR_CTRL1, HIGH);
   digitalWrite(MY_LIDAR_CTRL2, HIGH);
   delay(MY_LIDAR_DELAY);
@@ -86,11 +91,10 @@ void setup_LIDARS()
 }
 
 
-void give_LIDAR(struct Adafruit_VL53L0X *lidar, const int indx)
+void give_LIDAR(struct Adafruit_VL53L0X *lidar)
 {
   VL53L0X_RangingMeasurementData_t measure;
   lidar->rangingTest(&measure, false);
-  //Serial.print(F("Distance@")); Serial.print(indx,HEX); Serial.print(F(" : "));
   Serial.print(F(" "));
   if (measure.RangeStatus != 4) {  // phase failures have incorrect data
     Serial.print(measure.RangeMilliMeter);
@@ -104,9 +108,9 @@ void give_LIDAR(struct Adafruit_VL53L0X *lidar, const int indx)
 
 void give_LIDARS()
 {
-  Serial.print(F("Distances: "));
-  give_LIDAR(&lidar1, MY_LIDAR_CTRL1);
-  give_LIDAR(&lidar2, MY_LIDAR_CTRL2);
+  Serial.print(F("Distances    : "));
+  give_LIDAR(&lidar1);
+  give_LIDAR(&lidar2);
   Serial.println(F(""));
 }
 
@@ -142,18 +146,46 @@ void give_9DOF()
 
 
   // Display the accel results (acceleration is measured in m/s^2)
-  Serial.print("A ");
-  Serial.print("X: "); Serial.print(aevent.acceleration.x, 4); Serial.print("  ");
-  Serial.print("Y: "); Serial.print(aevent.acceleration.y, 4); Serial.print("  ");
-  Serial.print("Z: "); Serial.print(aevent.acceleration.z, 4); Serial.print("  ");
-  Serial.println("m/s^2");
+  Serial.print(F("Accelerations: "));
+
+  Serial.print(F("[ "));
+  Serial.print(aevent.acceleration.x, 4); Serial.print(F(" "));
+  Serial.print(aevent.acceleration.y, 4); Serial.print(F(" "));
+  Serial.print(aevent.acceleration.z, 4);
+  Serial.println(F("] m/s^2"));
 
   // Display the mag results (mag data is in uTesla)
-  Serial.print("M ");
-  Serial.print("X: "); Serial.print(mevent.magnetic.x, 1); Serial.print("  ");
-  Serial.print("Y: "); Serial.print(mevent.magnetic.y, 1); Serial.print("  ");
-  Serial.print("Z: "); Serial.print(mevent.magnetic.z, 1); Serial.print("  ");
-  Serial.println("uT");
+  Serial.print(F("Magnetism    : "));
+  Serial.print(F("[ "));
+  Serial.print(mevent.magnetic.x, 1); Serial.print(F(" "));
+  Serial.print(mevent.magnetic.y, 1); Serial.print(F(" "));
+  Serial.print(mevent.magnetic.z, 1);
+  Serial.println(F("] uT"));
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Force Sensort
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+#define PRESSURE_PIN 0
+#define FLEXION_PIN  5
+
+void setup_Forces()
+{
+  pinMode(PRESSURE_PIN, INPUT);
+  pinMode(FLEXION_PIN, INPUT);
+}
+
+void give_Forces()
+{
+  const int pressure = analogRead(PRESSURE_PIN);
+  const int flexion  = analogRead(FLEXION_PIN);
+  Serial.print(F("Analog Forces:"));
+  Serial.print(F(" Pressure=")); Serial.print(pressure);
+  Serial.print(F(" Flexion="));  Serial.print(flexion);
+  Serial.println(F(""));
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -167,12 +199,14 @@ void setup()
   setup_Serial();
   setup_LIDARS();
   setup_9DOF();
+  setup_Forces();
 }
 
 void loop()
 {
   give_LIDARS();
   give_9DOF();
+  give_Forces();
   delay(200);
 }
 

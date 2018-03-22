@@ -21,27 +21,34 @@
 #include "BluefruitConfig.h"
 
 // WARNING: this is specific to the Feather Board
-Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
+//Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
+Adafruit_BluefruitLE_SPI *ble = 0;
 
 // TODO: Check the return code of the functions
 void setup_BLE()
 {
-  ble.begin();
-  ble.factoryReset();
-  ble.echo(false);
+  Serial.print(F("BLE.."));
+  ble = new Adafruit_BluefruitLE_SPI(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
+  ble->begin();
+  ble->factoryReset();
+  ble->echo(false);
+
+#if 0
   /* Wait for connection */
   while (! ble.isConnected()) {
     delay(500);
   }
-  ble.setMode(BLUEFRUIT_MODE_DATA);
+#endif
+  ble->setMode(BLUEFRUIT_MODE_DATA);
+  Serial.println(F("..OK"));
 }
 
 void give_BLE()
 {
   /*
-  const float t = 1.0e-6f * float( micros() );
-  ble.print( 90.0f + 90.0f * sin( 6.14f * (t / 10.0f) ) );
-  ble.println();
+    const float t = 1.0e-6f * float( micros() );
+    ble.print( 90.0f + 90.0f * sin( 6.14f * (t / 10.0f) ) );
+    ble.println();
   */
 }
 #endif
@@ -63,7 +70,7 @@ void setup_Serial()
 
   // wait until serial port opens for native USB devices
   while (! Serial) {
-    delay(1);
+    delay(10);
   }
 }
 #endif
@@ -82,15 +89,13 @@ void setup_Serial()
 #define MY_LIDAR_CTRL2 10
 #define MY_LIDAR_DELAY 100
 
-Adafruit_VL53L0X *lidar1 = NULL; //Adafruit_VL53L0X();
-Adafruit_VL53L0X *lidar2 = NULL; //Adafruit_VL53L0X();
+Adafruit_VL53L0X *lidar1 = NULL;
+Adafruit_VL53L0X *lidar2 = NULL;
 
 
 void setup_LIDARS()
 {
-
-
-  Serial.print(F("Initializing LIDARS/2*")); Serial.println(sizeof(Adafruit_VL53L0X));
+  Serial.print(F("LIDARS.."));
   lidar1 = new Adafruit_VL53L0X();
   lidar2 = new Adafruit_VL53L0X();
 
@@ -126,7 +131,7 @@ void setup_LIDARS()
 
   //________________________________________________________________________________
   //
-  // shutdown LIDAR1, wake up LIDAR2, setup LIDAR2,
+  // wake up LIDAR2, setup LIDAR2,
   //________________________________________________________________________________
   digitalWrite(MY_LIDAR_CTRL2, HIGH);
   delay(MY_LIDAR_DELAY);
@@ -135,13 +140,7 @@ void setup_LIDARS()
     Serial.println(F("LIDAR2 failure"));
     while (1);
   }
-
-  //________________________________________________________________________________
-  //
-  // wake up LIDAR1
-  //________________________________________________________________________________
-  //digitalWrite(MY_LIDAR_CTRL1, HIGH);
-  //delay(MY_LIDAR_DELAY);
+  Serial.println(F("..OK"));
 }
 
 
@@ -149,14 +148,14 @@ void give_LIDAR(struct Adafruit_VL53L0X *lidar)
 {
   VL53L0X_RangingMeasurementData_t measure;
   lidar->rangingTest(&measure, false);
+  
 #if 1 == USE_BLE
   if (measure.RangeStatus != 4) {  // phase failures have incorrect data
-    const int rm = int(measure.RangeMilliMeter);
-    ble.print(rm);
+    ble->print(measure.RangeMilliMeter);
   }
   else
   {
-    ble.print(F("-1"));
+    ble->print(F("-1"));
   }
 #endif
 
@@ -176,11 +175,11 @@ void give_LIDARS()
   Serial.print(F("Distances    : "));
   give_LIDAR(lidar1);
 #if 1 == USE_BLE
-  ble.print(F(","));
+  ble->print(F(","));
 #endif
   give_LIDAR(lidar2);
 #if 1 == USE_BLE
-  ble.println();
+  ble->println();
 #endif
 
   Serial.println();
@@ -321,6 +320,9 @@ void setup()
 
 }
 
+#define LED_PIN 13
+int LED_STATUS = HIGH;
+
 void loop()
 {
 #if 1 == USE_LIDARS
@@ -343,6 +345,8 @@ void loop()
   give_BLE();
 #endif
 
-  delay(100);
+  digitalWrite(LED_PIN, LED_STATUS);
+  if (LED_STATUS == HIGH) LED_STATUS = LOW; else LED_STATUS = HIGH;
+  delay(200);
 }
 

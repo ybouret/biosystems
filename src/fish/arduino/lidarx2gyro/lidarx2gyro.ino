@@ -1,12 +1,50 @@
 #include <Arduino.h>
 
-#define USE_LIDARS 0
+#define USE_LIDARS 1
 #define USE_9DOF   0
 #define USE_SERVO  0
 #define USE_FORCE  0
-#define USE_BLE    0
-#define USE_SERIAL 0
+#define USE_BLE    1
+#define USE_SERIAL 1
 
+//////////////////////////////////////////////////////////////////////////////////
+//
+// BLE
+//
+//////////////////////////////////////////////////////////////////////////////////
+#if 1 == USE_BLE
+#include <SPI.h>
+#include <Adafruit_BLE.h>
+#include <Adafruit_BluefruitLE_SPI.h>
+#include <Adafruit_BluefruitLE_UART.h>
+
+#include "BluefruitConfig.h"
+
+// WARNING: this is specific to the Feather Board
+Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
+
+// TODO: Check the return code of the functions
+void setup_BLE()
+{
+  ble.begin();
+  ble.factoryReset();
+  ble.echo(false);
+  /* Wait for connection */
+  while (! ble.isConnected()) {
+    delay(500);
+  }
+  ble.setMode(BLUEFRUIT_MODE_DATA);
+}
+
+void give_BLE()
+{
+  /*
+  const float t = 1.0e-6f * float( micros() );
+  ble.print( 90.0f + 90.0f * sin( 6.14f * (t / 10.0f) ) );
+  ble.println();
+  */
+}
+#endif
 
 //////////////////////////////////////////////////////////////////////////////////
 //
@@ -44,14 +82,17 @@ void setup_Serial()
 #define MY_LIDAR_CTRL2 10
 #define MY_LIDAR_DELAY 100
 
-Adafruit_VL53L0X lidar1 = Adafruit_VL53L0X();
-Adafruit_VL53L0X lidar2 = Adafruit_VL53L0X();
+Adafruit_VL53L0X *lidar1 = NULL; //Adafruit_VL53L0X();
+Adafruit_VL53L0X *lidar2 = NULL; //Adafruit_VL53L0X();
+
 
 void setup_LIDARS()
 {
 
-  //Serial.println(F("Initializing LIDARS"));
-  Wire.begin();
+
+  Serial.print(F("Initializing LIDARS/2*")); Serial.println(sizeof(Adafruit_VL53L0X));
+  lidar1 = new Adafruit_VL53L0X();
+  lidar2 = new Adafruit_VL53L0X();
 
   //________________________________________________________________________________
   //
@@ -77,7 +118,7 @@ void setup_LIDARS()
   //________________________________________________________________________________
   digitalWrite(MY_LIDAR_CTRL2, LOW);
   delay(MY_LIDAR_DELAY);
-  if ( !lidar1.begin(MY_LIDAR_ADDR1) )
+  if ( !lidar1->begin(MY_LIDAR_ADDR1) )
   {
     Serial.println(F("LIDAR1 failure"));
     while (1);
@@ -89,7 +130,7 @@ void setup_LIDARS()
   //________________________________________________________________________________
   digitalWrite(MY_LIDAR_CTRL2, HIGH);
   delay(MY_LIDAR_DELAY);
-  if ( !lidar2.begin(MY_LIDAR_ADDR2) )
+  if ( !lidar2->begin(MY_LIDAR_ADDR2) )
   {
     Serial.println(F("LIDAR2 failure"));
     while (1);
@@ -108,6 +149,17 @@ void give_LIDAR(struct Adafruit_VL53L0X *lidar)
 {
   VL53L0X_RangingMeasurementData_t measure;
   lidar->rangingTest(&measure, false);
+#if 1 == USE_BLE
+  if (measure.RangeStatus != 4) {  // phase failures have incorrect data
+    const int rm = int(measure.RangeMilliMeter);
+    ble.print(rm);
+  }
+  else
+  {
+    ble.print(F("-1"));
+  }
+#endif
+
   Serial.print(F(" "));
   if (measure.RangeStatus != 4) {  // phase failures have incorrect data
     Serial.print(measure.RangeMilliMeter);
@@ -122,8 +174,15 @@ void give_LIDAR(struct Adafruit_VL53L0X *lidar)
 void give_LIDARS()
 {
   Serial.print(F("Distances    : "));
-  give_LIDAR(&lidar1);
-  give_LIDAR(&lidar2);
+  give_LIDAR(lidar1);
+#if 1 == USE_BLE
+  ble.print(F(","));
+#endif
+  give_LIDAR(lidar2);
+#if 1 == USE_BLE
+  ble.println();
+#endif
+
   Serial.println();
 }
 
@@ -226,36 +285,7 @@ void give_Servo()
 }
 #endif
 
-//////////////////////////////////////////////////////////////////////////////////
-//
-// BLE
-//
-//////////////////////////////////////////////////////////////////////////////////
-#if 1 == USE_BLE
-#include <SPI.h>
-#include <Adafruit_BLE.h>
-#include <Adafruit_BluefruitLE_SPI.h>
-#include <Adafruit_BluefruitLE_UART.h>
 
-#include "BluefruitConfig.h"
-
-// WARNING: this is specific to the Feather Board
-Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
-
-// TODO: Check the return code of the functions
-void setup_BLE()
-{
-  ble.begin();
-  ble.factoryReset();
-}
-
-void give_BLE()
-{
-  const float t = 1.0e-6f * float( micros() );
-  ble.print( 90.0f + 90.0f * sin( 6.14f * (t / 10.0f) ) );
-  ble.println();
-}
-#endif
 
 //////////////////////////////////////////////////////////////////////////////////
 //

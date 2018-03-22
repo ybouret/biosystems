@@ -1,8 +1,19 @@
+#include <Arduino.h>
+
+#define USE_LIDARS 0
+#define USE_9DOF   0
+#define USE_SERVO  0
+#define USE_FORCE  0
+#define USE_BLE    0
+#define USE_SERIAL 0
+
+
 //////////////////////////////////////////////////////////////////////////////////
 //
 // Serial
 //
 //////////////////////////////////////////////////////////////////////////////////
+#if 1 == USE_SERIAL
 void setup_Serial()
 {
   //////////////////////////////////////////////////////////////////////////////////
@@ -17,7 +28,9 @@ void setup_Serial()
     delay(1);
   }
 }
+#endif
 
+#if 1 == USE_LIDARS
 //////////////////////////////////////////////////////////////////////////////////
 //
 // LIDARS
@@ -37,7 +50,7 @@ Adafruit_VL53L0X lidar2 = Adafruit_VL53L0X();
 void setup_LIDARS()
 {
 
-  Serial.println(F("Initializing LIDARS"));
+  //Serial.println(F("Initializing LIDARS"));
   Wire.begin();
 
   //________________________________________________________________________________
@@ -66,7 +79,7 @@ void setup_LIDARS()
   delay(MY_LIDAR_DELAY);
   if ( !lidar1.begin(MY_LIDAR_ADDR1) )
   {
-    Serial.print(F("LIDAR1 begin failure on A")); Serial.println(MY_LIDAR_CTRL1);
+    Serial.println(F("LIDAR1 failure"));
     while (1);
   }
 
@@ -78,7 +91,7 @@ void setup_LIDARS()
   delay(MY_LIDAR_DELAY);
   if ( !lidar2.begin(MY_LIDAR_ADDR2) )
   {
-    Serial.print(F("LIDAR2 begin failure on A")); Serial.println(MY_LIDAR_CTRL2);
+    Serial.println(F("LIDAR2 failure"));
     while (1);
   }
 
@@ -101,7 +114,7 @@ void give_LIDAR(struct Adafruit_VL53L0X *lidar)
   }
   else
   {
-    Serial.print(F("out of range"));
+    Serial.print(F("out"));
   }
 }
 
@@ -111,16 +124,17 @@ void give_LIDARS()
   Serial.print(F("Distances    : "));
   give_LIDAR(&lidar1);
   give_LIDAR(&lidar2);
-  Serial.println(F(""));
+  Serial.println();
 }
 
-
+#endif //! USE_LIDARS
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 // 9DOF libraries
 //
 //////////////////////////////////////////////////////////////////////////////////
+#if 1 == USE_9DOF
 #include <Adafruit_Sensor.h>
 #include <Adafruit_FXOS8700.h>
 Adafruit_FXOS8700 accelmag = Adafruit_FXOS8700(0x8700A, 0x8700B);
@@ -131,7 +145,7 @@ void setup_9DOF()
   if (!accelmag.begin(ACCEL_RANGE_4G))
   {
     /* There was a problem detecting the FXOS8700 ... check your connections */
-    Serial.println("Ooops, no FXOS8700 detected ... Check your wiring!");
+    Serial.println(F("Ooops, no FXOS8700 detected ... Check your wiring!"));
     while (1);
   }
 }
@@ -162,13 +176,14 @@ void give_9DOF()
   Serial.print(mevent.magnetic.z, 1);
   Serial.println(F("] uT"));
 }
+#endif // USE_9DOF
 
 //////////////////////////////////////////////////////////////////////////////////
 //
-// Force Sensort
+// Force Sensors
 //
 //////////////////////////////////////////////////////////////////////////////////
-
+#if 1 == USE_FORCE
 #define PRESSURE_PIN 0
 #define FLEXION_PIN  5
 
@@ -187,6 +202,60 @@ void give_Forces()
   Serial.print(F(" Flexion="));  Serial.print(flexion);
   Serial.println(F(""));
 }
+#endif // USE_FORCE
+
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Servo, if any
+//
+//////////////////////////////////////////////////////////////////////////////////
+#if 1 == USE_SERVO
+#include <Servo.h>
+#define SERVO_PIN 13
+Servo servo;
+void setup_Servo()
+{
+  servo.attach(SERVO_PIN);
+  servo.write(90.0f);
+}
+
+void give_Servo()
+{
+  const float t = 1.0e-6f * float( micros() );
+  servo.write( 90.0f + 90.0f * sin( 6.14f * (t / 10.0f) ) );
+}
+#endif
+
+//////////////////////////////////////////////////////////////////////////////////
+//
+// BLE
+//
+//////////////////////////////////////////////////////////////////////////////////
+#if 1 == USE_BLE
+#include <SPI.h>
+#include <Adafruit_BLE.h>
+#include <Adafruit_BluefruitLE_SPI.h>
+#include <Adafruit_BluefruitLE_UART.h>
+
+#include "BluefruitConfig.h"
+
+// WARNING: this is specific to the Feather Board
+Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
+
+// TODO: Check the return code of the functions
+void setup_BLE()
+{
+  ble.begin();
+  ble.factoryReset();
+}
+
+void give_BLE()
+{
+  const float t = 1.0e-6f * float( micros() );
+  ble.print( 90.0f + 90.0f * sin( 6.14f * (t / 10.0f) ) );
+  ble.println();
+}
+#endif
 
 //////////////////////////////////////////////////////////////////////////////////
 //
@@ -196,17 +265,54 @@ void give_Forces()
 
 void setup()
 {
+#if 1 == USE_SERIAL
   setup_Serial();
+#endif
+
+#if 1 == USE_LIDARS
   setup_LIDARS();
+#endif
+
+#if 1 == USE_9DOF
   setup_9DOF();
+#endif
+
+#if 1 == USE_FORCE
   setup_Forces();
+#endif
+
+#if 1 == USE_SERVO
+  setup_Servo();
+#endif
+
+#if 1 == USE_BLE
+  setup_BLE();
+#endif
+
 }
 
 void loop()
 {
+#if 1 == USE_LIDARS
   give_LIDARS();
+#endif
+
+#if 1 == USE_9DOF
   give_9DOF();
+#endif
+
+#if 1 == USE_FORCE
   give_Forces();
-  delay(200);
+#endif
+
+#if 1 == USE_SERVO
+  give_Servo();
+#endif
+
+#if 1 == USE_BLE
+  give_BLE();
+#endif
+
+  delay(100);
 }
 

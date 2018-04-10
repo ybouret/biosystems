@@ -1,11 +1,111 @@
 #include <Arduino.h>
 
 #define USE_LIDARS 1
-#define USE_9DOF   0
+#define USE_9DOF   1
 #define USE_SERVO  0
 #define USE_FORCE  0
-#define USE_BLE    1
+#define USE_BLE    0
 #define USE_SERIAL 1
+#define USE_NRF52  1
+
+#if 1 == USE_NRF52
+
+//////////////////////////////////////////////////////////////////////////////////
+//
+// NRF52
+//
+//////////////////////////////////////////////////////////////////////////////////
+#include <bluefruit.h>
+
+BLEDis  bledis;
+BLEUart bleuart;
+
+void connect_callback(uint16_t conn_handle)
+{
+  (void) conn_handle;
+  Serial.println(F("Connected"));
+}
+
+void disconnect_callback(uint16_t conn_handle, uint8_t reason)
+{
+  (void) conn_handle;
+  (void) reason;
+
+  Serial.println();
+  Serial.println(F("Disconnected"));
+}
+
+void start_advertising_NRF52()
+{
+
+  Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
+  Bluefruit.Advertising.addTxPower();
+
+  // Include bleuart 128-bit uuid
+  Bluefruit.Advertising.addService(bleuart);
+
+  // There is no room for Name in Advertising packet
+  // Use Scan response for Name
+  Bluefruit.ScanResponse.addName();
+
+  /* Start Advertising
+     - Enable auto advertising if disconnected
+     - Interval:  fast mode = 20 ms, slow mode = 152.5 ms
+     - Timeout for fast mode is 30 seconds
+     - Start(timeout) with timeout = 0 will advertise forever (until connected)
+
+     For recommended advertising interval
+     https://developer.apple.com/library/content/qa/qa1931/_index.html
+  */
+  Bluefruit.Advertising.restartOnDisconnect(true);
+  Bluefruit.Advertising.setInterval(32, 244);    // in unit of 0.625 ms
+  Bluefruit.Advertising.setFastTimeout(30);      // number of seconds in fast mode
+  Bluefruit.Advertising.start(0);                // 0 = Don't stop advertising after n seconds
+}
+
+
+void setup_NRF52()
+{
+  // Setup the BLE LED to be enabled on CONNECT
+  // Note: This is actually the default behaviour, but provided
+  // here in case you want to control this manually via PIN 19
+  Bluefruit.autoConnLed(true);
+
+  Bluefruit.begin();
+  // Set max power. Accepted values are: -40, -30, -20, -16, -12, -8, -4, 0, 4
+  Bluefruit.setTxPower(4);
+  //Bluefruit.setName("Bluefruit52");
+  Bluefruit.setName("Mederic's Brain");
+  Bluefruit.setConnectCallback(connect_callback);
+  Bluefruit.setDisconnectCallback(disconnect_callback);
+
+  // Configure and Start Device Information Service
+  bledis.setManufacturer("Adafruit Industries");
+  bledis.setModel("Bluefruit Feather52");
+  bledis.begin();
+
+  // Configure and Start BLE Uart Service
+  bleuart.begin();
+
+  // Set up and start advertising
+  start_advertising_NRF52();
+}
+
+bool NRF52_writable()
+{
+  return Bluefruit.connected() && bleuart.notifyEnabled();
+}
+
+void give_NRF52()
+{
+  if (NRF52_writable())
+  {
+
+  }
+}
+
+#endif
+
 
 //////////////////////////////////////////////////////////////////////////////////
 //
@@ -85,8 +185,8 @@ void setup_Serial()
 
 #define MY_LIDAR_ADDR1 0x31
 #define MY_LIDAR_ADDR2 0x32
-#define MY_LIDAR_CTRL1 9
-#define MY_LIDAR_CTRL2 10
+#define MY_LIDAR_CTRL1 7
+#define MY_LIDAR_CTRL2 11
 #define MY_LIDAR_DELAY 100
 
 Adafruit_VL53L0X *lidar1 = NULL;
@@ -144,11 +244,20 @@ void setup_LIDARS()
 }
 
 
+int mm = -1;
+
 void give_LIDAR(struct Adafruit_VL53L0X *lidar)
 {
   VL53L0X_RangingMeasurementData_t measure;
   lidar->rangingTest(&measure, false);
-  
+
+  mm = -1;
+  if (measure.RangeStatus != 4)
+  {
+    mm = measure.RangeMilliMeter;
+  }
+
+
 #if 1 == USE_BLE
   if (measure.RangeStatus != 4) {  // phase failures have incorrect data
     ble->print(measure.RangeMilliMeter);
@@ -159,14 +268,18 @@ void give_LIDAR(struct Adafruit_VL53L0X *lidar)
   }
 #endif
 
+
   Serial.print(F(" "));
-  if (measure.RangeStatus != 4) {  // phase failures have incorrect data
-    Serial.print(measure.RangeMilliMeter);
+  if (mm >= 0)
+  {
+    Serial.print(mm);
   }
   else
   {
     Serial.print(F("out"));
   }
+
+
 }
 
 
@@ -174,15 +287,24 @@ void give_LIDARS()
 {
   Serial.print(F("Distances    : "));
   give_LIDAR(lidar1);
+  const int mm1 = mm;
 #if 1 == USE_BLE
   ble->print(F(","));
 #endif
+
   give_LIDAR(lidar2);
+  const int mm2 = mm;
 #if 1 == USE_BLE
   ble->println();
 #endif
-
   Serial.println();
+
+#if 1 == USE_NRF52
+  if (NRF52_writable())
+  {
+      bleuart.print(mm1); bleuart.print(','); bleuart.println(mm2);
+  }
+#endif
 }
 
 #endif //! USE_LIDARS
@@ -317,6 +439,11 @@ void setup()
 #if 1 == USE_BLE
   setup_BLE();
 #endif
+
+#if 1 == USE_NRF52
+  setup_NRF52();
+#endif
+
 
 }
 

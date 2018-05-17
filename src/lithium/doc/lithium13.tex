@@ -1,0 +1,224 @@
+\documentclass[aps,onecolumn,11pt]{revtex4}
+%\documentclass[11pt]{article}
+%\usepackage[cm]{fullpage}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{xfrac}
+\usepackage{xcolor}
+\usepackage{bookman}
+\usepackage{dsfont}
+\usepackage{mathptmx}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+
+\newcommand{\spLi}[1]{{~^{\mychem{#1}}\mychem{Li}}}
+\newcommand{\Li}[1]{\myconc{\spLi{#1}}}
+
+\newcommand{\spEout}{\mychem{E}}
+\newcommand{\Eout}{\myconc{\spEout}}
+
+\newcommand{\spLiEin}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{in}}}
+\newcommand{\LiEin}[1]{\myconc{\spLiEin{#1}}}
+
+\newcommand{\spLiE}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace}
+\newcommand{\LiE}[1]{\myconc{\spLiE{#1}}}
+
+
+\newcommand{\spLiEout}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{out}}}
+\newcommand{\LiEout}[1]{\myconc{\spLiEout{#1}}}
+
+\newcommand{\spLiIn}[1]{{\spLi{#1}}_{\mathrm{in}}}
+\newcommand{\LiIn}[1]{\myconc{\spLiIn{#1}}}
+
+\newcommand{\spLiOut}[1]{{\spLi{#1}}_{\mathrm{out}}}
+\newcommand{\LiOut}[1]{\myconc{\spLiOut{#1}}}
+
+\newcommand{\spEHin}{\mychem{EH}}
+\newcommand{\EHin}{\myconc{\spEHin}}
+\newcommand{\spproton}{\mychem{H}}
+\newcommand{\proton}{\myconc{\spproton}}
+
+\newcommand{\mytrn}[1]{{#1}^{\!\mathsf{T}}}
+\newcommand{\mymat}[1]{{\bm{#1}}}
+\newcommand{\mydet}[1]{{\left|{#1}\right|}}
+
+\newcommand{\ratioLi}{ {\left(\dfrac{\Li{7}}{\Li{6}}\right)} }
+\newcommand{\deltaLi}{ {\delta\!\!\spLi{7}} }
+\begin{document}
+
+\section{Proposed Mechanism}
+$$
+	\deltaLi = \left(
+		\dfrac{\left(\dfrac{Li^7}{Li^6}\right)_{sample}}
+		{\left(\dfrac{Li^7}{Li^6}\right)_{standard}}
+		 -1 
+	\right) \times 1000
+$$
+
+
+\begin{equation}
+	 \spLiOut{x} +  \spEout  
+	 \xrightleftharpoons[k_d^x]{k_a^x} 
+	 \spLiE{x}
+	  \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightarrow[]{k_l^x} \spLiOut{x}}
+\end{equation}
+
+\section{Scheme}
+
+\subsection{Hypothesis}
+\begin{itemize}
+\item $\proton$ is a slowly varying parameter $h(t)$.
+\item $\LiOut{6}$ and  $\LiOut{7}$ are parameters.
+%\item the second order return is negligible w.r.t first order recycling, ie $k_q^x\simeq0$.%%not yet?
+\end{itemize}
+
+\subsection{Kinetics}
+We have the phase space described by
+\begin{equation}
+ \vec{X} = 
+        \begin{pmatrix}
+        \Eout\\
+        \EHin\\
+        \LiE{6}\\
+        \LiIn{6}\\
+        \LiE{7}\\
+        \LiIn{7}\\
+        \end{pmatrix}
+\end{equation}
+
+At any time, we  have
+\begin{equation} 
+	\label{eq:E0}
+	E_0 = \Eout + \EHin +  \LiE{6} + \LiE{7}
+\end{equation}
+
+\subsection{Secondary Hypothesis}
+We consider that we have the two equations
+\begin{equation}
+%\left\lbrace
+	\begin{array}{rcll}
+	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiE{x}, & J_x = \dfrac{\LiE{x}}{\LiOut{x} \Eout} = \dfrac{k_a^x}{k_d^x}\\
+	 \end{array}
+\end{equation}
+leading to a constraint vector $\vec{\Gamma}$
+with 
+\begin{equation}
+	J'_x = J_x \LiOut{x}
+\end{equation}
+
+\begin{equation}
+\vec{\Gamma} = 
+\begin{pmatrix}
+	J_6' \Eout - \LiE{6} \\
+	J_7' \Eout - \LiE{7} \\
+\end{pmatrix}
+\end{equation}
+which already simplifies the matter conservation \eqref{eq:E0} into
+\begin{equation}
+	E_0 = \EHin + \Eout \left(1+J'_6+J'_7\right).
+\end{equation}
+And we have the topology for the two equations as
+\begin{equation}
+	\label{eq:Nu}
+	\mymat{\nu}=\begin{pmatrix}-1 & 0 & 1 & 0 & 0 & 0\cr -1 & 0 & 0 & 0 & 1 & 0\end{pmatrix}
+\end{equation}
+and
+\begin{equation}
+	\partial_{\vec{X}}\vec{\Gamma} = 
+	\begin{pmatrix}J'_6 & 0 & -1 & 0 & 0 & 0\cr J'_7 & 0 & 0 & 0 & -1 & 0\end{pmatrix}
+\end{equation}
+
+\subsection{Rates}
+
+The "slow" rate vector is
+\begin{equation}
+	\partial_t\vec{X}_{slow} = 
+	\begin{pmatrix}
+		v_h\\
+		p_6-q_6+p_7-q_7-v_h\\
+		q_6-p_6\\
+		p_6-l_6-q_6\\
+		q_7-p_7\\
+		p_7-l_7-q_7\\
+	\end{pmatrix}
+	,\;\;\text{ with }
+	\left\lbrace
+	\begin{array}{rcll}
+	v_h & = & k_h \EHin & \text{(recycling)}\\
+	p_x & = & k_p^x \proton \LiE{x} & \text{(forward transfer)}\\
+	q_x & = & k_q^x \EHin \LiIn{x} & \text{(reverse transfer)} \\
+	l_x & = & k_l^x \left(\LiIn{x}-\theta_x\right) & \text{(leak)}\\
+	\end{array}
+	\right.
+\end{equation}
+
+\subsection{Semi-Stationary Equations}
+We define
+\begin{equation}
+	\mymat{W} = \mymat{\Phi}\mytrn{\mymat{\nu}} = \begin{pmatrix} -J'_6-1 & -J'_6 \cr -J'_7 & -J'_7-1\end{pmatrix}
+	,\;\mymat{W}^\ast = \begin{pmatrix} -J'_6-1 & J'_7 \cr J'_6 & -J'_7-1\end{pmatrix}
+	,\;\;\delta^\ast=\det(\mymat{W})=1+J'_6+J'_7.
+\end{equation}
+and
+\begin{equation}
+	\mymat{\chi}^\ast = \mathds{1}_6-\mytrn{\mymat{\nu}}\mymat{W}^\ast\mymat{\Phi}
+\end{equation}
+
+\begin{equation}
+	\partial_t\vec{X} = \dfrac{1}{\delta^\ast}
+	\mymat{\chi}^\ast \partial_t\vec{X}_{slow}
+\end{equation}
+and we find
+\begin{equation}
+	\vec{Y} = \begin{pmatrix} \EHin \cr \LiIn{6} \cr \LiIn{7} \end{pmatrix}
+	,\;\partial_t \vec{Y} = 
+	\begin{pmatrix}
+	p_6-q_6+p_7-q_7-v_h\\
+	p_6-q_6-l_6\\
+	p_7-q_7-l_7
+	\end{pmatrix}
+\end{equation}
+with the expressions
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	v_h & = & k_h \EHin \\
+	q_x & = & k_q^x \EHin \LiIn{x}  \\
+	l_x & = & k_l^x \left(\LiIn{x}-\theta_x\right)\\
+	p_x & = & k_p^x \proton \LiE{x}\\
+	\end{array}
+\right.
+\end{equation}
+with
+\begin{equation}
+	\LiE{x} = J'_x \Eout,\;\;\Eout=\dfrac{E_0-\EHin}{\delta^\ast}
+\end{equation}
+so that
+\begin{equation}
+	p_x = k_p^x \proton  J'_x \dfrac{E_0-\EHin}{\delta^\ast}
+\end{equation}
+We now use
+\begin{equation}
+	\begin{array}{rcl}
+	\alpha    & = &\dfrac{\EHin}{E_0}\\
+	\Lambda_x & = & \LiIn{x}\\
+	\end{array}
+\end{equation}
+and we get
+
+\begin{equation}
+	\left\lbrace
+	\begin{array}{rcl}
+	v_h & = & k_h E_0 \alpha \\
+	q_x & = & k_q^x E_0 \alpha \Lambda_x  \\
+	l_x & = & k_l^x \left(\Lambda_x -\theta_x\right)\\
+	p_x & = & k_p^x E_0 \proton \dfrac{J'_x}{\delta^\ast}(1-\alpha) \\
+	\end{array}
+\right.
+\end{equation}
+
+\end{document}

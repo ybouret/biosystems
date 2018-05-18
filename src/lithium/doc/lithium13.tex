@@ -62,9 +62,9 @@ $$
 
 \begin{equation}
 	 \spLiOut{x} +  \spEout  
-	 \xrightleftharpoons[k_d^x]{k_a^x} 
+	 \xrightleftharpoons[k_x^d]{k_x^a} 
 	 \spLiE{x}
-	  \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightleftharpoons[]{k_l^x} \spLiOut{x}}
+	  \xrightleftharpoons[k_x^q]{\mychem{H},\;k_x^p} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightleftharpoons[]{k_x^l} \spLiOut{x}}
 \end{equation}
 
 \section{Scheme}
@@ -101,7 +101,7 @@ We consider that we have the two equations
 \begin{equation}
 %\left\lbrace
 	\begin{array}{rcll}
-	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiE{x}, & J_x = \dfrac{\LiE{x}}{\LiOut{x} \Eout} = \dfrac{k_a^x}{k_d^x}\\
+	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiE{x}, & J_x = \dfrac{\LiE{x}}{\LiOut{x} \Eout} = \dfrac{k_x^a}{k_x^d}\\
 	 \end{array}
 \end{equation}
 leading to a constraint vector $\vec{\Gamma}$
@@ -149,9 +149,9 @@ The "slow" rate vector is
 	\left\lbrace
 	\begin{array}{rcll}
 	v_h & = & k_h \EHin & \text{(recycling)}\\
-	p_x & = & k_p^x \proton \LiE{x} & \text{(forward transfer)}\\
-	q_x & = & k_q^x \EHin \LiIn{x} & \text{(reverse transfer)} \\
-	l_x & = & k_l^x \left(\LiIn{x}-\theta_x\right) & \text{(leak)}\\
+	p_x & = & k_x^p \proton \LiE{x} & \text{(forward transfer)}\\
+	q_x & = & k_x^q \EHin \LiIn{x} & \text{(reverse transfer)} \\
+	l_x & = & k_x^l \left(\LiIn{x}-\theta_x\right) & \text{(leak)}\\
 	\end{array}
 	\right.
 \end{equation}
@@ -187,9 +187,9 @@ with the expressions
 \left\lbrace
 	\begin{array}{rcl}
 	v_h & = & k_h \EHin \\
-	q_x & = & k_q^x \EHin \LiIn{x}  \\
-	l_x & = & k_l^x \left(\LiIn{x}-\theta_x\right)\\
-	p_x & = & k_p^x \proton \LiE{x}\\
+	q_x & = & k_x^q \EHin \LiIn{x}  \\
+	l_x & = & k_x^l \left(\LiIn{x}-\theta_x\right)\\
+	p_x & = & k_x^p \proton \LiE{x}\\
 	\end{array}
 \right.
 \end{equation}
@@ -199,7 +199,7 @@ with
 \end{equation}
 so that
 \begin{equation}
-	p_x = k_p^x \proton  J'_x \dfrac{E_0-\EHin}{\delta^\ast}
+	p_x = k_x^p \proton  J'_x \dfrac{E_0-\EHin}{\delta^\ast}
 \end{equation}
 We now use
 \begin{equation}

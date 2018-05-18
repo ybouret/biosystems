@@ -151,9 +151,13 @@ The "slow" rate vector is
 	v_h & = & k_h \EHin & \text{(recycling)}\\
 	p_x & = & k_x^p \proton \LiE{x} & \text{(forward transfer)}\\
 	q_x & = & k_x^q \EHin \LiIn{x} & \text{(reverse transfer)} \\
-	l_x & = & k_x^l \left(\LiIn{x}-\theta_x\right) & \text{(leak)}\\
+	l_x & = & k_x^l \left(\LiIn{x}-\Theta'_x\right) & \text{(leak)}\\
 	\end{array}
 	\right.
+\end{equation}
+with (Goldman-Hodgkins-Katz)
+\begin{equation}
+	\Theta'_x = \Theta \LiOut{x}
 \end{equation}
 
 \subsection{Semi-Stationary Equations}
@@ -187,8 +191,8 @@ with the expressions
 \left\lbrace
 	\begin{array}{rcl}
 	v_h & = & k_h \EHin \\
-	q_x & = & k_x^q \EHin \LiIn{x}  \\
-	l_x & = & k_x^l \left(\LiIn{x}-\theta_x\right)\\
+	q_x & = & k_x^q \EHin \Li{x}  \\
+	l_x & = & k_x^l \left(\Li{x}-\theta_x\right)\\
 	p_x & = & k_x^p \proton \LiE{x}\\
 	\end{array}
 \right.
@@ -205,7 +209,7 @@ We now use
 \begin{equation}
 	\begin{array}{rcl}
 	\alpha    & = &\dfrac{\EHin}{E_0}\\
-	\lambda_x & = & \LiIn{x}\\
+	%\lambda_x & = & \LiIn{x}\\
 	\end{array}
 \end{equation}
 and we get
@@ -213,8 +217,8 @@ and we get
 	\left\lbrace
 	\begin{array}{rcl}
 	v_h & = & k_h E_0 \alpha \\
-	q_x & = & k_q^x E_0 \alpha \lambda_x  \\
-	l_x & = & k_l^x \left(\lambda_x -\theta_x\right)\\
+	q_x & = & k_q^x E_0 \alpha \Li{x}  \\
+	l_x & = & k_l^x \left(\Li{x} -\Theta'_x\right)\\
 	p_x & = & k_p^x E_0 \proton \dfrac{J'_x}{\delta^\ast}(1-\alpha) \\
 	\end{array}
 \right.
@@ -224,10 +228,7 @@ We define the set of reduced constants
 \begin{equation}
 \left\lbrace
 	\begin{array}{rcl}
-	\kappa_x & = & k_p^x \dfrac{J'_x}{1+J'_6+J'_7}\\
-	\kappa_0 & = & \kappa_6+\kappa_7\\
-	\omega_0 & = & \kappa_0 \proton\\
-	\omega_x & = & \kappa_x \proton \\
+	\omega_x & = &  \dfrac{k_x^pJ'_x}{1+J'_6+J'_7}\proton = \dfrac{k_x^p J_x}{1+J_6\LiOut{6}+J_7\LiOut{7}} \LiOut{x}\proton = \Xi'_x \LiOut{x}\\
 	\omega_0 & = & \omega_6 + \omega_7\\
 	p_x & = & \omega_x E_0 \left(1-\alpha\right)\\
 	\end{array}
@@ -240,10 +241,10 @@ then
 \boxed{
 \left\lbrace
 	\begin{array}{rcl}
-		\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0+{\sum_x k_q^x \lambda_x} \right\rbrack\\
-		\partial_t\lambda_x & = & \left\lbrack k_l^x\theta_x+\omega_x E_0\right\rbrack
+		\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0+{\sum_x k_x^q \Li{x}} \right\rbrack\\
+		\partial_t\Li{x} & = & \left\lbrack k_x^l\theta_x+\omega_x E_0\right\rbrack
 		-\left\lbrack
-			\omega_x E_0\alpha +  \lambda_x \left(k_l^x+ k_q^x E_0\alpha\right)
+			\omega_x E_0\alpha +  \Li{x}  \left(k_x^l+ k_x^q E_0\alpha\right)
 		\right\rbrack\\
 	\end{array}
 \right.
@@ -252,8 +253,38 @@ then
 
 \subsection{Looking for steady-state}
 \begin{equation}
-	\hat{\lambda}_x = \dfrac{\left\lbrack k_l^x\theta_x+\omega_x E_0 \left(1-\hat{\alpha}\right)\right\rbrack}{k_l^x+ k_q^x E_0\hat{\alpha}}
+	\Li{x}_\infty = \dfrac{\left\lbrack k_l^x\theta_x+\omega_x E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_l^x+ k_q^x E_0\alpha_\infty}
 \end{equation}
-
+Since experimentally, there exist $\beta$ (observed) and $\Theta$ (GHK) such that
+\begin{equation}
+	\Li{x}_\infty=\beta\LiOut{x},\;\theta_x = \Theta \LiOut{x}
+\end{equation}
+we obtain that
+\begin{equation}
+		\beta = \dfrac{k_x^l\Theta +\Xi'_x E_0 (1-\alpha_\infty)}{k_l^x+ k_q^x E_0\alpha_\infty}
+\end{equation}
+which informs us that there exists two constants $\bar{p}$ and $\bar{q}$ such that
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	k_x^p J_x & = & \bar{p} k_x^l \\
+	k_x^q     & = & \bar{q} k_x^l \\
+	\end{array}
+\right.
+\end{equation}
+\centerline{\bf This has some isotopic meaning!!!!}
+and we check that 
+\begin{equation}
+	\beta = \dfrac{\Theta + \bar{p}\dfrac{\proton E_0 }{\delta^\ast}\left(1-\alpha_\infty\right)}{1+qE_0\alpha_\infty}
+\end{equation}
+is the same for each species, depending on the outer set of concentration only!
+We need to solve w.r.t $\alpha$
+\begin{equation}
+0=\omega_0-\alpha(\omega_0+k_h+Q\beta),\;Q=k_6^q \LiOut{6} + k_7^q \LiOut{7}
+\end{equation}
+where we set
+\begin{equation}
+\beta=\dfrac{\Theta+A(1-\alpha)}{1+B\alpha}
+\end{equation}
 
 \end{document}

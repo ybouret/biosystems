@@ -1,4 +1,4 @@
-\documentclass[aps,onecolumn,11pt]{revtex4}
+\documentclass[aps,onecolumn,12pt]{revtex4}
 %\documentclass[11pt]{article}
 %\usepackage[cm]{fullpage}
 \usepackage{graphicx}
@@ -64,7 +64,7 @@ $$
 	 \spLiOut{x} +  \spEout  
 	 \xrightleftharpoons[k_d^x]{k_a^x} 
 	 \spLiE{x}
-	  \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightarrow[]{k_l^x} \spLiOut{x}}
+	  \xrightleftharpoons[k_q^x]{\mychem{H},\;k_p^x} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightleftharpoons[]{k_l^x} \spLiOut{x}}
 \end{equation}
 
 \section{Scheme}
@@ -205,20 +205,55 @@ We now use
 \begin{equation}
 	\begin{array}{rcl}
 	\alpha    & = &\dfrac{\EHin}{E_0}\\
-	\Lambda_x & = & \LiIn{x}\\
+	\lambda_x & = & \LiIn{x}\\
 	\end{array}
 \end{equation}
 and we get
-
 \begin{equation}
 	\left\lbrace
 	\begin{array}{rcl}
 	v_h & = & k_h E_0 \alpha \\
-	q_x & = & k_q^x E_0 \alpha \Lambda_x  \\
-	l_x & = & k_l^x \left(\Lambda_x -\theta_x\right)\\
+	q_x & = & k_q^x E_0 \alpha \lambda_x  \\
+	l_x & = & k_l^x \left(\lambda_x -\theta_x\right)\\
 	p_x & = & k_p^x E_0 \proton \dfrac{J'_x}{\delta^\ast}(1-\alpha) \\
 	\end{array}
 \right.
 \end{equation}
+
+We define the set of reduced constants
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\kappa_x & = & k_p^x \dfrac{J'_x}{1+J'_6+J'_7}\\
+	\kappa_0 & = & \kappa_6+\kappa_7\\
+	\omega_0 & = & \kappa_0 \proton\\
+	\omega_x & = & \kappa_x \proton \\
+	\omega_0 & = & \omega_6 + \omega_7\\
+	p_x & = & \omega_x E_0 \left(1-\alpha\right)\\
+	\end{array}
+\right.
+\end{equation}
+
+
+then
+\begin{equation}
+\boxed{
+\left\lbrace
+	\begin{array}{rcl}
+		\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0+{\sum_x k_q^x \lambda_x} \right\rbrack\\
+		\partial_t\lambda_x & = & \left\lbrack k_l^x\theta_x+\omega_x E_0\right\rbrack
+		-\left\lbrack
+			\omega_x E_0\alpha +  \lambda_x \left(k_l^x+ k_q^x E_0\alpha\right)
+		\right\rbrack\\
+	\end{array}
+\right.
+}
+\end{equation}
+
+\subsection{Looking for steady-state}
+\begin{equation}
+	\hat{\lambda}_x = \dfrac{\left\lbrack k_l^x\theta_x+\omega_x E_0 \left(1-\hat{\alpha}\right)\right\rbrack}{k_l^x+ k_q^x E_0\hat{\alpha}}
+\end{equation}
+
 
 \end{document}

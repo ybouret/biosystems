@@ -192,7 +192,7 @@ with the expressions
 	\begin{array}{rcl}
 	v_h & = & k_h \EHin \\
 	q_x & = & k_x^q \EHin \Li{x}  \\
-	l_x & = & k_x^l \left(\Li{x}-\theta_x\right)\\
+	l_x & = & k_x^l \left(\Li{x}-\Theta'_x\right)\\
 	p_x & = & k_x^p \proton \LiE{x}\\
 	\end{array}
 \right.
@@ -228,7 +228,7 @@ We define the set of reduced constants
 \begin{equation}
 \left\lbrace
 	\begin{array}{rcl}
-	\omega_x & = &  \dfrac{k_x^pJ'_x}{1+J'_6+J'_7}\proton = \dfrac{k_x^p J_x}{1+J_6\LiOut{6}+J_7\LiOut{7}} \LiOut{x}\proton = \Xi'_x \LiOut{x}\\
+	\omega_x & = &  k_x^p \proton \dfrac{J_x}{1+J_6\LiOut{6}+J_7\LiOut{7}} \LiOut{x} = k_x^p \proton \tilde{J}_x\LiOut{x}\\
 	\omega_0 & = & \omega_6 + \omega_7\\
 	p_x & = & \omega_x E_0 \left(1-\alpha\right)\\
 	\end{array}
@@ -242,7 +242,7 @@ then
 \left\lbrace
 	\begin{array}{rcl}
 		\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0+{\sum_x k_x^q \Li{x}} \right\rbrack\\
-		\partial_t\Li{x} & = & \left\lbrack k_x^l\theta_x+\omega_x E_0\right\rbrack
+		\partial_t\Li{x} & = & \left\lbrack k_x^l\Theta'_x+\omega_x E_0\right\rbrack
 		-\left\lbrack
 			\omega_x E_0\alpha +  \Li{x}  \left(k_x^l+ k_x^q E_0\alpha\right)
 		\right\rbrack\\
@@ -253,17 +253,20 @@ then
 
 \subsection{Looking for steady-state}
 \begin{equation}
-	\Li{x}_\infty = \dfrac{\left\lbrack k_l^x\theta_x+\omega_x E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_l^x+ k_q^x E_0\alpha_\infty}
+	\Li{x}_\infty = \dfrac{\left\lbrack k_l^x\Theta'_x+\omega_x E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_l^x+ k_q^x E_0\alpha_\infty}
 \end{equation}
 Since experimentally, there exist $\beta$ (observed) and $\Theta$ (GHK) such that
 \begin{equation}
-	\Li{x}_\infty=\beta\LiOut{x},\;\theta_x = \Theta \LiOut{x}
+	\Li{x}_\infty=\beta\LiOut{x},\;\Theta'_x = \Theta \LiOut{x}
 \end{equation}
 we obtain that
 \begin{equation}
-		\beta = \dfrac{k_x^l\Theta +\Xi'_x E_0 (1-\alpha_\infty)}{k_l^x+ k_q^x E_0\alpha_\infty}
+		\beta = \dfrac{k_x^l\Theta + k_x^p \proton \tilde{J_x} E_0 (1-\alpha_\infty)}{k_l^x+ k_q^x E_0\alpha_\infty}
 \end{equation}
-which informs us that there exists two constants $\bar{p}$ and $\bar{q}$ such that
+\textit{which must be the same for both species!}
+
+\end{document}
+
 \begin{equation}
 \left\lbrace
 	\begin{array}{rcl}

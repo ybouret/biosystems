@@ -265,29 +265,19 @@ we obtain that
 \end{equation}
 \textit{which must be the same for both species!}
 
-\end{document}
-
+We have
 \begin{equation}
 \left\lbrace
-	\begin{array}{rcl}
-	k_x^p J_x & = & \bar{p} k_x^l \\
-	k_x^q     & = & \bar{q} k_x^l \\
+	\begin{array}{rcll}
+	k_x^q    & = & \bar{q}\,k_x^l,  &  \bar{q}\text{ inverse of concentration}\\
+	k_x^pJ_x & = & \bar{p}^2\,k_x^l, & \bar{p}\text{ inverse of concentration}\\
 	\end{array}
 \right.
 \end{equation}
-\centerline{\bf This has some isotopic meaning!!!!}
-and we check that 
+leading to
 \begin{equation}
-	\beta = \dfrac{\Theta + \bar{p}\dfrac{\proton E_0 }{\delta^\ast}\left(1-\alpha_\infty\right)}{1+qE_0\alpha_\infty}
+	\beta = \dfrac{\Theta+\dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(1-\alpha_\infty\right)}{1+\bar{q}E_0\alpha_\infty}
 \end{equation}
-is the same for each species, depending on the outer set of concentration only!
-We need to solve w.r.t $\alpha$
-\begin{equation}
-0=\omega_0-\alpha(\omega_0+k_h+Q\beta),\;Q=k_6^q \LiOut{6} + k_7^q \LiOut{7}
-\end{equation}
-where we set
-\begin{equation}
-\beta=\dfrac{\Theta+A(1-\alpha)}{1+B\alpha}
-\end{equation}
-
+which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake and reduced by NHE output.
+	
 \end{document}

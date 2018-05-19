@@ -252,6 +252,7 @@ then
 \end{equation}
 
 \subsection{Looking for steady-state}
+\subsubsection{Constraints}
 \begin{equation}
 	\Li{x}_\infty = \dfrac{\left\lbrack k_l^x\Theta'_x+\omega_x E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_l^x+ k_q^x E_0\alpha_\infty}
 \end{equation}
@@ -279,5 +280,55 @@ leading to
 	\beta = \dfrac{\Theta+\dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(1-\alpha_\infty\right)}{1+\bar{q}E_0\alpha_\infty}
 \end{equation}
 which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake and reduced by NHE output.
-	
+
+\subsubsection{Expression}
+OK, I computed them, $\alpha_\infty$ is $\alpha_0$ with a slight decrease if $\bar{q}$ increases...
+For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is necessary
+
+\subsection{First Order Equations}
+\subsubsection{Rewrite}
+We now assume
+\begin{equation}
+\left\lbrace
+\begin{array}{rcll}
+	\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0\right\rbrack & \alpha_\infty = \dfrac{\omega_0}{\omega_0+k_h}\\
+	\partial_t\Li{x} & = & \left\lbrack k_x^l\Theta'_x+\omega_x E_0\right\rbrack
+		-\left\lbrack
+			\omega_x E_0\alpha +  k_x^l\Li{x}
+		\right\rbrack & \\
+	\beta & = & \Theta + \rho_h \left(1-\alpha_\infty\right) & \rho = \dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \\
+	\end{array}
+\right.
+\end{equation}
+and using
+$$
+	\omega_x =  \dfrac{\bar{p}^2}{\delta^\ast} k_x^l\proton \LiOut{x}
+$$
+we get
+$$
+	\partial_t\Li{x} =
+	  k_x^l \left(\LiOut{x} \left[ \Theta + \rho_h \left(1-\alpha\right)\right] - \Li{x} \right)
+$$
+then
+\begin{equation}
+	\partial_t\left( \dfrac{\Li{x}}{\LiOut{x}} \right)= k_x^l \left( \Theta + \rho_h(1-\alpha) - \left( \dfrac{\Li{x}}{\LiOut{x}} \right)\right)
+\end{equation}
+namely
+\begin{equation}
+	\partial_t \beta_x =  k_x^l \left( \Theta + \rho_h(1-\alpha) - \beta_x\right)
+\end{equation}
+\subsubsection{Solutions}
+
+\begin{equation}
+	\alpha(t) = \alpha_\infty \left(1-e^{-\omega_ht}\right)
+\end{equation}
+then we have
+\begin{equation}
+	\beta_x(t) = W_x(t) e^{-k_x^l t }
+\end{equation}
+with
+\begin{equation}
+	\partial_tW_x = k_x^l \left[ \Theta + \rho_h(1-\alpha(t)) \right] e^{k_x^lt} 
+\end{equation}
+
 \end{document}

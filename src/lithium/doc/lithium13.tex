@@ -47,17 +47,23 @@
 \newcommand{\mydet}[1]{{\left|{#1}\right|}}
 
 \newcommand{\ratioLi}{ {\left(\dfrac{\Li{7}}{\Li{6}}\right)} }
-\newcommand{\deltaLi}{ {\delta\!\!\spLi{7}} }
+\newcommand{\deltaLi}{ {\delta\!\!\!\spLi{7}} }
+\newcommand{\deltaLiOut}{{\deltaLi}_{\mathrm{out}}}
 \begin{document}
 
 \section{Proposed Mechanism}
 $$
 	\deltaLi = \left(
-		\dfrac{\left(\dfrac{Li^7}{Li^6}\right)_{sample}}
-		{\left(\dfrac{Li^7}{Li^6}\right)_{standard}}
+		\dfrac{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample}}
+		{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard}}
 		 -1 
 	\right) \times 1000
 $$
+
+$$
+	\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample} = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} \left[1+10^{-3}\deltaLi\right]
+$$
+
 
 
 \begin{equation}
@@ -298,7 +304,7 @@ We now assume
 		-\left\lbrack
 			\omega_x E_0\alpha +  k_x^l\Li{x}
 		\right\rbrack & \\
-	\beta & = & \Theta + \rho_h \left(1-\alpha_\infty\right) & \rho_h = \dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \\
+	\beta & = & \Theta + \kappa_h \left(1-\alpha_\infty\right) & \kappa = \dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \\
 	\end{array}
 \right.
 \end{equation}
@@ -309,15 +315,15 @@ $$
 we get
 $$
 	\partial_t\Li{x} =
-	  k_x^l \left(\LiOut{x} \left[ \Theta + \rho_h \left(1-\alpha\right)\right] - \Li{x} \right)
+	  k_x^l \left(\LiOut{x} \left[ \Theta + \kappa \left(1-\alpha\right)\right] - \Li{x} \right)
 $$
 then
 \begin{equation}
-	\partial_t\left( \dfrac{\Li{x}}{\LiOut{x}} \right)= k_x^l \left( \Theta + \rho_h(1-\alpha) - \left( \dfrac{\Li{x}}{\LiOut{x}} \right)\right)
+	\partial_t\left( \dfrac{\Li{x}}{\LiOut{x}} \right)= k_x^l \left( \Theta + \kappa(1-\alpha) - \left( \dfrac{\Li{x}}{\LiOut{x}} \right)\right)
 \end{equation}
 namely
 \begin{equation}
-	\partial_t \beta_x =  k_x^l \left( \Theta + \rho_h(1-\alpha) - \beta_x\right)
+	\partial_t \beta_x =  k_x^l \left( \Theta + \kappa(1-\alpha) - \beta_x\right)
 \end{equation}
 \subsubsection{Solutions}
 
@@ -332,33 +338,33 @@ with
 \begin{equation}
 \left \lbrace
 \begin{array}{rcl}
-	\partial_tW_x & = & k_x^l \left[ \Theta + \rho_h(1-\alpha(t)) \right] e^{k_x^lt} \\
-	& = & k_x^l \left[ \Theta + \rho_h(1-\alpha_\infty) + \rho_h\alpha_\infty e^{-\omega_h t} \right] e^{k_x^lt} \\
+	\partial_tW_x & = & k_x^l \left[ \Theta + \kappa(1-\alpha(t)) \right] e^{k_x^lt} \\
+	& = & k_x^l \left[ \Theta + \kappa(1-\alpha_\infty) + \kappa\alpha_\infty e^{-\omega_h t} \right] e^{k_x^lt} \\
 \end{array}
 \right.
 \end{equation}
 	
 \begin{equation}
-		W_x(t) = \left(\Theta+\rho_h(1-\alpha_\infty)\right) \left[e^{k_x^l t}-1\right]
-		+ \rho_h k_x^l \alpha_\infty \dfrac{\left[e^{\left(k_x^l-\omega_h\right) t}-1\right]}{k_x^l-\omega_h}
+		W_x(t) = \left(\Theta+\kappa(1-\alpha_\infty)\right) \left[e^{k_x^l t}-1\right]
+		+ \kappa k_x^l \alpha_\infty \dfrac{\left[e^{\left(k_x^l-\omega_h\right) t}-1\right]}{k_x^l-\omega_h}
 \end{equation}	
 and finally
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
 	\beta_x & = & \beta \left[1-e^{-k_x^l t}\right] 
-	+ k_x^l \rho_h \alpha_\infty
+	+ k_x^l \kappa \alpha_\infty
 	\left[
 	 \dfrac{
 	 e^{-\omega_h t} - e^{-k_x^l t}
 	 }
 	 {k_x^l-\omega_h}
 	 \right]\\
-	 & = & \beta \left[1-e^{-k_x^l t}\right] + \gamma_h \Xi\left(k_x^lt,\sigma_x\right)\\
+	 & = & \beta \left[1-e^{-k_x^l t}\right] + \gamma \Xi\left(k_x^lt,\sigma_x\right)\\
 	 \\
-	 \sigma_x & = & \dfrac{\omega_x}{k_x^l}\\
+	 \sigma_x & = & \dfrac{\omega_x}{k_x^l} = \bar{p}^2\proton \dfrac{\LiOut{x}}{1+J_6\LiOut{6}+J_7\LiOut{7}} \\
 	 \\
-	 \gamma_h & = & \rho_h \alpha_\infty \\
+	 \gamma & = & \kappa \alpha_\infty \\
 	 \\
 	 \Xi\left(u,p\right) & = & \dfrac{e^{-pu}-e^{-u}}{1-p}\\
 \end{array}
@@ -369,18 +375,27 @@ $$
 	u_{max} = \dfrac{\ln(p)}{p-1}
 $$
 
+\centerline{\bf Warning}
+\begin{itemize}
+	\item $\beta$ changes with $\proton$, short time value and long time value
+	\item $\gamma$ changes with $\proton$, short time value and long time value
+\end{itemize}
+
 \section{Litium Intake}
 \subsection{Total Lithium}
 	
 \begin{equation}
 \begin{array}{rl}
 	\Li{6} + \Li{7} & = \beta \left( \left[1-e^{-k_6^l t}  \right] \LiOut{6} + \left[1-e^{-k_7^l t}  \right] \LiOut{7} \right)\\
-	 & + \gamma_h \left(\Xi\left(k_6^lt,\sigma_6\right) \LiOut{6} +  \right)\\
+	 & + \gamma\left(\Xi\left(k_6^lt,\sigma_6\right) \LiOut{6} +  \Xi\left(k_7^lt,\sigma_7\right) \LiOut{7} \right)\\
 \end{array}
 \end{equation}
 	
 \subsection{Isotopic Separation}
-
+We strictly have
+\begin{equation}
+	\dfrac{\beta_7}{\beta_6} = \dfrac{1+10^{-3}\deltaLi}{1+10^{-3}\deltaLiOut}
+\end{equation}
 
 
 \end{document}

@@ -298,7 +298,7 @@ We now assume
 		-\left\lbrack
 			\omega_x E_0\alpha +  k_x^l\Li{x}
 		\right\rbrack & \\
-	\beta & = & \Theta + \rho_h \left(1-\alpha_\infty\right) & \rho = \dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \\
+	\beta & = & \Theta + \rho_h \left(1-\alpha_\infty\right) & \rho_h = \dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \\
 	\end{array}
 \right.
 \end{equation}
@@ -344,14 +344,43 @@ with
 \end{equation}	
 and finally
 \begin{equation}
-	\beta_x = \beta \left[1-e^{-k_x^l t}\right] 
+\left\lbrace
+\begin{array}{rcl}
+	\beta_x & = & \beta \left[1-e^{-k_x^l t}\right] 
 	+ k_x^l \rho_h \alpha_\infty
 	\left[
 	 \dfrac{
 	 e^{-\omega_h t} - e^{-k_x^l t}
 	 }
 	 {k_x^l-\omega_h}
-	 \right]
+	 \right]\\
+	 & = & \beta \left[1-e^{-k_x^l t}\right] + \gamma_h \Xi\left(k_x^lt,\sigma_x\right)\\
+	 \\
+	 \sigma_x & = & \dfrac{\omega_x}{k_x^l}\\
+	 \\
+	 \gamma_h & = & \rho_h \alpha_\infty \\
+	 \\
+	 \Xi\left(u,p\right) & = & \dfrac{e^{-pu}-e^{-u}}{1-p}\\
+\end{array}
+\right.
 \end{equation}
+The function $\Xi\left(u,p\right)$ is a catalytic spike with maximum at 
+$$
+	u_{max} = \dfrac{\ln(p)}{p-1}
+$$
+
+\section{Litium Intake}
+\subsection{Total Lithium}
+	
+\begin{equation}
+\begin{array}{rl}
+	\Li{6} + \Li{7} & = \beta \left( \left[1-e^{-k_6^l t}  \right] \LiOut{6} + \left[1-e^{-k_7^l t}  \right] \LiOut{7} \right)\\
+	 & + \gamma_h \left(\Xi\left(k_6^lt,\sigma_6\right) \LiOut{6} +  \right)\\
+\end{array}
+\end{equation}
+	
+\subsection{Isotopic Separation}
+
+
 
 \end{document}

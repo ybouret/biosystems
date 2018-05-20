@@ -281,6 +281,8 @@ leading to
 \end{equation}
 which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake and reduced by NHE output.
 
+\centerline{\bf This has some meaning: leak modulated isotopic separation!!!}
+
 \subsubsection{Expression}
 OK, I computed them, $\alpha_\infty$ is $\alpha_0$ with a slight decrease if $\bar{q}$ increases...
 For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is necessary
@@ -328,7 +330,28 @@ then we have
 \end{equation}
 with
 \begin{equation}
-	\partial_tW_x = k_x^l \left[ \Theta + \rho_h(1-\alpha(t)) \right] e^{k_x^lt} 
+\left \lbrace
+\begin{array}{rcl}
+	\partial_tW_x & = & k_x^l \left[ \Theta + \rho_h(1-\alpha(t)) \right] e^{k_x^lt} \\
+	& = & k_x^l \left[ \Theta + \rho_h(1-\alpha_\infty) + \rho_h\alpha_\infty e^{-\omega_h t} \right] e^{k_x^lt} \\
+\end{array}
+\right.
+\end{equation}
+	
+\begin{equation}
+		W_x(t) = \left(\Theta+\rho_h(1-\alpha_\infty)\right) \left[e^{k_x^l t}-1\right]
+		+ \rho_h k_x^l \alpha_\infty \dfrac{\left[e^{\left(k_x^l-\omega_h\right) t}-1\right]}{k_x^l-\omega_h}
+\end{equation}	
+and finally
+\begin{equation}
+	\beta_x = \beta \left[1-e^{-k_x^l t}\right] 
+	+ k_x^l \rho_h \alpha_\infty
+	\left[
+	 \dfrac{
+	 e^{-\omega_h t} - e^{-k_x^l t}
+	 }
+	 {k_x^l-\omega_h}
+	 \right]
 \end{equation}
 
 \end{document}

@@ -304,7 +304,7 @@ We now assume
 		-\left\lbrack
 			\omega_x E_0\alpha +  k_x^l\Li{x}
 		\right\rbrack & \\
-	\beta & = & \Theta + \kappa_h \left(1-\alpha_\infty\right) & \kappa = \dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \\
+	\beta & = & \Theta + \kappa \left(1-\alpha_\infty\right) & \kappa = \dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \\
 	\end{array}
 \right.
 \end{equation}
@@ -362,7 +362,7 @@ and finally
 	 \right]\\
 	 & = & \beta \left[1-e^{-k_x^l t}\right] + \gamma \Xi\left(k_x^lt,\sigma_x\right)\\
 	 \\
-	 \sigma_x & = & \dfrac{\omega_x}{k_x^l} = \bar{p}^2\proton \dfrac{\LiOut{x}}{1+J_6\LiOut{6}+J_7\LiOut{7}} \\
+	 \sigma_x & = & \dfrac{\omega_h}{k_x^l} = \bar{p}^2\proton \dfrac{\LiOut{6}+\LiOut{7}}{1+J_6\LiOut{6}+J_7\LiOut{7}} + \dfrac{k_h}{k_x^l} \\
 	 \\
 	 \gamma & = & \kappa \alpha_\infty \\
 	 \\
@@ -371,9 +371,17 @@ and finally
 \right.
 \end{equation}
 The function $\Xi\left(u,p\right)$ is a catalytic spike with maximum at 
-$$
+\begin{equation}
 	u_{max} = \dfrac{\ln(p)}{p-1}
-$$
+\end{equation}
+which is a \underline{decreasing} function of $p$, and the maximum value is
+\begin{equation}
+	\Xi\left(u_{max},p\right)
+\end{equation}
+is also a \underline{decreasing} function of $p$...
+if $k_x^l$ is bigger then $\sigma_x$ is smaller then the amplification is bigger and lasts longer!!!
+
+%and {\bf this is where the most separation occurs!}
 
 \centerline{\bf Warning}
 \begin{itemize}
@@ -394,7 +402,12 @@ $$
 \subsection{Isotopic Separation}
 We strictly have
 \begin{equation}
-	\dfrac{\beta_7}{\beta_6} = \dfrac{1+10^{-3}\deltaLi}{1+10^{-3}\deltaLiOut}
+\begin{array}{rcl}
+	\dfrac{\beta_7}{\beta_6} & = & \dfrac{1+10^{-3}\deltaLi}{1+10^{-3}\deltaLiOut}\\
+	\\
+	& = & \dfrac{\left(1-e^{-k_7^lt}\right)+\dfrac{\gamma}{\beta}\Xi\left(k_7^lt,\sigma_7\right)}
+	{\left(1-e^{-k_6^lt}\right)+\dfrac{\gamma}{\beta}\Xi\left(k_6^lt,\sigma_6\right)}\\
+\end{array}
 \end{equation}
 
 

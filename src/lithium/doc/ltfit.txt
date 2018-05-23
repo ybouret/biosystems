@@ -1,0 +1,9 @@
+
+f(x,k) = (1.0-exp(-k*x))
+F(x,A,k,lam,phi) = A*( (sin(phi)**2) * f(x,lam*k) + (cos(phi)**2) *f(x,k));
+lam             = 1.08168     
+phi             = 0.0223187   
+A               = 472.665     
+k               = 0.050374    
+
+plot 'total.txt' u 1:3, F(x,A,k,lam,phi)

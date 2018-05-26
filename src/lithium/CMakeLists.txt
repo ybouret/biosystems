@@ -1,12 +1,3 @@
-
-ADD_EXECUTABLE(fit_v1 fit_v1.cpp)
-TARGET_LINK_YOCTO(fit_v1 mk)
-INSTALL( TARGETS fit_v1 RUNTIME DESTINATION bin )
-
-ADD_EXECUTABLE(fit_intra fit_intra.cpp)
-TARGET_LINK_YOCTO(fit_intra mk)
-INSTALL( TARGETS fit_intra RUNTIME DESTINATION bin )
-
-ADD_EXECUTABLE(scaling scaling.cpp)
-TARGET_LINK_YOCTO(scaling mk)
-INSTALL( TARGETS scaling RUNTIME DESTINATION bin )
+ADD_EXECUTABLE(fit_delta fit_delta.cpp)
+TARGET_LINK_YOCTO(fit_delta mk)
+INSTALL( TARGETS fit_delta RUNTIME DESTINATION bin )

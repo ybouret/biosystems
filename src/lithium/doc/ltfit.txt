@@ -3,19 +3,22 @@ rho_s      = 12.0192
 s2(X) = 1.0/(1+rho_s*(1+1e-3*X));
 c2(X) = 1.0-s2(X);
 
-delta7 = 14;
+d7 = 14;
 
 # growth function
-grow(x,k) = (1.0-exp(-k*x));
+growth(t,k) = (1.0-exp(-k*t));
 
 # growth of Li7
 k7 = 0.05
-grow7(x)  = c2(delta7)*grow(x,k7);
+growth7(t)  = growth(t,k7);
 
 #growth of Li6
 lam = 1.08
-grow6(x) = s2(delta7)*grow(x,k7*lam);
+growth6(t) = growth(t,k7*lam);
 
-#full growth
-A=472
-Grow(x) = A*(grow6(x)+grow7(x));
+# fit long times...
+d7out = 14.98
+k7    = 0.00217693
+lam   = 1.01205
+
+delta7LT(t) = 1e3*((1+1e-3*d7out)*(growth7(t)/growth6(t))-1.0);

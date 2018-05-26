@@ -1,9 +1,21 @@
 
-f(x,k) = (1.0-exp(-k*x))
-F(x,A,k,lam,phi) = A*( (sin(phi)**2) * f(x,lam*k) + (cos(phi)**2) *f(x,k));
-lam             = 1.08168     
-phi             = 0.0223187   
-A               = 472.665     
-k               = 0.050374    
+rho_s      = 12.0192
+s2(X) = 1.0/(1+rho_s*(1+1e-3*X));
+c2(X) = 1.0-s2(X);
 
-plot 'total.txt' u 1:3, F(x,A,k,lam,phi)
+delta7 = 14;
+
+# growth function
+grow(x,k) = (1.0-exp(-k*x));
+
+# growth of Li7
+k7 = 0.05
+grow7(x)  = c2(delta7)*grow(x,k7);
+
+#growth of Li6
+lam = 1.08
+grow6(x) = s2(delta7)*grow(x,k7*lam);
+
+#full growth
+A=472
+Grow(x) = A*(grow6(x)+grow7(x));

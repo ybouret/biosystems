@@ -34,9 +34,10 @@ struct Approx
     {
         const double slope  = a[ var["slope"]  ];
         const double offset = a[ var["offset"] ];
-        const double coeff  = a[ var["coeff"]  ];
+        const double cplus  = a[ var["cplus"]  ];
+        const double cminus = a[ var["cminus"]  ];
         const double tt     = t+offset;
-        const double xtra   = (tt>0) ? coeff*square_of(tt) : 0;
+        const double xtra   = (tt>=0) ? cplus*square_of(tt) : -cminus*square_of(tt);
         return 0.5*(1-tanh(slope*tt+xtra));
     }
 
@@ -44,7 +45,7 @@ struct Approx
 
 YOCTO_PROGRAM_START()
 {
-    int    n     = 8192;
+    int    n     = 16384;
     double width = 5.0;
 
     const int nn = n+n;
@@ -83,17 +84,18 @@ YOCTO_PROGRAM_START()
     }
 
     Fit::Variables &var = sample.variables;
-    var << "slope" << "offset" << "coeff";
+    var << "slope" << "offset" << "cplus" << "cminus";
     const size_t   nvar = var.size();
     vector<double> aorg(nvar);
     vector<bool>   used(nvar,true);
     vector<double> aerr(nvar);
 
-    aorg[ var["slope"]  ] = 0.3955;
-    aorg[ var["offset"] ] = 0.7169;
-    aorg[ var["coeff"]  ] = 0.01;
+    aorg[ var["slope"]  ]  = 0.381077130799731;
+    aorg[ var["offset"] ]  = 0.7169;
+    aorg[ var["cplus"]  ]  = 0.01;
+    aorg[ var["cminus"]  ] = 0.00;
 
-    used[ var["coeff"] ] = true;
+    used[ var["cminus"]  ] = false;
 
     Approx approx;
     Fit::Sample<double>::Function F( & approx, & Approx::Compute );

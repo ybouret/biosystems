@@ -366,7 +366,7 @@ and finally
 	 \\
 	 \gamma & = & \kappa \alpha_\infty \\
 	 \\
-	 \Xi\left(u,p\right) & = & \dfrac{e^{-pu}-e^{-u}}{1-p}\\
+	 \Xi\left(u,p\right) & = & \dfrac{e^{-pu}-e^{-u}}{1-p},\;\;\Xi(u,1)=xe^{-x}\\
 \end{array}
 \right.
 \end{equation}
@@ -376,10 +376,20 @@ The function $\Xi\left(u,p\right)$ is a catalytic spike with maximum at
 \end{equation}
 which is a \underline{decreasing} function of $p$, and the maximum value is
 \begin{equation}
-	\Xi\left(u_{max},p\right)
+	\Xi\left(u_{max},p\right) \approx \dfrac{1-\tanh\left[ 0.4(\ln(p)+0.7)\right]}{2}
 \end{equation}
 is also a \underline{decreasing} function of $p$...
 if $k_x^l$ is bigger then $\sigma_x$ is smaller then the amplification is bigger and lasts longer!!!
+
+Short times: 
+$$
+	\Xi(u,p) \approx u - (1+p)u^2/2
+$$
+
+Long times:
+$$
+	p>1, e^{-x}/(p-1) \text{ and } p<1, e^{-px}/(1-p)
+$$
 
 %and {\bf this is where the most separation occurs!}
 
@@ -536,5 +546,18 @@ then
 	\end{array}
 \right.
 \end{equation}
+
+\begin{itemize}
+\item if $\tau\ll\dfrac{\log(\sigma)}{\sigma-1}$, 
+	$$
+		\left[  s^2 \Xi\left(\lambda\tau,{\dfrac{\tilde{S}+\eta}{\lambda}}\right) + c^2 \Xi\left(\tau,\tilde{S}+\eta\right) \right]
+		\approx \tau \left[ s^2\lambda+c^2\right]
+	$$
+\item if $\tau\approx\dfrac{\log(\sigma)}{\sigma-1}$
+	it varies slowly in $\log(\sigma)$
+	
+\item if $\tau\gg\dfrac{\log(\sigma)}{\sigma-1}$
+	it decreases exponentially, slowly, depending on the magnitude of $\sigma$, si definition of $\Xi$.
+\end{itemize}
 
 \end{document}

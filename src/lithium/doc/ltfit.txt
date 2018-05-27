@@ -3,7 +3,7 @@ rho_s      = 12.0192
 s2(X) = 1.0/(1+rho_s*(1+1e-3*X));
 c2(X) = 1.0-s2(X);
 
-Xi(u,p) = (exp(-p*u)-exp(-u))(1.0-p);
+Xi(u,p) = (exp(-p*u)-exp(-u))/(1.0-p);
 psi     = 0;
 
 sig0 = 0;

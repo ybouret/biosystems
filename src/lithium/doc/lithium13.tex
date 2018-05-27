@@ -362,7 +362,7 @@ and finally
 	 \right]\\
 	 & = & \beta \left[1-e^{-k_x^l t}\right] + \gamma \Xi\left(k_x^lt,\sigma_x\right)\\
 	 \\
-	 \sigma_x & = & \dfrac{\omega_h}{k_x^l} = \bar{p}^2\proton \dfrac{\LiOut{6}+\LiOut{7}}{1+J_6\LiOut{6}+J_7\LiOut{7}} + \dfrac{k_h}{k_x^l} \\
+	 \sigma_x & = & \dfrac{\omega_h}{k_x^l} = \dfrac{\omega_0}{k_x^l} + \dfrac{k_h}{k_x^l} \\
 	 \\
 	 \gamma & = & \kappa \alpha_\infty \\
 	 \\
@@ -453,8 +453,8 @@ $$
 \begin{equation}
 \left\lbrace
 	\begin{array}{rcl}
-	\sin^2(\varphi) & \simeq & 0.0768 - 7.0910\,10^{-5} \deltaLiOut + \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
-	\cos^2(\varphi) & \simeq & 0.9232 + 7.0910\,10^{-5} \deltaLiOut - \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
+	\sin^2(\varphi) = s^2 & \simeq & 0.0768 - 7.0910\,10^{-5} \deltaLiOut + \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
+	\cos^2(\varphi) = c^2 & \simeq & 0.9232 + 7.0910\,10^{-5} \deltaLiOut - \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
 	\end{array}
 \right.
 \end{equation}
@@ -466,7 +466,7 @@ We got
  k_6 & = & \lambda k_7 \\
  \delta^{\ast} & = & 1+J_6 \LiOut{6} + J_7 \LiOut{7} = 1+\tilde{J}\LiOut{}, \; \tilde{J} = s^2J_6 + c^2J_7\\
  \\
- \kappa & = & \dfrac{\bar{p}^2 \proton E_0}{\delta^\ast} = \dfrac{\bar{p}^2 \proton E_0}{1+\tilde{J}\LiOut{}}\\
+ \kappa & = & \dfrac{\bar{p}^2 \proton E_0}{\delta^\ast} = \dfrac{\bar{p}^2 \proton E_0}{1+\tilde{J}\LiOut{}} = \dfrac{\kappa_0}{1+\tilde{J}\LiOut{}}\\
  \\
  \omega_6& = &  \dfrac{\bar{p}^2}{\delta^\ast} \lambda k_7 \proton s^2 \LiOut{} 
  = \bar{p}^2 k_7 \proton \dfrac{\lambda s^2 \LiOut{}}{1+\tilde{J}\LiOut{}}\\
@@ -474,9 +474,53 @@ We got
  \omega_7&=  &\dfrac{\bar{p}^2}{\delta^\ast} k_7 c^2 \proton \LiOut{} 
  = \bar{p}^2 k_7 \proton \dfrac{ c^2 \LiOut{}}{1+\tilde{J}\LiOut{}}\\
  \\
- \omega_0 & = & \bar{p}^2 k_7 \proton \left(\lambda s^2+c^2\right) \dfrac{\LiOut{}}{1+\tilde{J}\LiOut{}}\\
+ \omega_0 & = & \bar{p}^2 k_7 \proton \left(\lambda s^2+c^2\right) \dfrac{\LiOut{}}{1+\tilde{J}\LiOut{}} 
+ = k_7  \underbrace{\dfrac{\tilde{K}\LiOut{}}{1+\tilde{J}\LiOut{}}}_{\tilde{S}},\;\tilde{K} = \bar{p}^2 \proton \left(\lambda s^2+c^2\right) \\
+ \\
+ \omega_0+k_h & = & k_7\left(\tilde{S}+\eta\right),\; k_h = \eta k_7\\
+ \\
+ \alpha_\infty   & = & \dfrac{\omega_0}{\omega_0+k_h}  = \dfrac{\tilde{S}}{\tilde{S}+\eta}\\
+ \\
+ 1-\alpha_\infty & = & \dfrac{k_h}{\omega_0+k_h} = \dfrac{\eta}{\tilde{S}+\eta}\\
+ \\
+ \sigma_x & = & \dfrac{\omega_h}{k_x^l} = \dfrac{\omega_6}{k_x^l} + \dfrac{\omega_7}{k_x^l} + \dfrac{k_h}{k_x^l} \\
+ \\
+ \sigma_7 & = & \bar{p}^2\proton \left[\lambda s^2+c^2\right]\dfrac{\LiOut{}}{1+\tilde{J}\LiOut{}} + \eta = \tilde{S}+\eta\\
+\\
+\sigma_6 & = & {\bar{p}^2\proton} \left[s^2+\dfrac{c^2}{\lambda}\right]\dfrac{\LiOut{}}{1+\tilde{J}\LiOut{}}+\dfrac{\eta}{\lambda} = \dfrac{1}{\lambda} \sigma_7 = \dfrac{\tilde{S}+\eta}{\lambda}\\
 \end{array}
 \right.
+\end{equation}
+Then for a given time such that
+\begin{equation}
+	k_7 t = \tau
+\end{equation}
+We get
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\Li{6} & = & \left[ \beta\left(1-e^{-\lambda\tau}\right) + \gamma \Xi\left(\lambda\tau,\dfrac{\tilde{S}+\eta}{\lambda}\right) \right] s^2 \LiOut{} \\
+	\\
+	\Li{7} & = &  \left[ \beta\left(1-e^{-\tau}\right) + \gamma \Xi\left(\tau,\tilde{S}+\eta\right) \right] c^2 \LiOut{}\\
+\end{array}
+\right.
+\end{equation}
+so that
+\begin{equation}
+	\Li{} = \left\lbrace 
+	\beta \left[ s^2 \left(1-e^{-\lambda\tau}\right) + c^2\left(1-e^{-\tau}\right) \right] 
+	+ \gamma \left[  s^2 \Xi\left(\lambda\tau,{\dfrac{\tilde{S}+\eta}{\lambda}}\right) + c^2 \Xi\left(\tau,\tilde{S}+\eta\right) \right]
+	\right \rbrace \LiOut{}
+\end{equation}
+The final dependency is seen writing
+\begin{equation}
+	\begin{array}{rcl}
+	\beta & = &\Theta + \kappa\left(1-\alpha_\infty\right)\\
+	      & = &\Theta + \dfrac{\kappa_0}{1+\tilde{J}\LiOut{}} \dfrac{\eta}{\tilde{S}+\eta}\\
+	      \\
+	\gamma & = & \kappa \alpha_\infty \\
+	       & = & \dfrac{\kappa_0}{1+\tilde{J}\LiOut{}} \dfrac{\tilde{S}}{\tilde{S}+\eta} \\
+	\end{array}
 \end{equation}
 
 \end{document}

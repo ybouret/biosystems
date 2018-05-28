@@ -1,0 +1,26 @@
+
+set samples 10000
+
+
+
+Xi(u,p) = (exp(-p*u)-exp(-u))/(1.0-p);
+
+growth(u,k) = (1.0-exp(-k*u));
+growth7(t) = growth(t,k7);
+growth6(t) = growth(t,lam*k7);
+
+Xi7(t) = Xi(k7*t,sigma);
+Xi6(t) = Xi(lam*k7*t,sigma/lam);
+
+psi = 0;
+
+beta7(t) = growth7(t) + psi * Xi7(t);
+beta6(t) = growth6(t) + psi * Xi6(t);
+ratio(t) = beta7(t)/beta6(t);
+
+delta7(t) = 1000.0 * ( (1+d7out/1000.0) * ratio(t) - 1);
+
+psi             = 78.8671
+sigma           = 146.138
+lam             = 1.01379
+k7              = 0.00205956

@@ -28,3 +28,7 @@ k7    = 0.00217693
 lam   = 1.01205
 
 delta7LT(t) = 1e3*((1+1e-3*d7out)*(growth7(t)/growth6(t))-1.0);
+
+ratio(X,a)  = growth(X,1)/growth(X,a);
+ratio1(X,a) = 1+exp(-a*X)-exp(-X)*(1+exp(-a*X));
+ratio2(X,a) = 1+exp(-a*X)+exp(-2*a*X)-exp(-X)*(1+exp(-a*X)+exp(-2*a*X));

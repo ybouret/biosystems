@@ -366,7 +366,7 @@ and finally
 	 \\
 	 \gamma & = & \kappa \alpha_\infty \\
 	 \\
-	 \Xi\left(u,p\right) & = & \dfrac{e^{-pu}-e^{-u}}{1-p},\;\;\Xi(u,1)=xe^{-x}\\
+	 \Xi\left(u,p\right) & = & \dfrac{e^{-pu}-e^{-u}}{1-p},\;\;\Xi(u,1)=ue^{-u}\\
 \end{array}
 \right.
 \end{equation}
@@ -438,7 +438,7 @@ We can manage
 \begin{equation}
 	\deltaLi = 10^3 \left[ \left(1+10^{-3}\deltaLiOut\right)\dfrac{\beta_7}{\beta_6} - 1 \right] 
 \end{equation}
-or more interestingly
+or more interestingly ?
 \begin{equation}
 	\Delta^7 = \deltaLi - \deltaLiOut = 10^3 \left(1+10^{-3}\deltaLiOut\right) \left[\dfrac{\beta_7}{\beta_6} - 1\right]
 \end{equation}
@@ -515,6 +515,8 @@ We get
 \end{array}
 \right.
 \end{equation}
+
+\subsection{Lithium/Reponse}
 so that
 \begin{equation}
 	\Li{} = \left\lbrace 
@@ -559,5 +561,31 @@ then
 \item if $\tau\gg\dfrac{\log(\sigma)}{\sigma-1}$
 	it decreases exponentially, slowly, depending on the magnitude of $\sigma$, si definition of $\Xi$.
 \end{itemize}
+
+\subsection{$\deltaLi$ reponse}
+We have
+\begin{equation}
+	\begin{array}{rcl}
+	\psi & = & \dfrac{\gamma}{\beta}\\
+	&=& \dfrac{\kappa \alpha_\infty}{\Theta+\kappa\left(1-\alpha_\infty\right)}\\
+	\\
+	&=& \dfrac{1-\dfrac{\eta}{\tilde{S}+\eta}} {\dfrac{\Theta}{\kappa} + \dfrac{\eta}{\tilde{S}+\eta} }\\
+	\\
+	& = & \dfrac{1-\dfrac{\sigma-\tilde{S}}{\sigma}}{\dfrac{\Theta}{\kappa} + \dfrac{\sigma-\tilde{S}}{\sigma}}\\
+	\\
+	& = & \dfrac{1-\cos^2\mu}{\dfrac{1}{\psi_0}+\cos^2\mu}\\
+	\\
+	\tilde{S} & = & \sigma \sin^2\mu \;\; (\sigma\geq\tilde{S})\\
+	\\
+	\psi_0 & = & \dfrac{\kappa}{\Theta} \\
+	\end{array}
+\end{equation}
+
+We still have
+\begin{equation}
+	\dfrac{\beta_7}{\beta_6} = \dfrac
+	{\left(1-e^{-\tau}\right)+\psi\Xi\left(\tau,\sigma\right)}
+	{\left(1-e^{-\lambda\tau}\right)+\psi\Xi\left(\lambda\tau,\sigma/\lambda\right)}
+\end{equation}
 
 \end{document}

@@ -8,52 +8,57 @@
 using namespace yocto;
 using namespace math;
 
+//static const double rho_s = 12.0192;
+
 YOCTO_PROGRAM_START()
 {
 
-    if(argc<=3)
-    {
-        throw exception("usage: %s file colIndex longTime", program);
-    }
+    const string workdir = "src/lithium/doc/";
 
-    const string   fileName = argv[1];
-    const size_t   colIndex = strconv::to_size(  argv[2],"colIndex");
-    const double   longTime = strconv::to_double(argv[3],"longTime");
+    vector<double> t_full;      //! col 1
+    vector<double> delta_full;  //! col 3
 
-    vector<double> t;
-    vector<double> delta7;
 
     {
+        const string filename = workdir + "nhe1_delta7_full_15mM_37.txt";
+        std::cerr << "Loading " << filename << std::endl;
         data_set<double> ds;
-        ds.use(1,t);
-        ds.use(colIndex,delta7);
-        ios::icstream fp(fileName);
+        ds.use(1,t_full);
+        ds.use(3,delta_full);
+        ios::icstream fp(filename);
         ds.load(fp);
+        std::cerr << "...done" << std::endl;
     }
-    const size_t N = t.size();
-    std::cerr << "-- loaded " << N << " data" << std::endl;
 
-    vector<double> tL(N,as_capacity);
-    vector<double> d7L(N,as_capacity);
-    for(size_t i=1;i<=N;++i)
+    vector<double> LiExtDR;
+    vector<double> LiIntDR;
+    vector<double> deltaDR;
+    vector<double> stddevDR;
     {
-        if(t[i]>=longTime)
-        {
-            tL.push_back(t[i]);
-            d7L.push_back(delta7[i]);
-        }
+        const string filename = workdir + "nhe1_reponse_60s_37.txt";
+        std::cerr << "Loading " << filename << std::endl;
+        data_set<double> ds;
+        ds.use(1,LiExtDR);
+        ds.use(2,LiIntDR);
+        ds.use(3,deltaDR);
+        ds.use(4,stddevDR);
+        ios::icstream fp(filename);
+        ds.load(fp);
+        std::cerr << "...done" << std::endl;
     }
-    const size_t NL = tL.size();
-    std::cerr << "-- #longTime = " << NL << std::endl;
 
+    vector<double> t_short;
+    vector<double> Li_short;
     {
-        ios::wcstream fp("lt.dat");
-        for(size_t i=1;i<=NL;++i)
-        {
-            fp("%.15g %.15g\n", tL[i], d7L[i]);
-        }
+        const string filename = workdir + "nhe1_total_short_times_15mM_37.txt";
+        std::cerr << "Loading " << filename << std::endl;
+        data_set<double> ds;
+        ds.use(1,t_short);
+        ds.use(2,Li_short);
+        ios::icstream fp(filename);
+        ds.load(fp);
+        std::cerr << "...done" << std::endl;
     }
-
 
 }
 YOCTO_PROGRAM_END()

@@ -1,6 +1,4 @@
 \documentclass[aps,onecolumn,12pt]{revtex4}
-%\documentclass[11pt]{article}
-%\usepackage[cm]{fullpage}
 \usepackage{graphicx}
 \usepackage{amssymb,amsfonts,amsmath,amsthm}
 \usepackage{chemarr}
@@ -51,7 +49,7 @@
 \newcommand{\deltaLiOut}{{\deltaLi}_{\mathrm{out}}}
 \begin{document}
 
-\section{Proposed Mechanism}
+\section{Isotopic Separation}
 $$
 	\deltaLi = \left(
 		\dfrac{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample}}
@@ -61,10 +59,11 @@ $$
 $$
 
 $$
-	\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample} = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} \left[1+10^{-3}\deltaLi\right]
+	\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample} = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} \left[1+10^{-3}\deltaLi\right] = \rho_s \left[1+10^{-3}\deltaLi\right]
 $$
 
 
+\section{Proposed Mechanism}
 
 \begin{equation}
 	 \spLiOut{x} +  \spEout  
@@ -79,7 +78,7 @@ $$
 \begin{itemize}
 \item $\proton$ is a slowly varying parameter $h(t)$.
 \item $\LiOut{6}$ and  $\LiOut{7}$ are parameters.
-%\item the second order return is negligible w.r.t first order recycling, ie $k_q^x\simeq0$.%%not yet?
+\item Variables noted with a '$\tilde{~}$' are dependent on those "parametric" concentrations
 \end{itemize}
 
 \subsection{Kinetics}
@@ -113,19 +112,19 @@ We consider that we have the two equations
 leading to a constraint vector $\vec{\Gamma}$
 with 
 \begin{equation}
-	J'_x = J_x \LiOut{x}
+	\tilde{J}_x = J_x \LiOut{x}
 \end{equation}
 
 \begin{equation}
 \vec{\Gamma} = 
 \begin{pmatrix}
-	J_6' \Eout - \LiE{6} \\
-	J_7' \Eout - \LiE{7} \\
+	\tilde{J}_6 \Eout - \LiE{6} \\
+	\tilde{J}_7 \Eout - \LiE{7} \\
 \end{pmatrix}
 \end{equation}
 which already simplifies the matter conservation \eqref{eq:E0} into
 \begin{equation}
-	E_0 = \EHin + \Eout \left(1+J'_6+J'_7\right).
+	E_0 = \EHin + \Eout \left(1+\tilde{J}_6+\tilde{J}_7\right).
 \end{equation}
 And we have the topology for the two equations as
 \begin{equation}
@@ -135,7 +134,7 @@ And we have the topology for the two equations as
 and
 \begin{equation}
 	\partial_{\vec{X}}\vec{\Gamma} = 
-	\begin{pmatrix}J'_6 & 0 & -1 & 0 & 0 & 0\cr J'_7 & 0 & 0 & 0 & -1 & 0\end{pmatrix}
+	\begin{pmatrix}\tilde{J}_6 & 0 & -1 & 0 & 0 & 0\cr\tilde{J}_7 & 0 & 0 & 0 & -1 & 0\end{pmatrix}
 \end{equation}
 
 \subsection{Rates}
@@ -157,30 +156,30 @@ The "slow" rate vector is
 	v_h & = & k_h \EHin & \text{(recycling)}\\
 	p_x & = & k_x^p \proton \LiE{x} & \text{(forward transfer)}\\
 	q_x & = & k_x^q \EHin \LiIn{x} & \text{(reverse transfer)} \\
-	l_x & = & k_x^l \left(\LiIn{x}-\Theta'_x\right) & \text{(leak)}\\
+	l_x & = & k_x  \left(\LiIn{x}-\tilde{\Theta}_x\right) & \text{(leak)}\\
 	\end{array}
 	\right.
 \end{equation}
 with (Goldman-Hodgkins-Katz)
 \begin{equation}
-	\Theta'_x = \Theta \LiOut{x}
+	\tilde{\Theta}_x = \Theta \LiOut{x}
 \end{equation}
 
 \subsection{Semi-Stationary Equations}
 We define
 \begin{equation}
-	\mymat{W} = \mymat{\Phi}\mytrn{\mymat{\nu}} = \begin{pmatrix} -J'_6-1 & -J'_6 \cr -J'_7 & -J'_7-1\end{pmatrix}
-	,\;\mymat{W}^\ast = \begin{pmatrix} -J'_6-1 & J'_7 \cr J'_6 & -J'_7-1\end{pmatrix}
-	,\;\;\delta^\ast=\det(\mymat{W})=1+J'_6+J'_7.
+	\mymat{W} = \mymat{\Phi}\mytrn{\mymat{\nu}} = \begin{pmatrix} -\tilde{J}_6-1 & -\tilde{J}_6 \cr -\tilde{J}_7 & -\tilde{J}_7-1\end{pmatrix}
+	,\;\mymat{W}^\ast = \begin{pmatrix} -\tilde{J}_6-1 & \tilde{J}_7 \cr \tilde{J}_6 & -\tilde{J}_7-1\end{pmatrix}
+	,\;\; \tilde{D} =\det(\mymat{W})=1+\tilde{J}_6+\tilde{J}_7.
 \end{equation}
 and
 \begin{equation}
-	\mymat{\chi}^\ast = \mathds{1}_6-\mytrn{\mymat{\nu}}\mymat{W}^\ast\mymat{\Phi}
+	\mymat{\chi} = \tilde{D}\mathds{1}_6-\mytrn{\mymat{\nu}}\mymat{W}^\ast\mymat{\Phi}
 \end{equation}
 
 \begin{equation}
-	\partial_t\vec{X} = \dfrac{1}{\delta^\ast}
-	\mymat{\chi}^\ast \partial_t\vec{X}_{slow}
+	\partial_t\vec{X} = \dfrac{1}{\tilde{D}}
+	\mymat{\chi} \partial_t\vec{X}_{slow}
 \end{equation}
 and we find
 \begin{equation}
@@ -198,18 +197,18 @@ with the expressions
 	\begin{array}{rcl}
 	v_h & = & k_h \EHin \\
 	q_x & = & k_x^q \EHin \Li{x}  \\
-	l_x & = & k_x^l \left(\Li{x}-\Theta'_x\right)\\
+	l_x & = & k_x  \left(\Li{x}- \tilde{\Theta}_x\right)\\
 	p_x & = & k_x^p \proton \LiE{x}\\
 	\end{array}
 \right.
 \end{equation}
 with
 \begin{equation}
-	\LiE{x} = J'_x \Eout,\;\;\Eout=\dfrac{E_0-\EHin}{\delta^\ast}
+	\LiE{x} = \tilde{J}_x \Eout,\;\;\Eout=\dfrac{E_0-\EHin}{\tilde{D}}
 \end{equation}
 so that
 \begin{equation}
-	p_x = k_x^p \proton  J'_x \dfrac{E_0-\EHin}{\delta^\ast}
+	p_x = k_x^p \proton  \tilde{J}_x \dfrac{E_0-\EHin}{\tilde{D}}
 \end{equation}
 We now use
 \begin{equation}
@@ -223,9 +222,9 @@ and we get
 	\left\lbrace
 	\begin{array}{rcl}
 	v_h & = & k_h E_0 \alpha \\
-	q_x & = & k_q^x E_0 \alpha \Li{x}  \\
-	l_x & = & k_l^x \left(\Li{x} -\Theta'_x\right)\\
-	p_x & = & k_p^x E_0 \proton \dfrac{J'_x}{\delta^\ast}(1-\alpha) \\
+	q_x & = & k_x^q E_0 \alpha \Li{x}  \\
+	l_x & = & k_x \left(\Li{x} - \tilde{\Theta}_x\right)\\
+	p_x & = & k_x^p E_0 \proton \dfrac{\tilde{J}_x}{\tilde{D}}(1-\alpha) \\
 	\end{array}
 \right.
 \end{equation}
@@ -234,7 +233,7 @@ We define the set of reduced constants
 \begin{equation}
 \left\lbrace
 	\begin{array}{rcl}
-	\omega_x & = &  k_x^p \proton \dfrac{J_x}{1+J_6\LiOut{6}+J_7\LiOut{7}} \LiOut{x} = k_x^p \proton \tilde{J}_x\LiOut{x}\\
+	\omega_x & = &  k_x^p \proton \dfrac{J_x}{\tilde{D}}\LiOut{x}\\
 	\omega_0 & = & \omega_6 + \omega_7\\
 	p_x & = & \omega_x E_0 \left(1-\alpha\right)\\
 	\end{array}
@@ -248,9 +247,9 @@ then
 \left\lbrace
 	\begin{array}{rcl}
 		\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0+{\sum_x k_x^q \Li{x}} \right\rbrack\\
-		\partial_t\Li{x} & = & \left\lbrack k_x^l\Theta'_x+\omega_x E_0\right\rbrack
+		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\omega_x E_0\right\rbrack
 		-\left\lbrack
-			\omega_x E_0\alpha +  \Li{x}  \left(k_x^l+ k_x^q E_0\alpha\right)
+			\omega_x E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
 		\right\rbrack\\
 	\end{array}
 \right.
@@ -260,15 +259,15 @@ then
 \subsection{Looking for steady-state}
 \subsubsection{Constraints}
 \begin{equation}
-	\Li{x}_\infty = \dfrac{\left\lbrack k_l^x\Theta'_x+\omega_x E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_l^x+ k_q^x E_0\alpha_\infty}
+	\Li{x}_\infty = \dfrac{\left\lbrack k_x\tilde{\Theta}_x+\omega_x E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_x+ k_x^q E_0\alpha_\infty}
 \end{equation}
-Since experimentally, there exist $\beta$ (observed) and $\Theta$ (GHK) such that
+Since experimentally, there exist $\tilde{\beta}$ (observed) and $\Theta$ (GHK) such that
 \begin{equation}
-	\Li{x}_\infty=\beta\LiOut{x},\;\Theta'_x = \Theta \LiOut{x}
+	\Li{x}_\infty=\tilde\beta\LiOut{x},\;\tilde{\Theta}_x = \Theta \LiOut{x}
 \end{equation}
 we obtain that
 \begin{equation}
-		\beta = \dfrac{k_x^l\Theta + k_x^p \proton \tilde{J_x} E_0 (1-\alpha_\infty)}{k_l^x+ k_q^x E_0\alpha_\infty}
+		\tilde\beta = \dfrac{k_x\Theta + k_x^p \proton {J_x} E_0 (1-\alpha_\infty)/\tilde{D}}{k_l^x+ k_q^x E_0\alpha_\infty}
 \end{equation}
 \textit{which must be the same for both species!}
 
@@ -276,14 +275,14 @@ We have
 \begin{equation}
 \left\lbrace
 	\begin{array}{rcll}
-	k_x^q    & = & \bar{q}\,k_x^l,  &  \bar{q}\text{ inverse of concentration}\\
-	k_x^pJ_x & = & \bar{p}^2\,k_x^l, & \bar{p}\text{ inverse of concentration}\\
+	k_x^q    & = & \bar{q}\,k_x,  &  \bar{q}\text{ inverse of concentration}\\
+	k_x^pJ_x & = & \bar{p}^2\,k_x, & \bar{p}\text{ inverse of concentration}\\
 	\end{array}
 \right.
 \end{equation}
 leading to
 \begin{equation}
-	\beta = \dfrac{\Theta+\dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(1-\alpha_\infty\right)}{1+\bar{q}E_0\alpha_\infty}
+	\tilde\beta = \dfrac{\Theta+\dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(1-\alpha_\infty\right)}{1+\bar{q}E_0\alpha_\infty}
 \end{equation}
 which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake and reduced by NHE output.
 
@@ -298,32 +297,32 @@ For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is nec
 We now assume
 \begin{equation}
 \left\lbrace
-\begin{array}{rcll}
-	\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0\right\rbrack & \alpha_\infty = \dfrac{\omega_0}{\omega_0+k_h}\\
-	\partial_t\Li{x} & = & \left\lbrack k_x^l\Theta'_x+\omega_x E_0\right\rbrack
+\begin{array}{rcl|l}
+	\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0\right\rbrack & {\alpha_\infty} = \dfrac{\omega_0}{\omega_0+k_h}\\
+	\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\omega_x E_0\right\rbrack
 		-\left\lbrack
 			\omega_x E_0\alpha +  k_x^l\Li{x}
 		\right\rbrack & \\
-	\beta & = & \Theta + \kappa \left(1-\alpha_\infty\right) & \kappa = \dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \\
+	\tilde{\beta} & = & \Theta + \tilde{\kappa} \left(1-\alpha_\infty\right) & \tilde\kappa = \dfrac{\bar{p}^2 \proton E_0}{\tilde{D}} \\
 	\end{array}
 \right.
 \end{equation}
 and using
 $$
-	\omega_x =  \dfrac{\bar{p}^2}{\delta^\ast} k_x^l\proton \LiOut{x}
+	\omega_x =  \dfrac{\bar{p}^2}{\tilde{D}} k_x \proton \LiOut{x}
 $$
 we get
 $$
 	\partial_t\Li{x} =
-	  k_x^l \left(\LiOut{x} \left[ \Theta + \kappa \left(1-\alpha\right)\right] - \Li{x} \right)
+	  k_x \left(\LiOut{x} \left[ \Theta + \tilde\kappa \left(1-\alpha\right)\right] - \Li{x} \right)
 $$
 then
 \begin{equation}
-	\partial_t\left( \dfrac{\Li{x}}{\LiOut{x}} \right)= k_x^l \left( \Theta + \kappa(1-\alpha) - \left( \dfrac{\Li{x}}{\LiOut{x}} \right)\right)
+	\partial_t\left( \dfrac{\Li{x}}{\LiOut{x}} \right)= k_x \left( \Theta + \tilde\kappa(1-\alpha) - \left( \dfrac{\Li{x}}{\LiOut{x}} \right)\right)
 \end{equation}
 namely
 \begin{equation}
-	\partial_t \beta_x =  k_x^l \left( \Theta + \kappa(1-\alpha) - \beta_x\right)
+	\partial_t \beta_x =  k_x^l \left( \Theta + \tilde\kappa(1-\alpha) - \beta_x\right)
 \end{equation}
 \subsubsection{Solutions}
 
@@ -332,39 +331,39 @@ namely
 \end{equation}
 then we have
 \begin{equation}
-	\beta_x(t) = W_x(t) e^{-k_x^l t }
+	\beta_x(t) = W_x(t) e^{-k_x t }
 \end{equation}
 with
 \begin{equation}
 \left \lbrace
 \begin{array}{rcl}
-	\partial_tW_x & = & k_x^l \left[ \Theta + \kappa(1-\alpha(t)) \right] e^{k_x^lt} \\
-	& = & k_x^l \left[ \Theta + \kappa(1-\alpha_\infty) + \kappa\alpha_\infty e^{-\omega_h t} \right] e^{k_x^lt} \\
+	\partial_tW_x & = & k_x \left[ \Theta + \tilde\kappa(1-\alpha(t)) \right] e^{k_x t} \\
+	& = & k_x \left[ \Theta + \tilde\kappa(1-\alpha_\infty) + \tilde\kappa\alpha_\infty e^{-\omega_h t} \right] e^{k_x t} \\
 \end{array}
 \right.
 \end{equation}
 	
 \begin{equation}
-		W_x(t) = \left(\Theta+\kappa(1-\alpha_\infty)\right) \left[e^{k_x^l t}-1\right]
-		+ \kappa k_x^l \alpha_\infty \dfrac{\left[e^{\left(k_x^l-\omega_h\right) t}-1\right]}{k_x^l-\omega_h}
+		W_x(t) = \left(\Theta+\tilde\kappa(1-\alpha_\infty)\right) \left[e^{k_x t}-1\right]
+		+ \tilde\kappa k_x \alpha_\infty \dfrac{\left[e^{\left(k_x -\omega_h\right) t}-1\right]}{k_x-\omega_h}
 \end{equation}	
 and finally
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\beta_x & = & \beta \left[1-e^{-k_x^l t}\right] 
-	+ k_x^l \kappa \alpha_\infty
+	\beta_x & = & \tilde\beta \left[1-e^{-k_x t}\right] 
+	+ k_x \tilde\kappa \alpha_\infty
 	\left[
 	 \dfrac{
-	 e^{-\omega_h t} - e^{-k_x^l t}
+	 e^{-\omega_h t} - e^{-k_x t}
 	 }
-	 {k_x^l-\omega_h}
+	 {k_x-\omega_h}
 	 \right]\\
-	 & = & \beta \left[1-e^{-k_x^l t}\right] + \gamma \Xi\left(k_x^lt,\sigma_x\right)\\
+	 & = & \tilde\beta \left[1-e^{-k_x  t}\right] + \tilde\gamma \Xi\left(k_x t,\sigma_x\right)\\
 	 \\
-	 \sigma_x & = & \dfrac{\omega_h}{k_x^l} = \dfrac{\omega_0}{k_x^l} + \dfrac{k_h}{k_x^l} \\
+	 \sigma_x & = & \dfrac{\omega_h}{k_x} = \dfrac{\omega_0}{k_x} + \dfrac{k_h}{k_x} \\
 	 \\
-	 \gamma & = & \kappa \alpha_\infty \\
+	 \tilde\gamma & = & \tilde\kappa \alpha_\infty \\
 	 \\
 	 \Xi\left(u,p\right) & = & \dfrac{e^{-pu}-e^{-u}}{1-p},\;\;\Xi(u,1)=ue^{-u}\\
 \end{array}
@@ -379,7 +378,7 @@ which is a \underline{decreasing} function of $p$, and the maximum value is
 	\Xi\left(u_{max},p\right) \approx \dfrac{1-\tanh\left[ 0.4(\ln(p)+0.7)\right]}{2}
 \end{equation}
 is also a \underline{decreasing} function of $p$...
-if $k_x^l$ is bigger then $\sigma_x$ is smaller then the amplification is bigger and lasts longer!!!
+if $k_x$ is bigger then $\sigma_x$ is smaller then the amplification is bigger and lasts longer!!!
 
 Short times: 
 $$
@@ -395,9 +394,65 @@ $$
 
 \centerline{\bf Warning}
 \begin{itemize}
-	\item $\beta$ changes with $\proton$, short time value and long time value
-	\item $\gamma$ changes with $\proton$, short time value and long time value
+	\item $\tilde\beta$ changes with $\proton$, short time value and long time value
+	\item $\tilde\gamma$ changes with $\proton$, short time value and long time value
 \end{itemize}
+
+\section{Rewriting}
+
+\subsection{Boundary Conditions}
+
+\begin{equation}
+	\dfrac{\LiOut{7}}{\LiOut{6}} = \rho_s \left(1+10^{-3}\deltaLiOut\right)
+\end{equation}
+so that
+\begin{equation}
+\left\lbrace
+	\begin{array}{rclcl}
+	\LiOut{6} & = & \dfrac{1}{1+\rho_s\left(1+10^{-3}\deltaLiOut\right)} \LiOut{} & = & \sin^2(\varphi) \LiOut{} \\
+	\\
+	\LiOut{7} & = & \dfrac{\rho_s\left(1+10^{-3}\deltaLiOut\right)}{1+\rho_s\left(1+10^{-3}\deltaLiOut\right)} \LiOut{} & = & \cos^2(\varphi)\LiOut{} \\
+	\end{array}
+\right.
+\end{equation}
+$$
+	\rho_s \approx 12.0192
+$$
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\sin^2(\varphi) = s^2 & \simeq & 0.0768 - 7.0910\,10^{-5} \deltaLiOut + \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
+	\cos^2(\varphi) = c^2 & \simeq & 0.9232 + 7.0910\,10^{-5} \deltaLiOut - \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
+	\end{array}
+\right.
+\end{equation}
+
+\subsection{Per species intake}
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\tau & = & k_7 t\\
+	k_6  & = & \lambda k_7\\
+	\dfrac{k_h}{k_7} & = & \eta \\
+	\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\tilde{D} & = & 1 + \left(s^2J_6+c^2J_7\right) \LiOut{} = 1+\bar{J} \LiOut{}\\
+	\\
+	\omega_0  & = & k_7 \bar{p}^2 \proton \left(\lambda s^2+c^2\right) \dfrac{ \LiOut{} }{1+\bar{J}\LiOut{}} 
+	\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+	\beta_x = 
+\end{equation}
+
+\end{document}
 
 \section{Litium Intake}
 \subsection{Total Lithium}

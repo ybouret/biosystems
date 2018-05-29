@@ -471,7 +471,7 @@ $$
 \begin{equation}
 \left\lbrace
 	\begin{array}{rcl}
-	\tilde\beta\LiOut{} & = & \Theta\LiOut{} + \left(\dfrac{E_0}{\lambda s^2 + c^2}\right) \dfrac{ K_h \Lambda \cdot \eta}{ K_h \Lambda + \eta }\\
+	\tilde\beta\LiOut{} & = & \Theta\LiOut{} + \left(\dfrac{E_0}{\lambda s^2 + c^2}\right) \dfrac{ K_h \Lambda \cdot \eta}{ K_h \Lambda + \eta },\;\; \LiOut{} = \dfrac{1}{\bar{J}}\dfrac{\Lambda}{1-\Lambda}\\
 	\\
 	\tilde\gamma\LiOut{} & = & \left(\dfrac{E_0}{\lambda s^2 + c^2}\right) \dfrac{K_h^2 \Lambda^2}{K_h \Lambda + \eta}\\
 	\end{array}
@@ -488,6 +488,16 @@ $$
 	\dfrac
 	{\left(1-e^{-\tau}\right) + \psi \Xi\left(\tau,\sigma\right)}
 	{\left(1-e^{-\lambda\tau}\right) + \psi \Xi\left(\lambda\tau,\sigma/\lambda\right)}
+\end{equation}
+
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\deltaLi_{ini} & = & \dfrac{\deltaLiOut+1000(1-\lambda)}{\lambda}\\
+	\\
+	\lambda        & = & \dfrac{1000+\deltaLiOut}{1000+\deltaLi_{ini}}\\
+	\end{array}
+\right.
 \end{equation}
 
 \end{document}

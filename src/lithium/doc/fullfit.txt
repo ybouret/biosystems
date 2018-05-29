@@ -9,7 +9,7 @@ growth(u,k) = (1.0-exp(-k*u));
 growth7(t) = growth(t,k7);
 growth6(t) = growth(t,lam*k7);
 
-Xi7(t) = Xi(k7*t,sigma);
+Xi7(t) = Xi(k7*t,    sigma);
 Xi6(t) = Xi(lam*k7*t,sigma/lam);
 
 
@@ -17,7 +17,7 @@ beta7(t) = growth7(t) + psi * Xi7(t);
 beta6(t) = growth6(t) + psi * Xi6(t);
 ratio(t) = beta7(t)/beta6(t);
 
-delta7(t) = 1000.0 * ( (1+d7out/1000.0) * ratio(t) - 1.0);
+delta7(t) = 1000.0 * ( (1.0+d7out/1000.0) * ratio(t) - 1.0);
 
 d7out           = 14.98
 psi             = 78.8671

@@ -13,11 +13,12 @@ Xi7(t) = Xi(k7*t,    sigma);
 Xi6(t) = Xi(lam*k7*t,sigma/lam);
 
 
-beta7(t) = growth7(t) + psi * Xi7(t);
-beta6(t) = growth6(t) + psi * Xi6(t);
-ratio(t) = beta7(t)/beta6(t);
-
-delta7(t) = 1000.0 * ( (1.0+d7out/1000.0) * ratio(t) - 1.0);
+beta7(t,xs)  = growth7(t) + xs * Xi7(t);
+beta6(t,xs)  = growth6(t) + xs * Xi6(t);
+ratio(t,xs)  = beta7(t,xs)/beta6(t,xs);
+ratio0(t)    = ratio(t,0.0);
+delta7(t,xs) = 1000.0 * ( (1.0+d7out/1000.0) * ratio(t,xs) - 1.0);
+delta0(t)    = delta7(t,0.0);
 
 d7out           = 14.98
 psi             = 78.8671
@@ -25,4 +26,5 @@ sigma           = 146.138
 lam             = 1.01379
 k7              = 0.00205956
 
-#plot 'nhe1_delta7_full_15mM_37.txt' u (log($1)):3 w lp, delta7(exp(x))
+d7ini(fac)      = 1000.0 * ( (1.0+d7out/1000.0)/fac- 1.0);
+plot 'nhe1_delta7_full_15mM_37.txt' u (log($1)):3 w lp, delta0(exp(x)), d7ini(lam),d7out,d7ini(lam)+exp(x)*k7*(d7out-d7ini(lam))

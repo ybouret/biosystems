@@ -5,7 +5,7 @@
 #include "yocto/ios/icstream.hpp"
 #include "yocto/ios/ocstream.hpp"
 #include "yocto/math/fit/fit.hpp"
-
+#include "yocto/container/utils.hpp"
 using namespace yocto;
 using namespace math;
 
@@ -242,7 +242,7 @@ YOCTO_PROGRAM_START()
         save_data(fp,t_hull,d_hull,d_hull);
     }
 #endif
-    
+
     //__________________________________________________________________________
     //
     // global variables
@@ -262,11 +262,16 @@ YOCTO_PROGRAM_START()
     double &psi    = aorg[ vars["psi"]    ];
     double &d7out  = aorg[ vars["d7out"]  ];
 
+    // initialize variables
+    const double dmin = find_min_of(delta);
+
     k7     = 0.003;
-    lambda = 1.01;
+    lambda = 1.0;
     psi    = 0.0;
     sigma  = 0.01;
     d7out  = 15.00;
+
+    lambda = (1000.0+d7out)/(1000.0+dmin);
 
     used[ vars["k7"]     ] = true;
     used[ vars["lambda"] ] = true;
@@ -294,6 +299,10 @@ YOCTO_PROGRAM_START()
             ios::wcstream fp("delta_fit0.dat");
             save_data(fp,t,delta,deltaFit,&ratio);
         }
+
+
+
+
         std::cerr << "d7ini=" << dfn.d7ini(aorg,vars) << std::endl;
         {
             ios::wcstream fp("delta_dfn0.dat");
@@ -303,6 +312,17 @@ YOCTO_PROGRAM_START()
                 const double tt = t[1] + (i*(t[N]-t[1]))/M;
                 fp("%.15g %.15g\n", log(tt), F(tt,aorg,vars));
             }
+        }
+
+        k7 /= 2;
+        sample.computeD2(F,aorg);
+        {
+            for(size_t i=N;i>0;--i)
+            {
+                ratio[i] = delta[i]/F0(t[i],aorg,vars);
+            }
+            ios::wcstream fp("delta_fit1.dat");
+            save_data(fp,t,delta,deltaFit,&ratio);
         }
 
     }

@@ -6,6 +6,7 @@
 #include "yocto/ios/ocstream.hpp"
 #include "yocto/math/fit/fit.hpp"
 #include "yocto/container/utils.hpp"
+#include "yocto/sort/quick.hpp"
 using namespace yocto;
 using namespace math;
 
@@ -70,64 +71,6 @@ typedef Fit::Sample<double>  Sample;
 typedef Fit::Variables       Variables;
 typedef vector<double>       Vector;
 
-static inline void BuildHull( Vector &X, Vector &Y, const array<double> &x, const array<double> &y )
-{
-    assert(x.size()==y.size());
-    const size_t N = x.size();
-    X.free();
-    Y.free();
-    X.ensure(N);
-    Y.ensure(N);
-
-    // take minimal point
-    double xcurr = x[1];
-    double ycurr = y[1];
-    size_t icurr = 1;
-    for(size_t i=N;i>1;--i)
-    {
-        const double ytmp = y[i];
-        if(ytmp<ycurr)
-        {
-            xcurr = x[i];
-            ycurr = ytmp;
-            icurr = i;
-        }
-    }
-
-    X.push_back(xcurr);
-    Y.push_back(ycurr);
-
-    for(size_t i=icurr;i<N;)
-    {
-        std::cerr << "@" << i << ": xcurr=" << xcurr << ", ycurr=" << ycurr << std::endl;
-        size_t jhull = i+1;
-        double xhull = x[jhull];
-        double yhull = y[jhull];
-        double angle = math::Atan2(yhull-ycurr,xhull-xcurr);
-        std::cerr << "\t@" << jhull <<": xhull=" << xhull << ", yhull=" << yhull << ", angle=" << angle << " --" << std::endl;
-        assert(xhull>xcurr);
-        for(size_t j=jhull+1;j<=N;++j)
-        {
-            const double xj = x[j];
-            const double yj = y[j];
-            const double aj = math::Atan2(yj-ycurr,xj-xcurr);
-            std::cerr << "\t@" << j <<": xhull=" << xj << ", yhull=" << yj << ", angle=" << aj << std::endl;
-            if(aj<=angle)
-            {
-                angle=aj;
-                xhull=xj;
-                yhull=yj;
-            }
-        }
-        X.push_back(xhull);
-        Y.push_back(yhull);
-        i=jhull;
-        xcurr=xhull;
-        ycurr=yhull;
-    }
-
-
-}
 
 class DeltaFit
 {
@@ -203,7 +146,16 @@ static inline void save_data(ios::ocstream       &fp,
 YOCTO_PROGRAM_START()
 {
 
-    testXi();
+    if(false)
+    {
+        testXi();
+    }
+
+    if(argc<=1)
+    {
+        throw exception("usage: %s t_cut",program);
+    }
+    const double t_cut = strconv::to<double>(argv[1],"t_cut");
 
 
     //__________________________________________________________________________
@@ -213,10 +165,11 @@ YOCTO_PROGRAM_START()
 
     const string workdir = "src/lithium/doc/";
 
-    vector<double> t;      //! col 1
-    vector<double> delta;  //! col 3
-    vector<double> deltaFit;
-    vector<double> ratio;
+    Vector t;      //! col 1
+    Vector delta;  //! col 3
+
+
+
 
     {
         const string filename = workdir + "nhe1_delta7_full_15mM_37.txt";
@@ -227,21 +180,31 @@ YOCTO_PROGRAM_START()
         ios::icstream fp(filename);
         ds.load(fp);
         std::cerr << "...done" << std::endl;
+        co_qsort(t,delta,__compare<double>);
     }
-    const size_t N = t.size();
-    deltaFit.make( N );
-    ratio.make(N);
-    Sample sample(t,delta,deltaFit);
 
-#if 0
-    vector<double> t_hull;
-    vector<double> d_hull;
-    BuildHull(t_hull,d_hull,t,delta);
+    const size_t   N = t.size();
+    Vector         deltaFit(N);
+    Vector         ratio(N);
+    Sample         sample(t,delta,deltaFit);
+
+    //__________________________________________________________________________
+    //
+    // cut long time data
+    //__________________________________________________________________________
+    Vector tEnd(N,as_capacity);
+    Vector deltaEnd(N,as_capacity);
+    for(size_t i=1;i<=N;++i)
     {
-        ios::wcstream fp("hull.dat");
-        save_data(fp,t_hull,d_hull,d_hull);
+        if(t[i]>=t_cut)
+        {
+            tEnd.push_back(t[i]);
+            deltaEnd.push_back(delta[i]);
+        }
     }
-#endif
+    const size_t Ncut = tEnd.size();
+    Vector       deltaEndFit(Ncut);
+    Sample       sampleEnd(tEnd,deltaEnd,deltaEndFit);
 
     //__________________________________________________________________________
     //
@@ -249,7 +212,10 @@ YOCTO_PROGRAM_START()
     //__________________________________________________________________________
     Variables &vars = sample.variables;
     vars << "k7" << "lambda" << "sigma" << "psi" << "d7out";
+    sampleEnd.variables = vars;
 
+    sampleEnd.link();
+    sample.link();
 
     const size_t nvar = vars.size();
     Vector       aorg(nvar);
@@ -275,15 +241,46 @@ YOCTO_PROGRAM_START()
 
     used[ vars["k7"]     ] = true;
     used[ vars["lambda"] ] = true;
-    used[ vars["d7out"] ]  = true;
+    //used[ vars["d7out"] ]  = false;
 
     Fit::LS<double> lsf;
     DeltaFit        dfn;
     Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute  );
     Fit::Type<double>::Function F0( &dfn, & DeltaFit::Compute0 );
 
+    if( !lsf.run(sampleEnd,F,aorg, used, aerr) )
+    {
+        throw exception("couldn't fit k7/lam");
+    }
+    else
+    {
+        sampleEnd.display(std::cerr,aorg,aerr);
+
+        {
+            ios::wcstream fp("delta_fit_end.dat");
+            save_data(fp,tEnd,deltaEnd,deltaEndFit);
+        }
+
+        {
+            ios::wcstream fp("delta_fit0.dat");
+            (void)sample.computeD2(F,aorg);
+            save_data(fp,t,delta,deltaFit);
+        }
 
 
+        {
+            ios::wcstream fp("delta_dfn0.dat");
+            const size_t M = 1000;
+            for(size_t i=0;i<=M;++i)
+            {
+                const double tt = t[1] + (i*(t[N]-t[1]))/M;
+                fp("%.15g %.15g\n", log(tt), F(tt,aorg,vars));
+            }
+        }
+    }
+
+
+#if 0
     if( !lsf.run(sample,F,aorg, used, aerr) )
     {
         throw exception("couldn't fit k7/lam");
@@ -313,19 +310,9 @@ YOCTO_PROGRAM_START()
                 fp("%.15g %.15g\n", log(tt), F(tt,aorg,vars));
             }
         }
-
-        k7 /= 2;
-        sample.computeD2(F,aorg);
-        {
-            for(size_t i=N;i>0;--i)
-            {
-                ratio[i] = delta[i]/F0(t[i],aorg,vars);
-            }
-            ios::wcstream fp("delta_fit1.dat");
-            save_data(fp,t,delta,deltaFit,&ratio);
-        }
-
     }
+#endif
+
 }
 YOCTO_PROGRAM_END()
 

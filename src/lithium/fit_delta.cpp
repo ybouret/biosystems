@@ -235,12 +235,14 @@ YOCTO_PROGRAM_START()
     lambda = 1.0;
     psi    = 0.0;
     sigma  = 0.01;
-    d7out  = 15.00;
+    d7out  = 14.00;
 
     lambda = (1000.0+d7out)/(1000.0+dmin);
 
+    std::cerr << "Estimated Lambda=" << lambda << std::endl;
+
     used[ vars["k7"]     ] = true;
-    used[ vars["lambda"] ] = true;
+    //used[ vars["lambda"] ] = true;
     //used[ vars["d7out"] ]  = false;
 
     Fit::LS<double> lsf;

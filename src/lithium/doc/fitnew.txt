@@ -1,0 +1,7 @@
+Xi(u,p) = (exp(-p*u)-exp(-u))/(1.0-p);
+grow(u) = 1-exp(-u);
+
+beta7(tau,sigma,phi)        = Xi(tau,sigma)+phi*grow(tau);
+beta6(tau,lambda,sigma,phi) = Xi(lambda*tau,sigma/lambda)+phi*grow(tau*lambda);
+
+ratio(tau,lambda,sigma,phi) = beta7(tau,sigma,phi)/beta6(tau,lambda,sigma,phi);

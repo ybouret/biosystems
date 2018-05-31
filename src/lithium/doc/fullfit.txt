@@ -27,4 +27,4 @@ lam             = 1.01379
 k7              = 0.00205956
 
 d7ini(fac)      = 1000.0 * ( (1.0+d7out/1000.0)/fac- 1.0);
-plot 'nhe1_delta7_full_15mM_37.txt' u (log($1)):3 w lp, delta0(exp(x)), d7ini(lam),d7out,d7ini(lam)+exp(x)*k7*(d7out-d7ini(lam))
+#plot 'nhe1_delta7_full_15mM_37.txt' u (log($1)):3 w lp, delta0(exp(x)), d7ini(lam),d7out,d7ini(lam)+exp(x)*k7*(d7out-d7ini(lam))

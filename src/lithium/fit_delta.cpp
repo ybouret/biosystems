@@ -95,7 +95,7 @@ public:
 
         return 1000.0 * ( (1.0+d7out/1000.0) * (beta7/beta6) - 1.0 );
     }
-
+#if 0
     double Compute0( const double t, const array<double> &aorg, const Variables &vars )
     {
         const double k7     = aorg[ vars["k7"]     ];
@@ -114,6 +114,7 @@ public:
     {
         return Compute(t,aorg,vars)/Compute0(t,aorg,vars);
     }
+#endif
 
     double d7ini( const array<double> &aorg, const Variables &vars )
     {
@@ -151,11 +152,12 @@ YOCTO_PROGRAM_START()
         testXi();
     }
 
-    if(argc<=1)
+    if(argc<=2)
     {
-        throw exception("usage: %s t_cut",program);
+        throw exception("usage: %s t_short t_long",program);
     }
-    const double t_cut = strconv::to<double>(argv[1],"t_cut");
+    const double t_short = strconv::to<double>(argv[1],"t_short");
+    const double t_long  = strconv::to<double>(argv[2],"t_long");
 
 
     //__________________________________________________________________________
@@ -167,8 +169,6 @@ YOCTO_PROGRAM_START()
 
     Vector t;      //! col 1
     Vector delta;  //! col 3
-
-
 
 
     {
@@ -190,26 +190,46 @@ YOCTO_PROGRAM_START()
 
     //__________________________________________________________________________
     //
-    // cut long time data
+    // create sub vectors
     //__________________________________________________________________________
-    Vector tEnd(N,as_capacity);
-    Vector deltaEnd(N,as_capacity);
+    Vector tIni(N,as_capacity), deltaIni(N,as_capacity);
+    Vector tEnd(N,as_capacity), deltaEnd(N,as_capacity);
     for(size_t i=1;i<=N;++i)
     {
-        if(t[i]>=t_cut)
+        if(t[i]<=t_short)
+        {
+            tIni.push_back(t[i]);
+            deltaIni.push_back(delta[i]);
+        }
+        if(t[i]>=t_long)
         {
             tEnd.push_back(t[i]);
             deltaEnd.push_back(delta[i]);
         }
     }
-    const size_t Ncut = tEnd.size();
-    Vector       deltaEndFit(Ncut);
-    Sample       sampleEnd(tEnd,deltaEnd,deltaEndFit);
+
+    //__________________________________________________________________________
+    //
+    // create sub samples
+    //__________________________________________________________________________
+    Fit::Samples<double> multiple(3);
+
+    const size_t N_Ini = tIni.size();
+    Vector       deltaIniFit(N_Ini);
+    Fit::Sample<double> &sampleIni = multiple.add(tIni,deltaIni,deltaIniFit);
+
+    const size_t N_End = tEnd.size();
+    Vector       deltaEndFit(N_End);
+    Fit::Sample<double> &sampleEnd = multiple.add(tEnd,deltaEnd,deltaEndFit);
 
     //__________________________________________________________________________
     //
     // global variables
     //__________________________________________________________________________
+
+
+
+#if 0
     Variables &vars = sample.variables;
     vars << "k7" << "lambda" << "sigma" << "psi" << "d7out";
     sampleEnd.variables = vars;
@@ -244,76 +264,16 @@ YOCTO_PROGRAM_START()
     used[ vars["k7"]     ] = true;
     //used[ vars["lambda"] ] = true;
     //used[ vars["d7out"] ]  = false;
+#endif
 
     Fit::LS<double> lsf;
     DeltaFit        dfn;
     Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute  );
-    Fit::Type<double>::Function F0( &dfn, & DeltaFit::Compute0 );
-
-    if( !lsf.run(sampleEnd,F,aorg, used, aerr) )
-    {
-        throw exception("couldn't fit k7/lam");
-    }
-    else
-    {
-        sampleEnd.display(std::cerr,aorg,aerr);
-
-        {
-            ios::wcstream fp("delta_fit_end.dat");
-            save_data(fp,tEnd,deltaEnd,deltaEndFit);
-        }
-
-        {
-            ios::wcstream fp("delta_fit0.dat");
-            (void)sample.computeD2(F,aorg);
-            save_data(fp,t,delta,deltaFit);
-        }
-
-
-        {
-            ios::wcstream fp("delta_dfn0.dat");
-            const size_t M = 1000;
-            for(size_t i=0;i<=M;++i)
-            {
-                const double tt = t[1] + (i*(t[N]-t[1]))/M;
-                fp("%.15g %.15g\n", log(tt), F(tt,aorg,vars));
-            }
-        }
-    }
-
-
-#if 0
-    if( !lsf.run(sample,F,aorg, used, aerr) )
-    {
-        throw exception("couldn't fit k7/lam");
-    }
-    else
-    {
-        sample.display(std::cerr,aorg,aerr);
-        for(size_t i=N;i>0;--i)
-        {
-            ratio[i] = delta[i]/F0(t[i],aorg,vars);
-        }
-        {
-            ios::wcstream fp("delta_fit0.dat");
-            save_data(fp,t,delta,deltaFit,&ratio);
-        }
 
 
 
 
-        std::cerr << "d7ini=" << dfn.d7ini(aorg,vars) << std::endl;
-        {
-            ios::wcstream fp("delta_dfn0.dat");
-            const size_t M = 1000;
-            for(size_t i=0;i<=M;++i)
-            {
-                const double tt = t[1] + (i*(t[N]-t[1]))/M;
-                fp("%.15g %.15g\n", log(tt), F(tt,aorg,vars));
-            }
-        }
-    }
-#endif
+
 
 }
 YOCTO_PROGRAM_END()

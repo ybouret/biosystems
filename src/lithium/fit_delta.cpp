@@ -7,6 +7,7 @@
 #include "yocto/math/fit/fit.hpp"
 #include "yocto/container/utils.hpp"
 #include "yocto/sort/quick.hpp"
+#include "yocto/math/core/tao.hpp"
 using namespace yocto;
 using namespace math;
 
@@ -248,24 +249,22 @@ YOCTO_PROGRAM_START()
     k7     = 0.003;
     d7out  = 15.00;
     lambda = (1000.0+d7out)/(1000.0+dmin);
-    sigma  = 10.0;
+    sigma  = 8;
 
     Fit::LS<double> lsf;
     Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute  );
-
-    used[ vars["k7"]     ] = true;
-    used[ vars["lambda"] ] = false;
-    used[ vars["d7out"]  ] = false;
-    used[ vars["sigma"]  ] = false;
 
     //__________________________________________________________________________
     //
     // fit the end to get time scale
     //__________________________________________________________________________
     std::cerr << "Fit relaxing scale..." << std::endl;
+    tao::ld(used,false);
+    used[ vars["k7"]     ] = true;
+
     if(!lsf.run(sampleEnd,F,aorg,used,aerr))
     {
-        throw exception("cannnot fit end");
+        throw exception("cannnot fit end/k7");
     }
     sampleEnd.display(std::cerr,aorg,aerr);
     {
@@ -273,17 +272,60 @@ YOCTO_PROGRAM_START()
         save_data(fp,tEnd,deltaEnd,deltaEndFit);
     }
 
-    used[ vars["k7"]     ] = false;
+    //__________________________________________________________________________
+    //
+    // using the initial scaling, find initial sigma
+    //__________________________________________________________________________
+    std::cerr << "Fit initial catalytic..." << std::endl;
+    tao::ld(used,false);
     used[ vars["sigma"]  ] = true;
-    
+
     if(!lsf.run(sampleIni,F,aorg,used,aerr))
     {
-        throw exception("cannnot fit ini");
+        throw exception("cannnot fit ini/sigma");
     }
     sampleEnd.display(std::cerr,aorg,aerr);
     {
         ios::wcstream fp("delta_ini.dat");
         save_data(fp,tIni,deltaIni,deltaIniFit);
+    }
+
+    //__________________________________________________________________________
+    //
+    // OK, try both...
+    //__________________________________________________________________________
+    std::cerr << "Fit common k7" << std::endl;
+    tao::ld(used,false);
+    used[ vars["k7"]     ] = true;
+    used[ vars["lambda"] ] = true;
+    used[ vars["sigma"] ] = true;
+    used[ vars["d7out"] ] = true;
+
+    if(!lsf.run(multiple,F,aorg,used,aerr))
+    {
+        throw exception("cannnot fit common");
+    }
+
+    multiple.display(std::cerr,aorg,aerr);
+    {
+        ios::wcstream fp("delta_com.dat");
+        save_data(fp,tIni,deltaIni,deltaIniFit);
+        save_data(fp,tEnd,deltaEnd,deltaEndFit);
+    }
+    {
+        ios::wcstream fp("delta_dfn.dat");
+        const size_t NP = 100;
+        for(size_t i=0;i<=NP;++i)
+        {
+            const double t = tIni[1] + (i*(tIni[N_Ini]-tIni[1]))/NP;
+            fp("%.15g %.15g\n", log(t), F(t,aorg,vars) );
+        }
+        fp << "\n";
+        for(size_t i=0;i<=NP;++i)
+        {
+            const double t = tEnd[1] + (i*(tEnd[N_End]-tEnd[1]))/NP;
+            fp("%.15g %.15g\n", log(t), F(t,aorg,vars) );
+        }
     }
 
 

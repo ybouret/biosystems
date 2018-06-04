@@ -1,7 +1,4 @@
 Xi(u,p) = (exp(-p*u)-exp(-u))/(1.0-p);
-grow(u) = 1-exp(-u);
+grow(u) = 1.0-exp(-u);
 
-beta7(tau,sigma,phi)        = Xi(tau,sigma)+phi*grow(tau);
-beta6(tau,lambda,sigma,phi) = Xi(lambda*tau,sigma/lambda)+phi*grow(tau*lambda);
-
-ratio(tau,lambda,sigma,phi) = beta7(tau,sigma,phi)/beta6(tau,lambda,sigma,phi);
+deltaIni(t,k7,lambda,d7out,sigma) = 1000.0 * ( (1.0+d7out/1000.0)*(Xi(t*k7,sigma)/Xi(t*k7*lambda,sigma/lambda)) - 1.0);

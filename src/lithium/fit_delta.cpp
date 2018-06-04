@@ -93,6 +93,7 @@ public:
         const double k7     = aorg[ vars["k7"]     ];
         const double lambda = aorg[ vars["lambda"] ];
         const double d7out  = aorg[ vars["d7out"]  ];
+        const double sigma  = aorg[ vars["sigma"]  ];
         const double tau7    = k7*t;
         const double tau6    = lambda*tau7;
         if(t>=t_long)
@@ -102,7 +103,7 @@ public:
 
         if(t<=t_short)
         {
-            return 1000.0 * ( (1.0+d7out/1000.0) * (Growth(tau7)/Growth(tau6)) - 1.0 );
+            return 1000.0 * ( (1.0+d7out/1000.0) * (Xi(tau7,sigma)/Xi(tau6,sigma/lambda)) - 1.0 );
         }
 
         return 0;
@@ -227,49 +228,10 @@ YOCTO_PROGRAM_START()
     // global variables
     //__________________________________________________________________________
     Fit::Variables &vars = multiple.variables;
-    vars << "k7" << "lambda" << "d7out";
+    vars << "k7" << "lambda" << "d7out" << "sigma";
     sampleIni.variables = vars;
     sampleEnd.variables = vars;
 
-
-
-
-#if 0
-    Variables &vars = sample.variables;
-    vars << "k7" << "lambda" << "sigma" << "psi" << "d7out";
-    sampleEnd.variables = vars;
-
-    sampleEnd.link();
-    sample.link();
-
-    const size_t nvar = vars.size();
-    Vector       aorg(nvar);
-    Vector       aerr(nvar);
-    vector<bool> used(nvar,false);
-
-    double &k7     = aorg[ vars["k7"]     ];
-    double &lambda = aorg[ vars["lambda"] ];
-    double &sigma  = aorg[ vars["sigma"]  ];
-    double &psi    = aorg[ vars["psi"]    ];
-    double &d7out  = aorg[ vars["d7out"]  ];
-
-    // initialize variables
-    const double dmin = find_min_of(delta);
-
-    k7     = 0.003;
-    lambda = 1.0;
-    psi    = 0.0;
-    sigma  = 0.01;
-    d7out  = 14.00;
-
-    lambda = (1000.0+d7out)/(1000.0+dmin);
-
-    std::cerr << "Estimated Lambda=" << lambda << std::endl;
-
-    used[ vars["k7"]     ] = true;
-    //used[ vars["lambda"] ] = true;
-    //used[ vars["d7out"] ]  = false;
-#endif
 
     const size_t nvar = vars.size();
     Vector       aorg(nvar);
@@ -279,18 +241,28 @@ YOCTO_PROGRAM_START()
     double &k7     = aorg[ vars["k7"]     ];
     double &lambda = aorg[ vars["lambda"] ];
     double &d7out  = aorg[ vars["d7out"]  ];
+    double &sigma  = aorg[ vars["sigma"]  ];
+
     const double dmin = find_min_of(delta);
 
     k7     = 0.003;
     d7out  = 15.00;
     lambda = (1000.0+d7out)/(1000.0+dmin);
+    sigma  = 10.0;
 
     Fit::LS<double> lsf;
     Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute  );
 
     used[ vars["k7"]     ] = true;
-    used[ vars["lambda"] ] = true;
+    used[ vars["lambda"] ] = false;
+    used[ vars["d7out"]  ] = false;
+    used[ vars["sigma"]  ] = false;
 
+    //__________________________________________________________________________
+    //
+    // fit the end to get time scale
+    //__________________________________________________________________________
+    std::cerr << "Fit relaxing scale..." << std::endl;
     if(!lsf.run(sampleEnd,F,aorg,used,aerr))
     {
         throw exception("cannnot fit end");
@@ -301,6 +273,9 @@ YOCTO_PROGRAM_START()
         save_data(fp,tEnd,deltaEnd,deltaEndFit);
     }
 
+    used[ vars["k7"]     ] = false;
+    used[ vars["sigma"]  ] = true;
+    
     if(!lsf.run(sampleIni,F,aorg,used,aerr))
     {
         throw exception("cannnot fit ini");

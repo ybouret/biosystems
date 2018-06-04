@@ -75,46 +75,39 @@ typedef vector<double>       Vector;
 class DeltaFit
 {
 public:
-    explicit DeltaFit() : t_reponse(60.0) {}
+    double t_short;
+    double t_long;
+
+    explicit DeltaFit() :
+    t_short(0.0),
+    t_long(0.0)
+    {}
+
     virtual ~DeltaFit() throw() {}
 
     double t_reponse;
 
-    double Compute( const double t, const array<double> &aorg, const Variables &vars )
-    {
-        const double k7     = aorg[ vars["k7"]     ];
-        const double lambda = aorg[ vars["lambda"] ];
-        const double sigma  = aorg[ vars["sigma"]  ];
-        const double psi    = aorg[ vars["psi"]    ];
-        const double d7out  = aorg[ vars["d7out"]  ];
 
-        const double tau7    = k7*t;
-        const double tau6    = lambda*tau7;
-        const double beta7   = Growth(tau7) + psi * Xi(tau7,sigma);
-        const double beta6   = Growth(tau6) + psi * Xi(tau6,sigma/lambda);
-
-        return 1000.0 * ( (1.0+d7out/1000.0) * (beta7/beta6) - 1.0 );
-    }
-#if 0
-    double Compute0( const double t, const array<double> &aorg, const Variables &vars )
+    double Compute(const double t, const array<double> &aorg, const Variables &vars )
     {
         const double k7     = aorg[ vars["k7"]     ];
         const double lambda = aorg[ vars["lambda"] ];
         const double d7out  = aorg[ vars["d7out"]  ];
-
         const double tau7    = k7*t;
         const double tau6    = lambda*tau7;
-        const double beta7   = Growth(tau7);
-        const double beta6   = Growth(tau6);
+        if(t>=t_long)
+        {
+            return 1000.0 * ( (1.0+d7out/1000.0) * (Growth(tau7)/Growth(tau6)) - 1.0 );
+        }
 
-        return 1000.0 * ( (1.0+d7out/1000.0) * (beta7/beta6) - 1.0 );
+        if(t<=t_short)
+        {
+            return 1000.0 * ( (1.0+d7out/1000.0) * (Growth(tau7)/Growth(tau6)) - 1.0 );
+        }
+
+        return 0;
     }
 
-    double Ratio(const double t, const array<double> &aorg, const Variables &vars )
-    {
-        return Compute(t,aorg,vars)/Compute0(t,aorg,vars);
-    }
-#endif
 
     double d7ini( const array<double> &aorg, const Variables &vars )
     {
@@ -146,6 +139,7 @@ static inline void save_data(ios::ocstream       &fp,
 
 YOCTO_PROGRAM_START()
 {
+    DeltaFit        dfn;
 
     if(false)
     {
@@ -156,8 +150,10 @@ YOCTO_PROGRAM_START()
     {
         throw exception("usage: %s t_short t_long",program);
     }
-    const double t_short = strconv::to<double>(argv[1],"t_short");
-    const double t_long  = strconv::to<double>(argv[2],"t_long");
+    double &t_short = dfn.t_short;
+    double &t_long  = dfn.t_long;
+    t_short = strconv::to<double>(argv[1],"t_short");
+    t_long  = strconv::to<double>(argv[2],"t_long");
 
 
     //__________________________________________________________________________
@@ -208,6 +204,10 @@ YOCTO_PROGRAM_START()
         }
     }
 
+    {
+        ios::wcstream fp("delta0.dat");
+        save_data(fp,t,delta,delta);
+    }
     //__________________________________________________________________________
     //
     // create sub samples
@@ -226,6 +226,11 @@ YOCTO_PROGRAM_START()
     //
     // global variables
     //__________________________________________________________________________
+    Fit::Variables &vars = multiple.variables;
+    vars << "k7" << "lambda" << "d7out";
+    sampleIni.variables = vars;
+    sampleEnd.variables = vars;
+
 
 
 
@@ -266,13 +271,45 @@ YOCTO_PROGRAM_START()
     //used[ vars["d7out"] ]  = false;
 #endif
 
+    const size_t nvar = vars.size();
+    Vector       aorg(nvar);
+    Vector       aerr(nvar);
+    vector<bool> used(nvar,false);
+    std::cerr << "nvar=" << nvar << std::endl;
+    double &k7     = aorg[ vars["k7"]     ];
+    double &lambda = aorg[ vars["lambda"] ];
+    double &d7out  = aorg[ vars["d7out"]  ];
+    const double dmin = find_min_of(delta);
+
+    k7     = 0.003;
+    d7out  = 15.00;
+    lambda = (1000.0+d7out)/(1000.0+dmin);
+
     Fit::LS<double> lsf;
-    DeltaFit        dfn;
     Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute  );
 
+    used[ vars["k7"]     ] = true;
+    used[ vars["lambda"] ] = true;
 
+    if(!lsf.run(sampleEnd,F,aorg,used,aerr))
+    {
+        throw exception("cannnot fit end");
+    }
+    sampleEnd.display(std::cerr,aorg,aerr);
+    {
+        ios::wcstream fp("delta_end.dat");
+        save_data(fp,tEnd,deltaEnd,deltaEndFit);
+    }
 
-
+    if(!lsf.run(sampleIni,F,aorg,used,aerr))
+    {
+        throw exception("cannnot fit ini");
+    }
+    sampleEnd.display(std::cerr,aorg,aerr);
+    {
+        ios::wcstream fp("delta_ini.dat");
+        save_data(fp,tIni,deltaIni,deltaIniFit);
+    }
 
 
 }

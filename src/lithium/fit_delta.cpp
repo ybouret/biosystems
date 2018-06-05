@@ -66,6 +66,7 @@ double Growth(const double u) throw()
     return 1.0 - exp(-u);
 }
 
+//static const bool USE_LOG = true; //! USE_LOG => t is log(t) at load time!
 
 typedef Fit::Samples<double> Samples;
 typedef Fit::Sample<double>  Sample;
@@ -110,6 +111,11 @@ public:
         return 0;
     }
 
+    double ComputeLog(const double lt, const array<double> &aorg, const Variables &vars )
+    {
+        return Compute( exp(lt), aorg, vars );
+    }
+
 
     double d7ini( const array<double> &aorg, const Variables &vars )
     {
@@ -130,7 +136,9 @@ static inline void save_data(ios::ocstream       &fp,
 {
     for(size_t i=1;i<=t.size();++i)
     {
-        fp("%.15g %.15g %.15g", log(t[i]), f[i], g[i] );
+        //const double tt = USE_LOG ? t[i] : log(t[i]);
+        const double tt = log(t[i]);
+        fp("%.15g %.15g %.15g", tt, f[i], g[i] );
         if(h)
         {
             fp(" %.15g", (*h)[i] );
@@ -206,6 +214,24 @@ YOCTO_PROGRAM_START()
         }
     }
 
+#if 0
+    if(USE_LOG)
+    {
+        for(size_t i=N;i>0;--i)
+        {
+            t[i] = log(t[i]);
+        }
+        for(size_t i=tIni.size();i>0;--i)
+        {
+            tIni[i] = log(tIni[i]);
+        }
+        for(size_t i=tEnd.size();i>0;--i)
+        {
+            tEnd[i] = log(tEnd[i]);
+        }
+    }
+#endif
+
     {
         ios::wcstream fp("delta0.dat");
         save_data(fp,t,delta,delta);
@@ -252,7 +278,8 @@ YOCTO_PROGRAM_START()
     sigma  = 8;
 
     Fit::LS<double> lsf;
-    Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute  );
+    //Fit::Type<double>::Function F(  &dfn, USE_LOG ? &DeltaFit::ComputeLog : & DeltaFit::Compute  );
+    Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute);
 
     //__________________________________________________________________________
     //
@@ -298,8 +325,8 @@ YOCTO_PROGRAM_START()
     tao::ld(used,false);
     used[ vars["k7"]     ] = true;
     used[ vars["lambda"] ] = true;
-    used[ vars["sigma"] ] = true;
-    used[ vars["d7out"] ] = true;
+    used[ vars["sigma"]  ] = true;
+    used[ vars["d7out"]  ] = true;
 
     if(!lsf.run(multiple,F,aorg,used,aerr))
     {
@@ -317,14 +344,16 @@ YOCTO_PROGRAM_START()
         const size_t NP = 100;
         for(size_t i=0;i<=NP;++i)
         {
-            const double t = tIni[1] + (i*(tIni[N_Ini]-tIni[1]))/NP;
-            fp("%.15g %.15g\n", log(t), F(t,aorg,vars) );
+            const double t  = tIni[1] + (i*(tIni[N_Ini]-tIni[1]))/NP;
+            const double tt = log(t);
+            fp("%.15g %.15g\n", tt, F(t,aorg,vars) );
         }
         fp << "\n";
         for(size_t i=0;i<=NP;++i)
         {
-            const double t = tEnd[1] + (i*(tEnd[N_End]-tEnd[1]))/NP;
-            fp("%.15g %.15g\n", log(t), F(t,aorg,vars) );
+            const double t  = tEnd[1] + (i*(tEnd[N_End]-tEnd[1]))/NP;
+            const double tt = log(t);
+            fp("%.15g %.15g\n", tt, F(t,aorg,vars) );
         }
     }
 

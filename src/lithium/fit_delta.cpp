@@ -98,17 +98,44 @@ public:
         const double sigma  = aorg[ vars["sigma"]  ];
         const double tau7    = k7*t;
         const double tau6    = lambda*tau7;
-        if(t>=t_long)
-        {
-            return 1000.0 * ( (1.0+d7out/1000.0) * (Growth(tau7)/Growth(tau6)) - 1.0 );
-        }
+
 
         if(t<=t_short)
         {
             return 1000.0 * ( (1.0+d7out/1000.0) * (Xi(tau7,sigma)/Xi(tau6,sigma/lambda)) - 1.0 );
         }
 
+        if(t>=t_long)
+        {
+            return 1000.0 * ( (1.0+d7out/1000.0) * (Growth(tau7)/Growth(tau6)) - 1.0 );
+        }
+
         return 0;
+    }
+
+    double ComputeIni(const double t, const array<double> &aorg, const Variables &vars )
+    {
+        const double k7     = aorg[ vars["k7"]     ];
+        const double lambda = aorg[ vars["lambda"] ];
+        const double d7out  = aorg[ vars["d7out"]  ];
+        const double sigma  = aorg[ vars["sigma"]  ];
+        const double tau7    = k7*t;
+        const double tau6    = lambda*tau7;
+
+        return 1000.0 * ( (1.0+d7out/1000.0) * (Xi(tau7,sigma)/Xi(tau6,sigma/lambda)) - 1.0 );
+    }
+
+
+    double ComputeEnd(const double t, const array<double> &aorg, const Variables &vars )
+    {
+        const double k7     = aorg[ vars["k7"]     ];
+        const double lambda = aorg[ vars["lambda"] ];
+        const double d7out  = aorg[ vars["d7out"]  ];
+        const double sigma  = aorg[ vars["sigma"]  ];
+        const double tau7    = k7*t;
+        const double tau6    = lambda*tau7;
+
+        return 1000.0 * ( (1.0+d7out/1000.0) * (Growth(tau7)/Growth(tau6)) - 1.0 );
     }
 
     double ComputeFull(const double t, const array<double> &aorg, const Variables &vars )
@@ -124,11 +151,19 @@ public:
         const double lo = clamp<double>(0,CouplingRamp(t,aorg,vars),1);
         const double hi = 1.0 - lo;
 
+#if 1
         const double beta7    = lo * Xi(tau7,sigma)        + hi * Growth(tau7);
         const double beta6    = lo * Xi(tau6,sigma/lambda) + hi * Growth(tau6);
 
-        return 1000.0 * ( (1.0+d7out/1000.0) * (beta7/beta6) - 1.0 );
 
+        return 1000.0 * ( (1.0+d7out/1000.0) * (beta7/beta6) - 1.0 );
+#else
+
+        const double ratio_lo = Xi(tau7,sigma)/Xi(tau6,sigma/lambda);
+        const double ratio_hi = Growth(tau7)/Growth(tau6);
+        const double ratio    = lo * ratio_lo + hi * ratio_hi;
+        return 1000.0 * ( (1.0+d7out/1000.0) * ratio - 1.0 );
+#endif
 
     }
 
@@ -143,6 +178,7 @@ public:
     {
         const double t0    = aorg[ vars[ "t0" ] ];
         const double scale = aorg[ vars[ "scale" ] ];
+#if 0
         if(t<=t0)
         {
             return 1.0;
@@ -155,6 +191,33 @@ public:
         {
             return 0.0;
         }
+#endif
+        return 0.5*(1.0-tanh( (t-t0)/scale ) );
+    }
+
+    double ComputePsi(const double t,
+                      const double delta7,
+                      const array<double> &aorg,
+                      const Variables &vars )
+    {
+        const double k7     = aorg[ vars["k7"]     ];
+        const double lambda = aorg[ vars["lambda"] ];
+        const double sigma  = aorg[ vars["sigma"]  ];
+        const double d7out  = aorg[ vars["d7out"]  ];
+
+        const double tau7    = k7*t;
+        const double tau6    = lambda*tau7;
+
+        const double Xi7 = Xi(tau7,sigma);
+        const double Xi6 = Xi(tau6,sigma/lambda);
+        const double G7  = Growth(tau7);
+        const double G6  = Growth(tau6);
+
+        const double rho = (1.0+delta7/1000.0)/(1.0+d7out/1000.0);
+        const double num = Xi7 - rho * Xi6;
+        const double den = rho*G6 - G7;
+
+        return num/den;
     }
 
 private:
@@ -246,23 +309,6 @@ YOCTO_PROGRAM_START()
         }
     }
 
-#if 0
-    if(USE_LOG)
-    {
-        for(size_t i=N;i>0;--i)
-        {
-            t[i] = log(t[i]);
-        }
-        for(size_t i=tIni.size();i>0;--i)
-        {
-            tIni[i] = log(tIni[i]);
-        }
-        for(size_t i=tEnd.size();i>0;--i)
-        {
-            tEnd[i] = log(tEnd[i]);
-        }
-    }
-#endif
 
     {
         ios::wcstream fp("delta0.dat");
@@ -307,16 +353,18 @@ YOCTO_PROGRAM_START()
     const double dmin = find_min_of(delta);
 
     k7     = 0.003;
-    d7out  = 15.00;
+    d7out  = 14.98;
     lambda = (1000.0+d7out)/(1000.0+dmin);
     sigma  = 8;
 
     Fit::LS<double> lsf;
-    Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute);
+    Fit::Type<double>::Function F(     &dfn, & DeltaFit::Compute   );
+    Fit::Type<double>::Function fIni(  &dfn, & DeltaFit::ComputeIni);
+    Fit::Type<double>::Function fEnd(  &dfn, & DeltaFit::ComputeEnd);
+
     const size_t NP = 500;
 
-    t0    = 120;
-    scale = 200;
+
     if(true)
     {
         ios::wcstream fp("ramp.dat");
@@ -335,7 +383,7 @@ YOCTO_PROGRAM_START()
     tao::ld(used,false);
     used[ vars["k7"]     ] = true;
 
-    if(!lsf.run(sampleEnd,F,aorg,used,aerr))
+    if(!lsf.run(sampleEnd,fEnd,aorg,used,aerr))
     {
         throw exception("cannnot fit end/k7");
     }
@@ -352,8 +400,9 @@ YOCTO_PROGRAM_START()
     std::cerr << "Fit initial catalytic..." << std::endl;
     tao::ld(used,false);
     used[ vars["sigma"]  ] = true;
+    used[ vars["k7"]  ] = true;
 
-    if(!lsf.run(sampleIni,F,aorg,used,aerr))
+    if(!lsf.run(sampleIni,fIni,aorg,used,aerr))
     {
         throw exception("cannnot fit ini/sigma");
     }
@@ -362,6 +411,8 @@ YOCTO_PROGRAM_START()
         ios::wcstream fp("delta_ini.dat");
         save_data(fp,tIni,deltaIni,deltaIniFit);
     }
+
+    return 0;
 
     //__________________________________________________________________________
     //
@@ -372,7 +423,7 @@ YOCTO_PROGRAM_START()
     used[ vars["k7"]     ] = true;
     used[ vars["lambda"] ] = true;
     used[ vars["sigma"]  ] = true;
-    used[ vars["d7out"]  ] = true;
+    //used[ vars["d7out"]  ] = true;
 
     if(!lsf.run(multiple,F,aorg,used,aerr))
     {
@@ -402,17 +453,33 @@ YOCTO_PROGRAM_START()
         }
     }
 
+    {
+        ios::wcstream fp("psi.dat");
+        for(size_t i=1;i<=N;++i)
+        {
+            fp("%g %g\n", log(t[i]), dfn.ComputePsi(t[i],delta[i],aorg,vars) );
+        }
+    }
+
+
     //__________________________________________________________________________
     //
     // OK, try full
     //__________________________________________________________________________
+    return 0;
     std::cerr << "Fit full" << std::endl;
     Fit::Type<double>::Function Full(  &dfn, & DeltaFit::ComputeFull);
 
+
+    t0    = 170;
+    scale = 190;
+
     tao::ld(used,false);
     used[ vars["k7"]     ] = true;
-    //used[ vars["scale"]  ] = true;
-    //used[ vars["t0"]     ] = true;
+    used[ vars["sigma"]     ] = true;
+
+    used[ vars["t0"]    ] = true;
+    used[ vars["scale"] ] = true;
 
     if(!lsf.run(sample,Full,aorg,used,aerr))
     {

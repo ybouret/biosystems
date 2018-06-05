@@ -111,17 +111,50 @@ public:
         return 0;
     }
 
-    double ComputeLog(const double lt, const array<double> &aorg, const Variables &vars )
+    double ComputeFull(const double t, const array<double> &aorg, const Variables &vars )
     {
-        return Compute( exp(lt), aorg, vars );
-    }
+        const double k7     = aorg[ vars["k7"]     ];
+        const double lambda = aorg[ vars["lambda"] ];
+        const double d7out  = aorg[ vars["d7out"]  ];
+        const double sigma  = aorg[ vars["sigma"]  ];
 
+        const double tau7    = k7*t;
+        const double tau6    = lambda*tau7;
+
+        const double lo = clamp<double>(0,CouplingRamp(t,aorg,vars),1);
+        const double hi = 1.0 - lo;
+
+        const double beta7    = lo * Xi(tau7,sigma)        + hi * Growth(tau7);
+        const double beta6    = lo * Xi(tau6,sigma/lambda) + hi * Growth(tau6);
+
+        return 1000.0 * ( (1.0+d7out/1000.0) * (beta7/beta6) - 1.0 );
+
+
+    }
 
     double d7ini( const array<double> &aorg, const Variables &vars )
     {
         const double lambda = aorg[ vars["lambda"] ];
         const double d7out  = aorg[ vars["d7out"]  ];
         return (d7out + 1000.0 * (1.0-lambda))/lambda;
+    }
+
+    double CouplingRamp(const double t, const array<double> &aorg, const Variables &vars )
+    {
+        const double t0    = aorg[ vars[ "t0" ] ];
+        const double scale = aorg[ vars[ "scale" ] ];
+        if(t<=t0)
+        {
+            return 1.0;
+        }
+        else if( t<=t0+scale )
+        {
+            return 1.0-(t-t0)/scale;
+        }
+        else
+        {
+            return 0.0;
+        }
     }
 
 private:
@@ -191,7 +224,6 @@ YOCTO_PROGRAM_START()
 
     const size_t   N = t.size();
     Vector         deltaFit(N);
-    Vector         ratio(N);
     Sample         sample(t,delta,deltaFit);
 
     //__________________________________________________________________________
@@ -255,9 +287,10 @@ YOCTO_PROGRAM_START()
     // global variables
     //__________________________________________________________________________
     Fit::Variables &vars = multiple.variables;
-    vars << "k7" << "lambda" << "d7out" << "sigma";
+    vars << "k7" << "lambda" << "d7out" << "sigma" << "t0" << "scale";
     sampleIni.variables = vars;
     sampleEnd.variables = vars;
+    sample.variables    = vars;
 
 
     const size_t nvar = vars.size();
@@ -269,7 +302,8 @@ YOCTO_PROGRAM_START()
     double &lambda = aorg[ vars["lambda"] ];
     double &d7out  = aorg[ vars["d7out"]  ];
     double &sigma  = aorg[ vars["sigma"]  ];
-
+    double &t0     = aorg[ vars["t0"]     ];
+    double &scale  = aorg[ vars["scale"]  ];
     const double dmin = find_min_of(delta);
 
     k7     = 0.003;
@@ -278,8 +312,20 @@ YOCTO_PROGRAM_START()
     sigma  = 8;
 
     Fit::LS<double> lsf;
-    //Fit::Type<double>::Function F(  &dfn, USE_LOG ? &DeltaFit::ComputeLog : & DeltaFit::Compute  );
     Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute);
+    const size_t NP = 500;
+
+    t0    = 120;
+    scale = 200;
+    if(true)
+    {
+        ios::wcstream fp("ramp.dat");
+        for(size_t i=0;i<=NP;++i)
+        {
+            const double tt = t[1] + (i*(t[N]-t[1]))/NP;
+            fp("%.15g %.15g %.15g\n", tt, dfn.CouplingRamp(tt,aorg,vars), log(tt) );
+        }
+    }
 
     //__________________________________________________________________________
     //
@@ -341,22 +387,48 @@ YOCTO_PROGRAM_START()
     }
     {
         ios::wcstream fp("delta_dfn.dat");
-        const size_t NP = 100;
         for(size_t i=0;i<=NP;++i)
         {
-            const double t  = tIni[1] + (i*(tIni[N_Ini]-tIni[1]))/NP;
-            const double tt = log(t);
-            fp("%.15g %.15g\n", tt, F(t,aorg,vars) );
+            const double tmp  = tIni[1] + (i*(tIni[N_Ini]-tIni[1]))/NP;
+            const double tt = log(tmp);
+            fp("%.15g %.15g\n", tt, F(tmp,aorg,vars) );
         }
         fp << "\n";
         for(size_t i=0;i<=NP;++i)
         {
-            const double t  = tEnd[1] + (i*(tEnd[N_End]-tEnd[1]))/NP;
-            const double tt = log(t);
-            fp("%.15g %.15g\n", tt, F(t,aorg,vars) );
+            const double tmp  = tEnd[1] + (i*(tEnd[N_End]-tEnd[1]))/NP;
+            const double tt   = log(tmp);
+            fp("%.15g %.15g\n", tt, F(tmp,aorg,vars) );
         }
     }
 
+    //__________________________________________________________________________
+    //
+    // OK, try full
+    //__________________________________________________________________________
+    std::cerr << "Fit full" << std::endl;
+    Fit::Type<double>::Function Full(  &dfn, & DeltaFit::ComputeFull);
+
+    tao::ld(used,false);
+    used[ vars["k7"]     ] = true;
+    //used[ vars["scale"]  ] = true;
+    //used[ vars["t0"]     ] = true;
+
+    if(!lsf.run(sample,Full,aorg,used,aerr))
+    {
+        throw exception("cannnot fit full");
+    }
+    sample.display(std::cerr,aorg,aerr);
+
+    {
+        ios::wcstream fp("delta_full.dat");
+        for(size_t i=0;i<=NP;++i)
+        {
+            const double tmp = t[1] + (i*(t[N]-t[1]))/NP;
+            const double tt  = log(tmp);
+            fp("%.15g %.15g\n", tt, Full(tmp,aorg,vars) );
+        }
+    }
 
 }
 YOCTO_PROGRAM_END()

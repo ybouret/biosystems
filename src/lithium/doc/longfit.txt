@@ -1,0 +1,5 @@
+growth(tau) = 1.0-exp(-tau);
+
+ratio(tau,lam) = growth(tau)/growth(lam*tau);
+
+delta7(tau,lam,d7out) = 1000.0 * ( (1.0+d7out/1000.0) * ratio(tau,lam) - 1.0 );

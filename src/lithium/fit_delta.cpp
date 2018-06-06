@@ -340,8 +340,9 @@ YOCTO_PROGRAM_START()
     Fit::LS<double> lsf;
     Fit::Type<double>::Function f(  &dfn, & DeltaFit::ComputeIni);
     Fit::Type<double>::Function g(  &dfn, & DeltaFit::ComputeEnd);
+    Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute);
 
-    const size_t NP = 500;
+    const size_t NP = 1000;
 
 
     //__________________________________________________________________________
@@ -379,6 +380,37 @@ YOCTO_PROGRAM_START()
     {
         ios::wcstream fp("delta_ini.dat");
         save_data(fp,tIni,deltaIni,deltaIniFit);
+    }
+
+    //__________________________________________________________________________
+    //
+    // Fit both
+    //__________________________________________________________________________
+    std::cerr << "Fit Both" << std::endl;
+    tao::ld(used,false);
+    //used[ vars["lambda"]  ] = true;
+    used[ vars["k7"]      ] = true;
+    used[ vars["lambda"]      ] = true;
+    //used[ vars["d7out"]      ] = true;
+    used[ vars["sigma"]  ] = true;
+
+    if(!lsf.run(sample,F,aorg,used,aerr))
+    {
+        throw exception("cannnot fit both");
+    }
+
+    sample.display(std::cerr,aorg,aerr);
+
+    (void)sampleIni.computeD2(f,aorg);
+    (void)sampleEnd.computeD2(g,aorg);
+    {
+        ios::wcstream fp("delta_ini.dat");
+        save_data(fp,tIni,deltaIni,deltaIniFit);
+    }
+
+    {
+        ios::wcstream fp("delta_end.dat");
+        save_data(fp,tEnd,deltaEnd,deltaEndFit);
     }
 
     {

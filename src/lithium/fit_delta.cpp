@@ -370,7 +370,7 @@ YOCTO_PROGRAM_START()
     std::cerr << "Fit initial catalytic..." << std::endl;
     tao::ld(used,false);
     used[ vars["sigma"]  ] = true;
-    used[ vars["k7"]  ] = true;
+    used[ vars["k7"]     ] = true;
 
     if(!lsf.run(sampleIni,f,aorg,used,aerr))
     {

@@ -261,13 +261,13 @@ then
 \begin{equation}
 	\Li{x}_\infty = \dfrac{\left\lbrack k_x\tilde{\Theta}_x+\omega_x E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_x+ k_x^q E_0\alpha_\infty}
 \end{equation}
-Since experimentally, there exist $\tilde{\beta}$ (observed) and $\Theta$ (GHK) such that
+Since experimentally, there exist ${\beta}$ (observed) and $\Theta$ (GHK) such that
 \begin{equation}
-	\Li{x}_\infty=\tilde\beta\LiOut{x},\;\tilde{\Theta}_x = \Theta \LiOut{x}
+	\Li{x}_\infty=\beta\LiOut{x},\;\tilde{\Theta}_x = \Theta \LiOut{x}
 \end{equation}
 we obtain that
 \begin{equation}
-		\tilde\beta = \dfrac{k_x\Theta + k_x^p \proton {J_x} E_0 (1-\alpha_\infty)/\tilde{D}}{k_l^x+ k_q^x E_0\alpha_\infty}
+		\beta = \dfrac{k_x\Theta + k_x^p \proton {J_x} E_0 (1-\alpha_\infty)/\tilde{D}}{k_l^x+ k_q^x E_0\alpha_\infty}
 \end{equation}
 \textit{which must be the same for both species!}
 
@@ -282,7 +282,7 @@ We have
 \end{equation}
 leading to
 \begin{equation}
-	\tilde\beta = \dfrac{\Theta+\dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(1-\alpha_\infty\right)}{1+\bar{q}E_0\alpha_\infty}
+	\beta = \dfrac{\Theta+\dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(1-\alpha_\infty\right)}{1+\bar{q}E_0\alpha_\infty}
 \end{equation}
 which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake and reduced by NHE output.
 
@@ -303,7 +303,7 @@ We now assume
 		-\left\lbrack
 			\omega_x E_0\alpha +  k_x^l\Li{x}
 		\right\rbrack & \\
-	\tilde{\beta} & = & \Theta + \tilde{\kappa} \left(1-\alpha_\infty\right) & \tilde\kappa = \dfrac{\bar{p}^2 \proton E_0}{\tilde{D}} \\
+	{\beta} & = & \Theta + {\kappa} \left(1-\alpha_\infty\right) & \kappa = \dfrac{\bar{p}^2 \proton E_0}{\tilde{D}} \\
 	\end{array}
 \right.
 \end{equation}
@@ -314,17 +314,47 @@ $$
 we get
 $$
 	\partial_t\Li{x} =
-	  k_x \left(\LiOut{x} \left[ \Theta + \tilde\kappa \left(1-\alpha\right)\right] - \Li{x} \right)
+	  k_x \left(\LiOut{x} \left[ \Theta + \kappa \left(1-\alpha\right)\right] - \Li{x} \right)
 $$
 then
 \begin{equation}
-	\partial_t\left( \dfrac{\Li{x}}{\LiOut{x}} \right)= k_x \left( \Theta + \tilde\kappa(1-\alpha) - \left( \dfrac{\Li{x}}{\LiOut{x}} \right)\right)
+	\partial_t\left( \dfrac{\Li{x}}{\LiOut{x}} \right)= k_x \left( \Theta + \kappa(1-\alpha) - \left( \dfrac{\Li{x}}{\LiOut{x}} \right)\right)
 \end{equation}
 namely
 \begin{equation}
-	\partial_t \beta_x =  k_x^l \left( \Theta + \tilde\kappa(1-\alpha) - \beta_x\right)
+	\partial_t \beta_x =  k_x \left( \Theta + \kappa(1-\alpha) - \beta_x\right)
 \end{equation}
-\subsubsection{Solutions}
+\subsubsection{Solutions for $\alpha$}
+We assume that $\proton$ is constant, with two different values
+\begin{equation}
+	\left\lbrace
+	\begin{array}{rll}
+	\text{if } t\leq t_c, & \proton = h & (\omega_0,\beta,\kappa)\\ 
+	\text{if } t>t_c, & \proton = h^\ast & (\omega_0^\ast,\beta^\ast,\kappa^\ast)\\
+	\end{array}
+	\right.
+\end{equation}
+
+Let us solve $\alpha(t)$
+\begin{equation}
+\left\lbrace
+\begin{array}{lrcl}
+t\leq t_c, & \alpha & = & \dfrac{\omega_0}{\omega_h} \left(1-e^{-\omega_h t}\right) = \alpha_\infty \left(1-e^{-\omega_h t}\right),\;\;\omega_h = k_h+\omega_0 \\
+t>t_c, & \alpha^\ast & = & \alpha_c e^{-\omega_h^\ast\left(t-t_c\right)} + 
+\dfrac{\omega_0^\ast}{\omega_h^\ast}
+\left(1 - e^{-\omega_h^\ast(t-t_c)}\right)
+\\
+\end{array}
+\right.
+\end{equation}
+
+\subsubsection{Solutions for $\beta_x$}
+
+\begin{equation}
+	\partial_t \beta_x =  k_x \left( \Theta + \kappa(1-\alpha(t)) - \beta_x\right)
+\end{equation}
+
+\end{document}
 
 \begin{equation}
 	\alpha(t) = \alpha_\infty \left(1-e^{-\omega_ht}\right)

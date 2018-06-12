@@ -1,0 +1,694 @@
+\documentclass[aps,onecolumn,12pt]{revtex4}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{xfrac}
+\usepackage{xcolor}
+\usepackage{bookman}
+\usepackage{dsfont}
+\usepackage{mathptmx}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+
+\newcommand{\spLi}[1]{{~^{\mychem{#1}}\mychem{Li}}}
+\newcommand{\Li}[1]{\myconc{\spLi{#1}}}
+
+\newcommand{\spEout}{\mychem{E}}
+\newcommand{\Eout}{\myconc{\spEout}}
+
+\newcommand{\spLiEin}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{in}}}
+\newcommand{\LiEin}[1]{\myconc{\spLiEin{#1}}}
+
+\newcommand{\spLiE}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace}
+\newcommand{\LiE}[1]{\myconc{\spLiE{#1}}}
+
+
+\newcommand{\spLiEout}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{out}}}
+\newcommand{\LiEout}[1]{\myconc{\spLiEout{#1}}}
+
+\newcommand{\spLiIn}[1]{{\spLi{#1}}_{\mathrm{in}}}
+\newcommand{\LiIn}[1]{\myconc{\spLiIn{#1}}}
+
+\newcommand{\spLiOut}[1]{{\spLi{#1}}_{\mathrm{out}}}
+\newcommand{\LiOut}[1]{\myconc{\spLiOut{#1}}}
+
+\newcommand{\spEHin}{\mychem{EH}}
+\newcommand{\EHin}{\myconc{\spEHin}}
+\newcommand{\spproton}{\mychem{H}}
+\newcommand{\proton}{\myconc{\spproton}}
+
+\newcommand{\mytrn}[1]{{#1}^{\!\mathsf{T}}}
+\newcommand{\mymat}[1]{{\bm{#1}}}
+\newcommand{\mydet}[1]{{\left|{#1}\right|}}
+
+\newcommand{\ratioLi}{ {\left(\dfrac{\Li{7}}{\Li{6}}\right)} }
+\newcommand{\deltaLi}{ {\delta\!\!\!\spLi{7}} }
+\newcommand{\deltaLiOut}{{\deltaLi}_{\mathrm{out}}}
+\begin{document}
+
+\section{Isotopic Separation}
+$$
+	\deltaLi = \left(
+		\dfrac{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample}}
+		{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard}}
+		 -1 
+	\right) \times 1000
+$$
+
+$$
+	\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample} = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} \left[1+10^{-3}\deltaLi\right] = \rho_s \left[1+10^{-3}\deltaLi\right]
+$$
+
+
+\section{Proposed Mechanism}
+
+\begin{equation}
+	 \spLiOut{x} +  \spEout  
+	 \xrightleftharpoons[k_x^d]{k_x^a} 
+	 \spLiE{x}
+	  \xrightleftharpoons[k_x^q]{\mychem{H},\;k_x^p} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightleftharpoons[]{k_x^l} \spLiOut{x}}
+\end{equation}
+
+\section{Scheme}
+
+\subsection{Hypothesis}
+\begin{itemize}
+\item $\proton$ is a  varying parameter $h(t)$.
+\item $\LiOut{6}$ and  $\LiOut{7}$ are parameters.
+%\item Variables noted with a '$\tilde{~}$' are dependent on those "parametric" concentrations
+\end{itemize}
+
+\subsection{Kinetics}
+We have the phase space described by
+\begin{equation}
+ \vec{X} = 
+        \begin{pmatrix}
+        \Eout\\
+        \EHin\\
+        \LiE{6}\\
+        \LiIn{6}\\
+        \LiE{7}\\
+        \LiIn{7}\\
+        \end{pmatrix}
+\end{equation}
+
+At any time, we  have
+\begin{equation} 
+	\label{eq:E0}
+	E_0 = \Eout + \EHin +  \LiE{6} + \LiE{7}
+\end{equation}
+
+\subsection{Secondary Hypothesis}
+We consider that we have the two equations
+\begin{equation}
+%\left\lbrace
+	\begin{array}{rcll}
+	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiE{x}, & J_x = \dfrac{\LiE{x}}{\LiOut{x} \Eout} = \dfrac{k_x^a}{k_x^d}\\
+	 \end{array}
+\end{equation}
+leading to a constraint vector $\vec{\Gamma}$
+with 
+\begin{equation}
+	\tilde{J}_x = J_x \LiOut{x}
+\end{equation}
+
+\begin{equation}
+\vec{\Gamma} = 
+\begin{pmatrix}
+	\tilde{J}_6 \Eout - \LiE{6} \\
+	\tilde{J}_7 \Eout - \LiE{7} \\
+\end{pmatrix}
+\end{equation}
+which already simplifies the matter conservation \eqref{eq:E0} into
+\begin{equation}
+	E_0 = \EHin + \Eout \left(1+\tilde{J}_6+\tilde{J}_7\right).
+\end{equation}
+And we have the topology for the two equations as
+\begin{equation}
+	\label{eq:Nu}
+	\mymat{\nu}=\begin{pmatrix}-1 & 0 & 1 & 0 & 0 & 0\cr -1 & 0 & 0 & 0 & 1 & 0\end{pmatrix}
+\end{equation}
+and
+\begin{equation}
+	\partial_{\vec{X}}\vec{\Gamma} = 
+	\begin{pmatrix}\tilde{J}_6 & 0 & -1 & 0 & 0 & 0\cr\tilde{J}_7 & 0 & 0 & 0 & -1 & 0\end{pmatrix}
+\end{equation}
+
+\subsection{Rates}
+
+The "slow" rate vector is
+\begin{equation}
+	\partial_t\vec{X}_{slow} = 
+	\begin{pmatrix}
+		v_h\\
+		p_6-q_6+p_7-q_7-v_h\\
+		q_6-p_6\\
+		p_6-l_6-q_6\\
+		q_7-p_7\\
+		p_7-l_7-q_7\\
+	\end{pmatrix}
+	,\;\;\text{ with }
+	\left\lbrace
+	\begin{array}{rcll}
+	v_h & = & k_h \EHin & \text{(recycling)}\\
+	p_x & = & k_x^p \proton \LiE{x} & \text{(forward transfer)}\\
+	q_x & = & k_x^q \EHin \LiIn{x} & \text{(reverse transfer)} \\
+	l_x & = & k_x  \left(\LiIn{x}-\tilde{\Theta}_x\right) & \text{(leak)}\\
+	\end{array}
+	\right.
+\end{equation}
+with (Goldman-Hodgkins-Katz)
+\begin{equation}
+	\tilde{\Theta}_x = \Theta \LiOut{x}
+\end{equation}
+
+\subsection{Semi-Stationary Equations}
+We define
+\begin{equation}
+	\mymat{W} = \mymat{\Phi}\mytrn{\mymat{\nu}} = \begin{pmatrix} -\tilde{J}_6-1 & -\tilde{J}_6 \cr -\tilde{J}_7 & -\tilde{J}_7-1\end{pmatrix}
+	,\;\mymat{W}^\ast = \begin{pmatrix} -\tilde{J}_6-1 & \tilde{J}_7 \cr \tilde{J}_6 & -\tilde{J}_7-1\end{pmatrix}
+	,\;\; \tilde{D} =\det(\mymat{W})=1+\tilde{J}_6+\tilde{J}_7.
+\end{equation}
+and
+\begin{equation}
+	\mymat{\chi} = \tilde{D}\mathds{1}_6-\mytrn{\mymat{\nu}}\mymat{W}^\ast\mymat{\Phi}
+\end{equation}
+
+\begin{equation}
+	\partial_t\vec{X} = \dfrac{1}{\tilde{D}}
+	\mymat{\chi} \partial_t\vec{X}_{slow}
+\end{equation}
+and we find
+\begin{equation}
+	\vec{Y} = \begin{pmatrix} \EHin \cr \LiIn{6} \cr \LiIn{7} \end{pmatrix}
+	,\;\partial_t \vec{Y} = 
+	\begin{pmatrix}
+	p_6-q_6+p_7-q_7-v_h\\
+	p_6-q_6-l_6\\
+	p_7-q_7-l_7
+	\end{pmatrix}
+\end{equation}
+with the expressions
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	v_h & = & k_h \EHin \\
+	q_x & = & k_x^q \EHin \Li{x}  \\
+	l_x & = & k_x  \left(\Li{x}- \tilde{\Theta}_x\right)\\
+	p_x & = & k_x^p \proton \LiE{x}\\
+	\end{array}
+\right.
+\end{equation}
+with
+\begin{equation}
+	\LiE{x} = \tilde{J}_x \Eout,\;\;\Eout=\dfrac{E_0-\EHin}{\tilde{D}}
+\end{equation}
+so that
+\begin{equation}
+	p_x = k_x^p \proton  \tilde{J}_x \dfrac{E_0-\EHin}{\tilde{D}}
+\end{equation}
+We now use
+\begin{equation}
+	\begin{array}{rcl}
+	\alpha    & = &\dfrac{\EHin}{E_0}\\
+	%\lambda_x & = & \LiIn{x}\\
+	\end{array}
+\end{equation}
+and we get
+\begin{equation}
+	\left\lbrace
+	\begin{array}{rcl}
+	v_h & = & k_h E_0 \alpha \\
+	q_x & = & k_x^q E_0 \alpha \Li{x}  \\
+	l_x & = & k_x \left(\Li{x} - \tilde{\Theta}_x\right)\\
+	p_x & = & k_x^p E_0 \proton \dfrac{\tilde{J}_x}{\tilde{D}}(1-\alpha) \\
+	\end{array}
+\right.
+\end{equation}
+
+We define the set of reduced constants
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\omega_x & = &  k_x^p \proton \dfrac{J_x}{\tilde{D}}\LiOut{x}\\
+	\omega_0 & = & \omega_6 + \omega_7\\
+	p_x & = & \omega_x E_0 \left(1-\alpha\right)\\
+	\end{array}
+\right.
+\end{equation}
+
+
+then
+\begin{equation}
+\boxed{
+\left\lbrace
+	\begin{array}{rcl}
+		\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0+{\sum_x k_x^q \Li{x}} \right\rbrack\\
+		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\omega_x E_0\right\rbrack
+		-\left\lbrack
+			\omega_x E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
+		\right\rbrack\\
+	\end{array}
+\right.
+}
+\end{equation}
+
+\subsection{Looking for steady-state}
+\subsubsection{Constraints}
+\begin{equation}
+	\Li{x}_\infty = \dfrac{\left\lbrack k_x\tilde{\Theta}_x+\omega_x E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_x+ k_x^q E_0\alpha_\infty}
+\end{equation}
+Since experimentally, there exist $\tilde{\beta}$ (observed) and $\Theta$ (GHK) such that
+\begin{equation}
+	\Li{x}_\infty=\tilde\beta\LiOut{x},\;\tilde{\Theta}_x = \Theta \LiOut{x}
+\end{equation}
+we obtain that
+\begin{equation}
+		\tilde\beta = \dfrac{k_x\Theta + k_x^p \proton {J_x} E_0 (1-\alpha_\infty)/\tilde{D}}{k_l^x+ k_q^x E_0\alpha_\infty}
+\end{equation}
+\textit{which must be the same for both species!}
+
+We have
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcll}
+	k_x^q    & = & \bar{q}\,k_x,  &  \bar{q}\text{ inverse of concentration}\\
+	k_x^pJ_x & = & \bar{p}^2\,k_x, & \bar{p}\text{ inverse of concentration}\\
+	\end{array}
+\right.
+\end{equation}
+leading to
+\begin{equation}
+	\tilde\beta = \dfrac{\Theta+\dfrac{\bar{p}^2 \proton E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(1-\alpha_\infty\right)}{1+\bar{q}E_0\alpha_\infty}
+\end{equation}
+which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake and reduced by NHE output.
+
+\centerline{\bf This has some meaning: leak modulated isotopic separation!!!}
+
+\subsubsection{Expression}
+OK, I computed them, $\alpha_\infty$ is $\alpha_0$ with a slight decrease if $\bar{q}$ increases...
+For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is necessary
+
+\subsection{First Order Equations}
+\subsubsection{Rewrite}
+We now assume
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl|l}
+	\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0\right\rbrack & {\alpha_\infty} = \dfrac{\omega_0}{\omega_0+k_h}\\
+	\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\omega_x E_0\right\rbrack
+		-\left\lbrack
+			\omega_x E_0\alpha +  k_x^l\Li{x}
+		\right\rbrack & \\
+	\tilde{\beta} & = & \Theta + \tilde{\kappa} \left(1-\alpha_\infty\right) & \tilde\kappa = \dfrac{\bar{p}^2 \proton E_0}{\tilde{D}} \\
+	\end{array}
+\right.
+\end{equation}
+and using
+$$
+	\omega_x =  \dfrac{\bar{p}^2}{\tilde{D}} k_x \proton \LiOut{x}
+$$
+we get
+$$
+	\partial_t\Li{x} =
+	  k_x \left(\LiOut{x} \left[ \Theta + \tilde\kappa \left(1-\alpha\right)\right] - \Li{x} \right)
+$$
+then
+\begin{equation}
+	\partial_t\left( \dfrac{\Li{x}}{\LiOut{x}} \right)= k_x \left( \Theta + \tilde\kappa(1-\alpha) - \left( \dfrac{\Li{x}}{\LiOut{x}} \right)\right)
+\end{equation}
+namely
+\begin{equation}
+	\partial_t \beta_x =  k_x^l \left( \Theta + \tilde\kappa(1-\alpha) - \beta_x\right)
+\end{equation}
+\subsubsection{Solutions}
+
+\begin{equation}
+	\alpha(t) = \alpha_\infty \left(1-e^{-\omega_ht}\right)
+\end{equation}
+then we have
+\begin{equation}
+	\beta_x(t) = W_x(t) e^{-k_x t }
+\end{equation}
+with
+\begin{equation}
+\left \lbrace
+\begin{array}{rcl}
+	\partial_tW_x & = & k_x \left[ \Theta + \tilde\kappa(1-\alpha(t)) \right] e^{k_x t} \\
+	& = & k_x \left[ \Theta + \tilde\kappa(1-\alpha_\infty) + \tilde\kappa\alpha_\infty e^{-\omega_h t} \right] e^{k_x t} \\
+\end{array}
+\right.
+\end{equation}
+	
+\begin{equation}
+		W_x(t) = \left(\Theta+\tilde\kappa(1-\alpha_\infty)\right) \left[e^{k_x t}-1\right]
+		+ \tilde\kappa k_x \alpha_\infty \dfrac{\left[e^{\left(k_x -\omega_h\right) t}-1\right]}{k_x-\omega_h}
+\end{equation}	
+and finally
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\beta_x & = & \tilde\beta \left[1-e^{-k_x t}\right] 
+	+ k_x \tilde\kappa \alpha_\infty
+	\left[
+	 \dfrac{
+	 e^{-\omega_h t} - e^{-k_x t}
+	 }
+	 {k_x-\omega_h}
+	 \right]\\
+	 & = & \tilde\beta \left[1-e^{-k_x  t}\right] + \tilde\gamma \Xi\left(k_x t,\sigma_x\right)\\
+	 \\
+	 \sigma_x & = & \dfrac{\omega_h}{k_x} = \dfrac{\omega_0}{k_x} + \dfrac{k_h}{k_x} \\
+	 \\
+	 \tilde\gamma & = & \tilde\kappa \alpha_\infty \\
+	 \\
+	 \Xi\left(u,p\right) & = & \dfrac{e^{-pu}-e^{-u}}{1-p},\;\;\Xi(u,1)=ue^{-u}\\
+\end{array}
+\right.
+\end{equation}
+The function $\Xi\left(u,p\right)$ is a catalytic spike with maximum at 
+\begin{equation}
+	u_{max} = \dfrac{\ln(p)}{p-1}
+\end{equation}
+which is a \underline{decreasing} function of $p$, and the maximum value is
+\begin{equation}
+	\Xi\left(u_{max},p\right) \approx \dfrac{1-\tanh\left[ 0.4(\ln(p)+0.7)\right]}{2}
+\end{equation}
+is also a \underline{decreasing} function of $p$...
+if $k_x$ is bigger then $\sigma_x$ is smaller then the amplification is bigger and lasts longer!!!
+
+Short times: 
+$$
+	\Xi(u,p) \approx u - (1+p)u^2/2
+$$
+
+Long times:
+$$
+	p>1, e^{-x}/(p-1) \text{ and } p<1, e^{-px}/(1-p)
+$$
+
+%and {\bf this is where the most separation occurs!}
+
+\centerline{\bf Warning}
+\begin{itemize}
+	\item $\tilde\beta$ changes with $\proton$, short time value and long time value
+	\item $\tilde\gamma$ changes with $\proton$, short time value and long time value
+\end{itemize}
+
+\section{Rewriting}
+
+\subsection{Boundary Conditions}
+
+\begin{equation}
+	\dfrac{\LiOut{7}}{\LiOut{6}} = \rho_s \left(1+10^{-3}\deltaLiOut\right)
+\end{equation}
+so that
+\begin{equation}
+\left\lbrace
+	\begin{array}{rclcl}
+	\LiOut{6} & = & \dfrac{1}{1+\rho_s\left(1+10^{-3}\deltaLiOut\right)} \LiOut{} & = & \sin^2(\varphi) \LiOut{} \\
+	\\
+	\LiOut{7} & = & \dfrac{\rho_s\left(1+10^{-3}\deltaLiOut\right)}{1+\rho_s\left(1+10^{-3}\deltaLiOut\right)} \LiOut{} & = & \cos^2(\varphi)\LiOut{} \\
+	\end{array}
+\right.
+\end{equation}
+$$
+	\rho_s \approx 12.0192
+$$
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\sin^2(\varphi) = s^2 & \simeq & 0.0768 - 7.0910\,10^{-5} \deltaLiOut + \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
+	\cos^2(\varphi) = c^2 & \simeq & 0.9232 + 7.0910\,10^{-5} \deltaLiOut - \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
+	\end{array}
+\right.
+\end{equation}
+
+\subsection{Per species intake}
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\tau & = & k_7 t\\
+	k_6  & = & \lambda k_7\\
+	\dfrac{k_h}{k_7} & = & \eta \\
+	\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\tilde{D} & = & 1 + \left(s^2J_6+c^2J_7\right) \LiOut{} = 1+\bar{J} \LiOut{}\\
+	\\
+	\omega_0  & = & k_7 \bar{p}^2 \proton \left(\lambda s^2+c^2\right) \dfrac{ \LiOut{} }{1+\bar{J}\LiOut{}} \\
+	& = & k_7 \underbrace{\bar{p}^2 \proton \dfrac{\left(\lambda s^2+c^2\right)}{\bar{J}}}_{K_h}
+	\underbrace{ \dfrac{ \bar{J} \LiOut{} }{1+\bar{J}\LiOut{}}}_{\Lambda}\\
+	\\
+	\alpha_\infty & = & \dfrac{K_h\Lambda}{K_h\Lambda+\eta}\\
+	\\
+	1-\alpha_\infty & = & \dfrac{\eta}{K_h\Lambda+\eta}\\
+	\\
+	\sigma_7 & = & \dfrac{\omega_0}{k_7} = \tilde\sigma = K_h\Lambda+\eta\\
+	\\
+	\sigma_6 & = & \tilde\sigma/\lambda\\
+	\\
+	\tilde\beta & = & \Theta + \tilde\kappa\left(1-\alpha_\infty\right) = \Theta+\dfrac{\bar{p}^2 \proton E_0}{\tilde{D}}  \dfrac{\eta}{K_h\Lambda+\eta}\\
+	\tilde\gamma & = & \tilde\kappa \alpha_\infty = \dfrac{\bar{p}^2 \proton E_0}{\tilde{D}}\dfrac{K_h\Lambda}{K_h\Lambda+\eta}\\
+	\end{array}
+\right.
+\end{equation}
+
+\subsection{Total Lithium}
+
+\begin{equation}
+\Li{} = \left\lbrace\tilde\beta\left[ 1 - \left(c^2e^{-\tau}+s^2e^{-\lambda\tau}\right) \right] 
++ \tilde\gamma\left[ c^2\Xi\left(\tau,\tilde\sigma\right) + s^2\Xi\left(\lambda\tau,\tilde\sigma/\lambda\right)\right]\right\rbrace \LiOut{}
+\end{equation}
+
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\tilde\beta\LiOut{} & = & \Theta\LiOut{} + \left(\dfrac{E_0}{\lambda s^2 + c^2}\right) \dfrac{ K_h \Lambda \cdot \eta}{ K_h \Lambda + \eta },\;\; \LiOut{} = \dfrac{1}{\bar{J}}\dfrac{\Lambda}{1-\Lambda}\\
+	\\
+	\tilde\gamma\LiOut{} & = & \left(\dfrac{E_0}{\lambda s^2 + c^2}\right) \dfrac{K_h^2 \Lambda^2}{K_h \Lambda + \eta}\\
+	\end{array}
+\right.
+\end{equation}
+
+\subsection{Delta Lithium}
+\begin{equation}
+	\deltaLi = 10^3 \left( \left[1+10^{-3}\deltaLiOut\right] \dfrac{\beta_7}{\beta_6} - 1\right)
+\end{equation}
+
+\begin{equation}
+	\dfrac{\beta_7}{\beta_6} = 
+	\dfrac
+	{\left(1-e^{-\tau}\right) + \psi \Xi\left(\tau,\sigma\right)}
+	{\left(1-e^{-\lambda\tau}\right) + \psi \Xi\left(\lambda\tau,\sigma/\lambda\right)}
+\end{equation}
+
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\deltaLi_{ini} & = & \dfrac{\deltaLiOut+1000(1-\lambda)}{\lambda}\\
+	\\
+	\lambda        & = & \dfrac{1000+\deltaLiOut}{1000+\deltaLi_{ini}}\\
+	\end{array}
+\right.
+\end{equation}
+
+\end{document}
+
+\section{Litium Intake}
+\subsection{Total Lithium}
+	
+\begin{equation}
+\begin{array}{rl}
+	\Li{6} + \Li{7} & = \beta \left( \left[1-e^{-k_6^l t}  \right] \LiOut{6} + \left[1-e^{-k_7^l t}  \right] \LiOut{7} \right)\\
+	 & + \gamma\left(\Xi\left(k_6^lt,\sigma_6\right) \LiOut{6} +  \Xi\left(k_7^lt,\sigma_7\right) \LiOut{7} \right)\\
+\end{array}
+\end{equation}
+	
+\subsection{Isotopic Separation}
+We strictly have
+\begin{equation}
+\begin{array}{rcl}
+	\dfrac{\beta_7}{\beta_6} & = & \dfrac{1+10^{-3}\deltaLi}{1+10^{-3}\deltaLiOut}\\
+	\\
+	& = & \dfrac{\left(1-e^{-k_7^lt}\right)+\dfrac{\gamma}{\beta}\Xi\left(k_7^lt,\sigma_7\right)}
+	{\left(1-e^{-k_6^lt}\right)+\dfrac{\gamma}{\beta}\Xi\left(k_6^lt,\sigma_6\right)}\\
+\end{array}
+\end{equation}
+
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\gamma & = & \kappa \alpha_\infty \\
+	\beta  & = & \Theta + \kappa (1-\alpha_\infty)\\
+	\end{array}	
+\right.
+\end{equation}
+so that 
+\begin{equation}
+	\dfrac{\gamma}{\beta} = \psi
+\end{equation}
+is an increasing function w.r.t $\alpha_\infty$ and varies from $0$ to $\kappa/\Theta$...
+
+We can manage
+\begin{equation}
+	\deltaLi = 10^3 \left[ \left(1+10^{-3}\deltaLiOut\right)\dfrac{\beta_7}{\beta_6} - 1 \right] 
+\end{equation}
+or more interestingly ?
+\begin{equation}
+	\Delta^7 = \deltaLi - \deltaLiOut = 10^3 \left(1+10^{-3}\deltaLiOut\right) \left[\dfrac{\beta_7}{\beta_6} - 1\right]
+\end{equation}
+
+\subsection{Simplification}
+\begin{equation}
+	\dfrac{\LiOut{7}}{\LiOut{6}} = \rho_s \left(1+10^{-3}\deltaLiOut\right)
+\end{equation}
+so that
+\begin{equation}
+\left\lbrace
+	\begin{array}{rclcl}
+	\LiOut{6} & = & \dfrac{1}{1+\rho_s\left(1+10^{-3}\deltaLiOut\right)} \LiOut{} & = & \sin^2(\varphi) \LiOut{} \\
+	\\
+	\LiOut{7} & = & \dfrac{\rho_s\left(1+10^{-3}\deltaLiOut\right)}{1+\rho_s\left(1+10^{-3}\deltaLiOut\right)} \LiOut{} & = & \cos^2(\varphi)\LiOut{} \\
+	\end{array}
+\right.
+\end{equation}
+$$
+	\rho_s \approx 12.0192
+$$
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\sin^2(\varphi) = s^2 & \simeq & 0.0768 - 7.0910\,10^{-5} \deltaLiOut + \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
+	\cos^2(\varphi) = c^2 & \simeq & 0.9232 + 7.0910\,10^{-5} \deltaLiOut - \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
+	\end{array}
+\right.
+\end{equation}
+
+We got
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+ k_6 & = & \lambda k_7 \\
+ \delta^{\ast} & = & 1+J_6 \LiOut{6} + J_7 \LiOut{7} = 1+\tilde{J}\LiOut{}, \; \tilde{J} = s^2J_6 + c^2J_7\\
+ \\
+ \kappa & = & \dfrac{\bar{p}^2 \proton E_0}{\delta^\ast} = \dfrac{\bar{p}^2 \proton E_0}{1+\tilde{J}\LiOut{}} = \dfrac{\kappa_0}{1+\tilde{J}\LiOut{}}\\
+ \\
+ \omega_6& = &  \dfrac{\bar{p}^2}{\delta^\ast} \lambda k_7 \proton s^2 \LiOut{} 
+ = \bar{p}^2 k_7 \proton \dfrac{\lambda s^2 \LiOut{}}{1+\tilde{J}\LiOut{}}\\
+ \\
+ \omega_7&=  &\dfrac{\bar{p}^2}{\delta^\ast} k_7 c^2 \proton \LiOut{} 
+ = \bar{p}^2 k_7 \proton \dfrac{ c^2 \LiOut{}}{1+\tilde{J}\LiOut{}}\\
+ \\
+ \omega_0 & = & \bar{p}^2 k_7 \proton \left(\lambda s^2+c^2\right) \dfrac{\LiOut{}}{1+\tilde{J}\LiOut{}} 
+ = k_7  \underbrace{\dfrac{\tilde{K}\LiOut{}}{1+\tilde{J}\LiOut{}}}_{\tilde{S}},\;\tilde{K} = \bar{p}^2 \proton \left(\lambda s^2+c^2\right) \\
+ \\
+ \omega_0+k_h & = & k_7\left(\tilde{S}+\eta\right),\; k_h = \eta k_7\\
+ \\
+ \alpha_\infty   & = & \dfrac{\omega_0}{\omega_0+k_h}  = \dfrac{\tilde{S}}{\tilde{S}+\eta}\\
+ \\
+ 1-\alpha_\infty & = & \dfrac{k_h}{\omega_0+k_h} = \dfrac{\eta}{\tilde{S}+\eta}\\
+ \\
+ \sigma_x & = & \dfrac{\omega_h}{k_x^l} = \dfrac{\omega_6}{k_x^l} + \dfrac{\omega_7}{k_x^l} + \dfrac{k_h}{k_x^l} \\
+ \\
+ \sigma_7 & = & \bar{p}^2\proton \left[\lambda s^2+c^2\right]\dfrac{\LiOut{}}{1+\tilde{J}\LiOut{}} + \eta = \tilde{S}+\eta = \sigma\\
+\\
+\sigma_6 & = & {\bar{p}^2\proton} \left[s^2+\dfrac{c^2}{\lambda}\right]\dfrac{\LiOut{}}{1+\tilde{J}\LiOut{}}+\dfrac{\eta}{\lambda} = \dfrac{1}{\lambda} \sigma_7 = \dfrac{\tilde{S}+\eta}{\lambda}\\
+\end{array}
+\right.
+\end{equation}
+Then for a given time such that
+\begin{equation}
+	k_7 t = \tau
+\end{equation}
+We get
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\Li{6} & = & \left[ \beta\left(1-e^{-\lambda\tau}\right) + \gamma \Xi\left(\lambda\tau,\dfrac{\tilde{S}+\eta}{\lambda}\right) \right] s^2 \LiOut{} \\
+	\\
+	\Li{7} & = &  \left[ \beta\left(1-e^{-\tau}\right) + \gamma \Xi\left(\tau,\tilde{S}+\eta\right) \right] c^2 \LiOut{}\\
+\end{array}
+\right.
+\end{equation}
+
+\subsection{Lithium/Reponse}
+so that
+\begin{equation}
+	\Li{} = \left\lbrace 
+	\beta \left[ s^2 \left(1-e^{-\lambda\tau}\right) + c^2\left(1-e^{-\tau}\right) \right] 
+	+ \gamma \left[  s^2 \Xi\left(\lambda\tau,{\dfrac{\tilde{S}+\eta}{\lambda}}\right) + c^2 \Xi\left(\tau,\tilde{S}+\eta\right) \right]
+	\right \rbrace \LiOut{}
+\end{equation}
+The final dependency is seen writing
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\beta & = &\Theta + \kappa\left(1-\alpha_\infty\right)\\
+	      & = &\Theta + \dfrac{\kappa_0}{1+\tilde{J}\LiOut{}} \dfrac{\eta}{\tilde{S}+\eta}\\
+	      \\
+	\gamma & = & \kappa \alpha_\infty \\
+	       & = & \dfrac{\kappa_0}{1+\tilde{J}\LiOut{}} \dfrac{\tilde{S}}{\tilde{S}+\eta} \\
+	\end{array}
+\right.
+\end{equation}
+then
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\beta\LiOut{} & = & \Theta \LiOut{} + \dfrac{\kappa_0}{\tilde{K}} \dfrac{\eta\tilde{S}}{\tilde{S}+\eta}\\
+	\\
+	\gamma\LiOut{} & = & \dfrac{\kappa_0}{\tilde{K}} \dfrac{\tilde{S}^2}{\tilde{S}+\eta}\\
+	\\
+	\dfrac{\kappa_0}{\tilde{K}} & = & \dfrac{E_0}{\lambda s^2 + c^2}\\
+	\end{array}
+\right.
+\end{equation}
+
+\begin{itemize}
+\item if $\tau\ll\dfrac{\log(\sigma)}{\sigma-1}$, 
+	$$
+		\left[  s^2 \Xi\left(\lambda\tau,{\dfrac{\tilde{S}+\eta}{\lambda}}\right) + c^2 \Xi\left(\tau,\tilde{S}+\eta\right) \right]
+		\approx \tau \left[ s^2\lambda+c^2\right]
+	$$
+\item if $\tau\approx\dfrac{\log(\sigma)}{\sigma-1}$
+	it varies slowly in $\log(\sigma)$
+	
+\item if $\tau\gg\dfrac{\log(\sigma)}{\sigma-1}$
+	it decreases exponentially, slowly, depending on the magnitude of $\sigma$, si definition of $\Xi$.
+\end{itemize}
+
+\subsection{$\deltaLi$ reponse}
+We have
+\begin{equation}
+	\begin{array}{rcl}
+	\psi & = & \dfrac{\gamma}{\beta}\\
+	&=& \dfrac{\kappa \alpha_\infty}{\Theta+\kappa\left(1-\alpha_\infty\right)}\\
+	\\
+	&=& \dfrac{1-\dfrac{\eta}{\tilde{S}+\eta}} {\dfrac{\Theta}{\kappa} + \dfrac{\eta}{\tilde{S}+\eta} }\\
+	\\
+	& = & \dfrac{1-\dfrac{\sigma-\tilde{S}}{\sigma}}{\dfrac{\Theta}{\kappa} + \dfrac{\sigma-\tilde{S}}{\sigma}}\\
+	\\
+	& = & \dfrac{1-\cos^2\mu}{\dfrac{1}{\psi_0}+\cos^2\mu}\\
+	\\
+	\tilde{S} & = & \sigma \sin^2\mu \;\; (\sigma\geq\tilde{S})\\
+	\\
+	\psi_0 & = & \dfrac{\kappa}{\Theta} \\
+	\end{array}
+\end{equation}
+
+We still have
+\begin{equation}
+	\dfrac{\beta_7}{\beta_6} = \dfrac
+	{\left(1-e^{-\tau}\right)+\psi\Xi\left(\tau,\sigma\right)}
+	{\left(1-e^{-\lambda\tau}\right)+\psi\Xi\left(\lambda\tau,\sigma/\lambda\right)}
+\end{equation}
+
+\end{document}

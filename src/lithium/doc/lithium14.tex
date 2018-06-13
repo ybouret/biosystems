@@ -342,7 +342,7 @@ Let us solve $\alpha(t)$
 t\leq t_c, & \alpha & = & \dfrac{\omega_0}{\omega_h} \left(1-e^{-\omega_h t}\right) = \alpha_\infty \left(1-e^{-\omega_h t}\right),\;\;\omega_h = k_h+\omega_0 \\
 t>t_c, & \alpha^\ast & = & \alpha_c e^{-\omega_h^\ast\left(t-t_c\right)} + 
 \dfrac{\omega_0^\ast}{\omega_h^\ast}
-\left(1 - e^{-\omega_h^\ast(t-t_c)}\right)
+\left(1 - e^{-\omega_h^\ast(t-t_c)}\right) = \alpha_c e^{-\omega_h^\ast\left(t-t_c\right)}  + \alpha_\infty^\ast \left(1 - e^{-\omega_h^\ast(t-t_c)}\right) 
 \\
 \end{array}
 \right.
@@ -350,9 +350,34 @@ t>t_c, & \alpha^\ast & = & \alpha_c e^{-\omega_h^\ast\left(t-t_c\right)} +
 
 \subsubsection{Solutions for $\beta_x$}
 
+\begin{itemize}
+\item $t\leq t_c$
 \begin{equation}
 	\partial_t \beta_x =  k_x \left( \Theta + \kappa(1-\alpha(t)) - \beta_x\right)
 \end{equation}
+We find
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\beta_x(t) & = & \beta \left(1-e^{-k_xt}\right) + \kappa\alpha_\infty \Xi\left(k_xt,\sigma_x\right)\\
+	\beta      & = & \Theta+\kappa\left(1-\alpha_\infty\right)\\
+	\sigma_x   & = & \dfrac{\omega_h}{k_x} = \dfrac{\omega_0}{k_x} + \dfrac{k_h}{k_x}\\
+\end{array}
+\right.
+\end{equation}
+with
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\Xi(u,p) & = & \dfrac{e^{-pu}-e^{-u}}{1-p}\\
+	\Xi(u,1) & = & ue^{-u}\\
+	 u_{max} & = & \dfrac{\ln p}{p-1}\\
+	 \Xi_{max} &\approx&\dfrac{1-\tanh\left[0.7+0.4\ln p \right]}{2} 
+\end{array}
+\right.
+\end{equation}
+\item $t>t_c$
+\end{itemize}
 
 \end{document}
 

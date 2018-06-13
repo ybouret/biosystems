@@ -383,80 +383,6 @@ with
 
 \end{itemize}
 
-\end{document}
-
-\begin{equation}
-	\alpha(t) = \alpha_\infty \left(1-e^{-\omega_ht}\right)
-\end{equation}
-then we have
-\begin{equation}
-	\beta_x(t) = W_x(t) e^{-k_x t }
-\end{equation}
-with
-\begin{equation}
-\left \lbrace
-\begin{array}{rcl}
-	\partial_tW_x & = & k_x \left[ \Theta + \tilde\kappa(1-\alpha(t)) \right] e^{k_x t} \\
-	& = & k_x \left[ \Theta + \tilde\kappa(1-\alpha_\infty) + \tilde\kappa\alpha_\infty e^{-\omega_h t} \right] e^{k_x t} \\
-\end{array}
-\right.
-\end{equation}
-	
-\begin{equation}
-		W_x(t) = \left(\Theta+\tilde\kappa(1-\alpha_\infty)\right) \left[e^{k_x t}-1\right]
-		+ \tilde\kappa k_x \alpha_\infty \dfrac{\left[e^{\left(k_x -\omega_h\right) t}-1\right]}{k_x-\omega_h}
-\end{equation}	
-and finally
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-	\beta_x & = & \tilde\beta \left[1-e^{-k_x t}\right] 
-	+ k_x \tilde\kappa \alpha_\infty
-	\left[
-	 \dfrac{
-	 e^{-\omega_h t} - e^{-k_x t}
-	 }
-	 {k_x-\omega_h}
-	 \right]\\
-	 & = & \tilde\beta \left[1-e^{-k_x  t}\right] + \tilde\gamma \Xi\left(k_x t,\sigma_x\right)\\
-	 \\
-	 \sigma_x & = & \dfrac{\omega_h}{k_x} = \dfrac{\omega_0}{k_x} + \dfrac{k_h}{k_x} \\
-	 \\
-	 \tilde\gamma & = & \tilde\kappa \alpha_\infty \\
-	 \\
-	 \Xi\left(u,p\right) & = & \dfrac{e^{-pu}-e^{-u}}{1-p},\;\;\Xi(u,1)=ue^{-u}\\
-\end{array}
-\right.
-\end{equation}
-The function $\Xi\left(u,p\right)$ is a catalytic spike with maximum at 
-\begin{equation}
-	u_{max} = \dfrac{\ln(p)}{p-1}
-\end{equation}
-which is a \underline{decreasing} function of $p$, and the maximum value is
-\begin{equation}
-	\Xi\left(u_{max},p\right) \approx \dfrac{1-\tanh\left[ 0.4(\ln(p)+0.7)\right]}{2}
-\end{equation}
-is also a \underline{decreasing} function of $p$...
-if $k_x$ is bigger then $\sigma_x$ is smaller then the amplification is bigger and lasts longer!!!
-
-Short times: 
-$$
-	\Xi(u,p) \approx u - (1+p)u^2/2
-$$
-
-Long times:
-$$
-	p>1, e^{-x}/(p-1) \text{ and } p<1, e^{-px}/(1-p)
-$$
-
-%and {\bf this is where the most separation occurs!}
-
-\centerline{\bf Warning}
-\begin{itemize}
-	\item $\tilde\beta$ changes with $\proton$, short time value and long time value
-	\item $\tilde\gamma$ changes with $\proton$, short time value and long time value
-\end{itemize}
-
 \section{Rewriting}
 
 \subsection{Boundary Conditions}
@@ -486,57 +412,6 @@ $$
 \right.
 \end{equation}
 
-\subsection{Per species intake}
-\begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	\tau & = & k_7 t\\
-	k_6  & = & \lambda k_7\\
-	\dfrac{k_h}{k_7} & = & \eta \\
-	\end{array}
-\right.
-\end{equation}
-
-\begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	\tilde{D} & = & 1 + \left(s^2J_6+c^2J_7\right) \LiOut{} = 1+\bar{J} \LiOut{}\\
-	\\
-	\omega_0  & = & k_7 \bar{p}^2 \proton \left(\lambda s^2+c^2\right) \dfrac{ \LiOut{} }{1+\bar{J}\LiOut{}} \\
-	& = & k_7 \underbrace{\bar{p}^2 \proton \dfrac{\left(\lambda s^2+c^2\right)}{\bar{J}}}_{K_h}
-	\underbrace{ \dfrac{ \bar{J} \LiOut{} }{1+\bar{J}\LiOut{}}}_{\Lambda}\\
-	\\
-	\alpha_\infty & = & \dfrac{K_h\Lambda}{K_h\Lambda+\eta}\\
-	\\
-	1-\alpha_\infty & = & \dfrac{\eta}{K_h\Lambda+\eta}\\
-	\\
-	\sigma_7 & = & \dfrac{\omega_0}{k_7} = \tilde\sigma = K_h\Lambda+\eta\\
-	\\
-	\sigma_6 & = & \tilde\sigma/\lambda\\
-	\\
-	\tilde\beta & = & \Theta + \tilde\kappa\left(1-\alpha_\infty\right) = \Theta+\dfrac{\bar{p}^2 \proton E_0}{\tilde{D}}  \dfrac{\eta}{K_h\Lambda+\eta}\\
-	\tilde\gamma & = & \tilde\kappa \alpha_\infty = \dfrac{\bar{p}^2 \proton E_0}{\tilde{D}}\dfrac{K_h\Lambda}{K_h\Lambda+\eta}\\
-	\end{array}
-\right.
-\end{equation}
-
-\subsection{Total Lithium}
-
-\begin{equation}
-\Li{} = \left\lbrace\tilde\beta\left[ 1 - \left(c^2e^{-\tau}+s^2e^{-\lambda\tau}\right) \right] 
-+ \tilde\gamma\left[ c^2\Xi\left(\tau,\tilde\sigma\right) + s^2\Xi\left(\lambda\tau,\tilde\sigma/\lambda\right)\right]\right\rbrace \LiOut{}
-\end{equation}
-
-\begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	\tilde\beta\LiOut{} & = & \Theta\LiOut{} + \left(\dfrac{E_0}{\lambda s^2 + c^2}\right) \dfrac{ K_h \Lambda \cdot \eta}{ K_h \Lambda + \eta },\;\; \LiOut{} = \dfrac{1}{\bar{J}}\dfrac{\Lambda}{1-\Lambda}\\
-	\\
-	\tilde\gamma\LiOut{} & = & \left(\dfrac{E_0}{\lambda s^2 + c^2}\right) \dfrac{K_h^2 \Lambda^2}{K_h \Lambda + \eta}\\
-	\end{array}
-\right.
-\end{equation}
-
 \subsection{Delta Lithium}
 \begin{equation}
 	\deltaLi = 10^3 \left( \left[1+10^{-3}\deltaLiOut\right] \dfrac{\beta_7}{\beta_6} - 1\right)
@@ -558,6 +433,17 @@ $$
 	\end{array}
 \right.
 \end{equation}
+
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\tau & = & k_7 t\\
+	k_6  & = & \lambda k_7\\
+	\dfrac{k_h}{k_7} & = & \eta \\
+	\end{array}
+\right.
+\end{equation}
+
 
 \end{document}
 

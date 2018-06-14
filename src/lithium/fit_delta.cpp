@@ -78,62 +78,17 @@ typedef numeric<double>::function   Function;
 class DeltaFit
 {
 public:
-    size_t               i0;
-    size_t               i1;
-    double               t0;
-    double               t1;
     const array<double> *pAorg;
     const Variables     *pVars;
-    Function             f;
-    Function             g;
     derivatives<double>  drvs;
     
     explicit DeltaFit() :
-    i0(0),
-    i1(0),
-    t0(0),
-    t1(0),
     pAorg(0),
-    pVars(0),
-    f( this, & DeltaFit::FunctionIni ),
-    g( this, & DeltaFit::FunctionEnd )
+    pVars(0)
     {}
 
     virtual ~DeltaFit() throw() {}
 
-    double t_reponse;
-
-
-    double Compute(const double t, const array<double> &aorg, const Variables &vars )
-    {
-        if(t<=t0)
-        {
-            return ComputeIni(t,aorg,vars);
-        }
-        else if(t>=t1)
-        {
-            return ComputeEnd(t,aorg,vars);
-        }
-        else
-        {
-            pAorg = &aorg;
-            pVars = &vars;
-            const double dd  = t1-t0; assert(dd>0);
-            const double dd2 = dd * dd;
-            const double dd3 = dd2 * dd;
-            const double dd4 = dd2*dd2;
-            const double f0  = f(t0);
-            const double df0 = drvs.compute(f,t0,1e-4);
-            const double g1  = g(t1);
-            const double dg1 = drvs.compute(g,t1,1e-4);
-            const double A   = g1-f0 - dd * df0;
-            const double B   = dg1 - df0;
-            const double __beta  = ((3*dd2)*A - dd3*B)/dd4;
-            const double __gamma = ((-2*dd)*A + dd2*B)/dd4;
-            const double dt = t-t0;
-            return f0 + df0 * dt + __beta * dt*dt + __gamma * dt *dt * dt;
-        }
-    }
 
     double ComputeIni(const double t, const array<double> &aorg, const Variables &vars )
     {
@@ -141,12 +96,64 @@ public:
         const double lambda = aorg[ vars["lambda"] ];
         const double d7out  = aorg[ vars["d7out"]  ];
         const double sigma  = aorg[ vars["sigma"]  ];
-        const double tau7    = k7*t;
-        const double tau6    = lambda*tau7;
+        const double tau7   = k7*t;
+        const double tau6   = lambda*tau7;
 
         return 1000.0 * ( (1.0+d7out/1000.0) * (Xi(tau7,sigma)/Xi(tau6,sigma/lambda)) - 1.0 );
     }
 
+    double Compute(const double t, const array<double> &aorg, const Variables &vars )
+    {
+
+        const double t_c    = aorg[ vars["t_c"]    ];
+        if(t<=t_c)
+        {
+            return ComputeIni(t,aorg,vars);
+        }
+        else
+        {
+            const double k7     = aorg[ vars["k7"]     ];
+            const double lambda = aorg[ vars["lambda"] ];
+            const double d7out  = aorg[ vars["d7out"]  ];
+            const double sigma  = aorg[ vars["sigma"]  ];
+            const double Beta   = aorg[ vars["Beta"] ];
+            const double tp     = t-t_c;
+            const double tau7p  = k7*tp;
+            const double tau6p  = lambda * tau7p;
+            const double tau7c  = k7*t_c;
+            const double tau6c  = lambda*tau7c;
+            const double beta7c = Xi(tau7c,sigma);
+            const double beta6c = Xi(tau6c,sigma/lambda);
+            const double e7     = exp( -tau7p );
+            const double e6     = exp( -tau6p );
+            const double beta7  = beta7c * e7 + Beta * (1.0-e7);
+            const double beta6  = beta6c * e6 + Beta * (1.0-e6);
+            return 1000.0 * ( (1.0+d7out/1000.0) * beta7/beta6 - 1.0);
+        }
+    }
+
+    double __beta7c(const array<double> &aorg, const Variables &vars ) const
+    {
+        const double k7     = aorg[ vars["k7"]     ];
+        const double sigma  = aorg[ vars["sigma"]  ];
+        const double t_c    = aorg[ vars["t_c"]    ];
+        const double tau7c  = k7*t_c;
+        return Xi(tau7c,sigma);
+    }
+
+    double __beta6c(const array<double> &aorg, const Variables &vars ) const
+    {
+        const double k7     = aorg[ vars["k7"]     ];
+        const double sigma  = aorg[ vars["sigma"]  ];
+        const double t_c    = aorg[ vars["t_c"]    ];
+        const double lambda = aorg[ vars["lambda"] ];
+        const double tau7c  = k7*t_c;
+        return Xi(tau7c*lambda,sigma/lambda);
+    }
+
+
+
+#if 0
     double FunctionIni(const double t)
     {
         assert(pAorg);
@@ -172,6 +179,7 @@ public:
         assert(pVars);
         return ComputeEnd(t,*pAorg,*pVars);
     }
+#endif
 
     double d7ini( const array<double> &aorg, const Variables &vars )
     {
@@ -214,18 +222,6 @@ YOCTO_PROGRAM_START()
         testXi();
     }
 
-    if(argc<=2)
-    {
-        throw exception("usage: %s t_short t_long",program);
-    }
-
-    const double t_short = strconv::to<double>(argv[1],"t_short");
-    const double t_long  = strconv::to<double>(argv[2],"t_long");
-    if(t_long<t_short)
-    {
-        throw exception("t_long=%g<t_short=%g", t_long, t_short);
-    }
-
 
     //__________________________________________________________________________
     //
@@ -254,71 +250,42 @@ YOCTO_PROGRAM_START()
     Vector         deltaFit(N);
     Sample         sample(t,delta,deltaFit);
 
-    //__________________________________________________________________________
-    //
-    // create sub vectors
-    //__________________________________________________________________________
-    Vector tIni(N,as_capacity), deltaIni(N,as_capacity);
-    Vector tEnd(N,as_capacity), deltaEnd(N,as_capacity);
-    size_t &i0 = dfn.i0;
-    size_t &i1 = dfn.i1;
-    i0=1;
-    i1=N;
-
-    for(size_t i=1;i<=N;++i)
-    {
-        if(t[i]<=t_short)
-        {
-            tIni.push_back(t[i]);
-            deltaIni.push_back(delta[i]);
-            i0=max_of(i0,i);
-        }
-        if(t[i]>=t_long)
-        {
-            tEnd.push_back(t[i]);
-            deltaEnd.push_back(delta[i]);
-            i1 = min_of(i1,i);
-        }
-    }
-    if(i0>=i1)
-    {
-        throw exception("overlap of short time and long time points");
-    }
-
-    dfn.t0 = t[i0];
-    dfn.t1 = t[i1];
-
-
-    const size_t nIni = tIni.size(); if(nIni<=0) throw exception("no ini point...");
-    const size_t nEnd = tEnd.size(); if(nEnd<=0) throw exception("no end point...");
-
-
+    
 
     {
         ios::wcstream fp("delta0.dat");
         save_data(fp,t,delta,delta);
     }
-    //__________________________________________________________________________
-    //
-    // create sub samples
-    //__________________________________________________________________________
-    Fit::Samples<double> multiple(3);
 
-    Vector       deltaIniFit(nIni);
-    Fit::Sample<double> &sampleIni = multiple.add(tIni,deltaIni,deltaIniFit);
+    const double dmin = find_min_of(delta);
+    const double dmax = find_max_of(delta);
+    const double dlim = dmin + 0.25 * (dmax-dmin);
+    Vector t_ini(N,as_capacity);
+    Vector delta_ini(N,as_capacity);
+    for(size_t i=1;i<=N;++i)
+    {
+        if(delta[i]<=dlim)
+        {
+            t_ini.push_back(t[i]);
+            delta_ini.push_back(delta[i]);
+        }
+        else
+            break;
+    }
+    const size_t N_ini = t_ini.size();
+    Vector deltaFit_ini(N_ini);
+    Sample sample_ini(t_ini,delta_ini,deltaFit_ini);
 
-    Vector       deltaEndFit(nEnd);
-    Fit::Sample<double> &sampleEnd = multiple.add(tEnd,deltaEnd,deltaEndFit);
+
+
 
     //__________________________________________________________________________
     //
     // global variables
     //__________________________________________________________________________
-    Fit::Variables &vars = multiple.variables;
-    vars << "k7" << "lambda" << "d7out" << "sigma";
-    sampleIni.variables = vars;
-    sampleEnd.variables = vars;
-    sample.variables    = vars;
+    Fit::Variables &vars = sample.variables;
+    vars << "k7" << "lambda" << "t_c" << "d7out" << "sigma" << "Beta";
+    sample_ini.variables = vars;
 
 
     const size_t nvar = vars.size();
@@ -330,100 +297,77 @@ YOCTO_PROGRAM_START()
     double &lambda = aorg[ vars["lambda"] ];
     double &d7out  = aorg[ vars["d7out"]  ];
     double &sigma  = aorg[ vars["sigma"]  ];
-    const double dmin = find_min_of(delta);
+    double &t_c    = aorg[ vars["t_c"] ];
+    double &Beta   = aorg[ vars["Beta"] ];
 
     k7     = 0.003;
     d7out  = 14.98;
     lambda = (1000.0+d7out)/(1000.0+dmin);
-    sigma  = 8;
+    sigma  = 100;
+    t_c    = 90;
 
-    Fit::LS<double> lsf;
-    Fit::Type<double>::Function f(  &dfn, & DeltaFit::ComputeIni);
-    Fit::Type<double>::Function g(  &dfn, & DeltaFit::ComputeEnd);
+    Fit::LS<double>             lsf;
     Fit::Type<double>::Function F(  &dfn, & DeltaFit::Compute);
+    Fit::Type<double>::Function f(  &dfn, & DeltaFit::ComputeIni);
 
-    const size_t NP = 1000;
+    used[ vars["k7"]    ] = true;
+    used[ vars["sigma"]    ] = true;
+    used[ vars["lambda"]    ] = true;
 
+    if(!lsf.run(sample_ini,f,aorg,used,aerr))
+    {
+        throw exception("couldn't fit init");
+    }
 
-    //__________________________________________________________________________
-    //
-    // fit the end to get time scale
-    //__________________________________________________________________________
-    std::cerr << "Fit relaxing scale..." << std::endl;
+    sample_ini.display(std::cerr, aorg, aerr);
+    {
+        ios::wcstream fp("delta1.dat");
+        save_data(fp,t_ini,delta_ini,deltaFit_ini);
+    }
+
     tao::ld(used,false);
+    Beta = 0.5 * (dfn.__beta6c(aorg,vars)+dfn.__beta7c(aorg,vars));
+    used[ vars["Beta"]    ] = true;
+    std::cerr << "Starting from Beta=" << Beta << std::endl;
+    if(!lsf.run(sample,F,aorg,used,aerr))
+    {
+        throw exception("couldn't fit Beta");
+    }
+
+    tao::ld(used,false);
+
+    used[ vars["Beta"]   ] = true;
     used[ vars["k7"]     ] = true;
-
-    if(!lsf.run(sampleEnd,g,aorg,used,aerr))
-    {
-        throw exception("cannnot fit end/k7");
-    }
-    sampleEnd.display(std::cerr,aorg,aerr);
-    {
-        ios::wcstream fp("delta_end.dat");
-        save_data(fp,tEnd,deltaEnd,deltaEndFit);
-    }
-
-    //__________________________________________________________________________
-    //
-    // using the initial scaling, find initial sigma
-    //__________________________________________________________________________
-    std::cerr << "Fit initial catalytic..." << std::endl;
-    tao::ld(used,false);
-    used[ vars["sigma"]  ] = true;
-    used[ vars["k7"]     ] = true;
-
-    if(!lsf.run(sampleIni,f,aorg,used,aerr))
-    {
-        throw exception("cannnot fit ini/sigma");
-    }
-    sampleEnd.display(std::cerr,aorg,aerr);
-    {
-        ios::wcstream fp("delta_ini.dat");
-        save_data(fp,tIni,deltaIni,deltaIniFit);
-    }
-
-    //__________________________________________________________________________
-    //
-    // Fit both
-    //__________________________________________________________________________
-    std::cerr << "Fit Both" << std::endl;
-    tao::ld(used,false);
-    //used[ vars["lambda"]  ] = true;
-    used[ vars["k7"]      ] = true;
-    used[ vars["lambda"]      ] = true;
-    //used[ vars["d7out"]      ] = true;
-    used[ vars["sigma"]  ] = true;
+    used[ vars["lambda"] ] = true;
+    //used[ vars["d7out"] ] = true;
 
     if(!lsf.run(sample,F,aorg,used,aerr))
     {
-        throw exception("cannnot fit both");
+        throw exception("couldn't fit Beta/k7/lambda");
     }
 
-    sample.display(std::cerr,aorg,aerr);
+    tao::ld(used,false);
+    used[ vars["sigma"]     ] = true;
+    if(!lsf.run(sample,F,aorg,used,aerr)) throw ("no sigma level2");
 
-    (void)sampleIni.computeD2(f,aorg);
-    (void)sampleEnd.computeD2(g,aorg);
+
+    sample.display(std::cerr, aorg, aerr);
     {
-        ios::wcstream fp("delta_ini.dat");
-        save_data(fp,tIni,deltaIni,deltaIniFit);
+        ios::wcstream fp("delta2.dat");
+        save_data(fp,t,delta,deltaFit);
     }
 
+    const size_t NP = 1000;
     {
-        ios::wcstream fp("delta_end.dat");
-        save_data(fp,tEnd,deltaEnd,deltaEndFit);
-    }
-
-    {
-        ios::wcstream fp("delta_dfn.dat");
-
+        ios::wcstream fp("dfn.dat");
         for(size_t i=0;i<=NP;++i)
         {
-            const double tt  = t[1] + ( i * (t[N]-t[1]) ) / NP;
-            const double f   = dfn.Compute(tt,aorg,vars);
-            fp("%g %g\n", log(tt), f);
+            const double tt = t[1] + 2.0 * (i*(t[N]-t[1])/double(NP));
+            fp("%g %g\n", log(tt), F(tt,aorg,vars));
         }
-
     }
+
+
 
 }
 YOCTO_PROGRAM_END()

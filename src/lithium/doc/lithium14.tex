@@ -416,13 +416,13 @@ $$
 \begin{equation}
 	\deltaLi = 10^3 \left( \left[1+10^{-3}\deltaLiOut\right] \dfrac{\beta_7}{\beta_6} - 1\right)
 \end{equation}
-
-\begin{equation}
-	\dfrac{\beta_7}{\beta_6} = 
-	\dfrac
-	{\left(1-e^{-\tau}\right) + \psi \Xi\left(\tau,\sigma\right)}
-	{\left(1-e^{-\lambda\tau}\right) + \psi \Xi\left(\lambda\tau,\sigma/\lambda\right)}
-\end{equation}
+%
+%\begin{equation}
+%	\dfrac{\beta_7}{\beta_6} = 
+%	\dfrac
+%	{\left(1-e^{-\tau}\right) + \psi \Xi\left(\tau,\sigma\right)}
+%	{\left(1-e^{-\lambda\tau}\right) + \psi \Xi\left(\lambda\tau,\sigma/\lambda\right)}
+%\end{equation}
 
 \begin{equation}
 \left\lbrace
@@ -444,196 +444,27 @@ $$
 \right.
 \end{equation}
 
-
-\end{document}
-
-\section{Litium Intake}
-\subsection{Total Lithium}
-	
-\begin{equation}
-\begin{array}{rl}
-	\Li{6} + \Li{7} & = \beta \left( \left[1-e^{-k_6^l t}  \right] \LiOut{6} + \left[1-e^{-k_7^l t}  \right] \LiOut{7} \right)\\
-	 & + \gamma\left(\Xi\left(k_6^lt,\sigma_6\right) \LiOut{6} +  \Xi\left(k_7^lt,\sigma_7\right) \LiOut{7} \right)\\
-\end{array}
-\end{equation}
-	
-\subsection{Isotopic Separation}
-We strictly have
-\begin{equation}
-\begin{array}{rcl}
-	\dfrac{\beta_7}{\beta_6} & = & \dfrac{1+10^{-3}\deltaLi}{1+10^{-3}\deltaLiOut}\\
-	\\
-	& = & \dfrac{\left(1-e^{-k_7^lt}\right)+\dfrac{\gamma}{\beta}\Xi\left(k_7^lt,\sigma_7\right)}
-	{\left(1-e^{-k_6^lt}\right)+\dfrac{\gamma}{\beta}\Xi\left(k_6^lt,\sigma_6\right)}\\
-\end{array}
-\end{equation}
+\subsection{Short Times}
 
 \begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	\gamma & = & \kappa \alpha_\infty \\
-	\beta  & = & \Theta + \kappa (1-\alpha_\infty)\\
-	\end{array}	
-\right.
-\end{equation}
-so that 
-\begin{equation}
-	\dfrac{\gamma}{\beta} = \psi
-\end{equation}
-is an increasing function w.r.t $\alpha_\infty$ and varies from $0$ to $\kappa/\Theta$...
-
-We can manage
-\begin{equation}
-	\deltaLi = 10^3 \left[ \left(1+10^{-3}\deltaLiOut\right)\dfrac{\beta_7}{\beta_6} - 1 \right] 
-\end{equation}
-or more interestingly ?
-\begin{equation}
-	\Delta^7 = \deltaLi - \deltaLiOut = 10^3 \left(1+10^{-3}\deltaLiOut\right) \left[\dfrac{\beta_7}{\beta_6} - 1\right]
-\end{equation}
-
-\subsection{Simplification}
-\begin{equation}
-	\dfrac{\LiOut{7}}{\LiOut{6}} = \rho_s \left(1+10^{-3}\deltaLiOut\right)
+	t \leq t_c,\;\; \beta_x \approx \kappa \alpha_\infty \Xi\left(k_x t, \sigma_x \right)
 \end{equation}
 so that
 \begin{equation}
-\left\lbrace
-	\begin{array}{rclcl}
-	\LiOut{6} & = & \dfrac{1}{1+\rho_s\left(1+10^{-3}\deltaLiOut\right)} \LiOut{} & = & \sin^2(\varphi) \LiOut{} \\
-	\\
-	\LiOut{7} & = & \dfrac{\rho_s\left(1+10^{-3}\deltaLiOut\right)}{1+\rho_s\left(1+10^{-3}\deltaLiOut\right)} \LiOut{} & = & \cos^2(\varphi)\LiOut{} \\
-	\end{array}
-\right.
-\end{equation}
-$$
-	\rho_s \approx 12.0192
-$$
-\begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	\sin^2(\varphi) = s^2 & \simeq & 0.0768 - 7.0910\,10^{-5} \deltaLiOut + \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
-	\cos^2(\varphi) = c^2 & \simeq & 0.9232 + 7.0910\,10^{-5} \deltaLiOut - \left(2.5586\,10^{-4}\deltaLiOut\right)^2\\
-	\end{array}
-\right.
-\end{equation}
-
-We got
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
- k_6 & = & \lambda k_7 \\
- \delta^{\ast} & = & 1+J_6 \LiOut{6} + J_7 \LiOut{7} = 1+\tilde{J}\LiOut{}, \; \tilde{J} = s^2J_6 + c^2J_7\\
- \\
- \kappa & = & \dfrac{\bar{p}^2 \proton E_0}{\delta^\ast} = \dfrac{\bar{p}^2 \proton E_0}{1+\tilde{J}\LiOut{}} = \dfrac{\kappa_0}{1+\tilde{J}\LiOut{}}\\
- \\
- \omega_6& = &  \dfrac{\bar{p}^2}{\delta^\ast} \lambda k_7 \proton s^2 \LiOut{} 
- = \bar{p}^2 k_7 \proton \dfrac{\lambda s^2 \LiOut{}}{1+\tilde{J}\LiOut{}}\\
- \\
- \omega_7&=  &\dfrac{\bar{p}^2}{\delta^\ast} k_7 c^2 \proton \LiOut{} 
- = \bar{p}^2 k_7 \proton \dfrac{ c^2 \LiOut{}}{1+\tilde{J}\LiOut{}}\\
- \\
- \omega_0 & = & \bar{p}^2 k_7 \proton \left(\lambda s^2+c^2\right) \dfrac{\LiOut{}}{1+\tilde{J}\LiOut{}} 
- = k_7  \underbrace{\dfrac{\tilde{K}\LiOut{}}{1+\tilde{J}\LiOut{}}}_{\tilde{S}},\;\tilde{K} = \bar{p}^2 \proton \left(\lambda s^2+c^2\right) \\
- \\
- \omega_0+k_h & = & k_7\left(\tilde{S}+\eta\right),\; k_h = \eta k_7\\
- \\
- \alpha_\infty   & = & \dfrac{\omega_0}{\omega_0+k_h}  = \dfrac{\tilde{S}}{\tilde{S}+\eta}\\
- \\
- 1-\alpha_\infty & = & \dfrac{k_h}{\omega_0+k_h} = \dfrac{\eta}{\tilde{S}+\eta}\\
- \\
- \sigma_x & = & \dfrac{\omega_h}{k_x^l} = \dfrac{\omega_6}{k_x^l} + \dfrac{\omega_7}{k_x^l} + \dfrac{k_h}{k_x^l} \\
- \\
- \sigma_7 & = & \bar{p}^2\proton \left[\lambda s^2+c^2\right]\dfrac{\LiOut{}}{1+\tilde{J}\LiOut{}} + \eta = \tilde{S}+\eta = \sigma\\
-\\
-\sigma_6 & = & {\bar{p}^2\proton} \left[s^2+\dfrac{c^2}{\lambda}\right]\dfrac{\LiOut{}}{1+\tilde{J}\LiOut{}}+\dfrac{\eta}{\lambda} = \dfrac{1}{\lambda} \sigma_7 = \dfrac{\tilde{S}+\eta}{\lambda}\\
-\end{array}
-\right.
-\end{equation}
-Then for a given time such that
-\begin{equation}
-	k_7 t = \tau
-\end{equation}
-We get
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-	\Li{6} & = & \left[ \beta\left(1-e^{-\lambda\tau}\right) + \gamma \Xi\left(\lambda\tau,\dfrac{\tilde{S}+\eta}{\lambda}\right) \right] s^2 \LiOut{} \\
-	\\
-	\Li{7} & = &  \left[ \beta\left(1-e^{-\tau}\right) + \gamma \Xi\left(\tau,\tilde{S}+\eta\right) \right] c^2 \LiOut{}\\
-\end{array}
-\right.
-\end{equation}
-
-\subsection{Lithium/Reponse}
-so that
-\begin{equation}
-	\Li{} = \left\lbrace 
-	\beta \left[ s^2 \left(1-e^{-\lambda\tau}\right) + c^2\left(1-e^{-\tau}\right) \right] 
-	+ \gamma \left[  s^2 \Xi\left(\lambda\tau,{\dfrac{\tilde{S}+\eta}{\lambda}}\right) + c^2 \Xi\left(\tau,\tilde{S}+\eta\right) \right]
-	\right \rbrace \LiOut{}
-\end{equation}
-The final dependency is seen writing
-\begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	\beta & = &\Theta + \kappa\left(1-\alpha_\infty\right)\\
-	      & = &\Theta + \dfrac{\kappa_0}{1+\tilde{J}\LiOut{}} \dfrac{\eta}{\tilde{S}+\eta}\\
-	      \\
-	\gamma & = & \kappa \alpha_\infty \\
-	       & = & \dfrac{\kappa_0}{1+\tilde{J}\LiOut{}} \dfrac{\tilde{S}}{\tilde{S}+\eta} \\
-	\end{array}
-\right.
+	\dfrac{\beta_7}{\beta_6} \approx \dfrac{\Xi(\tau,\sigma)}{\Xi(\lambda \tau, \sigma/\lambda)}
 \end{equation}
 then
 \begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	\beta\LiOut{} & = & \Theta \LiOut{} + \dfrac{\kappa_0}{\tilde{K}} \dfrac{\eta\tilde{S}}{\tilde{S}+\eta}\\
-	\\
-	\gamma\LiOut{} & = & \dfrac{\kappa_0}{\tilde{K}} \dfrac{\tilde{S}^2}{\tilde{S}+\eta}\\
-	\\
-	\dfrac{\kappa_0}{\tilde{K}} & = & \dfrac{E_0}{\lambda s^2 + c^2}\\
-	\end{array}
-\right.
+	\beta_{7,c} = \Xi(\tau_c,\sigma),\;\;\beta_{6,c} = \Xi(\lambda\tau_c,\sigma/\lambda)
 \end{equation}
 
-\begin{itemize}
-\item if $\tau\ll\dfrac{\log(\sigma)}{\sigma-1}$, 
-	$$
-		\left[  s^2 \Xi\left(\lambda\tau,{\dfrac{\tilde{S}+\eta}{\lambda}}\right) + c^2 \Xi\left(\tau,\tilde{S}+\eta\right) \right]
-		\approx \tau \left[ s^2\lambda+c^2\right]
-	$$
-\item if $\tau\approx\dfrac{\log(\sigma)}{\sigma-1}$
-	it varies slowly in $\log(\sigma)$
-	
-\item if $\tau\gg\dfrac{\log(\sigma)}{\sigma-1}$
-	it decreases exponentially, slowly, depending on the magnitude of $\sigma$, si definition of $\Xi$.
-\end{itemize}
+\subsection{Long Times}
 
-\subsection{$\deltaLi$ reponse}
-We have
 \begin{equation}
-	\begin{array}{rcl}
-	\psi & = & \dfrac{\gamma}{\beta}\\
-	&=& \dfrac{\kappa \alpha_\infty}{\Theta+\kappa\left(1-\alpha_\infty\right)}\\
-	\\
-	&=& \dfrac{1-\dfrac{\eta}{\tilde{S}+\eta}} {\dfrac{\Theta}{\kappa} + \dfrac{\eta}{\tilde{S}+\eta} }\\
-	\\
-	& = & \dfrac{1-\dfrac{\sigma-\tilde{S}}{\sigma}}{\dfrac{\Theta}{\kappa} + \dfrac{\sigma-\tilde{S}}{\sigma}}\\
-	\\
-	& = & \dfrac{1-\cos^2\mu}{\dfrac{1}{\psi_0}+\cos^2\mu}\\
-	\\
-	\tilde{S} & = & \sigma \sin^2\mu \;\; (\sigma\geq\tilde{S})\\
-	\\
-	\psi_0 & = & \dfrac{\kappa}{\Theta} \\
-	\end{array}
-\end{equation}
-
-We still have
-\begin{equation}
-	\dfrac{\beta_7}{\beta_6} = \dfrac
-	{\left(1-e^{-\tau}\right)+\psi\Xi\left(\tau,\sigma\right)}
-	{\left(1-e^{-\lambda\tau}\right)+\psi\Xi\left(\lambda\tau,\sigma/\lambda\right)}
+	t > t_c,\;\; \dfrac{\beta_7}{\beta_6} \approx 
+	\dfrac
+	{\beta_{7,c}e^{-\tau'}+\beta^\ast \left(1-e^{-\tau'}\right)}
+	{\beta_{6,c}e^{-\lambda\tau'}+\beta^\ast \left(1-e^{-\lambda\tau'}\right)}
 \end{equation}
 
 \end{document}

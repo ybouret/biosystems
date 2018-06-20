@@ -134,6 +134,7 @@ public:
         }
     }
 
+#if 0
     double __beta7c(const array<double> &aorg, const Variables &vars ) const
     {
         const double k7     = aorg[ vars["k7"]     ];
@@ -152,7 +153,7 @@ public:
         const double tau7c  = k7*t_c;
         return Xi(tau7c*lambda,sigma/lambda);
     }
-
+#endif
 
 
 #if 0
@@ -286,7 +287,7 @@ YOCTO_PROGRAM_START()
     // global variables
     //__________________________________________________________________________
     Fit::Variables &vars = sample.variables;
-    vars << "k7" << "lambda" << "t_c" << "d7out" << "sigma" << "Beta";
+    vars << "k7" << "lambda" << "t_c" << "d7out" << "sigma" << "gamma";
     sample_ini.variables = vars;
 
 
@@ -300,7 +301,6 @@ YOCTO_PROGRAM_START()
     double &d7out  = aorg[ vars["d7out"]  ];
     double &sigma  = aorg[ vars["sigma"]  ];
     double &t_c    = aorg[ vars["t_c"] ];
-    double &Beta   = aorg[ vars["Beta"] ];
 
     k7     = 0.003;
     d7out  = 14.98;
@@ -328,9 +328,7 @@ YOCTO_PROGRAM_START()
     }
 
     tao::ld(used,false);
-    Beta = 0.5 * (dfn.__beta6c(aorg,vars)+dfn.__beta7c(aorg,vars));
     used[ vars["Beta"]    ] = true;
-    std::cerr << "Starting from Beta=" << Beta << std::endl;
     if(!lsf.run(sample,F,aorg,used,aerr))
     {
         throw exception("couldn't fit Beta");

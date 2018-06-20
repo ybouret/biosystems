@@ -8,6 +8,8 @@
 #include "yocto/container/utils.hpp"
 #include "yocto/sort/quick.hpp"
 #include "yocto/math/core/tao.hpp"
+#include "yocto/math/core/polynomial-utils.hpp"
+
 using namespace yocto;
 using namespace math;
 

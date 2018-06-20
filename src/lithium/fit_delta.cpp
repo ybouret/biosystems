@@ -372,6 +372,9 @@ YOCTO_PROGRAM_START()
         }
     }
 
+    tao::ld(used,false);
+    
+
     {
         ios::wcstream fp("dfn0.dat");
         const double tt0 = t[1]/2;
@@ -383,6 +386,8 @@ YOCTO_PROGRAM_START()
             fp("%g %g\n", log(tt), F(tt,aorg,vars));
         }
     }
+
+
 
 }
 YOCTO_PROGRAM_END()

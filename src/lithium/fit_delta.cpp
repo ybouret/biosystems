@@ -316,7 +316,7 @@ YOCTO_PROGRAM_START()
     d7out  = 14.98;
     lambda = (1000.0+d7out)/(1000.0+dmin);
     sigma  = 100;
-    t_c    = (dfn.tIni+dfn.tEnd)/2;
+    t_c    = 120;
     gamma  = 0.1;
 
     Fit::LS<double>             lsf;
@@ -334,7 +334,7 @@ YOCTO_PROGRAM_START()
         throw exception("couldn't fit init");
     }
 
-    sample_ini.display(std::cerr, aorg, aerr);
+    sample_ini.display(std::cerr, aorg, aerr) << std::endl;
     {
         ios::wcstream fp("delta1.dat");
         save_data(fp,t_ini,delta_ini,deltaFit_ini);
@@ -357,7 +357,7 @@ YOCTO_PROGRAM_START()
     {
         throw exception("couldn't fit end");
     }
-    sample_end.display(std::cerr, aorg, aerr);
+    sample_end.display(std::cerr, aorg, aerr) << std::endl;
     {
         ios::wcstream fp("delta2.dat");
         save_data(fp,t_end,delta_end,deltaFit_end);
@@ -373,7 +373,13 @@ YOCTO_PROGRAM_START()
     }
 
     tao::ld(used,false);
-    
+    vars(used,"k7")     = true;
+    //vars(used,"lambda") = true;
+    //vars(used,"sigma")  = true;
+    //vars(used,"d7out")  = true;
+
+    if(!lsf.run(sample,F,aorg,used,aerr)) throw exception("couldn't fit both");
+    sample.display(std::cerr, aorg, aerr) << std::endl;
 
     {
         ios::wcstream fp("dfn0.dat");

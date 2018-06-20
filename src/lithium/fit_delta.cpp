@@ -83,10 +83,13 @@ public:
     const array<double> *pAorg;
     const Variables     *pVars;
     derivatives<double>  drvs;
-    
+    Function             fIni;
+    Function             fEnd;
     explicit DeltaFit() :
     pAorg(0),
-    pVars(0)
+    pVars(0),
+    fIni( this, & DeltaFit:: FunctionIni ),
+    fEnd( this, & DeltaFit:: FunctionEnd )
     {}
 
     virtual ~DeltaFit() throw() {}
@@ -104,6 +107,27 @@ public:
         return 1000.0 * ( (1.0+d7out/1000.0) * (Xi(tau7,sigma)/Xi(tau6,sigma/lambda)) - 1.0 );
     }
 
+    double ComputeEnd(const double t, const array<double> &aorg, const Variables &vars )
+    {
+        const double t_c    = aorg[ vars["t_c"]    ];
+        const double k7     = aorg[ vars["k7"]     ];
+        const double lambda = aorg[ vars["lambda"] ];
+        const double d7out  = aorg[ vars["d7out"]  ];
+        const double gamma  = aorg[ vars["gamma"]  ];
+        const double tp     = t-t_c;
+        const double tau7p  = k7*tp;
+        const double tau6p  = lambda * tau7p;
+        const double tau7c  = k7*t_c;
+        const double tau6c  = lambda*tau7c;
+        const double beta7c = 1.0-exp(-tau7c);
+        const double beta6c = 1.0-exp(-tau6c);
+        const double e7     = exp( -tau7p );
+        const double e6     = exp( -tau6p );
+        const double beta7  = beta7c * e7 + gamma * (1.0-e7);
+        const double beta6  = beta6c * e6 + gamma * (1.0-e6);
+        return 1000.0 * ( (1.0+d7out/1000.0) * beta7/beta6 - 1.0);
+    }
+
     double Compute(const double t, const array<double> &aorg, const Variables &vars )
     {
 
@@ -114,66 +138,16 @@ public:
         }
         else
         {
-            const double k7     = aorg[ vars["k7"]     ];
-            const double lambda = aorg[ vars["lambda"] ];
-            const double d7out  = aorg[ vars["d7out"]  ];
-            const double sigma  = aorg[ vars["sigma"]  ];
-            const double Beta   = aorg[ vars["Beta"] ];
-            const double tp     = t-t_c;
-            const double tau7p  = k7*tp;
-            const double tau6p  = lambda * tau7p;
-            const double tau7c  = k7*t_c;
-            const double tau6c  = lambda*tau7c;
-            const double beta7c = Xi(tau7c,sigma);
-            const double beta6c = Xi(tau6c,sigma/lambda);
-            const double e7     = exp( -tau7p );
-            const double e6     = exp( -tau6p );
-            const double beta7  = beta7c * e7 + Beta * (1.0-e7);
-            const double beta6  = beta6c * e6 + Beta * (1.0-e6);
-            return 1000.0 * ( (1.0+d7out/1000.0) * beta7/beta6 - 1.0);
+            return ComputeEnd(t,aorg,vars);
         }
     }
 
-#if 0
-    double __beta7c(const array<double> &aorg, const Variables &vars ) const
-    {
-        const double k7     = aorg[ vars["k7"]     ];
-        const double sigma  = aorg[ vars["sigma"]  ];
-        const double t_c    = aorg[ vars["t_c"]    ];
-        const double tau7c  = k7*t_c;
-        return Xi(tau7c,sigma);
-    }
 
-    double __beta6c(const array<double> &aorg, const Variables &vars ) const
-    {
-        const double k7     = aorg[ vars["k7"]     ];
-        const double sigma  = aorg[ vars["sigma"]  ];
-        const double t_c    = aorg[ vars["t_c"]    ];
-        const double lambda = aorg[ vars["lambda"] ];
-        const double tau7c  = k7*t_c;
-        return Xi(tau7c*lambda,sigma/lambda);
-    }
-#endif
-
-
-#if 0
     double FunctionIni(const double t)
     {
         assert(pAorg);
         assert(pVars);
         return ComputeIni(t,*pAorg,*pVars);
-    }
-
-
-    double ComputeEnd(const double t, const array<double> &aorg, const Variables &vars )
-    {
-        const double k7     = aorg[ vars["k7"]     ];
-        const double lambda = aorg[ vars["lambda"] ];
-        const double d7out  = aorg[ vars["d7out"]  ];
-        const double tau7    = k7*t;
-        const double tau6    = lambda*tau7;
-
-        return 1000.0 * ( (1.0+d7out/1000.0) * (Growth(tau7)/Growth(tau6)) - 1.0 );
     }
 
     double FunctionEnd(const double t)
@@ -182,7 +156,7 @@ public:
         assert(pVars);
         return ComputeEnd(t,*pAorg,*pVars);
     }
-#endif
+
 
     double d7ini( const array<double> &aorg, const Variables &vars )
     {

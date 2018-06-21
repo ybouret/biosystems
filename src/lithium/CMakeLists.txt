@@ -1,5 +1,5 @@
-ADD_EXECUTABLE(fit_delta fit_delta.cpp)
-TARGET_LINK_YOCTO(fit_delta mk)
+ADD_EXECUTABLE(fit_delta fit_delta.cpp config.lua)
+TARGET_LINK_YOCTO(fit_delta mk lua++)
 INSTALL( TARGETS fit_delta RUNTIME DESTINATION bin )
 
 ADD_EXECUTABLE(fit_ximax fit_ximax.cpp)

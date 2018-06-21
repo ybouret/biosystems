@@ -4,132 +4,15 @@
 #include "yocto/string/conv.hpp"
 #include "yocto/ios/icstream.hpp"
 #include "yocto/ios/ocstream.hpp"
+#include "yocto/math/fit/fit.hpp"
+#include "yocto/container/utils.hpp"
+#include "yocto/sort/quick.hpp"
 #include "yocto/math/core/tao.hpp"
-#include "yocto/lua/lua-funcs.hpp"
-#include "yocto/lua/lua-state.hpp"
-#include "yocto/math/ode/explicit/driver-ck.hpp"
+#include "yocto/math/core/polynomial-utils.hpp"
 
 using namespace yocto;
 using namespace math;
 
-typedef vector<double> Vector;
-typedef array<double>  Array;
-
-typedef ode::driverCK<double>::type  Solver;
-typedef ode::Field<double>::Equation DiffEq;
-
-class System
-{
-public:
-    static const size_t IA = 1;
-    Lua::Function<double> h;
-    double                gamma;
-    double                eta;
-    double                k7;
-    DiffEq                diffeq;
-
-    virtual ~System() throw()
-    {
-    }
-
-    explicit System( const Lua::State::Pointer &vm ) :
-    h(vm,"h"),
-    gamma( 0.1 / h(0) ),
-    eta( 1.0 ),
-    k7(0.1),
-    diffeq(this,&System::compute)
-    {
-
-    }
-
-    void compute( Array &dYdt, double t, const Array &Y )
-    {
-        const double alpha   = Y[IA];
-        const double scaling = gamma * h(t);
-
-        dYdt[IA] = k7 * (scaling - (scaling+eta) * alpha );
-    }
-
-private:
-    YOCTO_DISABLE_COPY_AND_ASSIGN(System);
-};
-
-
-
-class Generator
-{
-public:
-    Solver odeint;
-
-    virtual ~Generator() throw() {}
-
-    explicit Generator() :
-    odeint(1e-4)
-    {
-        odeint.start(1);
-    }
-
-    void compute( Array &Y, const double t, DiffEq &diffeq )
-    {
-        static const double dt_max = 0.1;
-        double h       = dt_max;
-        tao::ld(Y,0);
-        //odeint( diffeq, Y, 0, t, h, NULL);
-        //return;
-        double t_start = 0;
-        for(;;)
-        {
-            double t_final = t_start + dt_max;
-            bool   done    = false;
-            if(t_final>=t)
-            {
-                t_final = t;
-                done    = true;
-            }
-            h = min_of(h,dt_max);
-            odeint( diffeq, Y, t_start, t_final, h, NULL);
-            t_start = t_final;
-            if(done) break;
-        }
-    }
-
-
-
-private:
-    YOCTO_DISABLE_COPY_AND_ASSIGN(Generator);
-};
-
-
-YOCTO_PROGRAM_START()
-{
-    Lua::State::Pointer VM( new Lua::State() );
-    if(argc>1)
-    {
-        VM->DoFile(argv[1]);
-    }
-
-    System    sys(VM);
-    Generator gen;
-    Vector    Y(1);
-    ios::ocstream::overwrite("intg.dat");
-    for(double t=1;t<=100;t+=1)
-    {
-        std::cerr << "t=" << t << std::endl;
-        gen.compute(Y,t,sys.diffeq);
-        {
-            ios::acstream fp("intg.dat");
-            fp("%.15g", log(t));
-            fp(" %.15g", Y[1]);
-            fp("\n");
-        }
-    }
-}
-YOCTO_PROGRAM_END()
-
-
-
-
-#if 0
 //static const double rho_s = 12.0192;
 static const double omp_max = 0.001;
 
@@ -514,5 +397,4 @@ YOCTO_PROGRAM_START()
 
 }
 YOCTO_PROGRAM_END()
-#endif
 

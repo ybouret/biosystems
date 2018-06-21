@@ -8,6 +8,7 @@
 #include "yocto/lua/lua-funcs.hpp"
 #include "yocto/lua/lua-state.hpp"
 #include "yocto/math/ode/explicit/driver-ck.hpp"
+#include "yocto/math/fit/fit.hpp"
 
 using namespace yocto;
 using namespace math;
@@ -17,14 +18,24 @@ typedef array<double>  Array;
 
 typedef ode::driverCK<double>::type  Solver;
 typedef ode::Field<double>::Equation DiffEq;
+typedef Fit::Type<double>::Function  FitFunction;
+typedef Fit::Variables               Variables;
+
+#define NVAR 3
+static const size_t IA = 1;
+static const size_t I6 = 2;
+static const size_t I7 = 3;
 
 class System
 {
 public:
-    static const size_t IA = 1;
+
     Lua::Function<double> h;
     double                gamma;
     double                eta;
+    double                mu;
+    double                lambda;
+    double                Theta;
     double                k7;
     DiffEq                diffeq;
 
@@ -32,22 +43,31 @@ public:
     {
     }
 
-    explicit System( const Lua::State::Pointer &vm ) :
+#define __LUA_GET(NAME) NAME( vm->Get<double>(#NAME) )
+    explicit System( Lua::State::Pointer &vm ) :
     h(vm,"h"),
-    gamma( 0.1 / h(0) ),
-    eta( 1.0 ),
-    k7(0.1),
+    __LUA_GET(gamma),
+    __LUA_GET(eta),
+    __LUA_GET(mu),
+    __LUA_GET(lambda),
+    __LUA_GET(Theta),
+    __LUA_GET(k7),
     diffeq(this,&System::compute)
     {
-
     }
 
     void compute( Array &dYdt, double t, const Array &Y )
     {
         const double alpha   = Y[IA];
-        const double scaling = gamma * h(t);
+        {
+            const double scaling = gamma * h(t);
+            dYdt[IA] = k7 * (scaling - (scaling+eta) * alpha );
+        }
+        const double Beta = Theta + mu*h(t)*(1.0-alpha);
 
-        dYdt[IA] = k7 * (scaling - (scaling+eta) * alpha );
+        dYdt[I7] =          k7 * ( Beta - Y[I7] );
+        dYdt[I6] = lambda * k7 * ( Beta - Y[I6] );
+
     }
 
 private:
@@ -66,12 +86,12 @@ public:
     explicit Generator() :
     odeint(1e-4)
     {
-        odeint.start(1);
+        odeint.start(NVAR);
     }
 
     void compute( Array &Y, const double t, DiffEq &diffeq )
     {
-        static const double dt_max = 0.1;
+        static const double dt_max = 0.5;
         double h       = dt_max;
         tao::ld(Y,0);
         //odeint( diffeq, Y, 0, t, h, NULL);
@@ -93,10 +113,39 @@ public:
         }
     }
 
+private:
+    YOCTO_DISABLE_COPY_AND_ASSIGN(Generator);
+};
+
+class DeltaLi
+{
+public:
+    System    sys;
+    Generator gen;
+    Vector    Y;
+
+    explicit DeltaLi( Lua::State::Pointer &vm ) :
+    sys(vm),
+    gen(),
+    Y(NVAR)
+    {
+
+    }
+
+    virtual ~DeltaLi() throw() {}
+
+    double compute( const double t, const Array &aorg, const Variables &vars )
+    {
+        const double d7out = vars(aorg,"d7out");
+        gen.compute(Y,t,sys.diffeq);
+
+        return 1000.0 * ( (1.0+1e-3*d7out) * Y[I7]/Y[I6] - 1.0 );
+    }
+
 
 
 private:
-    YOCTO_DISABLE_COPY_AND_ASSIGN(Generator);
+    YOCTO_DISABLE_COPY_AND_ASSIGN(DeltaLi);
 };
 
 
@@ -108,18 +157,33 @@ YOCTO_PROGRAM_START()
         VM->DoFile(argv[1]);
     }
 
-    System    sys(VM);
-    Generator gen;
-    Vector    Y(1);
+    DeltaLi   dfn(VM);
+    Variables vars;
+    vars << "d7out";
+    const size_t nfit = vars.size();
+    Vector aorg(nfit);
+
+    double &d7out = vars(aorg,"d7out");
+
+    d7out = 14.98;
+
+    FitFunction F( &dfn, & DeltaLi::compute);
+
     ios::ocstream::overwrite("intg.dat");
-    for(double t=1;t<=100;t+=1)
+    for(double lt=0;lt<=8.2;lt+=0.1)
     {
+        const double t = exp(lt);
         std::cerr << "t=" << t << std::endl;
-        gen.compute(Y,t,sys.diffeq);
+        const double d7 = F(t,aorg,vars);
         {
             ios::acstream fp("intg.dat");
-            fp("%.15g", log(t));
-            fp(" %.15g", Y[1]);
+            fp("%.15g", lt);
+            fp(" %.15g",dfn.Y[IA]);
+            fp(" %.15g",d7);
+            fp(" %.15g",dfn.Y[I6]);
+            fp(" %.15g",dfn.Y[I7]);
+            fp(" %.15g",d7);
+
             fp("\n");
         }
     }

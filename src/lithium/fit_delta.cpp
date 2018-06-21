@@ -170,7 +170,7 @@ YOCTO_PROGRAM_START()
     FitFunction F( &dfn, & DeltaLi::compute);
 
     ios::ocstream::overwrite("intg.dat");
-    for(double lt=0;lt<=8.2;lt+=0.1)
+    for(double lt=1.5;lt<=8.2;lt+=0.1)
     {
         const double t = exp(lt);
         std::cerr << "t=" << t << std::endl;

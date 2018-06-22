@@ -38,6 +38,7 @@ public:
     double                Theta;
     double                k7;
     DiffEq                diffeq;
+    const double          h0;
 
     virtual ~System() throw()
     {
@@ -52,18 +53,20 @@ public:
     __LUA_GET(lambda),
     __LUA_GET(Theta),
     __LUA_GET(k7),
-    diffeq(this,&System::compute)
+    diffeq(this,&System::compute),
+    h0( h(0) )
     {
     }
 
     void compute( Array &dYdt, double t, const Array &Y )
     {
         const double alpha   = Y[IA];
+        const double hh      = h(t)/h0;
         {
-            const double scaling = gamma * h(t);
+            const double scaling = gamma * hh;
             dYdt[IA] = k7 * (scaling - (scaling+eta) * alpha );
         }
-        const double Beta = Theta + mu*h(t)*(1.0-alpha);
+        const double Beta = Theta + mu*hh*(1.0-alpha);
 
         dYdt[I7] =          k7 * ( Beta - Y[I7] );
         dYdt[I6] = lambda * k7 * ( Beta - Y[I6] );

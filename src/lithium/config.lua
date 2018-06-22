@@ -9,9 +9,9 @@ end
 
 end
 
-gamma  = 100/h(0);
+gamma  = 100;
 eta    = 1;
 Theta  = 4.7;
-mu     = 10/h(0);
+mu     = 10.0;
 lambda = 1.0139;
 k7     = 0.003;

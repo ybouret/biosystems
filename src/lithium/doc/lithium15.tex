@@ -1,0 +1,85 @@
+\documentclass[aps,onecolumn,12pt]{revtex4}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{xfrac}
+\usepackage{xcolor}
+\usepackage{bookman}
+\usepackage{dsfont}
+\usepackage{mathptmx}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+
+\newcommand{\spLi}[1]{{~^{\mychem{#1}}\mychem{Li}}}
+\newcommand{\Li}[1]{\myconc{\spLi{#1}}}
+
+\newcommand{\spEout}{\mychem{E}}
+\newcommand{\Eout}{\myconc{\spEout}}
+
+\newcommand{\spLiEin}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{in}}}
+\newcommand{\LiEin}[1]{\myconc{\spLiEin{#1}}}
+
+\newcommand{\spLiE}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace}
+\newcommand{\LiE}[1]{\myconc{\spLiE{#1}}}
+
+
+\newcommand{\spLiEout}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{out}}}
+\newcommand{\LiEout}[1]{\myconc{\spLiEout{#1}}}
+
+\newcommand{\spLiIn}[1]{{\spLi{#1}}_{\mathrm{in}}}
+\newcommand{\LiIn}[1]{\myconc{\spLiIn{#1}}}
+
+\newcommand{\spLiOut}[1]{{\spLi{#1}}_{\mathrm{out}}}
+\newcommand{\LiOut}[1]{\myconc{\spLiOut{#1}}}
+
+\newcommand{\spEHin}{\mychem{EH}}
+\newcommand{\EHin}{\myconc{\spEHin}}
+\newcommand{\spproton}{\mychem{H}}
+\newcommand{\proton}{\myconc{\spproton}}
+
+\newcommand{\mytrn}[1]{{#1}^{\!\mathsf{T}}}
+\newcommand{\mymat}[1]{{\bm{#1}}}
+\newcommand{\mydet}[1]{{\left|{#1}\right|}}
+
+\newcommand{\ratioLi}{ {\left(\dfrac{\Li{7}}{\Li{6}}\right)} }
+\newcommand{\deltaLi}{ {\delta\!\!\!\spLi{7}} }
+\newcommand{\deltaLiOut}{{\deltaLi}_{\mathrm{out}}}
+\begin{document}
+
+\section{Isotopic Separation}
+$$
+	\deltaLi = \left(
+		\dfrac{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample}}
+		{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard}}
+		 -1 
+	\right) \times 1000
+$$
+
+$$
+	\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample} = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} \left[1+10^{-3}\deltaLi\right] = \rho_s \left[1+10^{-3}\deltaLi\right]
+$$
+
+
+\section{Proposed Mechanism}
+
+\begin{equation}
+	 \spLiOut{x} +  \spEout  
+	 \xrightleftharpoons[k_x^d]{k_x^a} 
+	 \spLiE{x}
+	  \xrightleftharpoons[k_x^q]{\mychem{+H},\;k_x^p} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightleftharpoons[]{k_x^l} \spLiOut{x}}
+\end{equation}
+
+\section{Scheme}
+
+\subsection{Hypothesis}
+\begin{itemize}
+\item $\proton$ is a  user's function $h(t)$.
+\item $\LiOut{6}$ and  $\LiOut{7}$ are parameters.
+%\item Variables noted with a '$\tilde{~}$' are dependent on those "parametric" concentrations
+\end{itemize}
+
+
+\end{document}

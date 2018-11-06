@@ -6,5 +6,5 @@ SET(MEDIUM_SRCS ${MEDIUM_PATH}/medium.h ${MEDIUM_PATH}/medium.cpp)
 INCLUDE_DIRECTORIES(${MEDIUM_PATH})
 
 ADD_EXECUTABLE(test-medium test-medium.cpp ${MEDIUM_SRCS})
-TARGET_LINK_YOCTO(test-medium)
+TARGET_LINK_Y(test-medium)
 INSTALL( TARGETS test-medium RUNTIME DESTINATION bin )

@@ -1,19 +1,19 @@
 #define MEDIUM_TEST 1
 #include "medium.h"
-#include "yocto/program.hpp"
-#include "yocto/code/alea.hpp"
-#include "yocto/ios/ocstream.hpp"
+#include "y/program.hpp"
+#include "y/alea.hpp"
+#include "y/ios/ocstream.hpp"
 
-using namespace yocto;
+using namespace upsylon;
 
 typedef Medium::NodeOf<int>  Node;
 typedef Medium::ListOf<Node> List;
 typedef Medium::PoolOf<Node> Pool;
 
 #define NN 1000
-YOCTO_PROGRAM_START()
+Y_PROGRAM_START()
 {
-    alea.initialize();
+    alea_init();
 
     List l;
     Pool p;
@@ -25,7 +25,7 @@ YOCTO_PROGRAM_START()
 
     while(p.size>0)
     {
-        if( alea.nextBool() )
+        if( alea.choice() )
         {
             l.push_back( p.query() );
         }
@@ -37,18 +37,18 @@ YOCTO_PROGRAM_START()
 
     while(l.size>0)
     {
-        if( alea.nextBool() ) delete l.pop_front(); else delete l.pop_back();
+        if( alea.choice() ) delete l.pop_front(); else delete l.pop_back();
     }
 
     Medium medium;
 
-    ios::wcstream fp("waves.dat");
+    ios::ocstream fp("waves.dat");
     const double period=10;
     for(double x=-2*period;x<=2*period;x+=0.01)
     {
         fp("%g %g %g\n",x,Medium::TriangleWave(x,period),Medium::CosWave(x,period));
     }
 }
-YOCTO_PROGRAM_END()
+Y_PROGRAM_END()
 
 

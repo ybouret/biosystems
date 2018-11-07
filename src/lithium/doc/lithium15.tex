@@ -223,21 +223,24 @@ and we get
 	v_h & = & k_h E_0 \alpha \\
 	q_x & = & k_x^q E_0 \alpha \Li{x}  \\
 	l_x & = & k_x \left(\Li{x} - \tilde{\Theta}_x\right)\\
-	p_x & = & k_x^p E_0 \proton \dfrac{\tilde{J}_x}{\tilde{D}}(1-\alpha) \\
+	p_x & = & \underbrace{k_x^p  \dfrac{\tilde{J}_x}{\tilde{D}}}_{\Upsilon_x} E_0 \proton(1-\alpha) \\
+	\Upsilon_0 & = & \Upsilon_6 + \Upsilon_7 \text{ in M$^{-1}$.s$^{-1}$} \\
 	\end{array}
 \right.
 \end{equation}
 
-We define the set of reduced constants
-\begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	\omega_x & = &  k_x^p \proton \dfrac{J_x}{\tilde{D}}\LiOut{x}\\
-	\omega_0 & = & \omega_6 + \omega_7\\
-	p_x & = & \omega_x E_0 \left(1-\alpha\right)\\
-	\end{array}
-\right.
-\end{equation}
+
+%We define the set of reduced constants
+%\begin{equation}
+%\left\lbrace
+%	\begin{array}{rcl}
+%	\omega_x & = &  k_x^p \proton \dfrac{J_x}{\tilde{D}}\LiOut{x}\\
+%	\omega_0 & = & \omega_6 + \omega_7\\
+%	p_x & = & \omega_x E_0 \left(1-\alpha\right)\\
+%	\end{array}
+%\right.
+%\end{equation}
+%
 
 
 then
@@ -245,10 +248,10 @@ then
 \boxed{
 \left\lbrace
 	\begin{array}{rcl}
-		\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0+{\sum_x k_x^q \Li{x}} \right\rbrack\\
-		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\omega_x E_0\right\rbrack
+		\partial_t\alpha    & = & \Upsilon_0 h - \alpha\left\lbrack k_h+\Upsilon_0 h +{\sum_x k_x^q \Li{x}} \right\rbrack\\
+		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\Upsilon_0 h  E_0\right\rbrack
 		-\left\lbrack
-			\omega_x E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
+			\Upsilon_0 h  E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
 		\right\rbrack\\
 	\end{array}
 \right.

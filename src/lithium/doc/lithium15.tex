@@ -69,7 +69,7 @@ $$
 	 \spLiOut{x} +  \spEout  
 	 \xrightleftharpoons[k_x^d]{k_x^a} 
 	 \spLiE{x}
-	  \xrightleftharpoons[k_x^q]{\mychem{+H},\;k_x^p} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightleftharpoons[]{k_x^l} \spLiOut{x}}
+	  \xrightleftharpoons[k_x^q]{\mychem{+H},\;k_x^p} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightleftharpoons[]{k_x} \spLiOut{x}}
 \end{equation}
 
 \section{Scheme}
@@ -78,8 +78,182 @@ $$
 \begin{itemize}
 \item $\proton$ is a  user's function $h(t)$.
 \item $\LiOut{6}$ and  $\LiOut{7}$ are parameters.
-%\item Variables noted with a '$\tilde{~}$' are dependent on those "parametric" concentrations
 \end{itemize}
+
+\subsection{Kinetics}
+We have the phase space described by
+\begin{equation}
+ \vec{X} = 
+        \begin{pmatrix}
+        \Eout\\
+        \EHin\\
+        \LiE{6}\\
+        \LiIn{6}\\
+        \LiE{7}\\
+        \LiIn{7}\\
+        \end{pmatrix}
+\end{equation}
+
+At any time, we  have
+\begin{equation} 
+	\label{eq:E0}
+	E_0 = \Eout + \EHin +  \LiE{6} + \LiE{7}
+\end{equation}
+
+\subsection{Secondary Hypothesis}
+We consider that we have the two equations
+\begin{equation}
+%\left\lbrace
+	\begin{array}{rcll}
+	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiE{x}, & J_x = \dfrac{\LiE{x}}{\LiOut{x} \Eout} = \dfrac{k_x^a}{k_x^d}\\
+	 \end{array}
+\end{equation}
+leading to a constraint vector $\vec{\Gamma}$
+with 
+\begin{equation}
+	\tilde{J}_x = J_x \LiOut{x}
+\end{equation}
+
+\begin{equation}
+\vec{\Gamma} = 
+\begin{pmatrix}
+	\tilde{J}_6 \Eout - \LiE{6} \\
+	\tilde{J}_7 \Eout - \LiE{7} \\
+\end{pmatrix}
+\end{equation}
+which already simplifies the matter conservation \eqref{eq:E0} into
+\begin{equation}
+	E_0 = \EHin + \Eout \left(1+\tilde{J}_6+\tilde{J}_7\right).
+\end{equation}
+And we have the topology for the two equations as
+\begin{equation}
+	\label{eq:Nu}
+	\mymat{\nu}=\begin{pmatrix}-1 & 0 & 1 & 0 & 0 & 0\cr -1 & 0 & 0 & 0 & 1 & 0\end{pmatrix}
+\end{equation}
+and
+\begin{equation}
+	\partial_{\vec{X}}\vec{\Gamma} = 
+	\begin{pmatrix}\tilde{J}_6 & 0 & -1 & 0 & 0 & 0\cr\tilde{J}_7 & 0 & 0 & 0 & -1 & 0\end{pmatrix}
+\end{equation}
+
+\subsection{Rates}
+
+The "slow" rate vector is
+\begin{equation}
+	\partial_t\vec{X}_{slow} = 
+	\begin{pmatrix}
+		v_h\\
+		p_6-q_6+p_7-q_7-v_h\\
+		q_6-p_6\\
+		p_6-l_6-q_6\\
+		q_7-p_7\\
+		p_7-l_7-q_7\\
+	\end{pmatrix}
+	,\;\;\text{ with }
+	\left\lbrace
+	\begin{array}{rcll}
+	v_h & = & k_h \EHin & \text{(recycling)}\\
+	p_x & = & k_x^p \proton \LiE{x} & \text{(forward transfer)}\\
+	q_x & = & k_x^q \EHin \LiIn{x} & \text{(reverse transfer)} \\
+	l_x & = & k_x  \left(\LiIn{x}-\tilde{\Theta}_x\right) & \text{(leak)}\\
+	\end{array}
+	\right.
+\end{equation}
+with (Goldman-Hodgkins-Katz)
+\begin{equation}
+	\tilde{\Theta}_x = \Theta \LiOut{x}
+\end{equation}
+
+\subsection{Semi-Stationary Equations}
+We define
+\begin{equation}
+	\mymat{W} = \mymat{\Phi}\mytrn{\mymat{\nu}} = \begin{pmatrix} -\tilde{J}_6-1 & -\tilde{J}_6 \cr -\tilde{J}_7 & -\tilde{J}_7-1\end{pmatrix}
+	,\;\mymat{W}^\ast = \begin{pmatrix} -\tilde{J}_6-1 & \tilde{J}_7 \cr \tilde{J}_6 & -\tilde{J}_7-1\end{pmatrix}
+	,\;\; \tilde{D} =\det(\mymat{W})=1+\tilde{J}_6+\tilde{J}_7.
+\end{equation}
+and
+\begin{equation}
+	\mymat{\chi} = \tilde{D}\mathds{1}_6-\mytrn{\mymat{\nu}}\mymat{W}^\ast\mymat{\Phi}
+\end{equation}
+
+\begin{equation}
+	\partial_t\vec{X} = \dfrac{1}{\tilde{D}}
+	\mymat{\chi} \partial_t\vec{X}_{slow}
+\end{equation}
+and we find
+\begin{equation}
+	\vec{Y} = \begin{pmatrix} \EHin \cr \LiIn{6} \cr \LiIn{7} \end{pmatrix}
+	,\;\partial_t \vec{Y} = 
+	\begin{pmatrix}
+	p_6-q_6+p_7-q_7-v_h\\
+	p_6-q_6-l_6\\
+	p_7-q_7-l_7
+	\end{pmatrix}
+\end{equation}
+with the expressions
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	v_h & = & k_h \EHin \\
+	q_x & = & k_x^q \EHin \Li{x}  \\
+	l_x & = & k_x  \left(\Li{x}- \tilde{\Theta}_x\right)\\
+	p_x & = & k_x^p \proton \LiE{x}\\
+	\end{array}
+\right.
+\end{equation}
+with
+\begin{equation}
+	\LiE{x} = \tilde{J}_x \Eout,\;\;\Eout=\dfrac{E_0-\EHin}{\tilde{D}}
+\end{equation}
+so that
+\begin{equation}
+	p_x = k_x^p \proton  \tilde{J}_x \dfrac{E_0-\EHin}{\tilde{D}}
+\end{equation}
+We now use
+\begin{equation}
+	\begin{array}{rcl}
+	\alpha    & = &\dfrac{\EHin}{E_0}\\
+	%\lambda_x & = & \LiIn{x}\\
+	\end{array}
+\end{equation}
+and we get
+\begin{equation}
+	\left\lbrace
+	\begin{array}{rcl}
+	v_h & = & k_h E_0 \alpha \\
+	q_x & = & k_x^q E_0 \alpha \Li{x}  \\
+	l_x & = & k_x \left(\Li{x} - \tilde{\Theta}_x\right)\\
+	p_x & = & k_x^p E_0 \proton \dfrac{\tilde{J}_x}{\tilde{D}}(1-\alpha) \\
+	\end{array}
+\right.
+\end{equation}
+
+We define the set of reduced constants
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\omega_x & = &  k_x^p \proton \dfrac{J_x}{\tilde{D}}\LiOut{x}\\
+	\omega_0 & = & \omega_6 + \omega_7\\
+	p_x & = & \omega_x E_0 \left(1-\alpha\right)\\
+	\end{array}
+\right.
+\end{equation}
+
+
+then
+\begin{equation}
+\boxed{
+\left\lbrace
+	\begin{array}{rcl}
+		\partial_t\alpha    & = & \omega_0 - \alpha\left\lbrack k_h+\omega_0+{\sum_x k_x^q \Li{x}} \right\rbrack\\
+		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\omega_x E_0\right\rbrack
+		-\left\lbrack
+			\omega_x E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
+		\right\rbrack\\
+	\end{array}
+\right.
+}
+\end{equation}
 
 
 \end{document}

@@ -224,7 +224,7 @@ and we get
 	q_x & = & k_x^q E_0 \alpha \Li{x}  \\
 	l_x & = & k_x \left(\Li{x} - \tilde{\Theta}_x\right)\\
 	p_x & = & \underbrace{k_x^p  \dfrac{\tilde{J}_x}{\tilde{D}}}_{\Upsilon_x} E_0 \proton(1-\alpha) \\
-	\Upsilon_0 & = & \Upsilon_6 + \Upsilon_7 \text{ in M$^{-1}$.s$^{-1}$} \\
+	\Upsilon_0 & = & \Upsilon_6 + \Upsilon_7 \;\;\left(\text{ in M$^{-1}$.s$^{-1}$}\right) \\
 	\end{array}
 \right.
 \end{equation}
@@ -243,7 +243,7 @@ and we get
 %
 
 
-then
+then we get the \underline{three} coupled equations
 \begin{equation}
 \boxed{
 \left\lbrace
@@ -257,6 +257,43 @@ then
 \right.
 }
 \end{equation}
+
+\subsection{Looking for steady-state}
+\subsubsection{Constraints}
+\begin{equation}
+	\Li{x}_\infty = \dfrac{\left\lbrack k_x\tilde{\Theta}_x+\Upsilon_0 h_\infty E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_x+ k_x^q E_0\alpha_\infty}
+\end{equation}
+Since experimentally, there exist ${\beta}$ (observed) and $\Theta$ (GHK) such that
+\begin{equation}
+	\Li{x}_\infty=\beta\LiOut{x},\;\tilde{\Theta}_x = \Theta \LiOut{x}
+\end{equation}
+we obtain that
+\begin{equation}
+		\beta = \dfrac{k_x\Theta + k_x^p h_\infty {J_x} E_0 (1-\alpha_\infty)/\tilde{D}}{k_x+ k_q^x E_0\alpha_\infty}
+\end{equation}
+\textit{which must be the same for both species!}
+
+We have
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcll}
+	k_x^q    & = & \bar{q}\,k_x,  &  \bar{q}\text{ inverse of concentration}\\
+	k_x^pJ_x & = & \bar{p}^2\,k_x, & \bar{p}\text{ inverse of concentration}\\
+	\end{array}
+\right.
+\end{equation}
+leading to
+\begin{equation}
+	\beta = \dfrac{\Theta+\dfrac{\bar{p}^2 h_\infty E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(1-\alpha_\infty\right)}{1+\bar{q}E_0\alpha_\infty}
+\end{equation}
+which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake and reduced by NHE output.
+
+\centerline{\bf This has some meaning: leak modulated isotopic separation!!!}
+
+\subsubsection{Expression}
+OK, I computed them, $\alpha_\infty$ is $\alpha_0$ with a slight decrease if $\bar{q}$ increases...
+For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is necessary
+
 
 
 \end{document}

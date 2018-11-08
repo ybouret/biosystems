@@ -47,6 +47,8 @@
 \newcommand{\ratioLi}{ {\left(\dfrac{\Li{7}}{\Li{6}}\right)} }
 \newcommand{\deltaLi}{ {\delta\!\!\!\spLi{7}} }
 \newcommand{\deltaLiOut}{{\deltaLi}_{\mathrm{out}}}
+\newcommand{\ih}{\ensuremath{\mathbf{H}}}
+
 \begin{document}
 
 \section{Isotopic Separation}
@@ -78,6 +80,7 @@ $$
 \begin{itemize}
 \item $\proton$ is a  user's function $h(t)$.
 \item $\LiOut{6}$ and  $\LiOut{7}$ are parameters.
+\item $k_h$ is constant during the whole experiments for NHE is in its saturated mode for the full range of pH
 \end{itemize}
 
 \subsection{Kinetics}
@@ -249,9 +252,9 @@ then we get the \underline{three} coupled equations
 \left\lbrace
 	\begin{array}{rcl}
 		\partial_t\alpha    & = & \Upsilon_0 h - \alpha\left\lbrack k_h+\Upsilon_0 h +{\sum_x k_x^q \Li{x}} \right\rbrack\\
-		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\Upsilon_0 h  E_0\right\rbrack
+		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\Upsilon_x h  E_0\right\rbrack
 		-\left\lbrack
-			\Upsilon_0 h  E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
+			\Upsilon_x h  E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
 		\right\rbrack\\
 	\end{array}
 \right.
@@ -261,7 +264,7 @@ then we get the \underline{three} coupled equations
 \subsection{Looking for steady-state}
 \subsubsection{Constraints}
 \begin{equation}
-	\Li{x}_\infty = \dfrac{\left\lbrack k_x\tilde{\Theta}_x+\Upsilon_0 h_\infty E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_x+ k_x^q E_0\alpha_\infty}
+	\Li{x}_\infty = \dfrac{\left\lbrack k_x\tilde{\Theta}_x+\Upsilon_x h_\infty E_0 \left(1-\alpha_\infty\right)\right\rbrack}{k_x+ k_x^q E_0\alpha_\infty}
 \end{equation}
 Since experimentally, there exist ${\beta}$ (observed) and $\Theta$ (GHK) such that
 \begin{equation}
@@ -284,6 +287,7 @@ We have
 \end{equation}
 leading to
 \begin{equation}
+	\label{steady_beta}
 	\beta = \dfrac{\Theta+\dfrac{\bar{p}^2 h_\infty E_0}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(1-\alpha_\infty\right)}{1+\bar{q}E_0\alpha_\infty}
 \end{equation}
 which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake and reduced by NHE output.
@@ -294,6 +298,53 @@ which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake
 OK, I computed them, $\alpha_\infty$ is $\alpha_0$ with a slight decrease if $\bar{q}$ increases...
 For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is necessary
 
+\section{First Order Resolution}
 
+\subsection{First Order Equations}
+
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \alpha & = & \Upsilon_0 h - \alpha\left\lbrack k_h+\Upsilon_0 h  \right\rbrack\\
+\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\Upsilon_x h  E_0\right\rbrack
+		-\left\lbrack
+			\Upsilon_x h  E_0\alpha +  k_x\Li{x}  %\left(k_x + k_x^q E_0\alpha\right)
+		\right\rbrack\\
+\end{array}
+\right.
+\end{equation}
+
+and using 
+\begin{equation}
+	\beta_x = \dfrac{\Li{x}}{\LiOut{x}}
+\end{equation}
+we get
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \alpha & = & \Upsilon_0 h - \alpha\left\lbrack k_h+\Upsilon_0 h  \right\rbrack\\
+\partial_t\beta_x & = & k_x \left\lbrack
+{\Theta + \underbrace{\dfrac{\bar{p}^2}{\tilde{D}}}_{\kappa} h E_0  \left(1-\alpha\right)}
+- \beta_x
+\right\rbrack \\
+\end{array}
+\right.
+\end{equation}
+and we reckon from \eqref{steady_beta} and the first order assumption
+\begin{equation}
+	\Theta + \kappa h_\infty E_0  \left(1-\alpha_\infty\right) = \beta 
+\end{equation}
+
+\subsection{First Order Approximation}
+
+\subsection{Looking for $\alpha$}
+We define
+\begin{equation}
+	\ih = \int_0^t h(u)\,\mathrm{d}u
+\end{equation}
+and we formally got
+\begin{equation}
+	\alpha(t) = \exp\left[ -\left( k_h t + \Upsilon_0 \ih(t)  \right) \right] \int_0^t \Upsilon_0 h(u) \exp\left[  k_h u + \Upsilon_0 \ih(u)   \right] \, \mathrm{d}u
+\end{equation}
 
 \end{document}

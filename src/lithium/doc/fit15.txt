@@ -1,0 +1,4 @@
+
+Grow(tau) = 1-exp(-tau)
+Bump(sigma,tau) = ( exp(-sigma*tau)-exp(-tau) )/(1-sigma);
+

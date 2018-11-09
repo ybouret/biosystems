@@ -48,6 +48,7 @@
 \newcommand{\deltaLi}{ {\delta\!\!\!\spLi{7}} }
 \newcommand{\deltaLiOut}{{\deltaLi}_{\mathrm{out}}}
 \newcommand{\ih}{\ensuremath{\mathbf{H}}}
+\newcommand{\ig}{\ensuremath{\mathbf{G}}}
 
 \begin{document}
 
@@ -335,16 +336,61 @@ and we reckon from \eqref{steady_beta} and the first order assumption
 	\Theta + \kappa h_\infty E_0  \left(1-\alpha_\infty\right) = \beta 
 \end{equation}
 
-\subsection{First Order Approximation}
+\subsection{First Order Solving}
 
-\subsection{Looking for $\alpha$}
-We define
+We make a change in equation by defining
 \begin{equation}
-	\ih = \int_0^t h(u)\,\mathrm{d}u
+	\hat{\alpha} = 1-\alpha
 \end{equation}
-and we formally got
+Leading to
 \begin{equation}
-	\alpha(t) = \exp\left[ -\left( k_h t + \Upsilon_0 \ih(t)  \right) \right] \int_0^t \Upsilon_0 h(u) \exp\left[  k_h u + \Upsilon_0 \ih(u)   \right] \, \mathrm{d}u
+\displaystyle
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \hat\alpha + \left\lbrack k_h+\Upsilon_0 h  \right\rbrack \hat{\alpha} & = & k_h\\
+\partial_t \beta_x + k_x \beta_x & = & k_x \kappa E_0 h \hat\alpha \\
+\end{array}
+\right.
 \end{equation}
+
+We also define
+\begin{equation}
+%\displaystyle
+\left\lbrace
+\begin{array}{rcl}
+g(t) & = & k_h + \Upsilon_0 h(t) \\
+\\
+\ih  & = & \displaystyle \int_0^t h(u) \, \mathrm{d}u\\
+\\
+\ig  & = &  \displaystyle \int_0^t g(u) \, \mathrm{d}u = k_h t + \ih(t)\\
+\end{array}
+\right.
+\end{equation}
+We find
+\begin{equation}
+	\hat\alpha = \left[ 1 + k_h \int_0^t e^{\ig(u)}\,\mathrm{d}u \right] e^{-\ig(t)}
+\end{equation}
+with
+\begin{equation}
+	\hat\alpha(0) = 1,\;\;\hat\alpha_\infty = \dfrac{k_h}{k_h+\Upsilon_0 h_\infty}
+\end{equation}
+and after that
+\begin{equation}
+\beta_x = k_x\left[\int_0^t \kappa E_0 h(t) \hat\alpha(t) e^{k_xu} \, \mathrm{d}u\right] e^{-k_xt}
+\end{equation}
+
+\subsection{First Order Short Times}
+
+
+
+%\subsection{Looking for $\alpha$}
+%We define
+%\begin{equation}
+%	\ih = \int_0^t h(u)\,\mathrm{d}u
+%\end{equation}
+%and we formally got
+%\begin{equation}
+%	\alpha(t) = \exp\left[ -\left( k_h t + \Upsilon_0 \ih(t)  \right) \right] \int_0^t \Upsilon_0 h(u) \exp\left[  k_h u + \Upsilon_0 \ih(u)   \right] \, \mathrm{d}u
+%\end{equation}
 
 \end{document}

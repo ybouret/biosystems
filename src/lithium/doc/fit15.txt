@@ -2,3 +2,14 @@
 Grow(tau) = 1-exp(-tau)
 Bump(sigma,tau) = ( exp(-sigma*tau)-exp(-tau) )/(1-sigma);
 
+num(tau,sigma,phi)     = Grow(tau) + phi * Bump(sigma,tau);
+den(tau,sigma,phi,lam) = Grow(lam*tau) + phi * Bump(sigma/lam,tau*lam);
+
+rho(tau,sigma,phi,lam) = num(tau,sigma,phi)/den(tau,sigma,phi,lam);
+
+
+getLam( _d7In,_d7Out) = (1.0+0.001*_d7Out)/(1.0+0.001*_d7In);
+
+deltaLi(tau,sigma,phi,d7In,d7Out) = 1000.0 * ( (1.0+0.001*d7Out) * rho(tau,sigma,phi,getLam(d7In,d7Out)) - 1.0 );
+
+plot [1:6] 'nhe1_delta7_full_15mM_37.txt' u (log($1)):2 w lp, deltaLi(0.005*exp(x),0.1,0,1.01,15)

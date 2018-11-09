@@ -433,7 +433,6 @@ Using
 \left\lbrace
 \begin{array}{rcl}
 	R(\tau) & = &1-e^{-\tau} \\
-	\omega_0 & = &\sigma_x k_x\\
 	 B(\sigma,\tau) & = & \dfrac{e^{-\sigma\tau}-e^{-\tau}}{1-\sigma} \;\;\;\; (B(1,\tau)=\tau e^{-\tau})\\
 	 \varphi        & = & \dfrac{\omega_0}{k_h} - 1 \\
 \end{array}
@@ -442,22 +441,22 @@ Using
 we get
 \begin{equation}
 	\beta_x(t) =  \dfrac{\kappa E_0 h_0 k_h}{\omega_0} \left[
-	R(k_xt) + \varphi B(\sigma_x,k_xt)
+	R(k_xt) + \varphi B(\omega_0/k_x,k_xt)
 	\right]
 \end{equation}
-So that
+We finally define
 \begin{equation}
-	\dfrac{\beta_7}{\beta_6} = \dfrac{ R(k_7t) + \varphi B(\sigma_7,k_7t) }{R(k_6t) + \varphi B(\sigma_6,k_6t)}
+\left\lbrace
+\begin{array}{rcl}
+	k_6 & = & \lambda k_7\\
+	\omega_0 & = & \sigma k_7 \\
+	\tau & = & k_7 t\\
+\end{array}
+\right.
 \end{equation}
-
-%\subsection{Looking for $\alpha$}
-%We define
-%\begin{equation}
-%	\ih = \int_0^t h(u)\,\mathrm{d}u
-%\end{equation}
-%and we formally got
-%\begin{equation}
-%	\alpha(t) = \exp\left[ -\left( k_h t + \Upsilon_0 \ih(t)  \right) \right] \int_0^t \Upsilon_0 h(u) \exp\left[  k_h u + \Upsilon_0 \ih(u)   \right] \, \mathrm{d}u
-%\end{equation}
+to express
+\begin{equation}
+		\dfrac{\beta_7}{\beta_6} = \dfrac{ R(\tau) + \varphi B(\sigma,\tau) }{R(\lambda \tau) + \varphi B(\frac{\sigma}{\lambda},\lambda \tau)} \simeq \dfrac{1}{\lambda} + \dfrac{1}{2} \left(1-\dfrac{1}{\lambda}\right) \tau + \ldots
+\end{equation}
 
 \end{document}

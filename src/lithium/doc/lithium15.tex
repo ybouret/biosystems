@@ -400,6 +400,55 @@ then
 \begin{equation}
 \hat\alpha_0(t) = \dfrac{1}{\omega_0}\left[ k_h + \left(\omega_0 - k_h\right) e^{-\omega_0t}\right]
 \end{equation}
+and
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\beta_x(t) & = & \displaystyle
+\dfrac{k_x \kappa E_0 h_0}{\omega_0}  e^{-k_xt}  \left(
+\int_0^t \left[ k_h e^{k_xu} + \left(\omega_0-k_h\right) e^{\left(k_x-\omega_0\right)u}\right] \, \mathrm{d} u\right) \\
+\\
+ & = & 
+ \displaystyle
+\dfrac{k_x \kappa E_0 h_0}{\omega_0}  e^{-k_xt}  \left(
+\dfrac{k_h}{k_x} \left[ e^{k_xt} -1 \right] + \left(\omega_0-k_h\right) \dfrac{ e^{\left(k_x-\omega_0\right)t}-1}{k_x-\omega_0}
+\right)
+ \\
+ \\
+  & = & \dfrac{\kappa E_0 h_0}{\omega_0} 
+  \left( 
+  k_h \left[1-e^{-k_xt}\right] 
+  + \left(\omega_0-k_h\right) k_x \dfrac{e^{-\omega_0t} - e^{-k_xt}}{k_x-\omega_0}
+  \right) \\
+  & = & 
+ \dfrac{\kappa E_0 h_0 k_h}{\omega_0} 
+  \left( 
+   \left[1-e^{-k_xt}\right] 
+  + \left(\dfrac{\omega_0}{k_h}-1\right) k_x \dfrac{e^{-\omega_0t} - e^{-k_xt}}{k_x-\omega_0}
+  \right) \\\end{array}
+\right.
+\end{equation}
+Using
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	R(\tau) & = &1-e^{-\tau} \\
+	\omega_0 & = &\sigma_x k_x\\
+	 B(\sigma,\tau) & = & \dfrac{e^{-\sigma\tau}-e^{-\tau}}{1-\sigma} \;\;\;\; (B(1,\tau)=\tau e^{-\tau})\\
+	 \varphi        & = & \dfrac{\omega_0}{k_h} - 1 \\
+\end{array}
+\right.
+\end{equation}
+we get
+\begin{equation}
+	\beta_x(t) =  \dfrac{\kappa E_0 h_0 k_h}{\omega_0} \left[
+	R(k_xt) + \varphi B(\sigma_x,k_xt)
+	\right]
+\end{equation}
+So that
+\begin{equation}
+	\dfrac{\beta_7}{\beta_6} = \dfrac{ R(k_7t) + \varphi B(\sigma_7,k_7t) }{R(k_6t) + \varphi B(\sigma_6,k_6t)}
+\end{equation}
 
 %\subsection{Looking for $\alpha$}
 %We define

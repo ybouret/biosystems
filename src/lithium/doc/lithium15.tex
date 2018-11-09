@@ -360,9 +360,9 @@ We also define
 \begin{array}{rcl}
 g(t) & = & k_h + \Upsilon_0 h(t) \\
 \\
-\ih  & = & \displaystyle \int_0^t h(u) \, \mathrm{d}u\\
+\ih  & = & \displaystyle \Upsilon_0\int_0^t h(u) \, \mathrm{d}u\\
 \\
-\ig  & = &  \displaystyle \int_0^t g(u) \, \mathrm{d}u = k_h t + \ih(t)\\
+\ig  & = &  \displaystyle \int_0^t g(u) \, \mathrm{d}u = k_h t +  \ih(t)\\
 \end{array}
 \right.
 \end{equation}
@@ -391,8 +391,15 @@ And we remind that
 \end{equation}
 
 \subsection{First Order Short Times}
-
-
+We assume that for a certain period of time, we have about $h(t)\simeq h_0$.
+Leading to
+\begin{equation}
+	\ig_0(t) = (k_h+\Upsilon_0h_0) t = \omega_0 t
+\end{equation}
+then
+\begin{equation}
+\hat\alpha_0(t) = \dfrac{1}{\omega_0}\left[ k_h + \left(\omega_0 - k_h\right) e^{-\omega_0t}\right]
+\end{equation}
 
 %\subsection{Looking for $\alpha$}
 %We define

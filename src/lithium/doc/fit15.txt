@@ -12,4 +12,6 @@ getLam( _d7In,_d7Out) = (1.0+0.001*_d7Out)/(1.0+0.001*_d7In);
 
 deltaLi(tau,sigma,phi,d7In,d7Out) = 1000.0 * ( (1.0+0.001*d7Out) * rho(tau,sigma,phi,getLam(d7In,d7Out)) - 1.0 );
 
-plot [1:6] 'nhe1_delta7_full_15mM_37.txt' u (log($1)):2 w lp, deltaLi(0.005*exp(x),0.1,0,1.01,15)
+k7=0.00342717
+sig=10.0;
+plot [1:6] 'nhe1_delta7_full_15mM_37.txt' u (log($1)):2 w lp, deltaLi(k7*exp(x),sig,0,1.01,15)

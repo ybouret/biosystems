@@ -295,9 +295,27 @@ which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake
 
 \centerline{\bf This has some meaning: leak modulated isotopic separation!!!}
 
+
 \subsubsection{Expression}
 OK, I computed them, $\alpha_\infty$ is $\alpha_0$ with a slight decrease if $\bar{q}$ increases...
 For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is necessary
+
+%\subsection{Unified rewrite}
+%\begin{equation}
+%\boxed{
+%\left\lbrace
+%	\begin{array}{rcl}
+%		\partial_t\alpha    & = & \Upsilon_0 h - \alpha\left\lbrack k_h+\Upsilon_0 h + \bar{q} {\sum_x k_x \Li{x}} \right\rbrack\\
+%		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\Upsilon_x h  E_0\right\rbrack
+%		-\left\lbrack
+%			\Upsilon_x h  E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
+%		\right\rbrack\\
+%	\end{array}
+%\right.
+%}
+%\end{equation}
+
+
 
 \section{First Order Resolution}
 
@@ -434,14 +452,14 @@ Using
 \begin{array}{rcl}
 	R(\tau) & = &1-e^{-\tau} \\
 	 B(\sigma,\tau) & = & \dfrac{e^{-\sigma\tau}-e^{-\tau}}{1-\sigma} \;\;\;\; (B(1,\tau)=\tau e^{-\tau})\\
-	 \varphi        & = & \dfrac{\omega_0}{k_h} - 1 \\
+	 %\varphi        & = & \dfrac{\omega_0}{k_h} - 1 \\
 \end{array}
 \right.
 \end{equation}
 we get
 \begin{equation}
 	\beta_x(t) =  \dfrac{\kappa E_0 h_0 k_h}{\omega_0} \left[
-	R(k_xt) + \varphi B(\omega_0/k_x,k_xt)
+	R(k_xt) + \left( \dfrac{\omega_0}{k_h} - 1 \right) B(\omega_0/k_x,k_xt)
 	\right]
 \end{equation}
 We finally define
@@ -451,12 +469,15 @@ We finally define
 	k_6 & = & \lambda k_7\\
 	\omega_0 & = & \sigma k_7 \\
 	\tau & = & k_7 t\\
+	\eta & = & \dfrac{k_7}{k_h} \\
 \end{array}
 \right.
 \end{equation}
 to express
 \begin{equation}
-		\dfrac{\beta_7}{\beta_6} = \dfrac{ R(\tau) + \varphi B(\sigma,\tau) }{R(\lambda \tau) + \varphi B(\frac{\sigma}{\lambda},\lambda \tau)} \simeq \dfrac{1}{\lambda} + \dfrac{1}{2} \left(1-\dfrac{1}{\lambda}\right) \tau + \ldots
+		\dfrac{\beta_7}{\beta_6}
+		 = \dfrac{ R(\tau) + \left(\sigma\eta-1\right) B(\sigma,\tau) }{R(\lambda \tau) + \left(\sigma\eta-1\right) B(\frac{\sigma}{\lambda},\lambda \tau)}
+\simeq \dfrac{1}{\lambda} + \dfrac{1}{2} \left(1-\dfrac{1}{\lambda}\right) \tau + \ldots
 \end{equation}
 
 \end{document}

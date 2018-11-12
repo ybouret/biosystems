@@ -5,6 +5,9 @@
 #include "y/string/tokenizer.hpp"
 #include "y/ios/icstream.hpp"
 #include "y/ios/ocstream.hpp"
+#include "y/math/signal/linear.hpp"
+#include "y/math/utils.hpp"
+#include "y/core/locate.hpp"
 
 using namespace upsylon;
 using namespace math;
@@ -25,6 +28,7 @@ Y_PROGRAM_START()
         vector<double> t;
         vector<double> pH;
         vector<double> sem;
+        double pH_asymp = 0;
         {
             ios::icstream fp(filename);
             string line;
@@ -39,7 +43,7 @@ Y_PROGRAM_START()
             }
             std::cerr << "header=" << words << std::endl;
             if("#t"!=words[1]) throw exception("invalid first header field in '%s'", *filename);
-            const double pH_asymp = string_convert::to<double>(words[2],"pH");
+            pH_asymp = string_convert::to<double>(words[2],"pH");
             std::cerr << "|_pH_asymp=" << pH_asymp << std::endl;
             const double pH_asymp_sem = string_convert::to<double>(words[2],"pH");
             std::cerr << "|_  |_sem =" << pH_asymp_sem << std::endl;
@@ -53,12 +57,46 @@ Y_PROGRAM_START()
         size_t n = t.size();
         std::cerr << "#data="  << n << std::endl;
 
+        vector<double> Y(n);
+        //const double pH_max = __find<double>::max_of(pH);
+        const double pH_min = __find<double>::min_of(pH);
+        std::cerr << "min=" << pH_min << std::endl;
+        const double pH_mid = 0.5*(pH_min+pH_asymp);
+        vector<double> tz(4,as_capacity);
+        linear::zfind(tz, pH_mid, t, pH);
+        std::cerr << "tz=" << tz << std::endl;
+        if(tz.size()!=1)
+        {
+            throw exception("cannot find just 1 half-time for '%s'", *filename);
+        }
+        const double thalf = tz[1];
+        size_t       ihalf = 0;
+        (void)core::locate(thalf, *t, t.size(), comparison::increasing<double>, ihalf);
+        std::cerr << "ihalf=" << ihalf << std::endl;
+
+        {
+            double tmp = pH_mid;
+            for(size_t i=ihalf;i>0;--i)
+            {
+                Y[i] = (tmp=min_of( pH[i], tmp ));
+            }
+        }
+
+        {
+            double tmp = pH_mid;
+            for(size_t i=ihalf+1;i<=n;++i)
+            {
+                Y[i] = (tmp=max_of( pH[i], tmp ));
+            }
+        }
+
+
         {
             string outname = filename + ".dat";
             ios::ocstream fp(outname);
             for(size_t i=1;i<=n;++i)
             {
-                fp("%.15g %.15g %.15g\n", t[i], pH[i], sem[i] );
+                fp("%.15g %.15g %.15g %.15g\n", t[i], pH[i], Y[i], sem[i] );
             }
         }
 

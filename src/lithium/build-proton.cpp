@@ -100,6 +100,18 @@ Y_PROGRAM_START()
             }
         }
 
+        {
+            string outname = filename + ".sig";
+            ios::ocstream fp(outname);
+            for(size_t i=1;i<=n;++i)
+            {
+                if(t[i]>0)
+                {
+                    fp("%.15g %.15g\n", log(t[i]), (Y[i]-Y[1])/(pH_asymp-Y[1]) );
+                }
+            }
+        }
+
     }
 }
 Y_PROGRAM_END()

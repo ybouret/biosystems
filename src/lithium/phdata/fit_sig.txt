@@ -1,0 +1,33 @@
+sigmoid(x,lam,x0) = 1.0/(1.0+exp(-lam*(x-x0)));
+
+l3=2;
+x3=5;
+
+fit sigmoid(x,l3,x3) 'pH3mM.txt.sig' via l3,x3
+
+l10=2;
+x10=5;
+
+fit sigmoid(x,l10,x10) 'pH10mM.txt.sig' via l10,x10
+
+l30=2;
+x30=5;
+
+fit sigmoid(x,l30,x30) 'pH30mM.txt.sig' via l30,x30
+
+l60=2;
+x60=5;
+
+fit sigmoid(x,l60,x60) 'pH60mM.txt.sig' via l60,x60
+
+l90=2;
+x90=5;
+
+fit sigmoid(x,l90,x90) 'pH90mM.txt.sig' via l90,x90
+
+plot \
+'pH3mM.txt.sig' w lp, sigmoid(x,l3,x3),    \
+'pH10mM.txt.sig' w lp, sigmoid(x,l10,x10), \
+'pH30mM.txt.sig' w lp, sigmoid(x,l30,x30), \
+'pH60mM.txt.sig' w lp, sigmoid(x,l60,x60), \
+'pH90mM.txt.sig' w lp, sigmoid(x,l90,x90)

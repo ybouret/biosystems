@@ -248,19 +248,19 @@ and we get
 
 
 then we get the \underline{three} coupled equations
-\begin{equation}
-\boxed{
-\left\lbrace
-	\begin{array}{rcl}
-		\partial_t\alpha & = & \Upsilon_0 h - \alpha\left\lbrack k_h+\Upsilon_0 h +{\sum_x k_x^q \Li{x}} \right\rbrack\\
-		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\Upsilon_x h  E_0\right\rbrack
-		-\left\lbrack
-			\Upsilon_x h  E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
-		\right\rbrack\\
-	\end{array}
-\right.
-}
-\end{equation}
+%\begin{equation}
+%\boxed{
+%\left\lbrace
+%	\begin{array}{rcl}
+%		\partial_t\alpha & = & \Upsilon_0 h - \alpha\left\lbrack k_h+\Upsilon_0 h +{\sum_x k_x^q \Li{x}} \right\rbrack\\
+%		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\Upsilon_x h  E_0\right\rbrack
+%		-\left\lbrack
+%			\Upsilon_x h  E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
+%		\right\rbrack\\
+%	\end{array}
+%\right.
+%}
+%\end{equation}
 
 \begin{equation}
 \boxed{
@@ -309,15 +309,22 @@ which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake
 
 
 \subsubsection{Expression}
-OK, I computed them, $\alpha_\infty$ is $\alpha_0$ with a slight decrease if $\bar{q}$ increases...
-For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is necessary
+OK, I computed them, $\alpha_\infty$ is $\alpha_0$ with a slight decrease if $\bar{q}$ increases...\\
+For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is necessary ??
 
 \subsection{Unified rewrite}
+\begin{equation}
+	\Upsilon_x = \bar{p}^2 k_x \dfrac{\LiOut{x}}{\tilde{D}}
+\end{equation}
+
 \begin{equation}
 \boxed{
 \left\lbrace
 	\begin{array}{rcl}
-		\partial_t\alpha    & = & \Upsilon_0 h - \alpha\left\lbrack k_h+\Upsilon_0 h + \bar{q} {\sum_x k_x \Li{x}} \right\rbrack\\
+		\partial_t\alpha    & = & 
+		-k_h 
+		+ \left(1-\alpha\right) \left[ k_h + h \dfrac{\bar{p}^2}{\tilde{D}} \left(\sum_x k_x \LiOut{x}\right) \right]
+		- \alpha \bar{q} \left( {\sum_x k_x \Li{x}} \right)\\
 		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\Upsilon_x h  E_0\right\rbrack
 		-\left\lbrack
 			\Upsilon_x h  E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)

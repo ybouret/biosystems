@@ -325,10 +325,12 @@ For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is nec
 		-k_h 
 		+ \left(1-\alpha\right) \left[ k_h + h \dfrac{\bar{p}^2}{\tilde{D}} \left(\sum_x k_x \LiOut{x}\right) \right]
 		- \alpha \bar{q} \left( {\sum_x k_x \Li{x}} \right)\\
-		\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\Upsilon_x h  E_0\right\rbrack
-		-\left\lbrack
-			\Upsilon_x h  E_0\alpha +  \Li{x}  \left(k_x + k_x^q E_0\alpha\right)
-		\right\rbrack\\
+		\partial_t\Li{x} & = & k_x \left[
+		\left(\Theta \LiOut{x} - \Li{x} \right)
+		+ \left(1-\alpha\right) h E_0 \dfrac{\bar{p}^2}{\tilde{D}} \LiOut{x} 
+		+ \alpha E_0 \bar{q} \Li{x}
+		\right]
+		\\
 	\end{array}
 \right.
 }

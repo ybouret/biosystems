@@ -247,7 +247,7 @@ and we get
 %
 
 
-then we get the \underline{three} coupled equations
+then we get the \underline{three} coupled equations (TODO: not using $\Upsilon...$)
 %\begin{equation}
 %\boxed{
 %\left\lbrace
@@ -314,7 +314,10 @@ For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is nec
 
 \subsection{Unified rewrite}
 \begin{equation}
-	\Upsilon_x = \bar{p}^2 k_x \dfrac{\LiOut{x}}{\tilde{D}}
+\begin{array}{rcl}
+	%\Upsilon_x & = & \bar{p}^2 k_x \dfrac{\LiOut{x}}{\tilde{D}}\\
+	\beta_x    & = & \dfrac{\Li{x}}{\LiOut{x}}\\
+\end{array}
 \end{equation}
 
 \begin{equation}
@@ -325,10 +328,10 @@ For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is nec
 		-k_h 
 		+ \left(1-\alpha\right) \left[ k_h + h \dfrac{\bar{p}^2}{\tilde{D}} \left(\sum_x k_x \LiOut{x}\right) \right]
 		- \alpha \bar{q} \left( {\sum_x k_x \Li{x}} \right)\\
-		\partial_t\Li{x} & = & k_x \left[
-		\left(\Theta \LiOut{x} - \Li{x} \right)
-		+ \left(1-\alpha\right) h E_0 \dfrac{\bar{p}^2}{\tilde{D}} \LiOut{x} 
-		- \alpha E_0 \bar{q} \Li{x}
+		\partial_t\beta_x & = & k_x \left[
+		\left(\Theta  - \beta_x \right)
+		+ \left(1-\alpha\right) h E_0 \dfrac{\bar{p}^2}{\tilde{D}} 
+		- \alpha E_0 \bar{q} \beta_x
 		\right]
 		\\
 	\end{array}

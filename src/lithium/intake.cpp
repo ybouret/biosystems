@@ -23,11 +23,13 @@ public:
 
     double k6;
     double k7;
+    double kh;
     double Theta;
 
     inline Intake(const double _Theta) :
     k6(1.1e-2),
     k7(1e-2),
+    kh(0.7e-2),
     Theta(_Theta)
     {
     }
@@ -59,7 +61,7 @@ public:
         const double b7   = Y[I_B7];
         //const double h    = get_h(t);
 
-        dYdt[I_AC]   = 0;
+        dYdt[I_AC]   = kh - ac * (kh+kh);
         dYdt[I_B6]   = k6*(Theta-b6);
         dYdt[I_B7]   = k7*(Theta-b7);
     }

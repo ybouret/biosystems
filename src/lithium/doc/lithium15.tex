@@ -50,6 +50,9 @@
 \newcommand{\ih}{\ensuremath{\mathbf{H}}}
 \newcommand{\ig}{\ensuremath{\mathbf{G}}}
 
+\newcommand{\LiAll}{\Lambda}
+\newcommand{\LiAllOut}{{\LiAll}_{\mathrm{out}}}
+
 \begin{document}
 
 \section{Isotopic Separation}
@@ -62,9 +65,30 @@ $$
 $$
 
 $$
-	\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample} = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} \left[1+10^{-3}\deltaLi\right] = \rho_s \left[1+10^{-3}\deltaLi\right]
+	\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample} = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} \left[1+10^{-3}\deltaLi\right] = \beta_s \left[1+10^{-3}\deltaLi\right]
 $$
 
+\begin{equation}
+\begin{array}{rcl}
+	\LiAll    & = & \Li{6} + \Li{7}\\
+	\LiAllOut & = & \LiOut{6} + \LiOut{7}\\
+\end{array}
+\end{equation}
+and
+\begin{equation}
+\begin{array}{rclcl}
+	\Li{6} & = & \dfrac{1}{1+\beta_s \left[1+10^{-3}\deltaLi\right] } \LiAll & = & \epsilon_6 \LiAll  = \epsilon \LiAll \\
+	\\
+	\Li{7} & = & \dfrac{\beta_s \left[1+10^{-3}\deltaLi\right]}{1+\beta_s \left[1+10^{-3}\deltaLi\right] }  & = & \epsilon_7 \LiAll,\;\epsilon_7 = 1-\epsilon \\
+\end{array}
+\end{equation}
+with, for the experiments,
+\begin{equation}
+	\beta_s = 12.0192
+\end{equation}
+\begin{equation}
+	\epsilon \simeq 0.076, 1-\epsilon \simeq 0.924
+\end{equation}
 
 \section{Proposed Mechanism}
 

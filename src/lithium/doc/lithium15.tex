@@ -80,9 +80,9 @@ and
 \begin{equation}
 \left\lbrace
 \begin{array}{rclcl}
-	\Li{6} & = & \dfrac{1}{1+\beta_s \left[1+10^{-3}\deltaLi\right] } \LiAll & = & \epsilon_6 \LiAll  = \epsilon \LiAll \\
+	\LiOut{6} & = & \dfrac{1}{1+\beta_s \left[1+10^{-3}\deltaLi\right] } \LiAllOut & = & \epsilon_6 \LiAllOut  = \epsilon \LiAllOut \\
 	\\
-	\Li{7} & = & \dfrac{\beta_s \left[1+10^{-3}\deltaLi\right]}{1+\beta_s \left[1+10^{-3}\deltaLi\right] }  & = & \epsilon_7 \LiAll,\;\epsilon_7 = 1-\epsilon \\
+	\LiOut{7} & = & \dfrac{\beta_s \left[1+10^{-3}\deltaLi\right]}{1+\beta_s \left[1+10^{-3}\deltaLi\right] } \LiAllOut & = & \epsilon_7 \LiAll,\;\epsilon_7 = 1-\epsilon \\
 \end{array}
 \right.
 \end{equation}
@@ -248,7 +248,9 @@ then we get the \underline{three} coupled equations
 \boxed{
 \left\lbrace
 	\begin{array}{rcl}
-		\partial_t\EHin & = & 
+		\partial_t\EHin & = & -k_h \EHin + \left(E_0- \EHin\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
+		- \EHin \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\
+		& = & 
 		-k_h E_0+ \left(E_0- \EHin\right)\left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
 		- \EHin \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\
 		\partial_t\Li{x} & = & k_x \left(\tilde{\Theta}_x -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\tilde{D}}   k_x^p \tilde{J}_x  - \EHin k_x^q \Li{x}\\
@@ -258,7 +260,7 @@ then we get the \underline{three} coupled equations
 \end{equation}
 
 
-\subsection{Looking for steady-state}
+\subsection{Looking for steady-state, part I}
 We assume that there exists $\EHin_\infty$, then
 \begin{equation}
 	\Li{x}_\infty = 
@@ -306,8 +308,12 @@ which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake
 		-k_h E_0
 		+ \left(E_0- \EHin\right)\left\lbrack k_h+ \dfrac{\bar{p}^2\proton}{\tilde{D}} \left(\sum_x k_x \LiOut{x} \right)\right] 
 		- \bar{q}\EHin \left( {\sum_x k_x \Li{x}} \right)\\
+		& = & 
+			-k_h \EHin
+		+ \left(E_0- \EHin\right)\left\lbrack \dfrac{\bar{p}^2\proton}{\tilde{D}} \left(\sum_x k_x \LiOut{x} \right)\right] 
+		- \bar{q}\EHin \left( {\sum_x k_x \Li{x}} \right)\\
 		\partial_t\Li{x} & = & k_x \left({\Theta}_x\LiOut{x} -\Li{x} \right) 
-		 + k_x \left(E_0-\EHin\right) \dfrac{\proton}{\tilde{D}} {J}_x \LiOut{x}  -  \bar{q}\EHin k_x \Li{x}\\
+		 + k_x \left(E_0-\EHin\right) \dfrac{\bar{p}^2\proton}{\tilde{D}}  \LiOut{x}  -  \bar{q}\EHin k_x \Li{x}\\
 	\end{array}
 \right.
 }
@@ -315,74 +321,58 @@ which read exactly as the GHK level (electroosmotic leaks) shifted by NHE intake
 
 
 \begin{equation}
+\left\lbrace
 \begin{array}{rcl}
+	\alpha     & = & \dfrac{\EHin}{E_0}\\
+	\\
 	\beta_x    & = & \dfrac{\Li{x}}{\LiOut{x}}\\
 \end{array}
+\right.
 \end{equation}
 
-%\begin{equation}
-%%\boxed{
-%\left\lbrace
-%	\begin{array}{rcl}
-%		\partial_t\alpha    & = & 
-%		-k_h 
-%		+ \left(1-\alpha\right) \left[ k_h + \proton \dfrac{\bar{p}^2}{\tilde{D}} \left(\sum_x k_x \LiOut{x}\right) \right]
-%		- \alpha \bar{q} \left( {\sum_x k_x \Li{x}} \right)\\
-%		\partial_t\beta_x & = & k_x \left[
-%		\left(\Theta  - \beta_x \right)
-%		+ \left(1-\alpha\right) \proton E_0 \dfrac{\bar{p}^2}{\tilde{D}} 
-%		- \alpha E_0 \bar{q} \beta_x
-%		\right]
-%		\\
-%	\end{array}
-%\right.
-%%}
-%\end{equation}
-%then
-%\begin{equation}
-%%\boxed{
-%\left\lbrace
-%	\begin{array}{rcl}
-%	\partial_t \alpha & = & 
-%	-k_h 
-%	+ \left(1-\alpha\right) \left[ k_h + \bar{p}^2\proton \dfrac{\left(\sum_x k_x\epsilon_x\right)\LiAllOut}{1+\left(\sum_xJ_x\epsilon_x\right)\LiAllOut}\right] - \alpha \bar{q} \LiAllOut \left[ \sum_x \left(k_x \epsilon_x\right) \beta_x \right] \\
-%	\\
-%	\partial_t \beta_x & = &k_x \left[
-%		\left(\Theta  - \beta_x \right)
-%		+ \left(1-\alpha\right) \bar{p}^2 \proton  \dfrac{E_0}{1+\left(\sum_xJ_x\epsilon_x\right)\LiAllOut} 
-%		- \alpha E_0 \bar{q} \beta_x
-%		\right] \\
-%	\end{array}
-%\right.
-%\end{equation}
-%or using
-%\begin{equation}
-%	\hat{\alpha} = 1 - \alpha
-%\end{equation}
-%
-%\begin{equation}
-%\boxed{
-%\left\lbrace
-%	\begin{array}{rcl}
-%	\partial_t \hat\alpha & = & 
-%	k_h 
-%	- \hat\alpha \left[ k_h + \bar{p}^2\proton \dfrac{\left(\sum_x k_x\epsilon_x\right)\LiAllOut}{1+\left(\sum_xJ_x\epsilon_x\right)\LiAllOut}\right] + \left(1-\hat\alpha\right) \bar{q} \LiAllOut \left[ \sum_x \left(k_x \epsilon_x\right) \beta_x \right] \\
-%	\\
-%	\partial_t \beta_x & = &k_x \left[
-%		\left(\Theta  - \beta_x \right)
-%		+  \hat\alpha \bar{p}^2 \proton  \dfrac{E_0}{1+\left(\sum_xJ_x\epsilon_x\right)\LiAllOut} 
-%		- \left(1-\hat\alpha\right) E_0 \bar{q} \beta_x
-%		\right] \\
-%	\end{array}
-%\right.
-%}
-%\end{equation}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \alpha & = & -k_h \alpha +
+	 \left[
+	  (1-\alpha) \dfrac{\bar{p}^2 \proton }{\tilde{D}} \left( \sum_x k_x \epsilon_x \right)
+	  - \bar{q} \alpha  \left( \sum_x k_x \epsilon_x \beta_x \right)
+	  \right] \LiAllOut\\
+	  \\
+	  \partial_t \beta_x & = & 
+	  k_x \left( \Theta - \beta_x \right)
+	  + \left[
+	  k_x (1-\alpha) \dfrac{\bar{p}^2\proton}{\tilde{D}}
+	  -k_x\bar{q}\alpha\beta_x
+	  \right] E_0
+	  \\
+	  \\
+	  \tilde{D} & = & 1 + \left[J_6\epsilon_6+J_7\epsilon_7\right] \LiAllOut = 1 + \left[ J_6 \epsilon + J_7 \left(1-\epsilon\right) \right] \LiAllOut = 1 + J_\epsilon \LiAllOut\\
+\end{array}
+\right.
+\end{equation}
 
 
-\subsection{Expression}
+
+
+\subsection{Looking for steady-state, part II}
+We get the system 
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\beta_\infty & = & \dfrac{\Theta+\dfrac{\bar{p}^2 E_0 h_\infty }{\tilde{D}} \left(1-\alpha_\infty\right)}{1+\bar{q}E_0\alpha_\infty}\\
+\\
+\alpha_\infty & = &
+ \dfrac{ \LiAllOut \dfrac{\bar{p}^2 h_\infty }{\tilde{D}} \left( \sum_x k_x \epsilon_x \right)}
+ {k_h+\left[\dfrac{\bar{p}^2 h_\infty }{\tilde{D}} + \bar{q}\beta_\infty\right]\left( \sum_x k_x \epsilon_x \right)\LiAllOut}\\
+\end{array}
+\right.
+\end{equation}
+
 OK, I computed them, $\alpha_\infty$ is $\alpha_0$ with a slight decrease if $\bar{q}$ increases...\\
 For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is necessary ??
 
+\end{document}
 
 \section{First Order Resolution}
 

@@ -1,18 +1,12 @@
 
-Grow(tau) = 1-exp(-tau)
-Bump(sigma,tau) = ( exp(-sigma*tau)-exp(-tau) )/(1-sigma);
+Grow(tau)        = 1-exp(-tau)
+Bump(lambda,tau) = ( exp(-lambda*tau)-exp(-tau) )/(1.0-lambda);
 
-num(tau,sigma,eta)     = Grow(tau) + (eta*sigma-1.0)  * Bump(sigma,tau);
-den(tau,sigma,eta,lam) = Grow(lam*tau) + (eta*sigma-1.0) * Bump(sigma/lam,tau*lam);
+num(tau,Omega,phi)       =  Grow(tau)       + phi * Bump(Omega,tau)
+den(tau,Omega,phi,sigma) =  Grow(sigma*tau) + phi * Bump(Omega/sigma,sigma*tau)
 
-rho(tau,sigma,eta,lam) = num(tau,sigma,eta)/den(tau,sigma,eta,lam);
+rho(tau,Omega,phi,sigma) = num(tau,Omega,phi)/den(tau,Omega,phi,sigma);
 
+getSig( _d7In,_d7Out) = (1.0+0.001*_d7Out)/(1.0+0.001*_d7In);
 
-getLam( _d7In,_d7Out) = (1.0+0.001*_d7Out)/(1.0+0.001*_d7In);
-
-deltaLi(tau,sigma,eta,d7In,d7Out) = 1000.0 * ( (1.0+0.001*d7Out) * rho(tau,sigma,eta,getLam(d7In,d7Out)) - 1.0 );
-
-k7=0.00342717
-Sigma=10.0;
-Eta  = 1.0;
-plot [1:6] 'nhe1_delta7_full_15mM_37.txt' u (log($1)):2 w lp, deltaLi(k7*exp(x),Sigma,Eta,1.01,15)
+deltaLi(tau,Omega,phi,d7In,d7Out) = 1000.0 * ( (1.0+0.001*d7Out) * rho(tau,Omega,phi,getSig(d7In,d7Out)) - 1.0 );

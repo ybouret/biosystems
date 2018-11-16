@@ -422,6 +422,23 @@ then
 \begin{equation}
 	\hat\alpha = \dfrac{1}{\omega_0} \left[ k_h + \left(\omega_0-k_h\right)e^{-\omega_0 t}\right]
 \end{equation}
+so that
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\beta_x & = & \displaystyle \Theta \left[ 1-e^{-k_x t} \right] + \dfrac{k_x \Upsilon_\beta h_0 }{\omega_0} e^{-k_xt} 
+	\int_0^t \left[ k_h e^{k_xu} + \left(\omega_0-k_h\right)e^{ (k_x-\omega_0) u} \right] \,\mathrm{d} u  \\
+	\\
+	& = & \displaystyle \Theta \left[ 1-e^{-k_x t} \right] + \dfrac{k_h \Upsilon_\beta h_0 }{\omega_0}\left[ 1-e^{-k_x t} \right]
+	+ \dfrac{k_x \Upsilon_\beta h_0 }{\omega_0} \dfrac{\omega_0-k_h}{k_x-\omega_0} \left[ e^{-\omega_0t} - e^{-k_xt}\right]\\
+	\\
+	& = & \left[\Theta + \Upsilon_\beta h_0 \hat\alpha_\infty \right]\left[ 1-e^{-k_x t} \right] 
+	+ \Upsilon_\beta h_0 \left(1-\hat\alpha_\infty\right) \left[ k_x \dfrac{e^{-\omega_0t} - e^{-k_xt}}{k_x-\omega_0}\right]
+	 \\
+\end{array}
+\right.
+\end{equation}
+
 
 \end{document}
 

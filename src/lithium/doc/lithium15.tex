@@ -372,169 +372,57 @@ We get the system
 OK, I computed them, $\alpha_\infty$ is $\alpha_0$ with a slight decrease if $\bar{q}$ increases...\\
 For many reasons, let's assume $\bar{q}E_0\ll 1$, and see if a correction is necessary ??
 
-\end{document}
-
 \section{First Order Resolution}
-
 \subsection{First Order Equations}
-
 \begin{equation}
 \left\lbrace
-\begin{array}{rcl}
-\partial_t \alpha & = & \Upsilon_0 h - \alpha\left\lbrack k_h+\Upsilon_0 h  \right\rbrack\\
-\partial_t\Li{x} & = & \left\lbrack k_x\tilde{\Theta}_x+\Upsilon_x h  E_0\right\rbrack
-		-\left\lbrack
-			\Upsilon_x h  E_0\alpha +  k_x\Li{x}  %\left(k_x + k_x^q E_0\alpha\right)
-		\right\rbrack\\
+\begin{array}{rcll}
+\partial_t \alpha & = & -k_h \alpha +
+	  k_\epsilon (1-\alpha) \Upsilon_\alpha \proton , & \Upsilon_\alpha= \dfrac{\bar{p}^2\LiAllOut}{1+J_\epsilon \LiAllOut}\\
+	 \\
+\partial_t \beta_x & = & k_x\left(\Theta - \beta_x \right) + k_x (1-\alpha) \Upsilon_\beta \proton, & \Upsilon_\beta = \dfrac{\bar{p}^2E_0}{1+J_\epsilon \LiAllOut}\\
 \end{array}
 \right.
 \end{equation}
-
-and using 
+and using
 \begin{equation}
-	\beta_x = \dfrac{\Li{x}}{\LiOut{x}}
+	\hat\alpha = 1-\alpha
 \end{equation}
-we get
+
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t \alpha & = & \Upsilon_0 h - \alpha\left\lbrack k_h+\Upsilon_0 h  \right\rbrack\\
-\partial_t\beta_x & = & k_x \left\lbrack
-{\Theta + \underbrace{\dfrac{\bar{p}^2}{\tilde{D}}}_{\kappa} h E_0  \left(1-\alpha\right)}
-- \beta_x
-\right\rbrack \\
+	\partial_t \hat\alpha + \left(k_h+k_\epsilon \Upsilon_\alpha \proton \right) \hat\alpha & = & k_h\\
+	\partial_t \beta_x  + k_x \beta_x  & = & k_x \Theta + k_x \hat\alpha \Upsilon_\beta \proton \\
 \end{array}
 \right.
 \end{equation}
-and we reckon from \eqref{steady_beta} and the first order assumption
+\subsection{First Order Solutions}
+We set
 \begin{equation}
-	\Theta + \kappa h_\infty E_0  \left(1-\alpha_\infty\right) = \beta 
+	\ig(t) = \int_0^{t} \left[ k_h + k_\epsilon \Upsilon_\alpha h(t) \right] \,\mathrm{d}u
 \end{equation}
-
-\subsection{First Order Solving}
-
-We make a change in equation by defining
-\begin{equation}
-	\hat{\alpha} = 1-\alpha
-\end{equation}
-Leading to
-\begin{equation}
-\displaystyle
-\left\lbrace
-\begin{array}{rcl}
-\partial_t \hat\alpha + \left\lbrack k_h+\Upsilon_0 h  \right\rbrack \hat{\alpha} & = & k_h\\
-\partial_t \beta_x + k_x \beta_x & = & k_x \kappa E_0 h \hat\alpha \\
-\end{array}
-\right.
-\end{equation}
-
-We also define
-\begin{equation}
-%\displaystyle
-\left\lbrace
-\begin{array}{rcl}
-g(t) & = & k_h + \Upsilon_0 h(t) \\
-\\
-\ih  & = & \displaystyle \Upsilon_0\int_0^t h(u) \, \mathrm{d}u\\
-\\
-\ig  & = &  \displaystyle \int_0^t g(u) \, \mathrm{d}u = k_h t +  \ih(t)\\
-\end{array}
-\right.
-\end{equation}
-We find
-\begin{equation}
-	\hat\alpha = \left[ 1 + k_h \int_0^t e^{\ig(u)}\,\mathrm{d}u \right] e^{-\ig(t)}
-\end{equation}
-with
-\begin{equation}
-	\hat\alpha(0) = 1,\;\;\hat\alpha_\infty = \dfrac{k_h}{k_h+\Upsilon_0 h_\infty}
-\end{equation}
-and after that
-\begin{equation}
-\beta_x = k_x\left[\int_0^t \kappa E_0 h(t) \hat\alpha(t) e^{k_xu} \, \mathrm{d}u\right] e^{-k_xt}
-\end{equation}
-
-And we remind that
+so that
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\dfrac{\beta_7}{\beta_6} & = & \dfrac{1+10^{-3}\deltaLi}{1+10^{-3}\deltaLi_{out}} \\
+	\hat\alpha(t) & = & \displaystyle \left[1+ k_h\int_0^t e^{\ig(u)}\,\mathrm{d} u\right] e^{-\ig(t)} \\
 	\\
-	\deltaLi & = & 10^3 \left( \left[1+10^{-3}\deltaLi_{out}\right] \dfrac{\beta_7}{\beta_6} - 1 \right)\\
+	\beta_x(t)    & = & \displaystyle \Theta \left[ 1-e^{-k_x t} \right] + k_x \Upsilon_\beta \left[ \int_0^t  \hat\alpha(u) h(u) e^{k_x u} \,\mathrm{d} u\right] e^{-k_xt}\\
 \end{array}
 \right.
 \end{equation}
 
-\subsection{First Order Short Times}
-We assume that for a certain period of time, we have about $h(t)\simeq h_0$.
-Leading to
+\subsection{Constant pH}
+Let's assume
 \begin{equation}
-	\ig_0(t) = (k_h+\Upsilon_0h_0) t = \omega_0 t
+	h(t) = h_0, \;\;\omega_0 = k_h + k_\epsilon \Upsilon_\alpha h_0,\;\; \ig(u) = \omega_0 u
 \end{equation}
 then
 \begin{equation}
-\hat\alpha_0(t) = \dfrac{1}{\omega_0}\left[ k_h + \left(\omega_0 - k_h\right) e^{-\omega_0t}\right]
-\end{equation}
-and
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-\beta_x(t) & = & \displaystyle
-\dfrac{k_x \kappa E_0 h_0}{\omega_0}  e^{-k_xt}  \left(
-\int_0^t \left[ k_h e^{k_xu} + \left(\omega_0-k_h\right) e^{\left(k_x-\omega_0\right)u}\right] \, \mathrm{d} u\right) \\
-\\
- & = & 
- \displaystyle
-\dfrac{k_x \kappa E_0 h_0}{\omega_0}  e^{-k_xt}  \left(
-\dfrac{k_h}{k_x} \left[ e^{k_xt} -1 \right] + \left(\omega_0-k_h\right) \dfrac{ e^{\left(k_x-\omega_0\right)t}-1}{k_x-\omega_0}
-\right)
- \\
- \\
-  & = & \dfrac{\kappa E_0 h_0}{\omega_0} 
-  \left( 
-  k_h \left[1-e^{-k_xt}\right] 
-  + \left(\omega_0-k_h\right) k_x \dfrac{e^{-\omega_0t} - e^{-k_xt}}{k_x-\omega_0}
-  \right) \\
-  & = & 
- \dfrac{\kappa E_0 h_0 k_h}{\omega_0} 
-  \left( 
-   \left[1-e^{-k_xt}\right] 
-  + \left(\dfrac{\omega_0}{k_h}-1\right) k_x \dfrac{e^{-\omega_0t} - e^{-k_xt}}{k_x-\omega_0}
-  \right) \\\end{array}
-\right.
-\end{equation}
-Using
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-	R(\tau) & = &1-e^{-\tau} \\
-	 B(\sigma,\tau) & = & \dfrac{e^{-\sigma\tau}-e^{-\tau}}{1-\sigma} \;\;\;\; (B(1,\tau)=\tau e^{-\tau})\\
-	 %\varphi        & = & \dfrac{\omega_0}{k_h} - 1 \\
-\end{array}
-\right.
-\end{equation}
-we get
-\begin{equation}
-	\beta_x(t) =  \dfrac{\kappa E_0 h_0 k_h}{\omega_0} \left[
-	R(k_xt) + \left( \dfrac{\omega_0}{k_h} - 1 \right) B(\omega_0/k_x,k_xt)
-	\right]
-\end{equation}
-We finally define
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-	k_6 & = & \lambda k_7\\
-	\omega_0 & = & \sigma k_7 \\
-	\tau & = & k_7 t\\
-	\eta & = & \dfrac{k_7}{k_h} \\
-\end{array}
-\right.
-\end{equation}
-to express
-\begin{equation}
-		\dfrac{\beta_7}{\beta_6}
-		 = \dfrac{ R(\tau) + \left(\sigma\eta-1\right) B(\sigma,\tau) }{R(\lambda \tau) + \left(\sigma\eta-1\right) B(\frac{\sigma}{\lambda},\lambda \tau)}
-\simeq \dfrac{1}{\lambda} + \dfrac{1}{2} \left(1-\dfrac{1}{\lambda}\right) \tau + \ldots
+	\hat\alpha = \dfrac{1}{\omega_0} \left[ k_h + \left(\omega_0-k_h\right)e^{-\omega_0 t}\right]
 \end{equation}
 
 \end{document}
+
+

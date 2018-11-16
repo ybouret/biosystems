@@ -80,9 +80,9 @@ and
 \begin{equation}
 \left\lbrace
 \begin{array}{rclcl}
-	\LiOut{6} & = & \dfrac{1}{1+\beta_s \left[1+10^{-3}\deltaLi\right] } \LiAllOut & = & \epsilon_6 \LiAllOut  = \epsilon \LiAllOut \\
+	\LiOut{6} & = & \dfrac{1}{1+\beta_s \left[1+10^{-3}\deltaLiOut\right] } \LiAllOut & = & \epsilon_6 \LiAllOut  = \epsilon \LiAllOut \\
 	\\
-	\LiOut{7} & = & \dfrac{\beta_s \left[1+10^{-3}\deltaLi\right]}{1+\beta_s \left[1+10^{-3}\deltaLi\right] } \LiAllOut & = & \epsilon_7 \LiAll,\;\epsilon_7 = 1-\epsilon \\
+	\LiOut{7} & = & \dfrac{\beta_s \left[1+10^{-3}\deltaLi\right]}{1+\beta_s \left[1+10^{-3}\deltaLiOut\right] } \LiAllOut & = & \epsilon_7 \LiAll,\;\epsilon_7 = 1-\epsilon \\
 \end{array}
 \right.
 \end{equation}
@@ -481,6 +481,10 @@ with
 \begin{equation}
 	\varphi = \dfrac{\Upsilon_\beta h_0 \left(1-\hat\alpha_\infty\right)}{\Theta+\Upsilon_\beta h_0 \hat\alpha_\infty}
 	,\;\; \hat\alpha_\infty = \dfrac{k_h}{k_h+k_\epsilon \Upsilon_\alpha h_0 }
+\end{equation}
+And we know that
+\begin{equation}
+	\deltaLi = 1000 \left( \left[1+10^{-3}\deltaLiOut\right]\dfrac{\beta_7}{\beta_6} - 1\right)
 \end{equation}
 
 \end{document}

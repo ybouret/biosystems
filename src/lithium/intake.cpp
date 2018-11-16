@@ -13,6 +13,8 @@ typedef array<double>                 Array;
 typedef ODE::DriverCK<double>::Type   ODE_Driver;
 typedef ODE::Field<double>::Equation  ODEquation;
 
+static const double beta_s = 12.0192;
+
 class Intake
 {
 public:
@@ -21,17 +23,40 @@ public:
     static const size_t I_B6   = 2;
     static const size_t I_B7   = 3;
 
-    double k6;
-    double k7;
-    double kh;
-    double Theta;
+    const double Theta;
+    const double d7in;
+    const double d7out;
+    const double sigma;
+    const double eps;
+    const double omeps; //!< 1-eps
+    const double k7;
+    const double k6;
+    const double k_eps;
 
-    inline Intake(const double _Theta) :
-    k6(1.1e-2),
-    k7(1e-2),
-    kh(0.7e-2),
-    Theta(_Theta)
+    static double getSigma( const double d7In, const double d7Out )
     {
+        return (1.0+0.001*d7Out)/(1.0+0.001*d7In);
+    }
+
+    inline Intake(const double _Theta,
+                  const double _d7in,
+                  const double _d7out) :
+    Theta( _Theta ),
+    d7in(_d7in),
+    d7out(_d7out),
+    sigma( getSigma(d7in,d7out) ),
+    eps(1.0/(1.0+beta_s*(1.0+0.001*d7out))),
+    omeps(1.0-eps),
+    k7(1.0),
+    k6(sigma*k7),
+    k_eps(k6*eps+k7*omeps)
+    {
+        std::cerr << "Theta   = " << Theta << std::endl;
+        std::cerr << "sigma   = " << sigma << std::endl;
+        std::cerr << "epsilon = " << eps   << std::endl;
+        std::cerr << "k7      = " << k7    << std::endl;
+        std::cerr << "k6      = " << k6    << std::endl;
+        std::cerr << "k_eps   = " << k_eps << std::endl;
     }
 
     void setup( Array &Y )
@@ -46,12 +71,18 @@ public:
     {
         if(t<=0)
         {
-            return k7/k6;
+            return 1.0/sigma;
         }
         else
         {
             return Y[I_B7]/Y[I_B6];
         }
+    }
+
+    inline
+    double delta7( const Array &Y, const double t ) const
+    {
+        return 1000.0 * ( (1+0.001*d7out) * ratio(Y,t) - 1.0 );
     }
 
     void compute( Array &dYdt, double t, const Array &Y)
@@ -61,7 +92,7 @@ public:
         const double b7   = Y[I_B7];
         //const double h    = get_h(t);
 
-        dYdt[I_AC]   = kh - ac * (kh+kh);
+        dYdt[I_AC]   = ac;
         dYdt[I_B6]   = k6*(Theta-b6);
         dYdt[I_B7]   = k7*(Theta-b7);
     }
@@ -93,7 +124,13 @@ Y_PROGRAM_START()
     {
         Theta = string_convert::to<double>(argv[1],"Theta");
     }
-    Intake          intake(Theta);
+
+    const double d7Out = 15.2;
+    const double d7In  = 1.05;
+
+
+    Intake          intake(Theta,d7In,d7Out);
+
     ODEquation      diffeq( &intake, & Intake::compute );
     ODE_Driver      odeint;
     odeint.start( Intake::NVAR );
@@ -101,7 +138,7 @@ Y_PROGRAM_START()
     odeint.eps = 1e-5;
 
     intake.setup(Y);
-    double t_max   = 300;
+    double t_max   = 10;
     double dt      = 0.01;
     double dt_save = 0.1;
     const size_t every    = simulation_save_every(dt,dt_save);
@@ -111,7 +148,7 @@ Y_PROGRAM_START()
     std::cerr << "running " << iters << " steps up to " << iters * dt << " seconds, saving every " << every << " steps" << std::endl;
     {
         ios::ocstream fp(filename);
-        save(fp,0,Y, intake.ratio(Y,0) );
+        save(fp,0,Y, intake.delta7(Y,0) );
     }
 
     progress bar;
@@ -125,7 +162,7 @@ Y_PROGRAM_START()
         if( 0 == (i%every) )
         {
             ios::ocstream fp(filename,true);
-            save(fp,t1,Y,intake.ratio(Y,t1));
+            save(fp,t1,Y,intake.delta7(Y,t1));
             bar.update(i,iters);
             bar.display(std::cerr) << '\r';
         }

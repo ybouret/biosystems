@@ -32,6 +32,10 @@ public:
     const double k7;
     const double k6;
     const double k_eps;
+    const double catalytic;
+    const double kh;
+    const double Ua;
+    const double Ub;
 
     static double getSigma( const double d7In, const double d7Out )
     {
@@ -40,7 +44,10 @@ public:
 
     inline Intake(const double _Theta,
                   const double _d7in,
-                  const double _d7out) :
+                  const double _d7out,
+                  const double _catalytic,
+                  const double _Ua,
+                  const double _Ub) :
     Theta( _Theta ),
     d7in(_d7in),
     d7out(_d7out),
@@ -49,7 +56,11 @@ public:
     omeps(1.0-eps),
     k7(1.0),
     k6(sigma*k7),
-    k_eps(k6*eps+k7*omeps)
+    k_eps(k6*eps+k7*omeps),
+    catalytic(_catalytic),
+    kh(catalytic*k7),
+    Ua(_Ua),
+    Ub(_Ub)
     {
         std::cerr << "Theta   = " << Theta << std::endl;
         std::cerr << "sigma   = " << sigma << std::endl;
@@ -85,16 +96,16 @@ public:
         return 1000.0 * ( (1+0.001*d7out) * ratio(Y,t) - 1.0 );
     }
 
-    void compute( Array &dYdt, double t, const Array &Y)
+    void compute( Array &dYdt, double, const Array &Y)
     {
         const double ac   = Y[I_AC];
         const double b6   = Y[I_B6];
         const double b7   = Y[I_B7];
         //const double h    = get_h(t);
 
-        dYdt[I_AC]   = ac;
-        dYdt[I_B6]   = k6*(Theta-b6);
-        dYdt[I_B7]   = k7*(Theta-b7);
+        dYdt[I_AC]   = kh - ac * (kh+k_eps*Ua);
+        dYdt[I_B6]   = k6*( (Theta-b6) + ac * Ub );
+        dYdt[I_B7]   = k7*( (Theta-b7) + ac * Ub );
     }
 
     double get_h(double)
@@ -108,28 +119,47 @@ private:
 
 static inline void save( ios::ostream &fp, const double t, const Array &fields, const double r=0)
 {
-    fp("%.15g",t);
+    fp("%.15g %.15g",t,r);
     for(size_t i=1;i<=fields.size();++i)
     {
         fp(" %.15g", fields[i]);
     }
-    fp(" %.15g",r);
     fp << '\n';
 }
 
 Y_PROGRAM_START()
 {
-    double Theta = 4;
+    double Theta     = 4;
+    double catalytic = 2;
+    double Ua        = 0;
+    double Ub        = 0;
     if(argc>1)
     {
         Theta = string_convert::to<double>(argv[1],"Theta");
     }
 
+    if( argc > 2 )
+    {
+        catalytic = string_convert::to<double>(argv[2],"catalytic");
+    }
+
+    if( argc > 3 )
+    {
+        Ua = string_convert::to<double>(argv[3],"Ua");
+    }
+
+    if( argc > 4 )
+    {
+        Ub = string_convert::to<double>(argv[4],"Ub");
+    }
+
+
+
     const double d7Out = 15.2;
     const double d7In  = 1.05;
 
 
-    Intake          intake(Theta,d7In,d7Out);
+    Intake          intake(Theta,d7In,d7Out,catalytic,Ua,Ub);
 
     ODEquation      diffeq( &intake, & Intake::compute );
     ODE_Driver      odeint;
@@ -139,12 +169,12 @@ Y_PROGRAM_START()
 
     intake.setup(Y);
     double t_max   = 10;
-    double dt      = 0.01;
-    double dt_save = 0.1;
+    double dt      = 0.001;
+    double dt_save = 0.01;
     const size_t every    = simulation_save_every(dt,dt_save);
     const size_t iters    = simulation_iter(t_max,dt,every);
     double h = dt/10;
-    const string filename = vformat("output_Theta%g.dat", intake.Theta);
+    const string filename = vformat("Theta%g_catalytic%g_Ua%g_Ub%g.dat", intake.Theta, intake.catalytic, intake.Ua, intake.Ub);
     std::cerr << "running " << iters << " steps up to " << iters * dt << " seconds, saving every " << every << " steps" << std::endl;
     {
         ios::ocstream fp(filename);

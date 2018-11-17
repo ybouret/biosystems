@@ -245,7 +245,7 @@ so that
 then we get the \underline{three} coupled equations  
 
 \begin{equation}
-\boxed{
+%\boxed{
 \left\lbrace
 	\begin{array}{rcl}
 		\partial_t\EHin & = & -k_h \EHin + \left(E_0- \EHin\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
@@ -256,9 +256,48 @@ then we get the \underline{three} coupled equations
 		\partial_t\Li{x} & = & k_x \left(\tilde{\Theta}_x -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\tilde{D}}   k_x^p \tilde{J}_x  - \EHin k_x^q \Li{x}\\
 	\end{array}
 \right.
+%}
+\end{equation}
+which can be turned into an \textbf{unified} set of equations using
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\alpha & = & \dfrac{\EHin}{E_0}\\
+	\\
+	\beta_x & = & \dfrac{\Li{x}}{\LiOut{x}}\\
+	\\
+	\Lambda & = & \Li{6} + \Li{7} = \left(\epsilon_6 \beta_6 + \epsilon_7 \beta_7\right) \LiAllOut \\
+\end{array}
+\right.
+\end{equation}
+
+
+\begin{equation}
+\boxed{
+\left\lbrace
+\begin{array}{rcl}
+\partial_t\alpha & = &
+ -k_h \alpha 
+ + \left(1-\alpha\right)\proton \dfrac{\left(\sum_x k_x^p \epsilon_x J_x \right)\LiAllOut}{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut}
+ - \alpha \left(\sum_x k_x^q \epsilon_x \beta_x \right) \LiAllOut\\
+ \\
+ \partial_t \beta_ x & = & k_x \left( \Theta - \beta_x \right) 
+ + \left(1-\alpha\right)\proton \dfrac{k_x^p \epsilon_x J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} 
+ - \alpha \ k_x^q \epsilon_x \beta_x  E_0\\
+\end{array}
+\right.
 }
 \end{equation}
 
+\section{Steady State}
+Experimentally, the initial isotopic separation is eventually recovered, meaning that
+\begin{equation}
+	\beta_6(\infty) = \beta_7(\infty) = \beta_\infty =  \dfrac{k_x\Theta+ \left(1-\alpha_\infty\right) h_\infty \dfrac{k_x^p \epsilon_x J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} }{ k_x + \alpha_\infty k_x^q \epsilon_x E_0 }
+\end{equation}
+And then formally, we simply have the other equation
+\begin{equation}
+	k_h E_0 \alpha_\infty =  (k_6+k_7) \left(\beta_\infty-\Theta\right) \LiAllOut
+\end{equation}
 
 \end{document}
 

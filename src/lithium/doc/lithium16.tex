@@ -314,6 +314,7 @@ TODO?
 
 \section{First Order}
 \subsection{First Order $\alpha$}
+
 \subsubsection{Generic $\proton$}
 We get
 \begin{equation}
@@ -333,7 +334,75 @@ to get
 \end{equation}
 \begin{equation}
 	\hat\alpha_0(t) = e^{-\omega_0t} + \dfrac{k_h}{\omega_0}\left( 1 - e^{-\omega_0 t}\right) 
-	= \dfrac{1}{\omega_0} \left[k_h + \left(\omega_0-k_h\right) e^{-\omega_0 t} \right]
+	= \dfrac{1}{\omega_0} \left[k_h + \left(\omega_0-k_h\right) e^{-\omega_0 t} \right] = \hat\alpha_\infty + \left(1-\hat\alpha_\infty\right) e^{-\omega_0 t}
+\end{equation}
+
+\subsubsection{Initial and final values}
+In any case
+\begin{equation}
+	\hat\alpha(0) = 1, \;\; \hat\alpha_\infty = \dfrac{k_h}{k_h+h_\infty\Upsilon_\alpha}
+\end{equation}
+
+
+\subsection{First Order $\beta$}
+\subsubsection{Generic $\proton$}
+\begin{equation}
+\partial_t\beta_x + k_x \beta_x = k_x\Theta + \hat{\alpha}(t)h(t) \Upsilon_x
+\end{equation}
+leading to
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\beta_{x,1} & = & \displaystyle \left( \int_0^t \left[k_x\Theta + \hat{\alpha}_1(u)h(u) \Upsilon_x \right]e^{k_xu}\,\mathrm{d}u \right) e^{-k_x t}\\
+\\
+ & = & \displaystyle \Theta \left[1-e^{-k_xt}\right] + \left(\Upsilon_x \int_0^t \hat{\alpha}_1(u)h(u) e^{k_xu}\,\mathrm{d}u \right)  e^{-k_x t}
+\end{array}
+\right.
+\end{equation}
+
+\subsubsection{Constant $\proton$}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\beta_{x,0} & = & \displaystyle \Theta \left[1-e^{-k_xt}\right] +h_0 \Upsilon_x
+\left( \int_0^t \left[\hat\alpha_\infty + \left(1-\hat\alpha_\infty\right) e^{-\omega_0 u} \right]e^{k_xu} \,\mathrm{d}u \right) e^{-k_x t} \\
+\\
+& = & \displaystyle \Theta \left[1-e^{-k_xt}\right] +
+h_0 \Upsilon_x 
+	\left( 
+		\dfrac{\hat\alpha_\infty}{k_x}\left[1-e^{-k_xt}\right]  
+		+ \dfrac{1-\hat\alpha_\infty}{\omega_0 - k_x}\left[e^{-\omega_0t} - e^{-k_xt}\right]
+	\right)\\
+\\
+& = & \left(\Theta+\dfrac{h_0\Upsilon_x}{k_x} \hat{\alpha}_\infty\right) \left[1-e^{-k_xt}\right] + (1-\hat\alpha_\infty) \dfrac{h_0\Upsilon_x}{k_x} \left[ k_x \dfrac{e^{-\omega_0t} - e^{-k_xt}}{\omega_0 - k_x}\right]
+\end{array}
+\right.
+\end{equation}
+
+
+\subsection{Time Scaling}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	k_6      & = & \sigma k_7\\
+	\omega_0 & = & \Omega k_7\\
+	\tau     & = & k_7 t\\
+\end{array}
+\right.
+\end{equation}
+We get
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\hat\alpha(\tau)  & = & \hat\alpha_\infty + \left(1-\hat\alpha_\infty\right) e^{-\Omega \tau}\\
+	\\
+	\beta_{7,0}(\tau) & = & \left( \Theta + \hat\alpha_\infty \star_7 \right)  \left[1-e^{-\tau}\right]
+	+ \left(1-\hat\alpha_\infty\right) \star_7 \left[\dfrac{e^{-\Omega\tau} - e^{-\tau}}{\Omega-1}\right]\\
+	\\
+	\beta_{6,0}(\tau) & = & \left( \Theta + \hat\alpha_\infty \star_6 \right)  \left[1-e^{-\sigma\tau}\right]
+	+ \left(1-\hat\alpha_\infty\right) \star_6 \left[\dfrac{e^{-\frac{\Omega}{\sigma}\sigma\tau} - e^{-\sigma\tau}}{\dfrac{\Omega}{\sigma}-1}\right]\\
+\end{array}
+\right.
 \end{equation}
 
 \end{document}

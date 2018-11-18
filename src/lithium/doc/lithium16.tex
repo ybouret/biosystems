@@ -264,6 +264,8 @@ which can be turned into an \textbf{unified} set of equations using
 \begin{array}{rcl}
 	\alpha & = & \dfrac{\EHin}{E_0}\\
 	\\
+	\hat\alpha & = & 1-\alpha\\
+	\\
 	\beta_x & = & \dfrac{\Li{x}}{\LiOut{x}}\\
 	\\
 	\Lambda & = & \Li{6} + \Li{7} = \left(\epsilon_6 \beta_6 + \epsilon_7 \beta_7\right) \LiAllOut \\
@@ -273,7 +275,7 @@ which can be turned into an \textbf{unified} set of equations using
 
 
 \begin{equation}
-\boxed{
+%\boxed{
 \left\lbrace
 \begin{array}{rcl}
 \partial_t\alpha & = &
@@ -281,22 +283,57 @@ which can be turned into an \textbf{unified} set of equations using
  + \left(1-\alpha\right)\proton \dfrac{\left(\sum_x k_x^p \epsilon_x J_x \right)\LiAllOut}{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut}
  - \alpha \left(\sum_x k_x^q \epsilon_x \beta_x \right) \LiAllOut\\
  \\
+ \partial_t \hat\alpha & = & k_h - \hat\alpha\left(k_h+\proton\dfrac{\left(\sum_x k_x^p \epsilon_x J_x \right)\LiAllOut}{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut}\right) + (1-\hat\alpha)\left(\sum_x k_x^q \epsilon_x \beta_x \right) \LiAllOut
+ \\\\
  \partial_t \beta_ x & = & k_x \left( \Theta - \beta_x \right) 
  + \left(1-\alpha\right)\proton \dfrac{k_x^p \epsilon_x J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} 
  - \alpha \ k_x^q \epsilon_x \beta_x  E_0\\
+ \\
+ & = &  k_x \left( \Theta - \beta_x \right) 
+ + \hat \alpha \proton \dfrac{k_x^p \epsilon_x J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} 
+ - \left(1-\hat\alpha\right)\ k_x^q \epsilon_x \beta_x  E_0\\
 \end{array}
 \right.
-}
+%}
+\end{equation}
+and we will define the scalings
+\begin{equation}
+\left\lbrace
+\begin{array}{ccll}
+	k_x^p J_x & = & k_x \bar{p}_x^2, & \bar{p}_x \text{ in M}^{-1} \\
+	k_x^q     & = & k_x \bar{q}_x  , & \bar{q}_x \text{ in M}^{-1} \\
+\end{array}
+\right.
 \end{equation}
 
 \section{Steady State}
-Experimentally, the initial isotopic separation is eventually recovered, meaning that
+TODO?
 \begin{equation}
-	\beta_6(\infty) = \beta_7(\infty) = \beta_\infty =  \dfrac{k_x\Theta+ \left(1-\alpha_\infty\right) h_\infty \dfrac{k_x^p \epsilon_x J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} }{ k_x + \alpha_\infty k_x^q \epsilon_x E_0 }
+	 \beta_x^\infty =  \dfrac{k_x\Theta+ \left(1-\alpha_\infty\right) h_\infty \dfrac{k_x^p \epsilon_x J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} }{ k_x + \alpha_\infty k_x^q \epsilon_x E_0 }
 \end{equation}
-And then formally, we simply have the other equation
+
+\section{First Order}
+\subsection{First Order $\alpha$}
+\subsubsection{Generic $\proton$}
+We get
 \begin{equation}
-	k_h E_0 \alpha_\infty =  (k_6+k_7) \left(\beta_\infty-\Theta\right) \LiAllOut
+	\partial_t \hat\alpha = k_h - \hat\alpha\left( k_h+ \Upsilon_\alpha \proton \right) = k_h - \hat\alpha g(t)
+\end{equation}
+We define
+\begin{equation}
+	\ig(t) = \int_0^t g(u) \,\mathrm{d} u
+\end{equation}
+to get
+\begin{equation}
+	\hat \alpha_1(t) = \left[ 1 + k_h \int_0^t e^{\ig(u)}  \,\mathrm{d} u \right] e^{-\ig(t)}
+\end{equation}
+\subsubsection{Constant $\proton$}
+\begin{equation}
+	\proton=h_0,\;\;g(t) = (k_h+\Upsilon_\alpha h_0)=\omega_0,\;\;\ig(t) = \omega_0 t
+\end{equation}
+\begin{equation}
+	\hat\alpha_0(t) = e^{-\omega_0t} + \dfrac{k_h}{\omega_0}\left( 1 - e^{-\omega_0 t}\right) 
+	= \dfrac{1}{\omega_0} \left[k_h + \left(\omega_0-k_h\right) e^{-\omega_0 t} \right]
 \end{equation}
 
 \end{document}

@@ -371,10 +371,10 @@ leading to
 h_0 \Upsilon_x 
 	\left( 
 		\dfrac{\hat\alpha_\infty}{k_x}\left[1-e^{-k_xt}\right]  
-		+ \dfrac{1-\hat\alpha_\infty}{\omega_0 - k_x}\left[e^{-\omega_0t} - e^{-k_xt}\right]
+		+ \dfrac{1-\hat\alpha_\infty}{k_x - \omega_0}\left[e^{-\omega_0t} - e^{-k_xt}\right]
 	\right)\\
 \\
-& = & \left(\Theta+\dfrac{h_0\Upsilon_x}{k_x} \hat{\alpha}_\infty\right) \left[1-e^{-k_xt}\right] + (1-\hat\alpha_\infty) \dfrac{h_0\Upsilon_x}{k_x} \left[ k_x \dfrac{e^{-\omega_0t} - e^{-k_xt}}{\omega_0 - k_x}\right]
+& = & \left(\Theta+\dfrac{h_0\Upsilon_x}{k_x} \hat{\alpha}_\infty\right) \left[1-e^{-k_xt}\right] + (1-\hat\alpha_\infty) \dfrac{h_0\Upsilon_x}{k_x} \left[ k_x \dfrac{e^{-\omega_0t} - e^{-k_xt}}{k_x - \omega_0}\right]
 \end{array}
 \right.
 \end{equation}
@@ -397,10 +397,10 @@ We get
 	\hat\alpha(\tau)  & = & \hat\alpha_\infty + \left(1-\hat\alpha_\infty\right) e^{-\Omega \tau}\\
 	\\
 	\beta_{7,0}(\tau) & = & \left( \Theta + \hat\alpha_\infty \star_7 \right)  \left[1-e^{-\tau}\right]
-	+ \left(1-\hat\alpha_\infty\right) \star_7 \left[\dfrac{e^{-\Omega\tau} - e^{-\tau}}{\Omega-1}\right]\\
+	+ \left(1-\hat\alpha_\infty\right) \star_7 \left[\dfrac{e^{-\Omega\tau} - e^{-\tau}}{1-\Omega}\right]\\
 	\\
 	\beta_{6,0}(\tau) & = & \left( \Theta + \hat\alpha_\infty \star_6 \right)  \left[1-e^{-\sigma\tau}\right]
-	+ \left(1-\hat\alpha_\infty\right) \star_6 \left[\dfrac{e^{-\frac{\Omega}{\sigma}\sigma\tau} - e^{-\sigma\tau}}{\dfrac{\Omega}{\sigma}-1}\right]\\
+	+ \left(1-\hat\alpha_\infty\right) \star_6 \left[\dfrac{e^{-\frac{\Omega}{\sigma}\sigma\tau} - e^{-\sigma\tau}}{1-\dfrac{\Omega}{\sigma}}\right]\\
 \end{array}
 \right.
 \end{equation}

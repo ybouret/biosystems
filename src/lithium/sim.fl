@@ -8,7 +8,7 @@ decl {\#include "y/fltk/canvas.hpp"} {public global
 decl {using namespace upsylon;} {public global
 }
 
-decl {void update();} {selected public global
+decl {void update();} {public global
 }
 
 Function {MakeSimWindow()} {open
@@ -25,18 +25,24 @@ Function {MakeSimWindow()} {open
       class {FLTK::Canvas}
     }
     Fl_Group ControlGrp {
-      label Control open
+      label Control open selected
       xywh {440 44 300 400} box ENGRAVED_BOX labelfont 4
-    } {}
-    Fl_Value_Slider logMin {
-      label {log(tau_min) :}
-      callback {update();}
-      xywh {550 65 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum -6 maximum -1 value -5 textfont 4 textsize 12
-    }
-    Fl_Value_Slider logMax {
-      label {log(tau_max) :}
-      callback {update();}
-      xywh {550 90 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum 1 maximum 6 value 5 textfont 4 textsize 12
+    } {
+      Fl_Value_Slider logMax {
+        label {log(tau_max) :}
+        callback {update();}
+        xywh {550 100 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum 1 maximum 6 value 5 textfont 4 textsize 12
+      }
+      Fl_Value_Slider logMin {
+        label {log(tau_min) :}
+        callback {update();}
+        xywh {550 70 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum -6 maximum -1 value -5 textfont 4 textsize 12
+      }
+      Fl_Value_Slider inputSigma {
+        label {sigma :}
+        callback {update();}
+        xywh {550 130 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum 1 maximum 2 step 0.001 value 1.01 textfont 4
+      }
     }
   }
 }

@@ -27,7 +27,7 @@ void update()
     beta6.color = FL_RED;
     beta7.color = FL_GREEN;
 
-    const double sigma = 1.05;
+    const double sigma = inputSigma->value();
 
     for(size_t i=0;i<=NP;++i)
     {
@@ -40,16 +40,26 @@ void update()
         beta7.push_back( FLTK::Point(lt,b7) );
         rho.push_back( FLTK::Point(lt,b7/b6) );
     }
+
     double rmin = rho.front().y;
     double rmax = rmin;
+
+    double bmin = beta6.front().y;
+    double bmax = bmin;
+
     for(size_t i=2;i<=rho.size();++i)
     {
         const double r = rho[i].y;
         rmin = min_of(r,rmin);
         rmax = max_of(r,rmax);
+
+        bmin = min_of(bmin,min_of( beta6[i].y, beta7[i].y ));
+        bmax = max_of(bmax,max_of( beta6[i].y, beta7[i].y ));
+
     }
 
     Ca->y2axis.set_range(rmin,rmax);
+    Ca->yaxis.set_range(bmin, bmax);
 
     Ca->redraw();
 

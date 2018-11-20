@@ -2,91 +2,13 @@
 #include "y/sequence/vector.hpp"
 #include "y/program.hpp"
 #include "y/ios/ocstream.hpp"
+#include "fcnli.hpp"
 
 using namespace upsylon;
 using namespace math;
 
 namespace
 {
-    static double BumpSeries(const double lambda, const double u )
-    {
-        const double fac = u * (lambda-1);
-        int    sgn = 1;
-        double den = 1;
-        double num = fac;
-
-        double ans = u;
-        double old_ans = ans;
-        for(size_t i=2;;++i)
-        {
-            sgn = -sgn;
-            num *= fac;
-            den *= i;
-            ans += sgn * num/den;
-            if( fabs(ans-old_ans) <= numeric<double>::ftol * fabs(ans) )
-            {
-                break;
-            }
-            old_ans = ans;
-        }
-
-        return ans * exp(-u);
-    }
-
-    static const double ltol = 1e-3;
-
-    static double Bump( const double lambda, const double u )
-    {
-
-        if(fabs(lambda-1)<ltol)
-        {
-            return BumpSeries(lambda,u);
-        }
-        else
-        {
-            return (exp(-lambda*u)-exp(-u))/(1.0-lambda);
-        }
-    }
-
-    static double UmaxSeries(const double lambda)
-    {
-        const double fac = lambda-1;
-        double num = 1;
-        double ans = 1;
-        double old_ans = ans;
-        int    sgn = 1;
-        for(size_t i=2;;++i)
-        {
-            sgn = -sgn;
-            num *= fac;
-            ans += (sgn * num)/i;
-
-            if( fabs(ans-old_ans) <= numeric<double>::ftol * fabs(ans) )
-            {
-                break;
-            }
-            old_ans = ans;
-        }
-        return ans;
-    }
-
-    static  double Umax(const double lambda)
-    {
-        if(fabs(lambda-1)<ltol)
-        {
-            return UmaxSeries(lambda);
-        }
-        else
-        {
-            return log(lambda)/(lambda-1.0);
-        }
-    }
-
-    static double Bmax(const double lambda)
-    {
-        return Bump(lambda,Umax(lambda));
-    }
-
 
     struct BumpApprox
     {
@@ -105,18 +27,18 @@ namespace
 Y_PROGRAM_START()
 {
     {
-        static const double lam[] = { 0.1, 0.5, 1-ltol*2, 1-ltol/2, 1, 1+ltol/2, 1+ltol*2, 2, 10 };
+        static const double lam[] = { 0.1, 0.5, 1-Lithium::ltol*2, 1-Lithium::ltol/2, 1, 1+Lithium::ltol/2, 1+Lithium::ltol*2, 2, 10 };
         static const size_t num = sizeof(lam)/sizeof(lam[0]);
         ios::ocstream fp("bumps.dat");
         {
             for(size_t i=0;i<num;++i)
             {
                 const double l = lam[i];
-                const double umax = Umax(l);
-                const double bmax = Bump(l,umax);
+                const double umax = Lithium::Umax(l);
+                const double bmax = Lithium::Bump(l,umax);
                 for(double u=0;u<=10;u += 0.01)
                 {
-                    fp("%.15g %.15g %.15g\n", u, Bump(lam[i],u), bmax);
+                    fp("%.15g %.15g %.15g\n", u, Lithium::Bump(lam[i],u), bmax);
                 }
                 fp << '\n';
             }
@@ -135,10 +57,10 @@ Y_PROGRAM_START()
         {
             const double logLam = -LogLamMax + (i<<1)*LogLamMax/N;
             const double lam    = exp(logLam);
-            fp("%.15g %.15g %.15g\n", logLam, Bmax(lam), lam );
+            fp("%.15g %.15g %.15g\n", logLam, Lithium::Bmax(lam), lam );
 
             L.push_back(logLam);
-            B.push_back(Bmax(lam));
+            B.push_back(Lithium::Bmax(lam));
 
         }
     }

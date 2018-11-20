@@ -293,12 +293,12 @@ or
  \partial_t \hat\alpha & = & k_h - \hat\alpha\left(k_h+\proton\dfrac{\left(\sum_x k_x^p \epsilon_x J_x \right)\LiAllOut}{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut}\right) + (1-\hat\alpha)\left(\sum_x k_x^q \epsilon_x \beta_x \right) \LiAllOut
  \\\\
  \partial_t \beta_ x & = & k_x \left( \Theta - \beta_x \right) 
- + \left(1-\alpha\right)\proton \dfrac{k_x^p \epsilon_x J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} 
- - \alpha \ k_x^q \epsilon_x \beta_x  E_0\\
+ + \left(1-\alpha\right)\proton \dfrac{k_x^p  J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} 
+ - \alpha \ k_x^q  \beta_x  E_0\\
  \\
  & = &  k_x \left( \Theta - \beta_x \right) 
- + \hat \alpha \proton \dfrac{k_x^p \epsilon_x J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} 
- - \left(1-\hat\alpha\right)\ k_x^q \epsilon_x \beta_x  E_0\\
+ + \hat \alpha \proton \dfrac{k_x^p  J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} 
+ - \left(1-\hat\alpha\right)\ k_x^q  \beta_x  E_0\\
 \end{array}
 \right.
 %}
@@ -315,9 +315,6 @@ and we will define the scalings
 
 \section{Steady State}
 TODO?
-\begin{equation}
-	 \beta_x^\infty =  \dfrac{k_x\Theta+ \left(1-\alpha_\infty\right) h_\infty \dfrac{k_x^p \epsilon_x J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} }{ k_x + \alpha_\infty k_x^q \epsilon_x E_0 }
-\end{equation}
 
 \section{First Order}
 \subsection{First Order $\alpha$}
@@ -418,7 +415,7 @@ We find
 \begin{array}{ccl}
 	J_\epsilon & = & \epsilon J_6 + (1-\epsilon) J_7 \\
 	\\
-	A_x & = & \dfrac{h_0\Upsilon_x}{k_x} = \dfrac{\dfrac{k_x^p J_x}{k_x} \epsilon_x  E_0 h_0}{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} = \epsilon_x \dfrac{\bar{p}_x^2}{1+J_\epsilon \LiAllOut} h_0 E_0 \\
+	A_x & = & \dfrac{h_0\Upsilon_x}{k_x} = \dfrac{\dfrac{k_x^p J_x}{k_x}   E_0 h_0}{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} =  \dfrac{\bar{p}_x^2}{1+J_\epsilon \LiAllOut} h_0 E_0 \\
 	\\
 	h_0\Upsilon_\alpha & = & \dfrac{\left(\sum_x k_x^p \epsilon_x J_x \right)h_0\LiAllOut}{1+J_\epsilon\LiAllOut} = 
 	 k_7 \dfrac{\left[\sigma \epsilon \bar{p}_6^2 + (1-\epsilon) \bar{p}_7^2 \right] h_0 \LiAllOut }{1+J_\epsilon \LiAllOut}  \\

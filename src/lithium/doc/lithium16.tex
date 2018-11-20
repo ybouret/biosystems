@@ -432,6 +432,14 @@ Without enzyme, and for any outer lithium concentration (even extrapolated to 0)
 \begin{equation}
 	\dfrac{\beta_7^\star}{\beta_6^\star} = \dfrac{  \left[1-e^{-\tau}\right]}{  \left[1-e^{-\sigma\tau}\right]}
 \end{equation}
+And the inital ratio is
+\begin{equation}
+	\dfrac{\beta_7^\star}{\beta_6^\star} \simeq \dfrac{1}{\sigma} + \dfrac{\sigma-1}{2\sigma} \tau + \ldots
+\end{equation}
+meaning that 
+\begin{equation}
+	\sigma = \dfrac{k_6}{k_7} > 1
+\end{equation}
 
 \subsubsection{Constant $\proton$ for initial times}
 \begin{equation}
@@ -446,6 +454,23 @@ The first order equation is
 	{\left( \Theta + A_6\cos^2\phi \right)  \left[1-e^{-\sigma\tau}\right]+ A_6B(\frac{\Omega}{\sigma},\sigma\tau) \sin^2\phi }
 \end{equation}
 
+\begin{equation}
+\dfrac{\beta_{7,0}}{\beta_{6,0}} \simeq \dfrac{1}{\sigma}\dfrac{\Theta+A_7}{\Theta+A_6} + \ldots
+\end{equation}
+so we see that if $A_6>A_7$, we already have a better catalytic separation at initial times than for the passive path!!!\\
+And as it is directly linked to the initial concentrations, it doesn't depend on $\hat\alpha_\infty=\cos^2\phi$
+
+In the vision of a constant $\proton$, the final ratio is
+\begin{equation}
+	\left.\dfrac{\beta_{7,0}}{\beta_{6,0}}\right|_\infty \simeq \dfrac{\Theta+A_7\cos^2\phi}{\Theta+A_6\cos^2\phi}
+\end{equation}
+
+
+The maximum of $B(\lambda,u)$ if for
+$$
+	u_{max} = \dfrac{\ln \lambda}{\lambda-1}
+$$
+which is slowly varying around 1
 \end{document}
 
 

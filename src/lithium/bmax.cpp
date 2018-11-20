@@ -90,11 +90,13 @@ namespace
 
     struct BumpApprox
     {
-        double Compute( double u, const array<double> &a, const Fit::Variables &var)
+        double Compute( double u, const array<double> &aorg, const Fit::Variables &var)
         {
-            const double u0  = var(a,"u0");
-            const double b   = var(a,"b");
-            return 1.0-1.0/(1.0+exp(-b*(u-u0)));
+            const double u0  = var(aorg,"u0");
+            const double a  =  var(aorg,"a");
+            const double b   = var(aorg,"b");
+            const double U   = u-u0;
+            return 1.0-1.0/(1.0+exp(-(a*U+b*U*U)));
         }
     };
 
@@ -126,7 +128,7 @@ Y_PROGRAM_START()
 
     {
         ios::ocstream fp("bmax.dat");
-        const double LamMax    = 1000;
+        const double LamMax    = 100;
         const double LogLamMax = log(LamMax);
         const size_t N         = 1000;
         for(size_t i=0;i<=N;++i)
@@ -147,12 +149,13 @@ Y_PROGRAM_START()
     BumpApprox                  approx;
     Fit::Type<double>::Function Bfit( &approx, & BumpApprox::Compute );
     Fit::Variables             &vars = sample.variables;
-    vars << "u0" << "b";
+    vars << "u0" << "a" << "b";
     vector<double> aorg( vars.size() );
     vector<double> aerr( vars.size() );
     vector<bool>   used( vars.size(), true );
     vars(aorg,"u0") = -0.7;
-    vars(aorg,"b")  = 0.8;
+    vars(aorg,"a")  = 0.8;
+    vars(aorg,"b")  = 0.0;
 
     if( !ls.fit(sample, Bfit, aorg, aerr, used ) )
     {
@@ -161,6 +164,11 @@ Y_PROGRAM_START()
     else
     {
         vars.diplay(std::cerr, aorg, aerr);
+        ios::ocstream fp("bfit.dat");
+        for(size_t i=1;i<=M;++i)
+        {
+            fp("%g %g %g\n", L[i], B[i], F[i]);
+        }
     }
 
 }

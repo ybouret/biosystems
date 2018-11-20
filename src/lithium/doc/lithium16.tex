@@ -274,16 +274,14 @@ which can be turned into an \textbf{unified} set of equations using
 \end{equation}
 and obviously
 \begin{equation}
-	\deltaLi = 1000 \left ( \left[1+10^{-3}\deltaLiOut\right] \dfrac{(1-\epsilon)\beta_7}{\epsilon\beta_6}-1\right)
+	\deltaLi = 1000 \left ( \left[1+10^{-3}\deltaLiOut\right] \dfrac{\beta_7}{\beta_6}-1\right)
 \end{equation}
 or
 \begin{equation}
-	\dfrac{(1-\epsilon)\beta_7}{\epsilon\beta_6} = \dfrac{\left[1+10^{-3}\deltaLi\right]}{\left[1+10^{-3}\deltaLiOut\right]}
+	\dfrac{ \beta_7}{\beta_6} = \dfrac{\left[1+10^{-3}\deltaLi\right]}{\left[1+10^{-3}\deltaLiOut\right]}
 \end{equation}
 
-\fbox{
-	$\dfrac{\beta_7}{\beta_6}$ is the ratio between the internal isotopic separation and the external isotopic separation
-}
+
 
 \begin{equation}
 %\boxed{
@@ -404,11 +402,11 @@ We get
 \begin{array}{rcl}
 	\hat\alpha(\tau)  & = & \hat\alpha_\infty + \left(1-\hat\alpha_\infty\right) e^{-\Omega \tau}\\
 	\\
-	\beta_{7,0}(\tau) & = & \left( \Theta + \hat\alpha_\infty A_7 \right)  \left[1-e^{-\tau}\right]
-	+ \left(1-\hat\alpha_\infty\right) A_7 \left[\dfrac{e^{-\Omega\tau} - e^{-\tau}}{1-\Omega}\right]\\
+	\beta_{7,0}(\tau) & = & \Theta\left[ \left( 1 + \hat\alpha_\infty A_7 \right)  \left[1-e^{-\tau}\right]
+	+ \left(1-\hat\alpha_\infty\right) A_7 \left[\dfrac{e^{-\Omega\tau} - e^{-\tau}}{1-\Omega}\right] \right]\\
 	\\
-	\beta_{6,0}(\tau) & = & \left( \Theta + \hat\alpha_\infty A_6 \right)  \left[1-e^{-\sigma\tau}\right]
-	+ \left(1-\hat\alpha_\infty\right) A_6 \left[\dfrac{e^{-\frac{\Omega}{\sigma}\sigma\tau} - e^{-\sigma\tau}}{1-\dfrac{\Omega}{\sigma}}\right]\\
+	\beta_{6,0}(\tau) & = & \Theta\left[ \left( 1 + \hat\alpha_\infty A_6 \right)  \left[1-e^{-\sigma\tau}\right]
+	+ \left(1-\hat\alpha_\infty\right) A_6 \left[\dfrac{e^{-\frac{\Omega}{\sigma}\sigma\tau} - e^{-\sigma\tau}}{1-\dfrac{\Omega}{\sigma}}\right]\right]\\
 \end{array}
 \right.
 \end{equation}
@@ -419,7 +417,7 @@ We find
 \begin{array}{ccl}
 	J_\epsilon & = & \epsilon J_6 + (1-\epsilon) J_7 \\
 	\\
-	A_x & = & \dfrac{h_0\Upsilon_x}{k_x} = \dfrac{\dfrac{k_x^p J_x}{k_x}   E_0 h_0}{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} =  \dfrac{\bar{p}_x^2}{1+J_\epsilon \LiAllOut} h_0 E_0 \\
+	A_x & = & \dfrac{h_0\Upsilon_x}{\Theta k_x} = \dfrac{\dfrac{k_x^p J_x}{\Theta k_x}   E_0 h_0}{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} =  \dfrac{\bar{p}_x^2}{1+J_\epsilon \LiAllOut} \dfrac{h_0 E_0}{\Theta} \\
 	\\
 	h_0\Upsilon_\alpha & = & \dfrac{\left(\sum_x k_x^p \epsilon_x J_x \right)h_0\LiAllOut}{1+J_\epsilon\LiAllOut} = 
 	 k_7 \dfrac{\left[\sigma \epsilon \bar{p}_6^2 + (1-\epsilon) \bar{p}_7^2 \right] h_0 \LiAllOut }{1+J_\epsilon \LiAllOut}  \\
@@ -454,19 +452,34 @@ The first order equation is
 \begin{equation}
 	\dfrac{\beta_{7,0}}{\beta_{6,0}} = 
 	\dfrac
-	{\left( \Theta + A_7\cos^2\phi \right)  \left[1-e^{-\tau}\right]+ A_7B(\Omega,\tau) \sin^2\phi }
-	{\left( \Theta + A_6\cos^2\phi \right)  \left[1-e^{-\sigma\tau}\right]+ A_6B(\frac{\Omega}{\sigma},\sigma\tau) \sin^2\phi }
+	{\left( 1 + A_7\cos^2\phi \right)  \left[1-e^{-\tau}\right]+ A_7B(\Omega,\tau) \sin^2\phi }
+	{\left( 1 + A_6\cos^2\phi \right)  \left[1-e^{-\sigma\tau}\right]+ A_6B(\frac{\Omega}{\sigma},\sigma\tau) \sin^2\phi }
 \end{equation}
 
 \begin{equation}
-\dfrac{\beta_{7,0}}{\beta_{6,0}} \simeq \dfrac{1}{\sigma}\dfrac{\Theta+A_7}{\Theta+A_6} + \ldots
+\dfrac{\beta_{7,0}}{\beta_{6,0}} \simeq \dfrac{1}{\sigma}\dfrac{1+A_7}{1+A_6} + \ldots
 \end{equation}
 so we see that if $A_6>A_7$, we already have a better catalytic separation at initial times than for the passive path!!!\\
 And as it is directly linked to the initial concentrations, it doesn't depend on $\hat\alpha_\infty=\cos^2\phi$
+So we say
+\begin{equation}
+	A_7 = A,\;\; A_6 = \kappa A
+\end{equation}
+and
+\begin{equation}
+	\dfrac{\beta_{7,0}}{\beta_{6,0}} = 
+	\dfrac
+	{\left( 1 + A\cos^2\phi \right)  \left[1-e^{-\tau}\right]+ A B(\Omega,\tau) \sin^2\phi }
+	{\left( 1 + \kappa A\cos^2\phi \right)  \left[1-e^{-\sigma\tau}\right]+ \kappa A B(\frac{\Omega}{\sigma},\sigma\tau) \sin^2\phi }
+\end{equation}
+giving
+\begin{equation}
+\dfrac{\beta_{7,0}}{\beta_{6,0}} \simeq \dfrac{1}{\sigma}\dfrac{1+A}{1+\kappa A} + \ldots
+\end{equation}
 
 In the vision of a constant $\proton$, the final ratio is
 \begin{equation}
-	\left.\dfrac{\beta_{7,0}}{\beta_{6,0}}\right|_\infty \simeq \dfrac{\Theta+A_7\cos^2\phi}{\Theta+A_6\cos^2\phi}
+	\left.\dfrac{\beta_{7,0}}{\beta_{6,0}}\right|_\infty \simeq \dfrac{1+A\cos^2\phi}{1+\kappa A\cos^2\phi}
 \end{equation}
 
 

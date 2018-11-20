@@ -10,3 +10,5 @@ beta6(tau,A,phi,om,sigma,kappa) = (1+(cos(phi)**2)*A*kappa)*Grow(sigma*tau) + (s
 
 rho0(tau,sigma)               = (Grow(tau)/Grow(sigma*tau));
 rho(tau,A,phi,om,sigma,kappa) = beta7(tau,A,phi,om) / beta6(tau,A,phi,om,sigma,kappa);
+
+ plot [-6:5] rho(exp(x),0.01,1.1,2.2,1.02,1.2), rho(exp(x),0.01,1.2,40.0,1.02,0.8)

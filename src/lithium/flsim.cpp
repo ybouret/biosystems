@@ -28,13 +28,18 @@ void update()
     beta7.color = FL_GREEN;
 
     const double sigma = inputSigma->value();
+    const double A     = pow(10.0,inputLog10A->value());
+    const double c2    = inputC2->value();
+    const double s2    = 1-c2;
+    const double Omega = inputOmega->value();
+    const double kappa = inputKappa->value();
 
     for(size_t i=0;i<=NP;++i)
     {
         const double lt  = Ca->xaxis.vmin + i*(Ca->xaxis.vmax-Ca->xaxis.vmin)/NP;
         const double tau = exp(lt);
-        const double b7 = Lithium::Grow(tau);
-        const double b6 = Lithium::Grow(tau*sigma);
+        const double b7 = Lithium::Grow(tau) * (1+A*c2) + A*s2 * Lithium::Bump(Omega,tau);
+        const double b6 = Lithium::Grow(tau*sigma) * (1+kappa*A*c2) + kappa *A *s2 * Lithium::Bump(Omega/sigma,tau*sigma);
 
         beta6.push_back( FLTK::Point(lt,b6) );
         beta7.push_back( FLTK::Point(lt,b7) );

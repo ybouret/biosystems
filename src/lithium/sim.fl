@@ -31,17 +31,37 @@ Function {MakeSimWindow()} {open
       Fl_Value_Slider logMax {
         label {log(tau_max) :}
         callback {update();}
-        xywh {550 100 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum 1 maximum 6 value 5 textfont 4 textsize 12
+        xywh {550 70 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum 1 maximum 6 value 5 textfont 4 textsize 12
       }
       Fl_Value_Slider logMin {
         label {log(tau_min) :}
         callback {update();}
-        xywh {550 70 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum -6 maximum -1 value -5 textfont 4 textsize 12
+        xywh {550 95 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum -6 maximum -1 value -5 textfont 4 textsize 12
       }
       Fl_Value_Slider inputSigma {
         label {sigma :}
         callback {update();}
-        xywh {550 130 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum 1 maximum 2 step 0.001 value 1.01 textfont 4
+        xywh {550 121 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum 1 maximum 2 step 0.001 value 1.01 textfont 4
+      }
+      Fl_Value_Slider inputLog10A {
+        label {log10(A):}
+        callback {update();}
+        xywh {550 147 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum -5 maximum 5 value -2 textfont 4
+      }
+      Fl_Value_Slider inputC2 {
+        label {alpha_inf:}
+        callback {update();}
+        xywh {550 173 180 20} type Horizontal labelfont 4 labelsize 12 align 4 value 0.1 textfont 4
+      }
+      Fl_Value_Slider inputOmega {
+        label {Omega:}
+        callback {update();}
+        xywh {550 199 180 20} type Horizontal labelfont 4 labelsize 12 align 4 maximum 20 step 0.001 value 10 textfont 4 textsize 8
+      }
+      Fl_Value_Slider inputKappa {
+        label {kappa:}
+        callback {update();}
+        xywh {550 225 180 20} type Horizontal labelfont 4 labelsize 12 align 4 minimum 0.1 maximum 10 step 0.001 value 1.1 textfont 4 textsize 8
       }
     }
   }

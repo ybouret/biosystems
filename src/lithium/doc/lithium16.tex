@@ -197,6 +197,7 @@ with (Goldman-Hodgkins-Katz)
 \end{equation}
 
 \subsection{Semi-Stationary Equations}
+\subsubsection{Full Variables}
 We define
 \begin{equation}
 	\mymat{W} = \mymat{\Phi}\mytrn{\mymat{\nu}} = \begin{pmatrix} -\tilde{J}_6-1 & -\tilde{J}_6 \cr -\tilde{J}_7 & -\tilde{J}_7-1\end{pmatrix}
@@ -250,14 +251,104 @@ then we get the \underline{three} coupled equations
 	\begin{array}{rcl}
 		\partial_t\EHin & = & -k_h \EHin + \left(E_0- \EHin\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
 		- \EHin \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\
+		\\
 		& = & 
 		-k_h E_0+ \left(E_0- \EHin\right)\left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
 		- \EHin \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\
+		\\
 		\partial_t\Li{x} & = & k_x \left(\tilde{\Theta}_x -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\tilde{D}}   k_x^p \tilde{J}_x  - \EHin k_x^q \Li{x}\\
 	\end{array}
 \right.
 %}
 \end{equation}
+
+
+\subsubsection{First Simplification/Catalysts}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\alpha & = & \dfrac{\EHin}{E_0}\\
+	\\
+	\hat\alpha & = & 1-\alpha\\
+\end{array}
+\right.
+\end{equation}
+Leading to
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t\alpha & = & -k_h \EHin + \left(1- \alpha\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
+		- \alpha \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\
+		\\
+		& = & 
+		-k_h + \left(1- \alpha\right)\left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
+		- \alpha \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\\end{array}
+\right.
+\end{equation}
+or
+\begin{equation}
+	\partial_t \hat\alpha = k_h - \hat\alpha \left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
+		+ (1-\hat\alpha) \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
+\end{equation}
+	
+
+\subsubsection{Second Simplification}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t\Li{x} & = & k_x \left(\tilde{\Theta}_x -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\tilde{D}}   k_x^p \tilde{J}_x  - \EHin k_x^q \Li{x}\\
+ &=&   \LiOut{x} \left( k_x
+ 	\left[\Theta-\dfrac{\Li{x}}{\LiOut{x}}\right] 
+	+ \left(1-\alpha\right) E_0 \proton \dfrac{ k_x^p J_x}{\tilde{D}}
+ - \alpha  E_0 k_x^q \dfrac{\Li{x}}{\LiOut{x}} \right) \\
+\end{array}
+\right.
+\end{equation}
+We define
+\begin{equation}
+%\left\lbrace
+\begin{array}{rcl}
+\beta_x & = & \dfrac{\Li{x}}{\LiOut{x}} \\
+\end{array}
+%\right.
+\end{equation}
+Leading to
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \beta_x + k_x \beta_x 
+& = & k_x \Theta  + \left(1-\alpha\right) \dfrac{ k_x^p J_x}{\tilde{D}} E_0 \proton  - \alpha E_0 k_x^q \beta_x \\
+\\
+& = & k_x \Theta  +  \hat\alpha \dfrac{ k_x^p J_x}{\tilde{D}} E_0 \proton  -  \left(1-\hat\alpha\right) E_0 k_x^q \beta_x \\
+\end{array}
+\right.
+\end{equation}
+
+and obviously
+\begin{equation}
+	\deltaLi = 1000 \left ( \left[1+10^{-3}\deltaLiOut\right] \dfrac{\beta_7}{\beta_6}-1\right)
+\end{equation}
+or
+\begin{equation}
+	\dfrac{ \beta_7}{\beta_6} = \dfrac{\left[1+10^{-3}\deltaLi\right]}{\left[1+10^{-3}\deltaLiOut\right]}
+\end{equation}
+
+
+\subsubsection{Unified system}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \beta_x + k_x \beta_x & = &  k_x \Theta  +  \hat\alpha \dfrac{ k_x^p J_x}{\tilde{D}} E_0 \proton  -  \left(1-\hat\alpha\right) E_0 k_x^q \beta_x \\
+\\
+	\partial_t \hat\alpha & = & k_h - \hat\alpha \left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x \epsilon_x k_x^p J_x \right) \LiAllOut \right] 
+		+ (1-\hat\alpha) \left\lbrack {\sum_x k_x^q \epsilon_x \beta_x }  \right\rbrack \LiAllOut \\
+\end{array}
+\right.
+\end{equation}
+
+
+\centerline{-----------------------}
+
 which can be turned into an \textbf{unified} set of equations using
 \begin{equation}
 \left\lbrace
@@ -314,6 +405,7 @@ and we will define the scalings
 \end{array}
 \right.
 \end{equation}
+\centerline{-----------------------}
 
 \section{Steady State}
 TODO?

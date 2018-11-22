@@ -418,6 +418,7 @@ to be injected in the last one to get $\hat\alpha_\infty$.
 
 \section{First Order}
 \subsection{First Order $\hat\alpha$}
+\subsubsection{Generic $\proton$}
 We will integrate
 \begin{equation}
 	\partial_\tau \hat\alpha = \mu - \hat\alpha\left[\mu+\proton \Upsilon_\alpha\right] = \mu-\hat{\alpha}(\tau) g(\tau)
@@ -426,9 +427,22 @@ We define
 \begin{equation}
 	\ig(\tau) = \int_0^\tau g(u)\,\mathrm{d}u
 \end{equation}
+and the solution is
+\begin{equation}
+	\hat\alpha_1(\tau) = \left[1+\mu\int_0^\tau e^{\ig(u)}\,\mathrm{d} u \right] e^{-\ig(\tau)}
+\end{equation}
 
-\subsubsection{Generic $\proton$}
-
+\subsubsection{Constant $\proton$}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	g(\tau) & = & \Omega=\mu+\Upsilon_\alpha h_0\\
+	\ig(\tau) & = & \Omega \tau\\
+	\hat{\alpha}_0 (\tau) & = & \dfrac{1}{\Omega} \left[ \mu + \left(\Omega-\mu\right) e^{-\Omega \tau} \right]\\
+	      &=&\hat\alpha_0^\infty+(1-\hat\alpha_0^\infty) e^{-\Omega \tau}
+\end{array}
+\right.
+\end{equation}
 
 
 \subsection{First order $\beta_x$}

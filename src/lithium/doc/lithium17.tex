@@ -1,0 +1,439 @@
+\documentclass[aps,onecolumn,12pt]{revtex4}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{xfrac}
+\usepackage{xcolor}
+\usepackage{bookman}
+\usepackage{dsfont}
+\usepackage{mathptmx}
+
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
+
+\newcommand{\spLi}[1]{{~^{\mychem{#1}}\mychem{Li}}}
+\newcommand{\Li}[1]{\myconc{\spLi{#1}}}
+
+\newcommand{\spEout}{\mychem{E}}
+\newcommand{\Eout}{\myconc{\spEout}}
+
+\newcommand{\spLiEin}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{in}}}
+\newcommand{\LiEin}[1]{\myconc{\spLiEin{#1}}}
+
+\newcommand{\spLiE}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace}
+\newcommand{\LiE}[1]{\myconc{\spLiE{#1}}}
+
+
+\newcommand{\spLiEout}[1]{\left\lbrace\spLi{#1}\spEout\right\rbrace_{\mathrm{out}}}
+\newcommand{\LiEout}[1]{\myconc{\spLiEout{#1}}}
+
+\newcommand{\spLiIn}[1]{{\spLi{#1}}_{\mathrm{in}}}
+\newcommand{\LiIn}[1]{\myconc{\spLiIn{#1}}}
+
+\newcommand{\spLiOut}[1]{{\spLi{#1}}_{\mathrm{out}}}
+\newcommand{\LiOut}[1]{\myconc{\spLiOut{#1}}}
+
+\newcommand{\spEHin}{\mychem{EH}}
+\newcommand{\EHin}{\myconc{\spEHin}}
+\newcommand{\spproton}{\mychem{H}}
+\newcommand{\proton}{\myconc{\spproton}}
+
+\newcommand{\mytrn}[1]{{#1}^{\!\mathsf{T}}}
+\newcommand{\mymat}[1]{{\bm{#1}}}
+\newcommand{\mydet}[1]{{\left|{#1}\right|}}
+
+\newcommand{\ratioLi}{ {\left(\dfrac{\Li{7}}{\Li{6}}\right)} }
+\newcommand{\deltaLi}{ {\delta\!\!\!\spLi{7}} }
+\newcommand{\deltaLiOut}{{\deltaLi}_{\mathrm{out}}}
+\newcommand{\ih}{\ensuremath{\mathbf{H}}}
+\newcommand{\ig}{\ensuremath{\mathbf{G}}}
+
+\newcommand{\LiAll}{\Lambda}
+\newcommand{\LiAllOut}{{\LiAll}_{\mathrm{out}}}
+
+\begin{document}
+
+\section{Isotopic Separation}
+$$
+	\deltaLi = \left(
+		\dfrac{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample}}
+		{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard}}
+		 -1 
+	\right) \times 1000
+$$
+
+$$
+	\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample} = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} \left[1+10^{-3}\deltaLi\right] = \beta_s \left[1+10^{-3}\deltaLi\right]
+$$
+
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\LiAll    & = & \Li{6} + \Li{7}\\
+	\LiAllOut & = & \LiOut{6} + \LiOut{7}\\
+\end{array}
+\right.
+\end{equation}
+and
+\begin{equation}
+\left\lbrace
+\begin{array}{rclcl}
+	\LiOut{6} & = & \dfrac{1}{1+\beta_s \left[1+10^{-3}\deltaLiOut\right] } \LiAllOut & = & \epsilon_6 \LiAllOut  = \epsilon \LiAllOut \\
+	\\
+	\LiOut{7} & = & \dfrac{\beta_s \left[1+10^{-3}\deltaLi\right]}{1+\beta_s \left[1+10^{-3}\deltaLiOut\right] } \LiAllOut & = & \epsilon_7 \LiAll,\;\epsilon_7 = 1-\epsilon \\
+\end{array}
+\right.
+\end{equation}
+with, for the experiments,
+\begin{equation}
+	\beta_s = 12.0192
+\end{equation}
+\begin{equation}
+	\epsilon^\mathrm{out} \simeq 0.076, 1-\epsilon^\mathrm{out} \simeq 0.924
+\end{equation}
+
+\section{Proposed Mechanism}
+
+\begin{equation}
+	 \spLiOut{x} +  \spEout  
+	 \xrightleftharpoons[k_x^d]{k_x^a} 
+	 \spLiE{x}
+	  \xrightleftharpoons[k_x^q]{\mychem{+H},\;k_x^p} \underbrace{\spEHin}_{\xrightarrow[]{k_h} \mychem{E} + \mychem{H}_{\mathrm{out}}} + \underbrace{\spLiIn{x}}_{\xrightleftharpoons[]{k_x} \spLiOut{x}}
+\end{equation}
+
+\section{Scheme}
+
+\subsection{Hypothesis}
+\begin{itemize}
+\item $\proton$ is a  user's function $h(t)$.
+\item $\LiOut{6}$ and  $\LiOut{7}$ are parameters.
+\item $k_h$ is constant during the whole experiments for NHE is in its saturated mode for the full range of pH
+\end{itemize}
+
+\subsection{Kinetics}
+We have the phase space described by
+\begin{equation}
+ \vec{X} = 
+        \begin{pmatrix}
+        \Eout\\
+        \EHin\\
+        \LiE{6}\\
+        \LiIn{6}\\
+        \LiE{7}\\
+        \LiIn{7}\\
+        \end{pmatrix}
+\end{equation}
+
+At any time, we  have
+\begin{equation} 
+	\label{eq:E0}
+	E_0 = \Eout + \EHin +  \LiE{6} + \LiE{7}
+\end{equation}
+
+\subsection{Secondary Hypothesis}
+We consider that we have the two equations
+\begin{equation}
+%\left\lbrace
+	\begin{array}{rcll}
+	 \spLiOut{x} +  \spEout &  \xrightleftharpoons[]{} & \spLiE{x}, & J_x = \dfrac{\LiE{x}}{\LiOut{x} \Eout} = \dfrac{k_x^a}{k_x^d}\\
+	 \end{array}
+\end{equation}
+leading to a constraint vector $\vec{\Gamma}$
+with 
+\begin{equation}
+	\tilde{J}_x = J_x \LiOut{x}
+\end{equation}
+
+\begin{equation}
+\vec{\Gamma} = 
+\begin{pmatrix}
+	\tilde{J}_6 \Eout - \LiE{6} \\
+	\tilde{J}_7 \Eout - \LiE{7} \\
+\end{pmatrix}
+\end{equation}
+which already simplifies the matter conservation \eqref{eq:E0} into
+\begin{equation}
+	E_0 = \EHin + \Eout \left(1+\tilde{J}_6+\tilde{J}_7\right).
+\end{equation}
+And we have the topology for the two equations as
+\begin{equation}
+	\label{eq:Nu}
+	\mymat{\nu}=\begin{pmatrix}-1 & 0 & 1 & 0 & 0 & 0\cr -1 & 0 & 0 & 0 & 1 & 0\end{pmatrix}
+\end{equation}
+and
+\begin{equation}
+	\partial_{\vec{X}}\vec{\Gamma} = 
+	\begin{pmatrix}\tilde{J}_6 & 0 & -1 & 0 & 0 & 0\cr\tilde{J}_7 & 0 & 0 & 0 & -1 & 0\end{pmatrix}
+\end{equation}
+
+\subsection{Rates}
+
+The "slow" rate vector is
+\begin{equation}
+	\partial_t\vec{X}_{slow} = 
+	\begin{pmatrix}
+		v_h\\
+		p_6-q_6+p_7-q_7-v_h\\
+		q_6-p_6\\
+		p_6-l_6-q_6\\
+		q_7-p_7\\
+		p_7-l_7-q_7\\
+	\end{pmatrix}
+	,\;\;\text{ with }
+	\left\lbrace
+	\begin{array}{rcll}
+	v_h & = & k_h \EHin & \text{(recycling)}\\
+	p_x & = & k_x^p \proton \LiE{x} & \text{(forward transfer)}\\
+	q_x & = & k_x^q \EHin \LiIn{x} & \text{(reverse transfer)} \\
+	l_x & = & k_x  \left(\LiIn{x}-\tilde{\Theta}_x\right) & \text{(leak)}\\
+	\end{array}
+	\right.
+\end{equation}
+with (Goldman-Hodgkins-Katz)
+\begin{equation}
+	\tilde{\Theta}_x = \Theta \LiOut{x}
+\end{equation}
+
+\subsection{Semi-Stationary Equations}
+\subsubsection{Full Variables}
+We define
+\begin{equation}
+	\mymat{W} = \mymat{\Phi}\mytrn{\mymat{\nu}} = \begin{pmatrix} -\tilde{J}_6-1 & -\tilde{J}_6 \cr -\tilde{J}_7 & -\tilde{J}_7-1\end{pmatrix}
+	,\;\mymat{W}^\ast = \begin{pmatrix} -\tilde{J}_6-1 & \tilde{J}_7 \cr \tilde{J}_6 & -\tilde{J}_7-1\end{pmatrix}
+	,\;\; \tilde{D} =\det(\mymat{W})=1+\tilde{J}_6+\tilde{J}_7.
+\end{equation}
+and
+\begin{equation}
+	\mymat{\chi} = \tilde{D}\mathds{1}_6-\mytrn{\mymat{\nu}}\mymat{W}^\ast\mymat{\Phi}
+\end{equation}
+
+\begin{equation}
+	\partial_t\vec{X} = \dfrac{1}{\tilde{D}}
+	\mymat{\chi} \partial_t\vec{X}_{slow}
+\end{equation}
+and we find
+\begin{equation}
+	\vec{Y} = \begin{pmatrix} \EHin \cr \LiIn{6} \cr \LiIn{7} \end{pmatrix}
+	,\;\partial_t \vec{Y} = 
+	\begin{pmatrix}
+	p_6-q_6+p_7-q_7-v_h\\
+	p_6-q_6-l_6\\
+	p_7-q_7-l_7
+	\end{pmatrix}
+\end{equation}
+with the expressions
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	v_h & = & k_h \EHin \\
+	q_x & = & k_x^q \EHin \Li{x}  \\
+	l_x & = & k_x  \left(\Li{x}- \tilde{\Theta}_x\right)\\
+	p_x & = & k_x^p \proton \LiE{x}\\
+	\end{array}
+\right.
+\end{equation}
+with
+\begin{equation}
+	\LiE{x} = \tilde{J}_x \Eout,\;\;\Eout=\dfrac{E_0-\EHin}{\tilde{D}}
+\end{equation}
+so that
+\begin{equation}
+	p_x = k_x^p \proton  \tilde{J}_x \dfrac{E_0-\EHin}{\tilde{D}}
+\end{equation}
+
+then we get the \underline{three} coupled equations  
+
+\begin{equation}
+%\boxed{
+\left\lbrace
+	\begin{array}{rcl}
+		\partial_t\EHin & = & -k_h \EHin + \left(E_0- \EHin\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
+		- \EHin \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\
+		\\
+		& = & 
+		-k_h E_0+ \left(E_0- \EHin\right)\left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
+		- \EHin \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\
+		\\
+		\partial_t\Li{x} & = & k_x \left(\tilde{\Theta}_x -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\tilde{D}}   k_x^p \tilde{J}_x  - \EHin k_x^q \Li{x}\\
+	\end{array}
+\right.
+%}
+\end{equation}
+
+
+\subsubsection{First Simplification/Catalysts}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\alpha & = & \dfrac{\EHin}{E_0}\\
+	\\
+	\hat\alpha & = & 1-\alpha\\
+\end{array}
+\right.
+\end{equation}
+Leading to
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t\alpha & = & -k_h \EHin + \left(1- \alpha\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
+		- \alpha \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\
+		\\
+		& = & 
+		-k_h + \left(1- \alpha\right)\left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
+		- \alpha \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\\end{array}
+\right.
+\end{equation}
+or
+\begin{equation}
+	\partial_t \hat\alpha = k_h - \hat\alpha \left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
+		+ (1-\hat\alpha) \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
+\end{equation}
+	
+
+\subsubsection{Second Simplification}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t\Li{x} & = & k_x \left(\tilde{\Theta}_x -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\tilde{D}}   k_x^p \tilde{J}_x  - \EHin k_x^q \Li{x}\\
+ &=&   \LiOut{x} \left( k_x
+ 	\left[\Theta-\dfrac{\Li{x}}{\LiOut{x}}\right] 
+	+ \left(1-\alpha\right) E_0 \proton \dfrac{ k_x^p J_x}{\tilde{D}}
+ - \alpha  E_0 k_x^q \dfrac{\Li{x}}{\LiOut{x}} \right) \\
+\end{array}
+\right.
+\end{equation}
+We define
+\begin{equation}
+%\left\lbrace
+\begin{array}{rcl}
+\beta_x & = & \dfrac{\Li{x}}{\LiOut{x}} \\
+\end{array}
+%\right.
+\end{equation}
+Leading to
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \beta_x + k_x \beta_x 
+& = & k_x \Theta  + \left(1-\alpha\right) \dfrac{ k_x^p J_x}{\tilde{D}} E_0 \proton  - \alpha E_0 k_x^q \beta_x \\
+\\
+& = & k_x \Theta  +  \hat\alpha \dfrac{ k_x^p J_x}{\tilde{D}} E_0 \proton  -  \left(1-\hat\alpha\right) E_0 k_x^q \beta_x \\
+\end{array}
+\right.
+\end{equation}
+
+and obviously
+\begin{equation}
+	\deltaLi = 1000 \left ( \left[1+10^{-3}\deltaLiOut\right] \dfrac{\beta_7}{\beta_6}-1\right)
+\end{equation}
+or
+\begin{equation}
+	\dfrac{ \beta_7}{\beta_6} = \dfrac{\left[1+10^{-3}\deltaLi\right]}{\left[1+10^{-3}\deltaLiOut\right]}
+\end{equation}
+
+
+\subsubsection{Unified system}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \beta_x + k_x \beta_x & = &  k_x \Theta  +  \hat\alpha \dfrac{ k_x^p J_x}{\tilde{D}} E_0 \proton  -  \left(1-\hat\alpha\right) E_0 k_x^q \beta_x \\
+\\
+	\partial_t \hat\alpha & = & k_h - \hat\alpha \left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x \epsilon_x k_x^p J_x \right) \LiAllOut \right] 
+		+ (1-\hat\alpha) \left\lbrack {\sum_x k_x^q \epsilon_x \beta_x }  \right\rbrack \LiAllOut \\
+\end{array}
+\right.
+\end{equation}
+Using 
+\begin{equation}
+	E_0 = \eta \LiAllOut
+\end{equation}
+
+We define 
+\begin{equation}
+\left\lbrace
+\begin{array}{ccll}
+	k_x^p J_x & = & k_x \bar{p}_x^2, & \bar{p}_x \text{ in M}^{-1} \\
+	k_x^q     & = & k_x \bar{q}_x  , & \bar{q}_x \text{ in M}^{-1} \\
+	\tilde{D} & = & 1+(\sum_x \epsilon_x J_x) \LiAllOut, & J_\epsilon = \epsilon J_6 + (1-\epsilon) J_7 \\
+\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+	\partial_t \beta_x + k_x \beta_x = k_x \left[ \Theta +
+	 \eta \left(
+	 \hat\alpha\dfrac{\bar{p}_x^2}{\tilde{D}} \LiAllOut \proton
+	 -(1-\hat\alpha) \bar{q}_x \LiAllOut \beta_x 
+	  \right) \right]
+\end{equation}
+and we set
+\begin{equation}
+	\Upsilon_x = \bar{p}_x^2 \dfrac{\LiAllOut}{1+J_\epsilon \LiAllOut} \;\;(\text{in M}^{-1}) , \;\; Q_x = \bar{q}_x \LiAllOut\;\; (\text{a scalar})
+\end{equation}
+to get
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \beta_x + k_x \beta_x & = & k_x \left[ \Theta + \eta \left( \hat\alpha \Upsilon_x \proton - (1-\hat\alpha)Q_x \beta_x \right) \right] \\
+	\\
+	\partial_t \hat\alpha & = & k_h - \hat\alpha \left\lbrack k_h+
+	 \proton \left(\sum_x \epsilon_x k_x \Upsilon_x \right) \right] 
+		+ (1-\hat\alpha) \left\lbrack {\sum_x \epsilon_x k_x Q_x \beta_x }  \right\rbrack \\
+\end{array}
+\right.
+\end{equation}
+It is now time to change time using the $\Li{7}$ passive rate as reference
+\begin{equation}
+ k_6 = \sigma k_7,\;\;\tau=k_7 t, \;\; \partial_t = k_7 \partial_\tau, \;\; \mu = \dfrac{k_h}{k_7}
+\end{equation}
+to get
+\begin{equation}
+\left\lbrace
+\begin{array}{ccl}
+	\partial_\tau \beta_7 + \beta_7 & = & \left[ \Theta + \eta \left( \hat\alpha \Upsilon_7 \proton - (1-\hat\alpha)Q_7 \beta_7 \right) \right]\\
+	\\
+	\partial_\tau \beta_6 + \sigma \beta_6 & = & \sigma \left[ \Theta + \eta \left( \hat\alpha \Upsilon_6 \proton - (1-\hat\alpha)Q_6 \beta_6 \right) \right]\\
+	\\
+		\partial_\tau \hat\alpha & = & \mu - \hat\alpha \left\lbrack \mu +
+	 \proton \underbrace{\left(\epsilon\sigma\Upsilon_6 + (1-\epsilon)\Upsilon_7 \right)}_{\Upsilon_\alpha} \right] 
+		+ (1-\hat\alpha) \left\lbrack { \epsilon \sigma Q_6 \beta_6 + (1-\epsilon) Q_7 \beta_7  }  \right\rbrack \\
+\end{array}
+\right.
+\end{equation}
+
+
+
+\section{Steady State}
+We have the two equations
+\begin{equation}
+\begin{array}{rcl}
+	\beta_x^\infty & =  & \dfrac{\Theta+\hat\alpha_\infty \eta \Upsilon_x h_\infty }{1+ (1-\hat\alpha_\infty)\eta Q_x }\\
+	%\mu \eta (1-\hat\alpha_\infty) & = & \Theta \left[ \sigma\epsilon (\beta_6^\infty-1) + (1-\epsilon)(\beta_7^\infty-1)\right]\\\
+\end{array}
+\end{equation}
+to be injected in the last one to get $\hat\alpha_\infty$.
+
+
+\section{First Order}
+\subsection{First Order $\hat\alpha$}
+We will integrate
+\begin{equation}
+	\partial_\tau \hat\alpha = \mu - \hat\alpha\left[\mu+\proton \Upsilon_\alpha\right] = \mu-\hat{\alpha}(\tau) g(\tau)
+\end{equation}
+We define
+\begin{equation}
+	\ig(\tau) = \int_0^\tau g(u)\,\mathrm{d}u
+\end{equation}
+
+\subsubsection{Generic $\proton$}
+
+
+
+\subsection{First order $\beta_x$}
+
+
+\end{document}
+
+

@@ -370,7 +370,7 @@ We define
 \end{equation}
 and we set
 \begin{equation}
-	\Upsilon_x = \bar{p}_x^2 \dfrac{\LiAllOut}{1+J_\epsilon \LiAllOut} \; \text{ in M}^{-1} , \;\; Q_x = \bar{q}_x \LiAllOut \text{ as scalar}
+	\Upsilon_x = \bar{p}_x^2 \dfrac{\LiAllOut}{1+J_\epsilon \LiAllOut} \;\;(\text{in M}^{-1}) , \;\; Q_x = \bar{q}_x \LiAllOut\;\; (\text{a scalar})
 \end{equation}
 to get
 \begin{equation}
@@ -380,73 +380,41 @@ to get
 	\\
 	\partial_t \hat\alpha & = & k_h - \hat\alpha \left\lbrack k_h+
 	 \proton \left(\sum_x \epsilon_x k_x \Upsilon_x \right) \right] 
-		+ (1-\hat\alpha) \left\lbrack {\sum_x \epsilon_x k_x Q_x \beta_x }  \right\rbrack \LiAllOut \\
+		+ (1-\hat\alpha) \left\lbrack {\sum_x \epsilon_x k_x Q_x \beta_x }  \right\rbrack \\
 \end{array}
 \right.
 \end{equation}
-
-\centerline{-----------------------}
-
-which can be turned into an \textbf{unified} set of equations using
+It is now time to change time using the $\Li{7}$ passive rate as reference
+\begin{equation}
+ k_6 = \sigma k_7,\;\;\tau=k_7 t, \;\; \partial_t = k_7 \partial_\tau, \;\; \mu = \dfrac{k_h}{k_7}
+\end{equation}
+to get
 \begin{equation}
 \left\lbrace
-\begin{array}{rcl}
-	\alpha & = & \dfrac{\EHin}{E_0}\\
+\begin{array}{ccl}
+	\partial_\tau \beta_7 + \beta_7 & = & \left[ \Theta + \eta \left( \hat\alpha \Upsilon_7 \proton - (1-\hat\alpha)Q_7 \beta_7 \right) \right]\\
 	\\
-	\hat\alpha & = & 1-\alpha\\
+	\partial_\tau \beta_6 + \sigma \beta_6 & = & \sigma \left[ \Theta + \eta \left( \hat\alpha \Upsilon_6 \proton - (1-\hat\alpha)Q_6 \beta_6 \right) \right]\\
 	\\
-	\beta_x & = & \dfrac{\Li{x}}{\LiOut{x}}\\
-	\\
-	\Lambda & = & \Li{6} + \Li{7} = \left(\epsilon_6 \beta_6 + \epsilon_7 \beta_7\right) \LiAllOut = \left[\epsilon \beta_6 + (1-\epsilon) \beta_7\right] \LiAllOut\\
+		\partial_\tau \hat\alpha & = & \mu - \hat\alpha \left\lbrack \mu +
+	 \proton \left(\epsilon\sigma\Upsilon_6 + (1-\epsilon)\Upsilon_7 \right) \right] 
+		+ (1-\hat\alpha) \left\lbrack { \epsilon \sigma Q_6 \beta_6 + (1-\epsilon) Q_7 \beta_7  }  \right\rbrack \\
 \end{array}
 \right.
 \end{equation}
-and obviously
-\begin{equation}
-	\deltaLi = 1000 \left ( \left[1+10^{-3}\deltaLiOut\right] \dfrac{\beta_7}{\beta_6}-1\right)
-\end{equation}
-or
-\begin{equation}
-	\dfrac{ \beta_7}{\beta_6} = \dfrac{\left[1+10^{-3}\deltaLi\right]}{\left[1+10^{-3}\deltaLiOut\right]}
-\end{equation}
 
 
-
-\begin{equation}
-%\boxed{
-\left\lbrace
-\begin{array}{rcl}
-\partial_t\alpha & = &
- -k_h \alpha 
- + \left(1-\alpha\right)\proton \dfrac{\left(\sum_x k_x^p \epsilon_x J_x \right)\LiAllOut}{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut}
- - \alpha \left(\sum_x k_x^q \epsilon_x \beta_x \right) \LiAllOut\\
- \\
- \partial_t \hat\alpha & = & k_h - \hat\alpha\left(k_h+\proton\dfrac{\left(\sum_x k_x^p \epsilon_x J_x \right)\LiAllOut}{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut}\right) + (1-\hat\alpha)\left(\sum_x k_x^q \epsilon_x \beta_x \right) \LiAllOut
- \\\\
- \partial_t \beta_ x & = & k_x \left( \Theta - \beta_x \right) 
- + \left(1-\alpha\right)\proton \dfrac{k_x^p  J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} 
- - \alpha \ k_x^q  \beta_x  E_0\\
- \\
- & = &  k_x \left( \Theta - \beta_x \right) 
- + \hat \alpha \proton \dfrac{k_x^p  J_x E_0 }{1+\left(\sum_x J_x \epsilon_x \right) \LiAllOut} 
- - \left(1-\hat\alpha\right)\ k_x^q  \beta_x  E_0\\
-\end{array}
-\right.
-%}
-\end{equation}
-and we will define the scalings
-\begin{equation}
-\left\lbrace
-\begin{array}{ccll}
-	k_x^p J_x & = & k_x \bar{p}_x^2, & \bar{p}_x \text{ in M}^{-1} \\
-	k_x^q     & = & k_x \bar{q}_x  , & \bar{q}_x \text{ in M}^{-1} \\
-\end{array}
-\right.
-\end{equation}
-\centerline{-----------------------}
 
 \section{Steady State}
-TODO?
+We have the two equations
+\begin{equation}
+\begin{array}{rcl}
+	\beta_x^\infty & =  & \dfrac{\Theta+\hat\alpha_\infty \eta \Upsilon_x h_\infty }{1+ (1-\hat\alpha_\infty)\eta Q_x }\\
+	%\mu \eta (1-\hat\alpha_\infty) & = & \Theta \left[ \sigma\epsilon (\beta_6^\infty-1) + (1-\epsilon)(\beta_7^\infty-1)\right]\\\
+\end{array}
+\end{equation}
+to be injected in the last one to get $\hat\alpha_\infty$.
+
 
 \section{First Order}
 \subsection{First Order $\alpha$}

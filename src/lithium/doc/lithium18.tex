@@ -277,7 +277,7 @@ Leading to
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t\alpha & = & -k_h \EHin + \left(1- \alpha\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
+\partial_t\alpha & = & -k_h \alpha + \left(1- \alpha\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
 		- \alpha \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack\\
 		\\
 		& = & 
@@ -335,20 +335,24 @@ or
 
 
 \subsubsection{Unified system}
+Using 
+\begin{equation}
+	E_0 = \eta \LiAllOut
+\end{equation}
+we get
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t \beta_x + k_x \beta_x & = &  k_x \Theta  +  \hat\alpha \dfrac{ k_x^p J_x}{\tilde{D}} E_0 \proton  -  \left(1-\hat\alpha\right) E_0 k_x^q \beta_x \\
+\partial_t \beta_x  & = &  k_x \left(\Theta -\beta_x \right) +  \eta \left[ \hat\alpha \dfrac{ k_x^p J_x}{\tilde{D}} \LiAllOut \proton  -  \left(1-\hat\alpha\right) \LiAllOut k_x^q \beta_x \right] \\
 \\
 	\partial_t \hat\alpha & = & k_h - \hat\alpha \left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x \epsilon_x k_x^p J_x \right) \LiAllOut \right] 
 		+ (1-\hat\alpha) \left\lbrack {\sum_x k_x^q \epsilon_x \beta_x }  \right\rbrack \LiAllOut \\
 \end{array}
 \right.
 \end{equation}
-Using 
-\begin{equation}
-	E_0 = \eta \LiAllOut
-\end{equation}
+
+
+\end{document}
 
 We define 
 \begin{equation}

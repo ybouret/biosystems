@@ -54,6 +54,7 @@
 \newcommand{\LiAllOut}{{\LiAll}_{\mathrm{out}}}
 
 \begin{document}
+\tableofcontents
 
 \section{Isotopic Separation}
 $$
@@ -197,7 +198,6 @@ with (Goldman-Hodgkins-Katz)
 \end{equation}
 
 \subsection{Semi-Stationary Equations}
-\subsubsection{Full Variables}
 We define
 \begin{equation}
 	\mymat{W} = \mymat{\Phi}\mytrn{\mymat{\nu}} = \begin{pmatrix} -\tilde{J}_6-1 & -\tilde{J}_6 \cr -\tilde{J}_7 & -\tilde{J}_7-1\end{pmatrix}
@@ -262,8 +262,9 @@ then we get the \underline{three} coupled equations
 %}
 \end{equation}
 
+\section{Solving}
 
-\subsubsection{First Simplification/Catalyst}
+\subsection{First Simplification/Catalyst}
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -292,7 +293,7 @@ or
 \end{equation}
 	
 
-\subsubsection{Second Simplification}
+\subsection{Second Simplification}
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -334,7 +335,7 @@ or
 \end{equation}
 
 
-\subsubsection{Unified system}
+\subsection{Unified system}
 Using 
 \begin{equation}
 	E_0 = \eta \LiAllOut
@@ -375,6 +376,19 @@ so that
 \end{array}
 \right.
 \end{equation}
+
+\section{Steady State}
+We get the system of equations
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\beta_x^\infty & = & \dfrac{k_x\Theta + \eta \hat\alpha_\infty h_\infty \Upsilon_x}{k_x + \eta (1-\hat\alpha_\infty) Q_x}\\
+	\\
+	\hat\alpha_\infty & = & \dfrac{k_h+\sum_x\epsilon_x Q_x\beta_x^\infty}{k_h + \left(\sum_x h_\infty \Upsilon_x \right) + \sum_x\epsilon_x Q_x\beta_x^\infty}\\
+\end{array}
+\right.
+\end{equation}
+
 
 \end{document}
 

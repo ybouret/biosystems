@@ -263,7 +263,7 @@ then we get the \underline{three} coupled equations
 \end{equation}
 
 
-\subsubsection{First Simplification/Catalysts}
+\subsubsection{First Simplification/Catalyst}
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -351,6 +351,30 @@ we get
 \right.
 \end{equation}
 
+
+we define 
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\Upsilon_x & = & \dfrac{k_x^pJ_x \LiAllOut}{\tilde{D}}
+	 = \dfrac{k_x^pJ_x \LiAllOut}{1+ J_\epsilon\LiAllOut}, \;\; J_\epsilon= \epsilon J_6 + (1-\epsilon) J_7\\
+	 \\
+	 Q_x & = & k_x^q \LiAllOut \\
+\end{array}
+\right.
+\end{equation}
+so that
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \beta_x  & = &  k_x \left(\Theta -\beta_x \right) +  \eta \left[ \hat\alpha \proton \Upsilon_x  -  \left(1-\hat\alpha\right) Q_x\beta_x \right] \\
+\\
+	\partial_t \hat\alpha & = & k_h - 
+		\hat\alpha \left\lbrack k_h+ \proton \left(\sum_x \Upsilon_x \right)\right] 
+		+ (1-\hat\alpha) \left\lbrack {\sum_x  \epsilon_x Q_x \beta_x }  \right\rbrack \\
+\end{array}
+\right.
+\end{equation}
 
 \end{document}
 

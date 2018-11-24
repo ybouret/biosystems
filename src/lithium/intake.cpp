@@ -55,16 +55,16 @@ public:
     d7out(_d7out),
     eps6(1.0/(1.0+beta_s*(1.0+0.001*d7out))),
     eps7(1.0-eps6),
-    U6(0.1),
-    U7(0.1),
+    U6(0.5),
+    U7(U6),
     Ua(eps6*U6+eps7*U7),
     mu6(0.5),
-    mu7(mu6),
-    eta(40.0),
-    Q6(1.1),
+    mu7(mu6/1.03),
+    eta(5.0),
+    Q6(2.1),
     Q7(Q6),
     h_ini(1),
-    h_end(0.1),
+    h_end(1),
     scale(0.5)
     {
         std::cerr << "Theta   = " << Theta << std::endl;

@@ -335,7 +335,7 @@ or
 \end{equation}
 
 
-\subsection{Unified system}
+\subsection{Unified system for variables}
 Using 
 \begin{equation}
 	E_0 = \eta \LiAllOut
@@ -353,14 +353,22 @@ we get
 \end{equation}
 
 
-we define 
+\subsection{Rescaling time}
+Since we are concerned with the catalytic aspect, we use
+\begin{equation}
+	\tau = k_h t, \;\;\partial_t = k_h \partial_\tau
+\end{equation}
+
+We define 
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\Upsilon_x & = & \dfrac{k_x^pJ_x \LiAllOut}{\tilde{D}}
-	 = \dfrac{k_x^pJ_x \LiAllOut}{1+ J_\epsilon\LiAllOut}, \;\; J_\epsilon= \epsilon J_6 + (1-\epsilon) J_7\\
+	\mu_x      & = & \dfrac{k_x}{k_h}\\
+	\\
+	\Upsilon_x & = & \dfrac{k_x^pJ_x \LiAllOut}{k_h \tilde{D}}
+	 = \dfrac{k_x^pJ_x \LiAllOut}{k_h\left(1+ J_\epsilon\LiAllOut\right)} \;\; (\text{in M}^{-1}),\;\; J_\epsilon= \epsilon J_6 + (1-\epsilon) J_7\\
 	 \\
-	 Q_x & = & k_x^q \LiAllOut \\
+	 Q_x & = & \dfrac{k_x^q \LiAllOut}{k_h} \;\; (\text{a scalar})\\
 \end{array}
 \right.
 \end{equation}
@@ -368,10 +376,10 @@ so that
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t \beta_x  & = &  k_x \left(\Theta -\beta_x \right) +  \eta \left[ \hat\alpha \proton \Upsilon_x  -  \left(1-\hat\alpha\right) Q_x\beta_x \right] \\
+\partial_\tau \beta_x  & = &  \mu_x \left(\Theta -\beta_x \right) +  \eta \left[ \hat\alpha \proton \Upsilon_x  -  \left(1-\hat\alpha\right) Q_x\beta_x \right] \\
 \\
-	\partial_t \hat\alpha & = & k_h - 
-		\hat\alpha \left\lbrack k_h+ \proton \left(\sum_x \Upsilon_x \right)\right] 
+	\partial_\tau \hat\alpha & = & 1 - 
+		\hat\alpha \left\lbrack 1+ \proton \left(\sum_x \epsilon_x \Upsilon_x \right)\right] 
 		+ (1-\hat\alpha) \left\lbrack {\sum_x  \epsilon_x Q_x \beta_x }  \right\rbrack \\
 \end{array}
 \right.
@@ -382,9 +390,9 @@ We get the system of equations
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\beta_x^\infty & = & \dfrac{k_x\Theta + \eta \hat\alpha_\infty h_\infty \Upsilon_x}{k_x + \eta (1-\hat\alpha_\infty) Q_x}\\
+	\beta_x^\infty & = & \dfrac{\mu_x\Theta + \eta \hat\alpha_\infty h_\infty \Upsilon_x}{\mu_x + \eta (1-\hat\alpha_\infty) Q_x}\\
 	\\
-	\hat\alpha_\infty & = & \dfrac{k_h+\sum_x\epsilon_x Q_x\beta_x^\infty}{k_h + \left(\sum_x h_\infty \Upsilon_x \right) + \sum_x\epsilon_x Q_x\beta_x^\infty}\\
+	\hat\alpha_\infty & = & \dfrac{1+\sum_x\epsilon_x Q_x\beta_x^\infty}{1 + \left(\sum_x \epsilon_x h_\infty \Upsilon_x \right) + \sum_x\epsilon_x Q_x\beta_x^\infty}\\
 \end{array}
 \right.
 \end{equation}

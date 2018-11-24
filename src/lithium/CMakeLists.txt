@@ -10,6 +10,10 @@ ADD_EXECUTABLE(bmax bmax.cpp fcnli.hpp)
 TARGET_LINK_Y(bmax m)
 INSTALL( TARGETS bmax RUNTIME DESTINATION bin )
 
+ADD_EXECUTABLE(alpha alpha.cpp)
+TARGET_LINK_Y(alpha m)
+INSTALL( TARGETS alpha RUNTIME DESTINATION bin )
+
 INCLUDE("${YROOT}/share/y/fltk.cmake")
 
 IF(FLTK_FOUND)

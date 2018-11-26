@@ -385,7 +385,8 @@ so that
 \right.
 \end{equation}
 
-\section{Steady State}
+\section{Steady State and consequences}
+\subsection{Generic case}
 We get the system of equations
 \begin{equation}
 \left\lbrace
@@ -396,7 +397,27 @@ We get the system of equations
 \end{array}
 \right.
 \end{equation}
+and $\hat\alpha_\infty$ may be expressed as the solution of a second order polynomial....
 
+\subsection{Low quadratic values (a.k.a linear case)}
+In that case,
+\begin{equation}
+		\hat\alpha_1^\infty \simeq \dfrac{1}{1+\left(\sum_x \epsilon_x h_\infty \Upsilon_x \right)}
+\end{equation}
+and 
+\begin{equation}
+	\beta_{x,1}^\infty \simeq \Theta + \dfrac{\eta}{\mu_x}  h_\infty \Upsilon_x \hat\alpha_1^\infty
+\end{equation}
+is greater that $\Theta$
+\subsection{High quadratic values}
+In that case,
+\begin{equation}
+	\hat\alpha_2^\infty \simeq 1
+\end{equation}
+and we can show that \underline{mathematically} and because the catalytic path becomes a fast reversible path,
+\begin{equation}
+	\beta_{x,2}^\infty \simeq \Theta 
+\end{equation}
 
 \section{Solutions}
 \begin{itemize}

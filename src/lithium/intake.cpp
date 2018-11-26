@@ -5,6 +5,7 @@
 #include "y/ios/ocstream.hpp"
 #include "y/os/progress.hpp"
 #include "y/string/convert.hpp"
+#include "y/lua++/state.hpp"
 
 using namespace upsylon;
 using namespace math;
@@ -48,21 +49,20 @@ public:
     const double scale;
 
 
-
-    inline Intake(const double _Theta,
-                  const double _d7out) :
-    Theta( _Theta ),
-    d7out(_d7out),
+#define __INI(VAR) VAR( vm.get<double>( #VAR ) )
+    inline Intake(Lua::State &vm) :
+    __INI(Theta),
+    __INI(d7out),
     eps6(1.0/(1.0+beta_s*(1.0+0.001*d7out))),
     eps7(1.0-eps6),
-    U6(0.5),
-    U7(U6),
+    __INI(U6),
+    __INI(U7),
     Ua(eps6*U6+eps7*U7),
-    mu6(0.5),
-    mu7(mu6/1.03),
-    eta(5.0),
-    Q6(2.1),
-    Q7(Q6),
+    __INI(mu6),
+    __INI(mu7),
+    __INI(eta),
+    __INI(Q6),
+    __INI(Q7),
     h_ini(1),
     h_end(1),
     scale(0.5)
@@ -118,8 +118,8 @@ public:
         const double h    = getH(tau);
 
         dYdt[I_AC]   = 1.0 -  ac*(1.0+h*Ua) + (1.0-ac)*(eps6*b6*Q6+eps7*b7*Q7);
-        dYdt[I_B6]   = mu6*(Theta - b6) + eta*( ac*h*U6 + (1-ac) * Q6 * b6 );
-        dYdt[I_B7]   = mu7*(Theta - b7) + eta*( ac*h*U7 + (1-ac) * Q7 * b7 );
+        dYdt[I_B6]   = mu6*(Theta - b6) + eta*( ac*h*U6 - (1-ac) * Q6 * b6 );
+        dYdt[I_B7]   = mu7*(Theta - b7) + eta*( ac*h*U7 - (1-ac) * Q7 * b7 );
     }
 
     double getH(double tau)
@@ -143,19 +143,18 @@ static inline void save( ios::ostream &fp, const double t, const Array &fields, 
 
 Y_PROGRAM_START()
 {
-    double Theta     = 4;
-    if(argc>1)
+    Lua::State vm;
+    for(int i=1;i<argc;++i)
     {
-        Theta = string_convert::to<double>(argv[1],"Theta");
+        vm.doFile(argv[i]);
     }
 
 
-
-    const double d7Out = 15.2;
+    //const double d7Out = 15.2;
     //const double d7In  = 1.05;
 
 
-    Intake          intake(Theta,d7Out);
+    Intake          intake(vm);
 
     ODEquation      diffeq( &intake, & Intake::compute );
     ODE_Driver      odeint;
@@ -174,7 +173,8 @@ Y_PROGRAM_START()
     std::cerr << "running " << iters << " steps up to " << iters * dt << " seconds, saving every " << every << " steps" << std::endl;
     {
         ios::ocstream fp(filename);
-        save(fp,0,Y, intake.delta7(Y,0) );
+        //save(fp,0,Y, intake.delta7(Y,0) );
+        save(fp,0,Y, intake.ratio(Y, 0) );
     }
 
     progress bar;
@@ -188,9 +188,10 @@ Y_PROGRAM_START()
         if( 0 == (i%every) )
         {
             ios::ocstream fp(filename,true);
-            save(fp,t1,Y,intake.delta7(Y,t1));
+            //save(fp,t1,Y,intake.delta7(Y,t1));
             bar.update(i,iters);
             bar.display(std::cerr) << '\r';
+            save(fp,t1,Y, intake.ratio(Y,t1) );
         }
     }
     std::cerr << std::endl;

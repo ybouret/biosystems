@@ -2,8 +2,8 @@ ADD_EXECUTABLE(build-proton build-proton.cpp)
 TARGET_LINK_Y(build-proton m)
 INSTALL( TARGETS build-proton RUNTIME DESTINATION bin )
 
-ADD_EXECUTABLE(intake intake.cpp)
-TARGET_LINK_Y(intake m)
+ADD_EXECUTABLE(intake intake.cpp intake.lua)
+TARGET_LINK_Y(intake lua++ m)
 INSTALL( TARGETS intake RUNTIME DESTINATION bin )
 
 ADD_EXECUTABLE(bmax bmax.cpp fcnli.hpp)

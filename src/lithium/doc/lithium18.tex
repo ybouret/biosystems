@@ -419,15 +419,68 @@ and we can show that \underline{mathematically} and because the catalytic path b
 	\beta_{x,2}^\infty \simeq \Theta 
 \end{equation}
 
+\section{Short Times Behavior}
+
+\begin{equation}
+	\left.\dfrac{\beta_7}{\beta_6}\right|_{\tau\to0} = \dfrac{\mu_7 \Theta + \eta h_0 \Upsilon_7 }{\mu_6 \Theta + \eta h_0 \Upsilon_6 }
+\end{equation}
+while the leak-only ratio is
+\begin{equation}
+	\left.\dfrac{\beta_7}{\beta_6}\right|_{\tau\to0}^{leak} = \dfrac{\mu_7}{\mu_6} = \dfrac{k_7}{k_6}
+\end{equation}
+And we can have a better isotopic separation if
+\begin{equation}
+\dfrac{k_7^pJ_7}{k_6^pJ_6}<\dfrac{k_7}{k_6}
+\end{equation}
+
+
 \section{Solutions}
+
 \begin{itemize}
+\item ?????
 \item $\proton$ is almost constant or decreasing
 \item $\beta_x$ is mostly increasing
 \end{itemize}
-so that $\hat\alpha$ shall decrease from $1$ to $\alpha_\infty$, and we approximate
+
+\section{Linear Case}
+
+\subsection{Solving $\hat\alpha$}
+
+\subsubsection{Generic $\proton$}
+
 \begin{equation}
-	\hat\alpha \simeq \hat{\alpha}_\infty + \left( \right) e^{-\omega_0 t}
+	g(\tau) = 1+\Upsilon_\alpha h(\tau), \;\; \ig(\tau) = \int_0^\tau g(u) \, \mathrm{d} u
 \end{equation}
+
+\begin{equation}
+	\hat\alpha_1(\tau) = \left[ 1 + \int_0^{\tau} e^{\ig(u)}\,\mathrm{d} u\right] e^{-\ig(\tau)}
+\end{equation}
+
+\begin{equation}
+	\hat\alpha_1^\infty = \dfrac{1}{1+h_\infty \Upsilon_\alpha}
+\end{equation}
+
+\subsubsection{Constant $\proton$}
+\begin{equation}
+	\hat\alpha_1(\tau) = {\hat\alpha_1^\infty + \left(1-\hat\alpha_1^\infty\right) e^{-\Omega \tau} },\;\;\Omega=1+h_0\Upsilon_\alpha
+\end{equation}
+
+\subsection{Solving $\beta_x$}
+
+\subsubsection{Generic $\proton$}
+Once $\hat\alpha$ is computed,
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\beta_x(\tau) & = & \displaystyle \left[ \int_0^\tau \left( \mu_x \Theta + \eta \hat\alpha(u) h(u) \Upsilon_x \right)e^{\mu_x u} \, \mathrm{d} u \right] e^{-\mu_x\tau}\\
+\\
+& = & \displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] + \eta \left[\int_0^\tau    \hat\alpha(u) h(u) \Upsilon_x  e^{\mu_x u} \, \mathrm{d} u\right] e^{-\mu_x \tau} 
+\end{array}
+\right.
+\end{equation}
+
+\subsubsection{Constant Proton}
+
 
 \end{document}
 

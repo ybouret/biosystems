@@ -47,7 +47,7 @@ public:
     const double h_ini;
     const double h_end;
     const double scale;
-
+    const double rho0;
 
 #define __INI(VAR) VAR( vm.get<double>( #VAR ) )
     inline Intake(Lua::State &vm) :
@@ -65,7 +65,8 @@ public:
     __INI(Q7),
     h_ini(1),
     h_end(1),
-    scale(0.5)
+    scale(0.5),
+    rho0( (mu7*Theta+eta*U7*h_ini)/(mu6*Theta+eta*U6*h_ini) )
     {
         std::cerr << "Theta   = " << Theta << std::endl;
         std::cerr << "eps6    = " << eps6  << std::endl;
@@ -78,7 +79,7 @@ public:
         std::cerr << "eta     = " << eta   << std::endl;
         std::cerr << "Q6      = " << Q6    << std::endl;
         std::cerr << "Q7      = " << Q7    << std::endl;
-
+        std::cerr << "rho0    = " << rho0  << std::endl;
     }
 
     void setup( Array &Y )
@@ -160,12 +161,12 @@ Y_PROGRAM_START()
     ODE_Driver      odeint;
     odeint.start( Intake::NVAR );
     vector<double> Y( Intake::NVAR );
-    odeint.eps = 1e-5;
+    odeint.eps = 1e-6;
 
     intake.setup(Y);
-    double t_max   = 20;
-    double dt      = 0.001;
-    double dt_save = 0.01;
+    double t_max   = 5;
+    double dt      = 0.0002;
+    double dt_save = 0.005;
     const size_t every    = simulation_save_every(dt,dt_save);
     const size_t iters    = simulation_iter(t_max,dt,every);
     double h = dt/10;

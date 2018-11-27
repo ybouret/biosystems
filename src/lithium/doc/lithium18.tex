@@ -449,7 +449,7 @@ And we can have a better isotopic separation if
 \subsubsection{Generic $\proton$}
 
 \begin{equation}
-	g(\tau) = 1+\Upsilon_\alpha h(\tau), \;\; \ig(\tau) = \int_0^\tau g(u) \, \mathrm{d} u
+	\Upsilon_\alpha = \sum_x \epsilon_x h_\infty \Upsilon_x,\;\;g(\tau) = 1+\Upsilon_\alpha h(\tau), \;\; \ig(\tau) = \int_0^\tau g(u) \, \mathrm{d} u
 \end{equation}
 
 \begin{equation}
@@ -462,7 +462,9 @@ And we can have a better isotopic separation if
 
 \subsubsection{Constant $\proton$}
 \begin{equation}
-	\hat\alpha_1(\tau) = {\hat\alpha_1^\infty + \left(1-\hat\alpha_1^\infty\right) e^{-\Omega \tau} },\;\;\Omega=1+h_0\Upsilon_\alpha
+	\hat\alpha_0(\tau) = {\hat\alpha_0^\infty + \left(1-\hat\alpha_0^\infty\right) e^{-\Omega \tau} },
+	\;\;\Omega=1+h_0\Upsilon_\alpha>1,
+	\;\;\hat\alpha_0^\infty = \dfrac{1}{\Omega}
 \end{equation}
 
 \subsection{Solving $\beta_x$}
@@ -472,115 +474,73 @@ Once $\hat\alpha$ is computed,
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\beta_x(\tau) & = & \displaystyle \left[ \int_0^\tau \left( \mu_x \Theta + \eta \hat\alpha(u) h(u) \Upsilon_x \right)e^{\mu_x u} \, \mathrm{d} u \right] e^{-\mu_x\tau}\\
+\beta_{x,1}(\tau) & = & \displaystyle \left[ \int_0^\tau \left( \mu_x \Theta + \eta \hat\alpha(u) h(u) \Upsilon_x \right)e^{\mu_x u} \, \mathrm{d} u \right] e^{-\mu_x\tau}\\
 \\
 & = & \displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] + \eta \left[\int_0^\tau    \hat\alpha(u) h(u) \Upsilon_x  e^{\mu_x u} \, \mathrm{d} u\right] e^{-\mu_x \tau} 
 \end{array}
 \right.
 \end{equation}
 
-\subsubsection{Constant Proton}
-
-
-\end{document}
-
-We define 
-\begin{equation}
-\left\lbrace
-\begin{array}{ccll}
-	k_x^p J_x & = & k_x \bar{p}_x^2, & \bar{p}_x \text{ in M}^{-1} \\
-	k_x^q     & = & k_x \bar{q}_x  , & \bar{q}_x \text{ in M}^{-1} \\
-	\tilde{D} & = & 1+(\sum_x \epsilon_x J_x) \LiAllOut, & J_\epsilon = \epsilon J_6 + (1-\epsilon) J_7 \\
-\end{array}
-\right.
-\end{equation}
-
-\begin{equation}
-	\partial_t \beta_x + k_x \beta_x = k_x \left[ \Theta +
-	 \eta \left(
-	 \hat\alpha\dfrac{\bar{p}_x^2}{\tilde{D}} \LiAllOut \proton
-	 -(1-\hat\alpha) \bar{q}_x \LiAllOut \beta_x 
-	  \right) \right]
-\end{equation}
-and we set
-\begin{equation}
-	\Upsilon_x = \bar{p}_x^2 \dfrac{\LiAllOut}{1+J_\epsilon \LiAllOut} \;\;(\text{in M}^{-1}) , \;\; Q_x = \bar{q}_x \LiAllOut\;\; (\text{a scalar})
-\end{equation}
-to get
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-	\partial_t \beta_x + k_x \beta_x & = & k_x \left[ \Theta + \eta \left( \hat\alpha \Upsilon_x \proton - (1-\hat\alpha)Q_x \beta_x \right) \right] \\
-	\\
-	\partial_t \hat\alpha & = & k_h - \hat\alpha \left\lbrack k_h+
-	 \proton \left(\sum_x \epsilon_x k_x \Upsilon_x \right) \right] 
-		+ (1-\hat\alpha) \left\lbrack {\sum_x \epsilon_x k_x Q_x \beta_x }  \right\rbrack \\
-\end{array}
-\right.
-\end{equation}
-It is now time to change time using the $\Li{7}$ passive rate as reference
-\begin{equation}
- k_6 = \sigma k_7,\;\;\tau=k_7 t, \;\; \partial_t = k_7 \partial_\tau, \;\; \mu = \dfrac{k_h}{k_7}
-\end{equation}
-to get
-\begin{equation}
-\left\lbrace
-\begin{array}{ccl}
-	\partial_\tau \beta_7 + \beta_7 & = & \left[ \Theta + \eta \left( \hat\alpha \Upsilon_7 \proton - (1-\hat\alpha)Q_7 \beta_7 \right) \right]\\
-	\\
-	\partial_\tau \beta_6 + \sigma \beta_6 & = & \sigma \left[ \Theta + \eta \left( \hat\alpha \Upsilon_6 \proton - (1-\hat\alpha)Q_6 \beta_6 \right) \right]\\
-	\\
-		\partial_\tau \hat\alpha & = & \mu - \hat\alpha \left\lbrack \mu +
-	 \proton \underbrace{\left(\epsilon\sigma\Upsilon_6 + (1-\epsilon)\Upsilon_7 \right)}_{\Upsilon_\alpha} \right] 
-		+ (1-\hat\alpha) \left\lbrack { \epsilon \sigma Q_6 \beta_6 + (1-\epsilon) Q_7 \beta_7  }  \right\rbrack \\
-\end{array}
-\right.
-\end{equation}
-
-
-
-\section{Steady State}
-We have the two equations
-\begin{equation}
-\begin{array}{rcl}
-	\beta_x^\infty & =  & \dfrac{\Theta+\hat\alpha_\infty \eta \Upsilon_x h_\infty }{1+ (1-\hat\alpha_\infty)\eta Q_x }\\
-	%\mu \eta (1-\hat\alpha_\infty) & = & \Theta \left[ \sigma\epsilon (\beta_6^\infty-1) + (1-\epsilon)(\beta_7^\infty-1)\right]\\\
-\end{array}
-\end{equation}
-to be injected in the last one to get $\hat\alpha_\infty$.
-
-
-\section{First Order}
-\subsection{First Order $\hat\alpha$}
-\subsubsection{Generic $\proton$}
-We will integrate
-\begin{equation}
-	\partial_\tau \hat\alpha = \mu - \hat\alpha\left[\mu+\proton \Upsilon_\alpha\right] = \mu-\hat{\alpha}(\tau) g(\tau)
-\end{equation}
-We define
-\begin{equation}
-	\ig(\tau) = \int_0^\tau g(u)\,\mathrm{d}u
-\end{equation}
-and the solution is
-\begin{equation}
-	\hat\alpha_1(\tau) = \left[1+\mu\int_0^\tau e^{\ig(u)}\,\mathrm{d} u \right] e^{-\ig(\tau)}
-\end{equation}
-
 \subsubsection{Constant $\proton$}
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	g(\tau) & = & \Omega=\mu+\Upsilon_\alpha h_0\\
-	\ig(\tau) & = & \Omega \tau\\
-	\hat{\alpha}_0 (\tau) & = & \dfrac{1}{\Omega} \left[ \mu + \left(\Omega-\mu\right) e^{-\Omega \tau} \right]\\
-	      &=&\hat\alpha_0^\infty+(1-\hat\alpha_0^\infty) e^{-\Omega \tau}
+	\beta_{x,0}(\tau) & = & \displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] + \eta h_0 \Upsilon_x
+	\left[ 
+	\left(
+	\int_0^\tau 
+	\hat\alpha_1^\infty e^{\mu_x u}
+	\, \mathrm{d} u
+	\right)
+	+
+	\left(
+	\int_0^\tau \left(1-\hat\alpha_1^\infty\right) e^{(\mu_x-\Omega) u} \, \mathrm{d} u
+	\right)
+	\right] e^{-\mu_x \tau} \\
+	\\
+	& = & \displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] + \eta h_0 \Upsilon_x \left[
+	\dfrac{\hat\alpha_1^\infty}{\mu_x}\left(1-e^{-\mu_x \tau}\right)
+	+\dfrac{1-\hat\alpha_1^\infty}{\mu_x-\Omega}\left(e^{-\Omega\tau}-e^{-\mu_x\tau}\right)
+	\right]\\
+	\\
+	& = & \displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] + \dfrac{\eta}{\mu_x} h_0 \Upsilon_x 
+	\left[
+	\hat\alpha_1^\infty  \left[ 1-e^{-\mu_x \tau}\right] 
+	+
+	(1-\hat\alpha_1^\infty) \dfrac{e^{-\frac{\Omega}{\mu_x}\mu_x\tau}-e^{-\mu_x\tau}}{1-\frac{\Omega}{\mu_x}}
+	\right]
+	\\
+	\\
+	& = & 
+	\displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] 
+	+ \dfrac{\eta}{\mu_x} \dfrac{h_0\Upsilon_x}{\Omega}
+	\left[
+	\left[ 1-e^{-\mu_x \tau}\right] 
+	+ \left(\Omega-1\right) B\left(\frac{\Omega}{\mu_x},\tau\right)
+	 \right]
+	\\
 \end{array}
 \right.
 \end{equation}
-
-
-\subsection{First order $\beta_x$}
-
+with
+\begin{equation}
+	B(\lambda,u) = \dfrac{e^{-\lambda u} - e^{-u} }{1-\lambda}
+\end{equation}
+We set
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\Omega & = & 1 + h_0 \Upsilon_\alpha = 1 + \tan^2 \theta\\
+	h_0 \Upsilon_x & = & \cos^2 \varphi_x \, \tan^2\theta\\
+	\cos^2 \varphi_x & = & \dfrac{\Upsilon_x}{\epsilon\Upsilon_6+(1-\epsilon)\Upsilon_7} \\
+\end{array}
+\right.
+\end{equation}
+so that
+\begin{equation}
+\beta_{x,0}(\tau) = \Theta \left[ 1-e^{-\mu_x \tau}\right]
++ \dfrac{\eta}{\mu_x}  \cos^2 \varphi_x  \; \cos^2\theta \left[  \left[ 1-e^{-\mu_x \tau}\right] + \tan^2\theta \; B\left(\frac{1}{\mu_x\cos^2\theta},\mu_x \tau)\right)\right]
+\end{equation}
 
 \end{document}
 

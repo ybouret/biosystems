@@ -482,6 +482,16 @@ Once $\hat\alpha$ is computed,
 \end{equation}
 
 \subsubsection{Constant $\proton$}
+We set
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\Omega & = & 1 + h_0 \Upsilon_\alpha = 1 + \tan^2 \theta\\
+	h_0 \Upsilon_x & = & \rho_x \, \tan^2\theta\\
+	\rho_x & = & \dfrac{\Upsilon_x}{\epsilon\Upsilon_6+(1-\epsilon)\Upsilon_7} (\simeq 1) \\
+\end{array}
+\right.
+\end{equation}
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -501,45 +511,33 @@ Once $\hat\alpha$ is computed,
 	& = & \displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] + \eta h_0 \Upsilon_x \left[
 	\dfrac{\hat\alpha_1^\infty}{\mu_x}\left(1-e^{-\mu_x \tau}\right)
 	+\dfrac{1-\hat\alpha_1^\infty}{\mu_x-\Omega}\left(e^{-\Omega\tau}-e^{-\mu_x\tau}\right)
+	\right]\\\\
+	& = & \displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] + \eta \rho_x \tan^2\theta \left[
+	\cos^2\theta \left[\dfrac{1-e^{-\mu_x \tau}}{\mu_x}\right]
+	+\sin^2\theta\dfrac{\left(e^{-\frac{\tau}{\cos^2\theta}}-e^{-\mu_x\tau}\right)}{\mu_x-\frac{1}{\cos^2\theta}}
 	\right]\\
 	\\
-	& = & \displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] + \dfrac{\eta}{\mu_x} h_0 \Upsilon_x 
+	& = & \displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] + \eta \dfrac{\rho_x}{\mu_x} \sin^2\theta 
 	\left[
-	\hat\alpha_1^\infty  \left[ 1-e^{-\mu_x \tau}\right] 
-	+
-	(1-\hat\alpha_1^\infty) \dfrac{e^{-\frac{\Omega}{\mu_x}\mu_x\tau}-e^{-\mu_x\tau}}{1-\frac{\Omega}{\mu_x}}
+	\left({1-e^{-\mu_x \tau}}\right) + \tan^2\theta
+	\left(
+	 \dfrac{e^{-\frac{\mu_x\tau}{\mu_x\cos^2\theta}}-e^{-\mu_x\tau}}{1-\frac{1}{\mu_x\cos^2\theta}}
+	 \right)
 	\right]
-	\\
-	\\
-	& = & 
-	\displaystyle \Theta \left[ 1-e^{-\mu_x \tau}\right] 
-	+ \dfrac{\eta}{\mu_x} \dfrac{h_0\Upsilon_x}{\Omega}
-	\left[
-	\left[ 1-e^{-\mu_x \tau}\right] 
-	+ \left(\Omega-1\right) B\left(\frac{\Omega}{\mu_x},\mu_x\tau\right)
-	 \right]
-	\\
-\end{array}
+	\end{array}
 \right.
 \end{equation}
-with
+Using 
 \begin{equation}
-	B(\lambda,u) = \dfrac{e^{-\lambda u} - e^{-u} }{1-\lambda}
+	B(u,\lambda) = \dfrac{e^{-\lambda u}-e^{-u}}{1-\lambda}
 \end{equation}
-We set
+and
 \begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-	\Omega & = & 1 + h_0 \Upsilon_\alpha = 1 + \tan^2 \theta\\
-	h_0 \Upsilon_x & = & \cos^2 \varphi_x \, \tan^2\theta\\
-	\cos^2 \varphi_x & = & \dfrac{\Upsilon_x}{\epsilon\Upsilon_6+(1-\epsilon)\Upsilon_7} \\
-\end{array}
-\right.
+	R(u) = 1-e^{-u}
 \end{equation}
-so that
+we write
 \begin{equation}
-\beta_{x,0}(\tau) = \Theta \left[ 1-e^{-\mu_x \tau}\right]
-+ \dfrac{\eta}{\mu_x}  \cos^2 \varphi_x  \; \sin^2\theta \left[  \left[ 1-e^{-\mu_x \tau}\right] + \tan^2\theta \; B\left(\frac{1}{\mu_x\cos^2\theta},\mu_x \tau)\right)\right]
+		\beta_{x,0}(\tau) = \Theta R(\mu_x\tau) + \eta \dfrac{\rho_x}{\mu_x}  \left[ R(\mu_x\tau) +  B\left(\mu_x\tau,\frac{1}{\mu_x\cos^2\theta}\right)\tan^2\theta\right]\sin^2\theta
 \end{equation}
 
 \end{document}

@@ -9,6 +9,7 @@
 \usepackage{bookman}
 \usepackage{dsfont}
 \usepackage{mathptmx}
+\usepackage{hyperref}
 
 \newcommand{\mychem}[1]{\mathtt{#1}}
 \newcommand{\myconc}[1]{\left\lbrack{#1}\right\rbrack}
@@ -543,7 +544,7 @@ We notice that
 \begin{equation}
 	\hat\alpha_0(\tau) = \cos^2\theta + \sin^2\theta e^{-\frac{\tau}{\cos^2\theta}}
 \end{equation}
-and we induction times arising from $\hat\alpha$ are hidden in the $B$ function.
+and the induction times arising from $\hat\alpha$ are hidden in the $B$ function.
 
 \subsubsection{Single Secondary Separation Speedup Hypothesis}
 
@@ -553,7 +554,7 @@ Each elementary reaction has the same speed up in any way...so that
  \begin{array}{rcl}
 	k_6          & = & \sigma k_7\\
 	\mu_6        & = & \sigma \mu_7\\
-	\Upsilon_6   & = & k_6^p J_7 = k_6^p k_6^a/k_6^d = \sigma \Upsilon_7\\
+	\Upsilon_6   & \propto & k_6^p J_6 = k_6^p k_6^a/k_6^d \propto \sigma \Upsilon_7\\
 	\rho_6       & = & \sigma \rho_7\\
 	\rho_7       & = & \frac{1}{\epsilon\sigma+(1-\epsilon)} = \rho\\
 	\rho_x/\mu_x & = & \rho_7/\mu_7 = \rho/\mu \\

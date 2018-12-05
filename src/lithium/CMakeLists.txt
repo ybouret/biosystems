@@ -14,6 +14,10 @@ ADD_EXECUTABLE(alpha alpha.cpp)
 TARGET_LINK_Y(alpha m)
 INSTALL( TARGETS alpha RUNTIME DESTINATION bin )
 
+ADD_EXECUTABLE(linear linear.cpp fcnli.hpp linear.lua)
+TARGET_LINK_Y(linear lua++ m)
+INSTALL( TARGETS linear RUNTIME DESTINATION bin )
+
 INCLUDE("${YROOT}/share/y/fltk.cmake")
 
 IF(FLTK_FOUND)

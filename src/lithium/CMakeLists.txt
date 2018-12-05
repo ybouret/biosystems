@@ -18,6 +18,8 @@ ADD_EXECUTABLE(linear linear.cpp fcnli.hpp linear.lua)
 TARGET_LINK_Y(linear lua++ m)
 INSTALL( TARGETS linear RUNTIME DESTINATION bin )
 
+IF(FALSE)
+
 INCLUDE("${YROOT}/share/y/fltk.cmake")
 
 IF(FLTK_FOUND)
@@ -28,6 +30,5 @@ TARGET_LINK_FLTK(flsim)
 INSTALL( TARGETS flsim RUNTIME DESTINATION bin )
 ENDIF()
 
-#ADD_EXECUTABLE(fit_ximax fit_ximax.cpp)
-#TARGET_LINK_YOCTO(fit_ximax mk)
-#INSTALL( TARGETS fit_ximax RUNTIME DESTINATION bin )
+ENDIF(FALSE)
+

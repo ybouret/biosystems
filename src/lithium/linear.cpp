@@ -88,7 +88,7 @@ Y_PROGRAM_START()
             {
                 const double tau = exp(ltau);
                 const double r   = lin.ratio(tau, theta);
-                fp("%g %g %g\n", ltau, r , tau);
+                fp("%g %g %g %g\n", ltau, r , lin.beta6(tau,theta), lin.beta7(tau,theta) );
             }
             fp("\n");
 

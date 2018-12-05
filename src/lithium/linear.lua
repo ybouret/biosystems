@@ -19,7 +19,7 @@ sigma=1.0/0.99772 -- +/- 0.00026
 mu7 = 0.1;
 
 -- pre-eq scaling
-kappa = 1.01
+kappa = 1.0
 
 -- catalitic amp
 fac7 = 0.2;

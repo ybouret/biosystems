@@ -20,3 +20,4 @@ beta6(tau,mu,theta,fac,kappa) = Beta(tau,mu*sigma,theta,kappa*fac);
 ratio(tau,mu,theta,fac,kappa) = beta7(tau,mu,theta,fac)/beta6(tau,mu,theta,fac,kappa);
 
 
+plot [-5:5] ratio( exp(x), 0.1, 1.1,1.2,1.0)

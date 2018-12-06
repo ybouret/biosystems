@@ -37,9 +37,13 @@ public:
     const double eps6;
     const double eps7;
     Lua::Function<double> get_h;
+    const double          h0;
     double       Ua;
     const double mu7;
     const double mu6;
+    const double kappa;
+    const double phi7;
+    const double phi6;
 
     inline LinSim(const Lua::VM &_vm) :
     vm( _vm ),
@@ -53,17 +57,19 @@ public:
     eps6(1.0/(1.0+beta_s*(1.0+0.001*d7out))),
     eps7(1.0-eps6),
     get_h("h",vm),
-    Ua(0),
+    h0( get_h(0) ),
+    Ua(t2/h0),
     _INI(mu7),
-    mu6( sigma*mu7 )
+    mu6( sigma*mu7 ),
+    _INI(kappa),
+    _INI(phi7),
+    phi6( kappa * phi7 )
     {
         std::cerr << "Theta=" << Theta << std::endl;
         std::cerr << "sigma=" << sigma << std::endl;
         std::cerr << "theta=" << theta << " => c2=" << c2 << std::endl;
         std::cerr << "d7out=" << d7out << " => eps6=" << eps6 << ", eps7=" << eps7 << std::endl;
         std::cerr << "mu7  =" << mu7   << " => mu6=" << mu6 << std::endl;
-        const double h0 = get_h(0);
-        Ua = t2/h0;
     }
 
     inline ~LinSim() throw()
@@ -78,9 +84,11 @@ public:
         const double b6 = Y[I_B6];
         const double b7 = Y[I_B7];
         const double h = get_h(tau);
-        dY[I_AC] = 1.0 - ac * (1.0+Ua*h);
-        dY[I_B6] = (Theta-b6)*mu6;
-        dY[I_B7] = (Theta-b7)*mu7;
+        const double U = Ua*h;
+        const double V = U * ac;
+        dY[I_AC] = 1.0 - ac * (1.0+U);
+        dY[I_B6] = (Theta-b6)*mu6 + phi6 * V;
+        dY[I_B7] = (Theta-b7)*mu7 + phi7 * V;
 
     }
 
@@ -99,7 +107,7 @@ namespace
     static inline
     void save( ios::ostream &fp, const double tau, const Array &Y )
     {
-        fp("%.15g",tau);
+        fp("%.15g",log(tau));
         for(size_t i=1;i<=Y.size();++i)
         {
             fp(" %.15g", Y[i]);
@@ -120,7 +128,7 @@ Y_PROGRAM_START()
 
     LinSim      lin(vm);
     ODEquation  diffeq( &lin, & LinSim::Compute );
-    double t_run = 10;
+    double t_run = 20;
     double dt    = 0.001;
     double emit  = 0.01;
     size_t every = 0;
@@ -135,7 +143,7 @@ Y_PROGRAM_START()
     lin.setup(Y);
     {
         ios::ocstream fp("output.dat");
-        save(fp,0,Y);
+        fp << '#'; //save(fp,0,Y);
     }
     double ctrl = dt/10;
     for(size_t i=1;i<=iters;++i)

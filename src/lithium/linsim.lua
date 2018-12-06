@@ -31,4 +31,4 @@ mu7 = 0.1;
 kappa = 1.0
 
 -- catalitic amp
-fac7 = 0.2;
+phi7 = 0.2;

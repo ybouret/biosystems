@@ -38,6 +38,8 @@ public:
     const double eps7;
     Lua::Function<double> get_h;
     double       Ua;
+    const double mu7;
+    const double mu6;
 
     inline LinSim(const Lua::VM &_vm) :
     vm( _vm ),
@@ -51,12 +53,15 @@ public:
     eps6(1.0/(1.0+beta_s*(1.0+0.001*d7out))),
     eps7(1.0-eps6),
     get_h("h",vm),
-    Ua(0)
+    Ua(0),
+    _INI(mu7),
+    mu6( sigma*mu7 )
     {
         std::cerr << "Theta=" << Theta << std::endl;
         std::cerr << "sigma=" << sigma << std::endl;
         std::cerr << "theta=" << theta << " => c2=" << c2 << std::endl;
         std::cerr << "d7out=" << d7out << " => eps6=" << eps6 << ", eps7=" << eps7 << std::endl;
+        std::cerr << "mu7  =" << mu7   << " => mu6=" << mu6 << std::endl;
         const double h0 = get_h(0);
         Ua = t2/h0;
     }
@@ -70,9 +75,13 @@ public:
                         const Array &Y)
     {
         const double ac = Y[I_AC];
-        tao::ld(dY,0);
+        const double b6 = Y[I_B6];
+        const double b7 = Y[I_B7];
         const double h = get_h(tau);
         dY[I_AC] = 1.0 - ac * (1.0+Ua*h);
+        dY[I_B6] = (Theta-b6)*mu6;
+        dY[I_B7] = (Theta-b7)*mu7;
+
     }
 
     inline void setup(Array &Y)
@@ -93,7 +102,7 @@ namespace
         fp("%.15g",tau);
         for(size_t i=1;i<=Y.size();++i)
         {
-            fp(" %.15g\n", Y[i]);
+            fp(" %.15g", Y[i]);
         }
         fp << '\n';
     }
@@ -111,7 +120,7 @@ Y_PROGRAM_START()
 
     LinSim      lin(vm);
     ODEquation  diffeq( &lin, & LinSim::Compute );
-    double t_run = 5;
+    double t_run = 10;
     double dt    = 0.001;
     double emit  = 0.01;
     size_t every = 0;

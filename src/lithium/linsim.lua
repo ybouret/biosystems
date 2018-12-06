@@ -22,3 +22,13 @@ theta = 0.1
 function h(tau)
 return 1;
 end
+
+
+-- leak scaling
+mu7 = 0.1;
+
+-- pre-eq scaling
+kappa = 1.0
+
+-- catalitic amp
+fac7 = 0.2;

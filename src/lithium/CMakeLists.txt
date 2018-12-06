@@ -6,19 +6,27 @@ ADD_EXECUTABLE(intake intake.cpp intake.lua)
 TARGET_LINK_Y(intake lua++ m)
 INSTALL( TARGETS intake RUNTIME DESTINATION bin )
 
-ADD_EXECUTABLE(bmax bmax.cpp fcnli.hpp)
-TARGET_LINK_Y(bmax m)
-INSTALL( TARGETS bmax RUNTIME DESTINATION bin )
 
-ADD_EXECUTABLE(alpha alpha.cpp)
-TARGET_LINK_Y(alpha m)
-INSTALL( TARGETS alpha RUNTIME DESTINATION bin )
 
 ADD_EXECUTABLE(linear linear.cpp fcnli.hpp linear.lua)
 TARGET_LINK_Y(linear lua++ m)
 INSTALL( TARGETS linear RUNTIME DESTINATION bin )
 
+ADD_EXECUTABLE(linsim linsim.cpp fcnli.hpp linsim.lua)
+TARGET_LINK_Y(linsim lua++ m)
+INSTALL( TARGETS linsim RUNTIME DESTINATION bin )
+
+
 IF(FALSE)
+
+ADD_EXECUTABLE(alpha alpha.cpp)
+TARGET_LINK_Y(alpha m)
+INSTALL( TARGETS alpha RUNTIME DESTINATION bin )
+
+ADD_EXECUTABLE(bmax bmax.cpp fcnli.hpp)
+TARGET_LINK_Y(bmax m)
+INSTALL( TARGETS bmax RUNTIME DESTINATION bin )
+
 
 INCLUDE("${YROOT}/share/y/fltk.cmake")
 

@@ -105,9 +105,9 @@ private:
 namespace
 {
     static inline
-    void save( ios::ostream &fp, const double tau, const Array &Y )
+    void save( ios::ostream &fp, const double mark, const Array &Y )
     {
-        fp("%.15g",log(tau));
+        fp("%.15g",mark);
         for(size_t i=1;i<=Y.size();++i)
         {
             fp(" %.15g", Y[i]);
@@ -128,12 +128,28 @@ Y_PROGRAM_START()
 
     LinSim      lin(vm);
     ODEquation  diffeq( &lin, & LinSim::Compute );
+
+#if 0
     double t_run = 20;
     double dt    = 0.001;
     double emit  = 0.01;
     size_t every = 0;
     const size_t iters = timings::setup(t_run, dt, emit, every);
+
     std::cerr << "#iters=" << iters << " for t_run=" << t_run << " at dt=" << dt << ", saving every " << emit << std::endl;
+#endif
+
+    const double lt_min = -4;
+    double       lt_max =  5;
+    double       lt_amp = lt_max-lt_min;
+    double       lt_stp = 0.002;
+    double       lt_sav = 0.01;
+    size_t       every  = 0;
+    const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
+    lt_max = lt_amp + lt_min;
+    std::cerr << "#iters=" << iters  << ", saving every " << every << " lt_stp=" << lt_stp << " from " << lt_min << " to " << lt_max << std::endl;
+
+#if 1
     vector<double> Y( LinSim::NVAR );
 
     driver.start( Y.size() );
@@ -143,24 +159,27 @@ Y_PROGRAM_START()
     lin.setup(Y);
     {
         ios::ocstream fp("output.dat");
-        fp << '#'; //save(fp,0,Y);
+        //fp << '#'; //save(fp,0,Y);
     }
-    double ctrl = dt/10;
+
+    double t0   = 0;
+    double ctrl = exp(lt_min)/10;
     for(size_t i=1;i<=iters;++i)
     {
-        const double t0  = (i-1) * dt;
-        const double t1  = i     * dt;
+        const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
+        const double t1  = exp(lt1);
         driver( diffeq, Y, t0, t1, ctrl, NULL);
-        if(0==(i%every))
+        if(1==i||0==(i%every))
         {
             bar.update(i,iters);
             bar.display(std::cerr) << '\r';
             ios::ocstream fp("output.dat",true);
-            save(fp,t1,Y);
+            save(fp,lt1,Y);
         }
+        t0 = t1;
     }
     std::cerr << std::endl;
-
+#endif
 
 }
 Y_PROGRAM_END()

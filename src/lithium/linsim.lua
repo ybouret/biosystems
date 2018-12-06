@@ -17,7 +17,7 @@ sigma=1.0/0.99772 -- +/- 0.00026
 
 d7out=15.2;
 
-theta = 0.1
+theta = 1.1
 
 function h(tau)
 return 1;
@@ -30,5 +30,5 @@ mu7 = 0.1;
 -- pre-eq scaling
 kappa = 1.0
 
--- catalitic amp
-phi7 = 0.2;
+-- catalytic amp
+phi7 = 0.6;

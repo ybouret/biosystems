@@ -96,7 +96,7 @@ Y_PROGRAM_START()
             ios::ocstream fp(outname);
             for(size_t i=1;i<=n;++i)
             {
-                fp("%.15g %.15g %.15g %.15g %.15g\n", t[i], pH[i], Y[i], pow(10.0,-Y[i]), sem[i] );
+                fp("%.15g %.15g %.15g %.15g %.15g\n", t[i], pH[i], Y[i], pow(10.0,-pH[i]), sem[i] );
             }
         }
 

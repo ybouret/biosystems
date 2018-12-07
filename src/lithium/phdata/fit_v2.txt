@@ -2,43 +2,87 @@
 plot 'pH3mM.txt.dat' w lp, 'pH10mM.txt.dat' w lp, 'pH15mM.txt.dat' w lp, 'pH30mM.txt.dat' w lp, 'pH60mM.txt.dat' w lp, 'pH90mM.txt.dat' w lp
 pause(0.5)
 
+plot \
+'pH3mM.txt.dat'  u 1:4 w lp,\
+'pH10mM.txt.dat' u 1:4 w lp,\
+'pH15mM.txt.dat' u 1:4 w lp,\
+'pH30mM.txt.dat' u 1:4 w lp,\
+'pH60mM.txt.dat' u 1:4 w lp,\
+'pH90mM.txt.dat' u 1:4 w lp
+pause(0.5)
+
+
+
 sigmoid(x,lam,x0)   = 1.0/(1.0+exp(-lam*(x-x0)));
 
-f(x,ini,end,lam,x0) = ini+(end-ini)*sigmoid(x,lam,x0);
+f(x,ini,end,lam,x0) = -log10( 10**(-end)+(10**(-ini)-10**(-end))*exp(-lam*(x-x0) ) )
 
 i3=5.9;
-e3=6.2;
-l3=0.02;
-x3=100;
+e3=6.247293441;
+l3=0.01;
+x3=10;
 
-fit f(x,i3,e3,l3,x3) 'pH3mM.txt.dat' via l3,x3,i3,e3  
+fit [x3:] f(x,i3,e3,l3,x3) 'pH3mM.txt.dat' via l3,i3#,e3
 plot 'pH3mM.txt.dat' w lp, f(x,i3,e3,l3,x3)
 pause(0.5)
 
 
 i10=5.9;
-e10=6.2;
-l10=0.02;
-x10=100;
+e10=6.475988937;
+l10=0.01;
+x10=22;
 
-fit f(x,i10,e10,l10,x10) 'pH10mM.txt.dat' via l10,x10,i10,e10  
+fit [x10:] f(x,i10,e10,l10,x10) 'pH10mM.txt.dat' via l10,i10#,e10  
 plot 'pH10mM.txt.dat' w lp, f(x,i10,e10,l10,x10)
 pause(0.5)
 
-i15=6.00;
-e15=6.4;
-l15=0.02;
-x15=100;
 
-fit f(x,i15,e15,l15,x15) 'pH15mM.txt.dat' via l15,x15,i15,e15  
+
+i15=6.00;
+e15=6.55;
+l15=0.02;
+x15=25;
+
+fit [x15:] f(x,i15,e15,l15,x15) 'pH15mM.txt.dat' via l15,i15#,e15  
 plot 'pH15mM.txt.dat' w lp, f(x,i15,e15,l15,x15)
 pause(0.5)
 
-i30=5.9;
-e30=6.2;
-l30=0.02;
-x30=100;
 
-fit f(x,i30,e30,l30,x30) 'pH30mM.txt.dat' via l30,x30,i30,e30  
+i30=5.9;
+e30=6.734604964;
+l30=0.02;
+x30=10;
+
+fit [x30:] f(x,i30,e30,l30,x30) 'pH30mM.txt.dat' via l30,i30#,e30  
 plot 'pH30mM.txt.dat' w lp, f(x,i30,e30,l30,x30)
 pause(0.5)
+
+
+i60=5.9;
+e60=6.90219434;
+l60=0.02;
+x60=5;
+
+fit [x60:] f(x,i60,e60,l60,x60) 'pH60mM.txt.dat' via l60,i60#,e60  
+plot 'pH60mM.txt.dat' w lp, f(x,i60,e60,l60,x60)
+pause(0.5)
+
+i90=5.9;
+e90=6.806267041;
+l90=0.02;
+x90=10;
+
+fit [x90:] f(x,i90,e90,l90,x90) 'pH90mM.txt.dat' via l90,i90#,e90  
+plot 'pH90mM.txt.dat' w lp, f(x,i90,e90,l90,x90)
+pause(0.5)
+
+set print "gnufit.dat"
+print 3,l3,e3
+print 10,l10,e10
+print 15,l15,e15
+print 30,l30,e30
+print 60,l60,e60
+print 90,l90,e90
+set print
+exit
+

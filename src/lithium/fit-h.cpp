@@ -123,9 +123,17 @@ Y_PROGRAM_START()
             ios::ocstream fp(outname);
             for(size_t i=1;i<=n;++i)
             {
-                fp("%g %g %g %g\n", t[i], pH[i], Y[i], log( (pH_asymp-Y[i])/(pH_asymp-pH_min)) );
+                fp("%g %g %g\n", t[i], log( (pH_asymp-Y[i])/(pH_asymp-pH_min)), pH[i] );
             }
         }
+
+        ////////////////////////////////////////////////////////////////////////
+        //
+        // preparing fit
+        //
+        ////////////////////////////////////////////////////////////////////////
+        
+
 
     }
 

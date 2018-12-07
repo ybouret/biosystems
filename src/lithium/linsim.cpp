@@ -6,6 +6,7 @@
 #include "y/math/timings.hpp"
 #include "y/ios/ocstream.hpp"
 #include "y/os/progress.hpp"
+#include "fcnli.hpp"
 
 using namespace upsylon;
 using namespace math;
@@ -65,11 +66,11 @@ public:
     _INI(phi7),
     phi6( kappa * phi7 )
     {
-        std::cerr << "Theta=" << Theta << std::endl;
-        std::cerr << "sigma=" << sigma << std::endl;
-        std::cerr << "theta=" << theta << " => c2=" << c2 << std::endl;
-        std::cerr << "d7out=" << d7out << " => eps6=" << eps6 << ", eps7=" << eps7 << std::endl;
-        std::cerr << "mu7  =" << mu7   << " => mu6=" << mu6 << std::endl;
+        std::cerr << "Theta = " << Theta << std::endl;
+        std::cerr << "sigma = " << sigma << std::endl;
+        std::cerr << "theta = " << theta << " => c2   = " << c2   << std::endl;
+        std::cerr << "d7out = " << d7out << " => eps6 = " << eps6 << ", eps7=" << eps7 << std::endl;
+        std::cerr << "mu7   = " << mu7   << " => mu6  = " << mu6  << std::endl;
     }
 
     inline ~LinSim() throw()
@@ -83,9 +84,10 @@ public:
         const double ac = Y[I_AC];
         const double b6 = Y[I_B6];
         const double b7 = Y[I_B7];
-        const double h = get_h(tau);
-        const double U = Ua*h;
-        const double V = U * ac;
+        const double h  = get_h(tau);
+        const double U  = Ua*h;
+        const double V  = U * ac;
+
         dY[I_AC] = 1.0 - ac * (1.0+U);
         dY[I_B6] = (Theta-b6)*mu6 + phi6 * V;
         dY[I_B7] = (Theta-b7)*mu7 + phi7 * V;
@@ -94,8 +96,36 @@ public:
 
     inline void setup(Array &Y)
     {
-        tao::ld(Y,0);
         Y[I_AC] = 1;
+        Y[I_B6] = 0;
+        Y[I_B7] = 0;
+    }
+
+    inline
+    double Beta(double tau, double mu, double phi)
+    {
+
+        const double lam = 1.0/mu/c2;
+
+        return
+        Theta * Lithium::Grow(tau*mu)
+        + phi * s2 *  ( Lithium::Grow(tau*mu)  + Lithium::Bump(lam, mu*tau) * t2) / mu;
+    }
+
+    inline
+    double beta7(double tau)
+    {
+        return Beta(tau,mu7,phi7);
+    }
+
+    double beta6(double tau)
+    {
+        return Beta(tau,mu6,phi7);
+    }
+
+    double ratio(double tau)
+    {
+        return beta7(tau)/beta6(tau);
     }
 
 private:
@@ -105,13 +135,14 @@ private:
 namespace
 {
     static inline
-    void save( ios::ostream &fp, const double mark, const Array &Y )
+    void save( ios::ostream &fp, const double mark, const Array &Y, const double r=0)
     {
         fp("%.15g",mark);
         for(size_t i=1;i<=Y.size();++i)
         {
             fp(" %.15g", Y[i]);
         }
+        fp(" %.15g", r);
         fp << '\n';
     }
 }
@@ -149,7 +180,6 @@ Y_PROGRAM_START()
     lt_max = lt_amp + lt_min;
     std::cerr << "#iters=" << iters  << ", saving every " << every << " lt_stp=" << lt_stp << " from " << lt_min << " to " << lt_max << std::endl;
 
-#if 1
     vector<double> Y( LinSim::NVAR );
 
     driver.start( Y.size() );
@@ -174,12 +204,11 @@ Y_PROGRAM_START()
             bar.update(i,iters);
             bar.display(std::cerr) << '\r';
             ios::ocstream fp("output.dat",true);
-            save(fp,lt1,Y);
+            save(fp,lt1,Y,lin.ratio(t1));
         }
         t0 = t1;
     }
     std::cerr << std::endl;
-#endif
 
 }
 Y_PROGRAM_END()

@@ -125,7 +125,18 @@ Y_PROGRAM_START()
         // find half rise
         //
         ////////////////////////////////////////////////////////////////////////
-        const double pH_min = __find<double>::min_of(pH);
+        double pH_min = pH[1];
+        double t_min  = t[1];
+        for(size_t i=2;i<n;++i)
+        {
+            const double tmp = pH[i];
+            if(tmp<=pH_min)
+            {
+                pH_min = tmp;
+                t_min  = t[i];
+            }
+        }
+
         std::cerr << "min=" << pH_min << std::endl;
         const double pH_mid = 0.5*(pH_min+pH_asymp);
         linear::zfind(tz, pH_mid, t, pH);
@@ -169,7 +180,10 @@ Y_PROGRAM_START()
             for(size_t i=1;i<=n;++i)
             {
                 //fp("%g %g %g\n", t[i], log( (pH_asymp-Y[i])/(pH_asymp-pH_min)), pH[i] );
-                fp("%g %g\n", t[i], (pow(10.0,-Y[i])-h_ini)/(h_end-h_ini) );
+                fp("%g %g\n",
+                   t[i]-t_min,
+                   ((pow(10.0,-Y[i])-h_ini)/(h_end-h_ini))
+                    );
             }
         }
 
@@ -195,16 +209,7 @@ Y_PROGRAM_START()
         vars(aorg,"vmin") = pH_min;
 
         double &t0 = vars(aorg,"t0");
-        t0 = 0;
-        for(size_t i=1;i<n;++i)
-        {
-            if(Y[i+1]>Y[i])
-            {
-                t0 = t[i];
-                break;
-            }
-        }
-        //t0/=2;
+        t0 = t_min;
         std::cerr << "t0=" << t0 << std::endl;
         vars(aorg,"t1")   = thalf-t0;
         vars(aorg,"a")    = 0.66535 * vars(aorg,"t1");

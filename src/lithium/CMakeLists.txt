@@ -7,6 +7,9 @@ ADD_EXECUTABLE(linsim linsim.cpp fcnli.hpp linsim.lua)
 TARGET_LINK_Y(linsim lua++ m)
 INSTALL( TARGETS linsim RUNTIME DESTINATION bin )
 
+ADD_EXECUTABLE(fit-h fit-h.cpp)
+TARGET_LINK_Y(fit-h m lang)
+INSTALL( TARGETS fit-h RUNTIME DESTINATION bin )
 
 IF(FALSE)
 

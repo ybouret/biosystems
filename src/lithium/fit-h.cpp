@@ -220,7 +220,7 @@ Y_PROGRAM_START()
         // preparing fit
         //
         ////////////////////////////////////////////////////////////////////////
-        Fit::LeastSquares<double>   ls;
+        Fit::LeastSquares<double>   ls; //ls.verbose = true;
         Proton                      proton;
         Fit::Type<double>::Function F( & proton, & Proton::Compute );
 
@@ -237,14 +237,13 @@ Y_PROGRAM_START()
         vars(aorg,"vmin") = Hini;
         vars(aorg,"vmax") = Hend;
 
-        vars(aorg,"vmax") = pow(10.0,-7.2);
+        vars(aorg,"vmax") = pow(10.0,-7.0);
 
         double &t0 = vars(aorg,"t0");
         t0 = t_min;
         std::cerr << "t0=" << t0 << std::endl;
         vars(aorg,"q")   = thalf-t0;
         vars(aorg,"p")   = 1.2;
-        //vars(aorg,"p")   = 1.5;
 
         const string  outname = vformat("fit%s.dat", *conc_str);
 
@@ -271,20 +270,30 @@ Y_PROGRAM_START()
         save_fit(sample, outname, aorg, aerr);
 
 
+#if 1
         vars.on(used,"t0");
         if(!ls.fit(sample, F, aorg, aerr, used) )
         {
             throw exception("cannot fit");
         }
         save_fit(sample, outname, aorg, aerr);
+#endif
 
-        //vars.on(used,"vmax");
         if(!ls.fit(sample, F, aorg, aerr, used) )
         {
             throw exception("cannot fit");
         }
         save_fit(sample, outname, aorg, aerr);
 
+
+        {
+            const string resname = vformat("res%s.dat",*conc_str);
+            ios::ocstream fp(resname);
+            for(size_t i=1;i<=n;++i)
+            {
+                fp("%.15g %.15g %.15g\n",t[i],pH[i],-log10(sample.Yf[i]));
+            }
+        }
 
         C.push_back( conc );
         P.push_back( vars(aorg, "p" ) );

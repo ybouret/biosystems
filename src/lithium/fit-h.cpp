@@ -11,7 +11,7 @@
 #include "y/core/locate.hpp"
 #include "y/lang/pattern/matching.hpp"
 #include "y/math/fit/ls.hpp"
-
+#include "y/sort/index.hpp"
 
 using namespace upsylon;
 using namespace math;
@@ -20,8 +20,7 @@ using namespace math;
 class Proton
 {
 public:
-    const double vmax;
-    Proton(const double pH_asymp) : vmax( pH_asymp )
+    Proton()
     {
     }
 
@@ -33,23 +32,24 @@ public:
                    const array<double>  &aorg,
                    const Fit::Variables &vars)
     {
-        const double vmin = vars(aorg,"vmin");
-        const double t1   = vars(aorg,"t1");
-        const double a    = vars(aorg,"a");
         const double t0   = vars(aorg,"t0");
+        const double vmin = vars(aorg,"vmin");
+        const double vmax = vars(aorg,"vmax");
 
-        const double tt  = (t-t0)/t1;
-        const double a2  = square_of(a/t1);
-        const double tt2 = tt*tt;
-        const double tt3 = tt2*tt;
         if(t<=t0)
         {
             return vmin;
         }
         else
         {
-            return vmax + (vmin-vmax) * exp( - tt3 / (a2+tt2) );
+            const double q = vars(aorg,"q");
+            const double p = vars(aorg,"p");
+            const double tt = (t-t0)/q;
+            const double U  = pow(tt,p);
+            return vmin + (vmax-vmin) * U/(1.0+U);
         }
+
+
 
     }
 
@@ -62,13 +62,36 @@ static inline bool is_sep(const char C)
     return ' '==C || '\t' == C;
 }
 
+static inline
+void save_fit(const Fit::Sample<double> &sample,
+              const string              &outname,
+              const array<double>       &aorg,
+              const array<double>       &aerr)
+{
+    std::cerr << std::endl;
+    std::cerr << "----" << std::endl;
+    sample.variables.diplay(std::cerr,aorg,aerr);
+    ios::ocstream fp(outname);
+    for(size_t i=1;i<=sample.count();++i)
+    {
+        fp("%.15g %.15f %.15g\n", sample.X[i], sample.Y[i], sample.Yf[i] );
+    }
+}
+
+
 Y_PROGRAM_START()
 {
     vector<string,memory::pooled> words;
     vector<double>                tz(4,as_capacity);
     Lang::Matching                match = "[:digit:]+([.][:digit:]*)?mM";
     list<Lang::Token>             concs;
-    
+
+    vector<double> C;
+    vector<double> P;
+    vector<double> Q;
+    vector<double> pHmax;
+    vector<double> pHmin;
+
     for(int iarg=1;iarg<argc;++iarg)
     {
         ////////////////////////////////////////////////////////////////////////
@@ -171,18 +194,23 @@ Y_PROGRAM_START()
                 Y[i] = (tmp=max_of( pH[i], tmp ));
             }
         }
+        vector<double> H(n);
+        for(size_t i=1;i<=n;++i)
+        {
+            H[i] =pow(10.0,-Y[i]);
+        }
+        const double Hini = pow(10.0,-pH_min);
+        const double Hend = pow(10.0,-pH_asymp);
 
         {
             const string  outname = vformat("out%s.dat", *conc_str);
             ios::ocstream fp(outname);
-            const double h_ini = pow(10.0,-pH_min);
-            const double h_end = pow(10.0,-pH_asymp);
             for(size_t i=1;i<=n;++i)
             {
                 //fp("%g %g %g\n", t[i], log( (pH_asymp-Y[i])/(pH_asymp-pH_min)), pH[i] );
                 fp("%g %g\n",
                    t[i]-t_min,
-                   ((pow(10.0,-Y[i])-h_ini)/(h_end-h_ini))
+                   (H[i]-Hini)/(Hend-Hini)
                     );
             }
         }
@@ -193,61 +221,103 @@ Y_PROGRAM_START()
         //
         ////////////////////////////////////////////////////////////////////////
         Fit::LeastSquares<double>   ls;
-        Proton                      proton(pH_asymp);
+        Proton                      proton;
         Fit::Type<double>::Function F( & proton, & Proton::Compute );
 
         vector<double>       Z(n);
-        Fit::Sample<double>  sample(t,Y,Z);
+        Fit::Sample<double>  sample(t,H,Z);
         Fit::Variables       &vars  = sample.variables;
-        vars << "t1" << "a" << "vmin" << "t0";
+        vars << "p" << "q" << "vmin" << "vmax" << "t0";
 
         const size_t   nvar = vars.size();
         vector<double> aorg( nvar );
-        vector<bool>   used( nvar, true );
+        vector<bool>   used( nvar, false );
         vector<double> aerr( nvar, 0 );
 
-        vars(aorg,"vmin") = pH_min;
+        vars(aorg,"vmin") = Hini;
+        vars(aorg,"vmax") = Hend;
+
+        vars(aorg,"vmax") = pow(10.0,-7.2);
 
         double &t0 = vars(aorg,"t0");
         t0 = t_min;
         std::cerr << "t0=" << t0 << std::endl;
-        vars(aorg,"t1")   = thalf-t0;
-        vars(aorg,"a")    = 0.66535 * vars(aorg,"t1");
+        vars(aorg,"q")   = thalf-t0;
+        vars(aorg,"p")   = 1.2;
+        //vars(aorg,"p")   = 1.5;
 
+        const string  outname = vformat("fit%s.dat", *conc_str);
 
         (void)sample.computeD2(F,aorg);
-        {
-            const string  outname = vformat("fit%s.dat", *conc_str);
-            ios::ocstream fp(outname);
-            for(size_t i=1;i<=n;++i)
-            {
-                fp("%g %g %g\n", t[i], Y[i], Z[i]);
-            }
-        }
+        save_fit(sample, outname, aorg, aerr);
 
-        tao::ld(used,false);
-        vars(used,"t1") = true;
-       // vars(used, "a") = true;
-       // vars(used, "vmin") = true;
-        //vars(used, "t0")= true;
-        //exit(1);
-        ls.verbose = true;
+
+
+        vars.on(used,"p");
+        vars.on(used,"q");
+
         if(!ls.fit(sample, F, aorg, aerr, used) )
         {
             throw exception("cannot fit");
         }
 
-        vars.diplay(std::cerr, aorg, aerr);
+        save_fit(sample, outname, aorg, aerr);
+
+        vars.on(used,"vmin");
+        if(!ls.fit(sample, F, aorg, aerr, used) )
         {
-            const string  outname = vformat("fit%s.dat", *conc_str);
-            ios::ocstream fp(outname);
-            for(size_t i=1;i<=n;++i)
-            {
-                fp("%g %g %g\n", t[i], Y[i], Z[i]);
-            }
+            throw exception("cannot fit");
         }
+        save_fit(sample, outname, aorg, aerr);
 
 
+        vars.on(used,"t0");
+        if(!ls.fit(sample, F, aorg, aerr, used) )
+        {
+            throw exception("cannot fit");
+        }
+        save_fit(sample, outname, aorg, aerr);
+
+        //vars.on(used,"vmax");
+        if(!ls.fit(sample, F, aorg, aerr, used) )
+        {
+            throw exception("cannot fit");
+        }
+        save_fit(sample, outname, aorg, aerr);
+
+
+        C.push_back( conc );
+        P.push_back( vars(aorg, "p" ) );
+        Q.push_back( vars(aorg, "q" ) );
+        pHmax.push_back( -log10( vars(aorg,"vmax" ) ) );
+        pHmin.push_back( -log10( vars(aorg,"vmin" ) ) );
+    }
+
+
+
+
+
+    vector<size_t> idx( C.size() );
+    indexing::make(idx, comparison::increasing<double>, C);
+    indexing::rank(C,idx);
+    indexing::rank(P,idx);
+    indexing::rank(Q,idx);
+    indexing::rank(pHmax,idx);
+    indexing::rank(pHmin,idx);
+
+    std::cerr << "C=" << C << std::endl;
+    std::cerr << "P=" << P << std::endl;
+    std::cerr << "Q=" << Q << std::endl;
+    std::cerr << "pHmin=" << pHmin << std::endl;
+    std::cerr << "pHmax=" << pHmax << std::endl;
+
+    {
+        ios::ocstream fp("fit_proton.log");
+        fp << "#C P Q pHmin pHmax\n";
+        for(size_t i=1;i<=C.size();++i)
+        {
+            fp("%.15g %.15g %.15g %.15g %.15g\n", C[i], P[i], Q[i], pHmin[i], pHmax[i]);
+        }
     }
 
 }

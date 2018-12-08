@@ -328,7 +328,7 @@ Y_PROGRAM_START()
             fp("%.15g %.15g %.15g %.15g %.15g\n", C[i], P[i], Q[i], pHmin[i], pHmax[i]);
         }
     }
-
+    // plot 'res3.dat' w p, '' u 1:3 w l, 'res10.dat' w p, '' u 1:3 w l, 'res15.dat' w p, '' u 1:3 w l, 'res30.dat' w p, '' u 1:3 w l, 'res60.dat' w p, '' u 1:3 w l, 'res90.dat' w p, '' u 1:3 w l
 }
 Y_PROGRAM_END()
 

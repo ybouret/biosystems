@@ -284,7 +284,7 @@ Y_PROGRAM_START()
             throw exception("cannot fit");
         }
         save_fit(sample, outname, aorg, aerr);
-
+        std::cerr << "\tR2=" << sample.computeR2() << std::endl;
 
         {
             const string resname = vformat("res%s.dat",*conc_str);

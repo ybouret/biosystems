@@ -11,6 +11,10 @@ ADD_EXECUTABLE(fit-h fit-h.cpp)
 TARGET_LINK_Y(fit-h m lang)
 INSTALL( TARGETS fit-h RUNTIME DESTINATION bin )
 
+ADD_EXECUTABLE(fit-hall fit-hall.cpp)
+TARGET_LINK_Y(fit-hall m lang)
+INSTALL( TARGETS fit-hall RUNTIME DESTINATION bin )
+
 IF(FALSE)
 
 ADD_EXECUTABLE(alpha alpha.cpp)

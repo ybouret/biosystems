@@ -23,10 +23,51 @@ typedef Fit::Sample<double>  Sample;
 typedef Fit::Samples<double> Samples;
 typedef Fit::Variables       Variables;
 
-static inline bool is_sep(const char C)
+
+
+class Proton
 {
-    return ' '==C || '\t' == C;
-}
+public:
+    Proton()
+    {
+    }
+
+    ~Proton() throw()
+    {
+    }
+
+    double Compute(double           t,
+                   const Array     &aorg,
+                   const Variables &vars)
+    {
+        const double t0 = vars(aorg,"t0");
+        const double vi = vars(aorg,"vi");
+        const double ve = vars(aorg,"ve");
+        const double hi = pow(10.0,-vi);
+
+        if(t<=t0)
+        {
+            return hi;
+        }
+        else
+        {
+            const double q = vars(aorg,"q");
+            const double p = vars(aorg,"p");
+            const double tt = (t-t0)/q;
+            const double U  = pow(tt,p);
+            const double he = pow(10.0,-ve);
+            return hi + (he-hi) * U/(1.0+U);
+        }
+
+
+
+    }
+
+private:
+    Y_DISABLE_COPY_AND_ASSIGN(Proton);
+};
+
+
 
 class Record : public counted_object
 {
@@ -50,6 +91,7 @@ public:
 
     double         pH_min;
     double         t_min;
+    double         thalf;
 
     double         Hini;
     double         Hend;
@@ -58,6 +100,11 @@ public:
     Variables      &vars;
 
     inline const string & key() const throw() { return name; }
+
+    static inline bool is_sep(const char C)
+    {
+        return ' '==C || '\t' == C;
+    }
 
     inline Record(const char *id ) :
     filename(id),
@@ -71,6 +118,9 @@ public:
     n(0),
     pH_min(0),
     t_min(0),
+    thalf(0),
+    Hini(0),
+    Hend(0),
     sample( new Sample(t,H,Z) ),
     vars( sample->variables )
     {
@@ -114,6 +164,7 @@ public:
         std::cerr << "..loaded #data=" << n << std::endl;
         Y.make(n,0);
         H.make(n,0);
+        Z.make(n,0);
 
         ////////////////////////////////////////////////////////////////////////
         //
@@ -140,8 +191,8 @@ public:
         {
             throw exception("cannot find just 1 half-time for '%s'", *filename);
         }
-        const double thalf = tz[1];
-        size_t       ihalf = 0;
+        thalf = tz[1];
+        size_t ihalf = 0;
         (void)core::locate(thalf, *t, t.size(), comparison::increasing<double>, ihalf);
         std::cerr << "@ihalf=" << ihalf << std::endl;
 
@@ -192,6 +243,13 @@ private:
 
 typedef Record::DataBase::iterator Iterator;
 
+static inline int compare_natural( const string &lhs, const string &rhs )
+{
+    const double l = atof(*lhs);
+    const double r = atof(*rhs);
+    return comparison::increasing(l,r);
+}
+
 Y_PROGRAM_START()
 {
     Record::DataBase db;
@@ -206,7 +264,7 @@ Y_PROGRAM_START()
     }
     const size_t nrec = db.size();
     std::cerr << "Loaded #" << nrec << " files" << std::endl;
-    db.sort_keys(comparison::increasing<string>);
+    db.sort_keys(compare_natural);
 
     Samples samples;
     for( Iterator i=db.begin();i!=db.end();++i)
@@ -215,6 +273,138 @@ Y_PROGRAM_START()
         std::cerr << r.filename << std::endl;
         samples.push_back(r.sample);
     }
+    assert(samples.size()==nrec);
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    // prepare fit
+    //
+    ////////////////////////////////////////////////////////////////////////////
+    Fit::LeastSquares<double>   ls;
+    Proton                      proton;
+    Fit::Type<double>::Function F( &proton, & Proton::Compute );
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    // First pass, individual fits
+    //
+    ////////////////////////////////////////////////////////////////////////////
+    Variables &gvars = samples.variables;
+    Vector C;
+    Vector P;
+    Vector Q;
+    Vector pHi;
+    Vector pHe;
+    {
+        gvars.free();
+        gvars << "p" << "q" << "vi" << "ve" << "t0";
+        const size_t nvar = gvars.size();
+        Vector aorg( nvar );
+        Vector aerr( nvar );
+        vector<bool> used( nvar, false);
+
+        {
+            ios::ocstream fp("ind.dat");
+            for( Iterator i=db.begin();i!=db.end();++i)
+            {
+                Record &r = **i;
+                Sample &sample = *r.sample;
+                r.vars = gvars;
+                std::cerr << "-- Individual for " << r.filename << std::endl;
+                std::cerr << r.name << ".vars=" << r.vars << std::endl;
+
+                gvars(aorg,"p")  = 1.0;
+                gvars(aorg,"q")  = r.thalf-r.t_min;
+                gvars(aorg,"vi") = r.pH_min;
+                gvars(aorg,"ve") = r.pH_end;
+
+                gvars(aorg,"ve") = 7.1;
+
+
+                tao::ld(used,false);
+
+
+                int level = 0;
+                gvars.diplay(std::cerr,aorg);
+                {
+                    //gvars.on(used,"p");
+                    gvars.on(used,"q");
+                    ++level;
+                    std::cerr << "starting level " << level << " with: " << std::endl;
+                    gvars.diplay(std::cerr,aorg);
+                    if( !ls.fit( sample, F, aorg, aerr, used) )
+                    {
+                        throw exception("couldn't fit %s @level-%d", *(r.name), level );
+                    }
+                    //gvars.diplay(std::cerr, aorg, aerr, "\t");
+                    //std::cerr << "\tR2=" << sample.computeR2() << std::endl;
+                }
+
+                if(false)
+                {
+                    gvars.on(used,"p");
+                    ++level;
+                    std::cerr << "starting level " << level << " with: " << std::endl;
+                    gvars.diplay(std::cerr,aorg);
+                    if( !ls.fit( sample, F, aorg, aerr, used) )
+                    {
+                        throw exception("couldn't fit %s @level-%d", *(r.name), level );
+                    }
+                }
+
+                {
+                    gvars.on(used,"t0");
+                    gvars.on(used,"vi");
+                    gvars.on(used,"ve");
+                    ++level;
+                    std::cerr << "starting level " << level << " with: " << std::endl;
+                    gvars.diplay(std::cerr,aorg);
+                    if( !ls.fit( sample, F, aorg, aerr, used) )
+                    {
+                        throw exception("couldn't fit %s @level-%d", *(r.name), level );
+                    }
+                }
+
+                if(false)
+                {
+                    tao::ld(used,false);
+                    gvars.on(used,"ve");
+                    ++level;
+                    std::cerr << "starting level " << level << " with: " << std::endl;
+                    gvars.diplay(std::cerr,aorg);
+                    if( !ls.fit( sample, F, aorg, aerr, used) )
+                    {
+                        throw exception("couldn't fit %s @level-%d", *(r.name), level );
+                    }
+                }
+
+
+
+
+                gvars.diplay(std::cerr, aorg, aerr, "\t");
+                std::cerr << "\tR2=" << sample.computeR2() << std::endl;
+                for(size_t j=1;j<=sample.count();++j)
+                {
+                    fp("%g %g %gn\n", sample.X[j], -log10(sample.Y[j]), -log10(sample.Yf[j]));
+                }
+                fp << '\n';
+
+                C.push_back( r.conc );
+                P.push_back( gvars(aorg, "p" ) );
+                Q.push_back( gvars(aorg, "q" ) );
+                pHi.push_back( gvars(aorg, "vi" ) );
+                pHe.push_back( gvars(aorg, "ve" ) );
+
+            }
+        }
+    }
+
+    std::cerr << "Global R2=" << samples.computeR2() << std::endl;
+    for(size_t i=1;i<=nrec;++i)
+    {
+        std::cerr << C[i] << " " << P[i] << " " << Q[i] << " " << pHi[i] << " " << pHe[i] << std::endl;
+    }
+
 }
 Y_PROGRAM_END()
 

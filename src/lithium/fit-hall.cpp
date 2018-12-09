@@ -21,6 +21,7 @@ typedef vector<double>       Vector;
 typedef array<double>        Array;
 typedef Fit::Sample<double>  Sample;
 typedef Fit::Samples<double> Samples;
+typedef Fit::Variables       Variables;
 
 static inline bool is_sep(const char C)
 {
@@ -54,7 +55,7 @@ public:
     double         Hend;
 
     Sample::Pointer sample;
-
+    Variables      &vars;
 
     inline const string & key() const throw() { return name; }
 
@@ -70,7 +71,8 @@ public:
     n(0),
     pH_min(0),
     t_min(0),
-    sample( new Sample(t,H,Z) )
+    sample( new Sample(t,H,Z) ),
+    vars( sample->variables )
     {
         vector<string,memory::pooled> words;
         vector<double>                tz(4,as_capacity);

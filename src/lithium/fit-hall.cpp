@@ -392,10 +392,6 @@ Y_PROGRAM_START()
                     //ls.verbose = false;
                 }
 
-                
-
-
-
 
                 gvars.diplay(std::cerr, aorg, aerr, "\t");
                 std::cerr << "\tR2=" << sample.computeR2() << std::endl;
@@ -420,6 +416,22 @@ Y_PROGRAM_START()
     {
         std::cerr << C[i] << " " << P[i] << " " << Q[i] << " " << pHi[i] << " " << pHe[i] << std::endl;
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    // Second pass, linked field
+    //
+    ////////////////////////////////////////////////////////////////////////////
+    gvars.free();
+    for( Iterator i=db.begin();i!=db.end();++i)
+    {
+        Record    &r = **i;
+        Variables &v = r.sample->variables;
+        v.free();
+        
+    }
+
 
 }
 Y_PROGRAM_END()

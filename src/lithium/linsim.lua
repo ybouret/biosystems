@@ -17,7 +17,7 @@ sigma=1.0/0.99772 -- +/- 0.00026
 
 d7out=15.2;
 
-theta = 0.5
+theta = 1.1
 
 
 -- leak scaling
@@ -32,7 +32,7 @@ phi7 = 0.6;
 -- proton
 
 p=1.0
-q=2.0;
+q=1.0;
 
 hi = 1.0;
 he = 0.1;

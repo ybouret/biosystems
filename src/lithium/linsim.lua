@@ -1,6 +1,5 @@
 
 exp = math.exp
-pow = math.pow
 
 -- compute the GHK level
 
@@ -36,10 +35,10 @@ p=1.0
 q=5.0;
 
 hi = 1.0;
-he = 0.9;
+he = 1.0;
 
 function h(tau)
-tt = pow(tau/q,p);
+tt = (tau/q)^p;
 return hi + (he-hi) * tt/(1.0+tt);
 end
 

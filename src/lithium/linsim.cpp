@@ -101,6 +101,11 @@ public:
         Y[I_B7] = 0;
     }
 
+    inline double alpha0(double tau) const
+    {
+        return c2 + s2 * exp( -tau/c2 );
+    }
+
     inline
     double Beta(double tau, double mu, double phi)
     {
@@ -135,14 +140,17 @@ private:
 namespace
 {
     static inline
-    void save( ios::ostream &fp, const double mark, const Array &Y, const double r=0)
+    void save( ios::ostream &fp, const double mark, const double r_pred, const double r_real, const double H, const double alpha0, const Array &Y)
     {
         fp("%.15g",mark);
+        fp(" %.15g", r_pred);
+        fp(" %.15g", r_real);
+        fp(" %.15g", H);
+        fp(" %.15g", alpha0);
         for(size_t i=1;i<=Y.size();++i)
         {
             fp(" %.15g", Y[i]);
         }
-        fp(" %.15g", r);
         fp << '\n';
     }
 }
@@ -160,15 +168,7 @@ Y_PROGRAM_START()
     LinSim      lin(vm);
     ODEquation  diffeq( &lin, & LinSim::Compute );
 
-#if 0
-    double t_run = 20;
-    double dt    = 0.001;
-    double emit  = 0.01;
-    size_t every = 0;
-    const size_t iters = timings::setup(t_run, dt, emit, every);
 
-    std::cerr << "#iters=" << iters << " for t_run=" << t_run << " at dt=" << dt << ", saving every " << emit << std::endl;
-#endif
 
     const double lt_min = -4;
     double       lt_max =  5;
@@ -204,7 +204,10 @@ Y_PROGRAM_START()
             bar.update(i,iters);
             bar.display(std::cerr) << '\r';
             ios::ocstream fp("output.dat",true);
-            save(fp,lt1,Y,lin.ratio(t1));
+            const double r_real = Y[LinSim::I_B7]/Y[LinSim::I_B6];
+            const double r_pred = lin.ratio(t1);
+            const double H      = lin.get_h(t1)/lin.h0;
+            save(fp,lt1,r_pred,r_real,H,lin.alpha0(t1),Y);
         }
         t0 = t1;
     }

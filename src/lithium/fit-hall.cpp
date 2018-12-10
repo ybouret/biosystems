@@ -365,7 +365,7 @@ Y_PROGRAM_START()
                     }
                 }
 
-                if(false)
+                if(true)
                 {
                     tao::ld(used,false);
                     gvars.on(used,"ve");
@@ -378,6 +378,22 @@ Y_PROGRAM_START()
                     }
                 }
 
+                if(true)
+                {
+                    tao::ld(used,false);
+                    gvars.on(used,"p:q");
+                    ++level;
+                    std::cerr << "starting level " << level << " with: " << std::endl;
+                    gvars.diplay(std::cerr,aorg);
+                    if( !ls.fit( sample, F, aorg, aerr, used) )
+                    {
+                        throw exception("couldn't fit %s @level-%d", *(r.name), level );
+                    }
+                    //ls.verbose = false;
+                }
+
+                
+
 
 
 
@@ -389,9 +405,9 @@ Y_PROGRAM_START()
                 }
                 fp << '\n';
 
-                C.push_back( r.conc );
-                P.push_back( gvars(aorg, "p" ) );
-                Q.push_back( gvars(aorg, "q" ) );
+                C.push_back(   r.conc );
+                P.push_back(   gvars(aorg, "p" ) );
+                Q.push_back(   gvars(aorg, "q" ) );
                 pHi.push_back( gvars(aorg, "vi" ) );
                 pHe.push_back( gvars(aorg, "ve" ) );
 

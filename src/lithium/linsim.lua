@@ -1,5 +1,6 @@
 
 exp = math.exp
+pow = math.pow
 
 -- compute the GHK level
 
@@ -19,10 +20,6 @@ d7out=15.2;
 
 theta = 1.1
 
-function h(tau)
-return 1;
-end
-
 
 -- leak scaling
 mu7 = 0.1;
@@ -32,3 +29,17 @@ kappa = 1.0
 
 -- catalytic amp
 phi7 = 0.6;
+
+-- proton
+
+p=1.0
+q=5.0;
+
+hi = 1.0;
+he = 0.9;
+
+function h(tau)
+tt = pow(tau/q,p);
+return hi + (he-hi) * tt/(1.0+tt);
+end
+

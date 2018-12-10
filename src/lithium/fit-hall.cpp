@@ -424,12 +424,13 @@ Y_PROGRAM_START()
     //
     ////////////////////////////////////////////////////////////////////////////
     gvars.free();
+    const double p_ini = average_of(P);
     for( Iterator i=db.begin();i!=db.end();++i)
     {
         Record    &r = **i;
         Variables &v = r.sample->variables;
         v.free();
-        
+
     }
 
 

@@ -295,6 +295,8 @@ Y_PROGRAM_START()
     Vector Q;
     Vector pHi;
     Vector pHe;
+    Vector T0;
+
     {
         gvars.free();
         gvars << "p" << "q" << "vi" << "ve" << "t0";
@@ -325,13 +327,13 @@ Y_PROGRAM_START()
 
 
                 int level = 0;
-                gvars.diplay(std::cerr,aorg);
+                gvars.display(std::cerr,aorg);
                 {
                     //gvars.on(used,"p");
                     gvars.on(used,"q");
                     ++level;
                     std::cerr << "starting level " << level << " with: " << std::endl;
-                    gvars.diplay(std::cerr,aorg);
+                    gvars.display(std::cerr,aorg);
                     if( !ls.fit( sample, F, aorg, aerr, used) )
                     {
                         throw exception("couldn't fit %s @level-%d", *(r.name), level );
@@ -345,7 +347,7 @@ Y_PROGRAM_START()
                     gvars.on(used,"p");
                     ++level;
                     std::cerr << "starting level " << level << " with: " << std::endl;
-                    gvars.diplay(std::cerr,aorg);
+                    gvars.display(std::cerr,aorg);
                     if( !ls.fit( sample, F, aorg, aerr, used) )
                     {
                         throw exception("couldn't fit %s @level-%d", *(r.name), level );
@@ -358,7 +360,7 @@ Y_PROGRAM_START()
                     gvars.on(used,"ve");
                     ++level;
                     std::cerr << "starting level " << level << " with: " << std::endl;
-                    gvars.diplay(std::cerr,aorg);
+                    gvars.display(std::cerr,aorg);
                     if( !ls.fit( sample, F, aorg, aerr, used) )
                     {
                         throw exception("couldn't fit %s @level-%d", *(r.name), level );
@@ -371,7 +373,7 @@ Y_PROGRAM_START()
                     gvars.on(used,"ve");
                     ++level;
                     std::cerr << "starting level " << level << " with: " << std::endl;
-                    gvars.diplay(std::cerr,aorg);
+                    gvars.display(std::cerr,aorg);
                     if( !ls.fit( sample, F, aorg, aerr, used) )
                     {
                         throw exception("couldn't fit %s @level-%d", *(r.name), level );
@@ -384,7 +386,7 @@ Y_PROGRAM_START()
                     gvars.on(used,"p:q");
                     ++level;
                     std::cerr << "starting level " << level << " with: " << std::endl;
-                    gvars.diplay(std::cerr,aorg);
+                    gvars.display(std::cerr,aorg);
                     if( !ls.fit( sample, F, aorg, aerr, used) )
                     {
                         throw exception("couldn't fit %s @level-%d", *(r.name), level );
@@ -393,7 +395,7 @@ Y_PROGRAM_START()
                 }
 
 
-                gvars.diplay(std::cerr, aorg, aerr, "\t");
+                gvars.display(std::cerr, aorg, aerr, "\t");
                 std::cerr << "\tR2=" << sample.computeR2() << std::endl;
                 for(size_t j=1;j<=sample.count();++j)
                 {
@@ -406,7 +408,7 @@ Y_PROGRAM_START()
                 Q.push_back(   gvars(aorg, "q" ) );
                 pHi.push_back( gvars(aorg, "vi" ) );
                 pHe.push_back( gvars(aorg, "ve" ) );
-
+                T0.push_back(  gvars(aorg, "t0" ) );
             }
         }
     }
@@ -414,7 +416,7 @@ Y_PROGRAM_START()
     std::cerr << "Global R2=" << samples.computeR2() << std::endl;
     for(size_t i=1;i<=nrec;++i)
     {
-        std::cerr << C[i] << " " << P[i] << " " << Q[i] << " " << pHi[i] << " " << pHe[i] << std::endl;
+        std::cerr << C[i] << " " << P[i] << " " << Q[i] << " " << pHi[i] << " " << pHe[i] << " " << T0[i] << std::endl;
     }
 
 
@@ -424,14 +426,100 @@ Y_PROGRAM_START()
     //
     ////////////////////////////////////////////////////////////////////////////
     gvars.free();
-    const double p_ini = average_of(P);
-    for( Iterator i=db.begin();i!=db.end();++i)
+
+
+    //__________________________________________________________________________
+    //
+    // construct and link the variables
+    //__________________________________________________________________________
     {
-        Record    &r = **i;
-        Variables &v = r.sample->variables;
-        v.free();
+        gvars << "p";
+        gvars << "ve";
+        {
+            size_t j=1;
+            for( Iterator i=db.begin();i!=db.end();++i,++j)
+            {
+                Record    &r = **i;
+                Variables &v = r.sample->variables;
+                v.free();
+                {
+                    v("p", gvars["p"]);
+                    v("ve",gvars["ve"]);
+                    {
+                        const string q_id = "q" + r.name;
+                        gvars << q_id;
+                        v("q",gvars[q_id]);
+                    }
+                    {
+                        const string vi_id = "vi" + r.name;
+                        gvars << vi_id;
+                        v("vi",gvars[vi_id]);
+                    }
+                    {
+                        const string t0_id = "t0" + r.name;
+                        gvars << t0_id;
+                        v("t0",gvars[t0_id]);
+                    }
+                }
+                std::cerr << "v=" << v << std::endl;
+            }
+            std::cerr << "g=" << gvars << std::endl;
+        }
+
+        //__________________________________________________________________________
+        //
+        // Initialize the variables
+        //__________________________________________________________________________
+        const size_t nvar = gvars.size();
+        Vector       aorg(nvar);
+        Vector       aerr(nvar);
+        vector<bool> used(nvar,false);
+
+        const double p_ini   = average_of(P);
+        //const double pHe_ini = average_of(pHe);
+
+        gvars(aorg,"ve") = 7.1;
+        gvars(aorg,"p" ) = 1;
+        {
+            size_t j=1;
+            for( Iterator i=db.begin();i!=db.end();++i,++j)
+            {
+                Record    &r = **i;
+                Variables &v = r.sample->variables;
+                v(aorg,"t0") =  T0[j];
+                v(aorg,"q" ) =   Q[j];
+                v(aorg,"vi") = pHi[j];
+                v.on(used,"q");
+            }
+        }
+        std::cerr << "aorg=" << aorg << std::endl;
+        samples.computeD2(F,aorg);
+
+        gvars.on(used,"p");
+        gvars.on(used,"ve");
+
+        if( !ls.fit(samples, F, aorg, aerr, used) )
+        {
+            throw exception("Couldn't fit...");
+        }
+
+        gvars.display(std::cerr, aorg, aerr);
+
+        ios::ocstream fp("com.dat");
+        for( Iterator i=db.begin();i!=db.end();++i)
+        {
+            Sample &sample = *((**i).sample);
+            for(size_t j=1;j<=sample.count();++j)
+            {
+                fp("%g %g %gn\n", sample.X[j], -log10(sample.Y[j]), -log10(sample.Yf[j]));
+            }
+            fp << '\n';
+        }
+
+
 
     }
+
 
 
 }

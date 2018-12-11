@@ -9,6 +9,11 @@ ADD_EXECUTABLE(fit-hall fit-hall.cpp)
 TARGET_LINK_Y(fit-hall m lang)
 INSTALL( TARGETS fit-hall RUNTIME DESTINATION bin )
 
+
+ADD_EXECUTABLE(li-tot li-tot.cpp)
+TARGET_LINK_Y(li-tot m)
+INSTALL( TARGETS li-tot RUNTIME DESTINATION bin )
+
 IF(FALSE)
 
 ADD_EXECUTABLE(build-proton build-proton.cpp)

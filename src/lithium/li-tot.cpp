@@ -1,7 +1,6 @@
 #include "y/program.hpp"
 #include "y/math/io/data-set.hpp"
 #include "y/sequence/vector.hpp"
-#include "y/ios/icstream.hpp"
 #include "y/ios/ocstream.hpp"
 
 using namespace upsylon;
@@ -28,9 +27,7 @@ Y_PROGRAM_START()
             math::data_set<double> ds;
             ds.use(1, t);
             ds.use(iCol, Li);
-
-            ios::icstream fp(filename);
-            ds.load(fp);
+            ds.load(filename);
         }
 
         const size_t n=t.size();
@@ -41,7 +38,7 @@ Y_PROGRAM_START()
         }
 
         {
-            const string outname = "li-all-out.txt";
+            const string  outname = "li-all-out.txt";
             ios::ocstream fp(outname);
             fp << "#t Li(M)\n";
             for(size_t i=1;i<=n;++i)

@@ -1,5 +1,6 @@
 
 exp = math.exp
+tan = math.tan
 
 -- compute the GHK level
 
@@ -15,32 +16,44 @@ Theta = exp( z*F*V/R/(T+37) );
 -- sigma is from diffusive processes
 sigma=1.0/0.99772 -- +/- 0.00026
 
-d7out=15.2;
 
-theta = 1.1
+theta = 0.5;
+
+d7out = 14.57;
+d7in  = 0.93;
+rho0 = (1+d7in/1000.0)/(1+d7out/1000.0);
+print( 'rho0=' .. rho0 )
+print( 't2  =' .. (tan(theta)^2) )
+
 
 
 -- leak scaling
 mu7 = 0.1;
 
--- pre-eq scaling
-kappa = 1.0
+
 
 -- catalytic amp
 phi7 = 0.6;
+--phi7 = 1.0;
+
+-- intake speed up
+t2bis = tan(theta)^2 *phi7;
+kappa = (t2bis+Theta*mu7*(1-rho0*sigma))/t2bis/rho0;
+print( 'kappa  =' .. kappa )
 
 -- proton
 
 p=1.0
-q=1.0;
+q=2.0;
 
 hi = 1.0;
-he = 0.1;
+he = 1.0;
 
 function h(tau)
 tt = (tau/q)^p;
 return hi + (he-hi) * tt/(1.0+tt);
 end
 
-LiAllOut=15;
 
+-- for fit
+-- he=0.5

@@ -45,7 +45,7 @@ class LinSim
     const double kappa;
     const double phi7;
     const double phi6;
-    const double LiAllOut;
+    //const double LiAllOut;
 
     inline LinSim(const Lua::VM &_vm) :
     vm( _vm ),
@@ -53,8 +53,8 @@ class LinSim
     _INI(sigma),
     _INI(theta),
     c2( square_of( cos(theta) ) ),
-    s2( 1.0-c2 ),
-    t2( s2/c2 ),
+    s2( square_of( sin(theta) ) ),
+    t2( square_of( tan(theta) ) ),
     _INI(d7out),
     eps6(1.0/(1.0+beta_s*(1.0+0.001*d7out))),
     eps7(1.0-eps6),
@@ -65,15 +65,16 @@ class LinSim
     mu6( sigma*mu7 ),
     _INI(kappa),
     _INI(phi7),
-    phi6( kappa * phi7 ),
-    _INI(LiAllOut)
+    phi6( kappa * phi7 )
     {
         std::cerr << "Theta = " << Theta << std::endl;
         std::cerr << "sigma = " << sigma << std::endl;
-        std::cerr << "theta = " << theta << " => c2   = " << c2   << std::endl;
+        std::cerr << "theta = " << theta << " => c2   = " << c2   << "=> s2 = " << s2 << " => t2 = " << t2 << std::endl;
         std::cerr << "d7out = " << d7out << " => eps6 = " << eps6 << ", eps7=" << eps7 << std::endl;
         std::cerr << "mu7   = " << mu7   << " => mu6  = " << mu6  << std::endl;
-        std::cerr << "[Li]  = " << LiAllOut << std::endl;
+        std::cerr << "kappa = " << kappa << std::endl;
+        std::cerr << "phi7   = " << phi7   << " => phi6  = " << phi6  << std::endl;
+
     }
 
     inline ~LinSim() throw()
@@ -102,6 +103,8 @@ class LinSim
         Y[I_AC] = 1;
         Y[I_B6] = 0;
         Y[I_B7] = 0;
+
+        std::cerr << "ratio0: " << (Theta*mu7+phi7*t2)/(Theta*mu6+phi6*t2) << std::endl;
     }
 
     inline double alpha0(double tau) const
@@ -128,7 +131,7 @@ class LinSim
 
     double beta6(double tau)
     {
-        return Beta(tau,mu6,phi7);
+        return Beta(tau,mu6,phi6);
     }
 
     double ratio(double tau)
@@ -146,7 +149,7 @@ class LinSim
     {
         const double b6 = Y[I_B6];
         const double b7 = Y[I_B7];
-        return (eps6*b6+eps7*b7)*LiAllOut;
+        return (eps6*b6+eps7*b7);
     }
 
 
@@ -187,7 +190,7 @@ Y_PROGRAM_START()
 
 
 
-    const double lt_min = -4;
+    const double lt_min = -6;
     double       lt_max =  5;
     double       lt_amp = lt_max-lt_min;
     double       lt_stp = 0.002;
@@ -207,6 +210,13 @@ Y_PROGRAM_START()
     {
         ios::ocstream::overwrite("output.dat");
         ios::ocstream::overwrite("li.dat");
+    }
+
+    {
+        vector<double> dY(3);
+        lin.Compute(dY, 0, Y);
+        std::cerr << "dY=" << dY << std::endl;
+        std::cerr << "rho0=" << dY[LinSim::I_B7] / dY[LinSim::I_B6]  << std::endl;
     }
 
     double t0   = 0;

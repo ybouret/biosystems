@@ -45,7 +45,7 @@ class LinSim
     const double kappa;
     const double phi7;
     const double phi6;
-    //const double LiAllOut;
+    const double tau_shift;
 
     inline LinSim(const Lua::VM &_vm) :
     vm( _vm ),
@@ -65,7 +65,8 @@ class LinSim
     mu6( sigma*mu7 ),
     _INI(kappa),
     _INI(phi7),
-    phi6( kappa * phi7 )
+    phi6( kappa * phi7 ),
+    _INI(tau_shift)
     {
         std::cerr << "Theta = " << Theta << std::endl;
         std::cerr << "sigma = " << sigma << std::endl;
@@ -104,7 +105,7 @@ class LinSim
         Y[I_B6] = 0;
         Y[I_B7] = 0;
 
-        std::cerr << "ratio0: " << (Theta*mu7+phi7*t2)/(Theta*mu6+phi6*t2) << std::endl;
+        std::cerr << "Initial Ratio0: " << (Theta*mu7+phi7*t2)/(Theta*mu6+phi6*t2) << std::endl;
     }
 
     inline double alpha0(double tau) const
@@ -191,10 +192,10 @@ Y_PROGRAM_START()
 
 
     const double lt_min = -6;
-    double       lt_max =  5;
+    double       lt_max =  8;
     double       lt_amp = lt_max-lt_min;
     double       lt_stp = 0.002;
-    double       lt_sav = 0.01;
+    double       lt_sav = 0.05;
     size_t       every  = 0;
     const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
     lt_max = lt_amp + lt_min;
@@ -239,13 +240,17 @@ Y_PROGRAM_START()
             }
             {
                 ios::ocstream fp("li.dat",true);
-                fp("%.15g %.15g %.15g\n", lt1, lin.computeDelta(Y), lin.computeLiAll(Y) );
+                const double tt = exp(lt1+lin.tau_shift);
+                if(tt<=5000)
+                {
+                    fp("%.15g %.15g %.15g %.15g\n", lt1, lin.computeDelta(Y), lin.computeLiAll(Y), tt);
+                }
             }
         }
         t0 = t1;
     }
     std::cerr << std::endl;
-
+    std::cerr << "Final Ratio: " << Y[LinSim::I_B7]/Y[LinSim::I_B6] << std::endl;
 }
 Y_PROGRAM_END()
 

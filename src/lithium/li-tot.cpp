@@ -23,19 +23,21 @@ Y_PROGRAM_START()
     if(argc>1)
     {
         const string filename = argv[1];
-        math::data_set<double> ds;
-        ds.use(1, t);
-        ds.use(iCol, Li);
+        {
+            math::data_set<double> ds;
+            ds.use(1, t);
+            ds.use(iCol, Li);
 
-        ios::icstream fp(filename);
-        ds.load(fp);
-    }
+            ios::icstream fp(filename);
+            ds.load(fp);
+        }
 
-    const size_t n=t.size();
-    for(size_t i=1;i<=n;++i)
-    {
-        Li[i] = (Li[i]*1e-6*Vwork)/Vtot;
-        std::cerr << "t=" << t[i] << " => " << Li[i] << " M" << std::endl;
+        const size_t n=t.size();
+        for(size_t i=1;i<=n;++i)
+        {
+            Li[i] = (Li[i]*1e-6*Vwork)/Vtot;
+            std::cerr << "t=" << t[i] << " => " << Li[i] << " M" << std::endl;
+        }
     }
 
 

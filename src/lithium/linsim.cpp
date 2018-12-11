@@ -21,7 +21,7 @@ static const double beta_s = 12.0192;
 #define _INI(VAR) VAR( vm->get<double>(#VAR) )
 class LinSim
 {
-public:
+    public:
     static const size_t I_AC = 1;
     static const size_t I_B6 = 2;
     static const size_t I_B7 = 3;
@@ -45,6 +45,7 @@ public:
     const double kappa;
     const double phi7;
     const double phi6;
+    const double LiAllOut;
 
     inline LinSim(const Lua::VM &_vm) :
     vm( _vm ),
@@ -64,13 +65,15 @@ public:
     mu6( sigma*mu7 ),
     _INI(kappa),
     _INI(phi7),
-    phi6( kappa * phi7 )
+    phi6( kappa * phi7 ),
+    _INI(LiAllOut)
     {
         std::cerr << "Theta = " << Theta << std::endl;
         std::cerr << "sigma = " << sigma << std::endl;
         std::cerr << "theta = " << theta << " => c2   = " << c2   << std::endl;
         std::cerr << "d7out = " << d7out << " => eps6 = " << eps6 << ", eps7=" << eps7 << std::endl;
         std::cerr << "mu7   = " << mu7   << " => mu6  = " << mu6  << std::endl;
+        std::cerr << "[Li]  = " << LiAllOut << std::endl;
     }
 
     inline ~LinSim() throw()
@@ -133,7 +136,21 @@ public:
         return beta7(tau)/beta6(tau);
     }
 
-private:
+    inline double computeDelta(const Array &Y) const
+    {
+        const double r = Y[I_B7]/Y[I_B6];
+        return 1000.0 * ( (1+d7out/1000.0) * r - 1.0 );
+    }
+
+    inline double computeLiAll(const Array &Y ) const
+    {
+        const double b6 = Y[I_B6];
+        const double b7 = Y[I_B7];
+        return (eps6*b6+eps7*b7)*LiAllOut;
+    }
+
+
+    private:
     Y_DISABLE_COPY_AND_ASSIGN(LinSim);
 };
 
@@ -188,8 +205,8 @@ Y_PROGRAM_START()
 
     lin.setup(Y);
     {
-        ios::ocstream fp("output.dat");
-        //fp << '#'; //save(fp,0,Y);
+        ios::ocstream::overwrite("output.dat");
+        ios::ocstream::overwrite("li.dat");
     }
 
     double t0   = 0;
@@ -203,11 +220,17 @@ Y_PROGRAM_START()
         {
             bar.update(i,iters);
             bar.display(std::cerr) << '\r';
-            ios::ocstream fp("output.dat",true);
             const double r_real = Y[LinSim::I_B7]/Y[LinSim::I_B6];
-            const double r_pred = lin.ratio(t1);
-            const double H      = lin.get_h(t1)/lin.h0;
-            save(fp,lt1,r_pred,r_real,H,lin.alpha0(t1),Y);
+            {
+                ios::ocstream fp("output.dat",true);
+                const double r_pred = lin.ratio(t1);
+                const double H      = lin.get_h(t1)/lin.h0;
+                save(fp,lt1,r_pred,r_real,H,lin.alpha0(t1),Y);
+            }
+            {
+                ios::ocstream fp("li.dat",true);
+                fp("%.15g %.15g %.15g\n", lt1, lin.computeDelta(Y), lin.computeLiAll(Y) );
+            }
         }
         t0 = t1;
     }

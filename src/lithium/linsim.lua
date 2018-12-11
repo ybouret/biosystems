@@ -42,3 +42,5 @@ tt = (tau/q)^p;
 return hi + (he-hi) * tt/(1.0+tt);
 end
 
+LiAllOut=15;
+

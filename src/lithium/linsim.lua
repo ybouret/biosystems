@@ -18,12 +18,13 @@ sigma=1.0/0.99772 -- +/- 0.00026
 
 
 theta = 0.5;
+t2    = tan(theta)^2;
 
 d7out = 14.57;
 d7in  = 0.93;
 rho0 = (1+d7in/1000.0)/(1+d7out/1000.0);
-print( 'rho0=' .. rho0 )
-print( 't2  =' .. (tan(theta)^2) )
+print( 'rho0   = ' .. rho0 )
+print( 't2     = ' .. t2   )
 
 
 
@@ -37,9 +38,13 @@ phi7 = 0.6;
 --phi7 = 1.0;
 
 -- intake speed up
-t2bis = tan(theta)^2 *phi7;
-kappa = (t2bis+Theta*mu7*(1-rho0*sigma))/t2bis/rho0;
-print( 'kappa  =' .. kappa )
+t2    = tan(theta)^2;
+t2bis = t2 *phi7;
+kappa = (t2bis+Theta*mu7*(1.0-rho0*sigma))/(t2bis*rho0);
+--kappa = ((mu7*Theta+t2bis)/rho0-sigma*mu7*Theta)/t2bis;
+print( 'kappa  = ' .. kappa )
+print( '-->r   = ' .. (mu7*Theta+phi7*t2)/(mu7*sigma*Theta+kappa*phi7*t2) )
+
 
 -- proton
 

@@ -2,6 +2,7 @@
 #include "y/math/io/data-set.hpp"
 #include "y/sequence/vector.hpp"
 #include "y/ios/icstream.hpp"
+#include "y/ios/ocstream.hpp"
 
 using namespace upsylon;
 using namespace math;
@@ -37,6 +38,16 @@ Y_PROGRAM_START()
         {
             Li[i] = (Li[i]*1e-6*Vwork)/Vtot;
             std::cerr << "t=" << t[i] << " => " << Li[i] << " M" << std::endl;
+        }
+
+        {
+            const string outname = "li-all-out.txt";
+            ios::ocstream fp(outname);
+            fp << "#t Li(M)\n";
+            for(size_t i=1;i<=n;++i)
+            {
+                fp("%.15g %.15g\n",t[i],Li[i]);
+            }
         }
     }
 

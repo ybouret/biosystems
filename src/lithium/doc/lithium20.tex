@@ -230,7 +230,7 @@ with the expressions
 \left\lbrace
 	\begin{array}{rcl}
 	v_h & = & k_h \EHin \\
-	%q_x & = & k_x^q \EHin \Li{x}  \\
+	q_x & = & k_x^q \EHin \Li{x}  \\
 	l_x & = & k_x  \left(\Li{x}- \tilde{\Theta}_x\right)\\
 	p_x & = & k_x^p \proton \LiE{x}\\
 	\end{array}
@@ -252,16 +252,16 @@ then we get the \underline{three} coupled equations
 \left\lbrace
 	\begin{array}{rcl}
 		\partial_t\EHin & = & -k_h \EHin + \left(E_0- \EHin\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
-		%- \EHin \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
+		- \EHin \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
 		\\
 		\\
 		& = & 
 		-k_h E_0+ \left(E_0- \EHin\right)\left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
-		%- \EHin \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
+		- \EHin \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
 		\\
 		\\
 		\partial_t\Li{x} & = & k_x \left(\tilde{\Theta}_x -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\tilde{D}}   k_x^p \tilde{J}_x  
-		%- \EHin k_x^q \Li{x}
+		- \EHin k_x^q \Li{x}
 		\\
 	\end{array}
 \right.
@@ -285,20 +285,18 @@ Leading to
 \left\lbrace
 \begin{array}{rcl}
 \partial_t\alpha & = & -k_h \alpha + \left(1- \alpha\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
-		%- \alpha \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
+		- \alpha \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
 		\\
 		\\
 		& = & 
 		-k_h + \left(1- \alpha\right)\left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
-		%- \alpha \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
+		- \alpha \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
 		\\
+		\\
+	\partial_t \hat\alpha & = & k_h - \hat\alpha \left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
+		+ (1-\hat\alpha) \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
 		\end{array}
 \right.
-\end{equation}
-or
-\begin{equation}
-	\partial_t \hat\alpha = k_h - \hat\alpha \left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
-		%+ (1-\hat\alpha) \left\lbrack {\sum_x k_x^q \Li{x}} \right\rbrack
 \end{equation}
 where $\hat\alpha$ is the \underline{fraction of not-protonated NHE}.
 
@@ -306,12 +304,12 @@ where $\hat\alpha$ is the \underline{fraction of not-protonated NHE}.
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t\Li{x} & = & k_x \left(\tilde{\Theta}_x -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\tilde{D}}   k_x^p \tilde{J}_x % - \EHin k_x^q \Li{x}
+\partial_t\Li{x} & = & k_x \left(\tilde{\Theta}_x -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\tilde{D}}   k_x^p \tilde{J}_x  - \EHin k_x^q \Li{x}
 \\
  &=&   \LiOut{x} \left( k_x
  	\left[\Theta-\dfrac{\Li{x}}{\LiOut{x}}\right] 
 	+ \left(1-\alpha\right) E_0 \proton \dfrac{ k_x^p J_x}{\tilde{D}}
- %- \alpha  E_0 k_x^q \dfrac{\Li{x}}{\LiOut{x}}
+ - \alpha  E_0 k_x^q \dfrac{\Li{x}}{\LiOut{x}}
   \right) \\
 \end{array}
 \right.

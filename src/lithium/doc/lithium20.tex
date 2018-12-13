@@ -282,6 +282,7 @@ then we get the \underline{three} coupled equations
 \end{equation}
 Leading to
 \begin{equation}
+\label{eq:alpha}
 \left\lbrace
 \begin{array}{rcl}
 \partial_t\alpha & = & -k_h \alpha + \left(1- \alpha\right) \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)  
@@ -327,7 +328,7 @@ Leading to
 \left\lbrace
 \begin{array}{rcl}
 \partial_t \beta_x 
-& = & k_x (\Theta-\beta_x)  + \left(1-\alpha\right) \dfrac{ k_x^p J_x}{\tilde{D}} E_0 \proton  - \alpha E_0 k_x^q \beta_x
+& = & k_x (\Theta-\beta_x)  + \left(1-\alpha\right) \dfrac{k_x^p J_x}{\tilde{D}} E_0 \proton  - \alpha E_0 k_x^q \beta_x
  \\
 \\
 & = & k_x (\Theta-\beta_x)  +  \hat\alpha \dfrac{ k_x^p J_x}{\tilde{D}} E_0 \proton  -  \left(1-\hat\alpha\right) E_0 k_x^q \beta_x
@@ -345,21 +346,31 @@ or
 	\dfrac{ \beta_7}{\beta_6} = \dfrac{\left[1+10^{-3}\deltaLi\right]}{\left[1+10^{-3}\deltaLiOut\right]}
 \end{equation}
 
+We inject $\beta_x$ into the \eqref{eq:alpha} equation to get
+\begin{equation}
+	\partial_t \hat\alpha  =  k_h - \hat\alpha \left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x k_x^p \tilde{J}_x \right)\right] 
+		+ (1-\hat\alpha) \left\lbrack {\sum_x k_x^q \epsilon_x \beta_x } \right\rbrack \LiAllOut
+\end{equation}
+
 
 \subsection{Unified system for variables}
 Using 
 \begin{equation}
-	E_0 = \eta \LiAllOut
+\left\lbrace
+\begin{array}{rcl}
+	E_0 &= & \eta \LiAllOut\\
+	J_\epsilon & = & \epsilon_6 J_6 + \epsilon_7 J_7\\
+\end{array}
+\right.
 \end{equation}
 we get
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t \beta_x  & = &  k_x \left(\Theta -\beta_x \right) + \eta \hat\alpha \dfrac{ k_x^p J_x}{\tilde{D}} \LiAllOut \proton\\
- %\eta \left[ \hat\alpha \dfrac{ k_x^p J_x}{\tilde{D}} \LiAllOut \proton  -  \left(1-\hat\alpha\right) \LiAllOut k_x^q \beta_x \right] \\
+\partial_t \beta_x  & = &  k_x \left(\Theta -\beta_x \right) + \eta \left[ \hat\alpha \dfrac{ k_x^p J_x}{1+J_\epsilon \LiAllOut} \LiAllOut \proton -  \left(1-\hat\alpha\right) \LiAllOut k_x^q \beta_x \right] \\
 \\
-	\partial_t \hat\alpha & = & k_h - \hat\alpha \left\lbrack k_h+ \dfrac{\proton}{\tilde{D}} \left(\sum_x \epsilon_x k_x^p J_x \right) \LiAllOut \right] 
-		%+ (1-\hat\alpha) \left\lbrack {\sum_x k_x^q \epsilon_x \beta_x }  \right\rbrack \LiAllOut 
+	\partial_t \hat\alpha & = & k_h - \hat\alpha \left\lbrack k_h+ \dfrac{\proton}{1+J_\epsilon \LiAllOut} \left(\sum_x \epsilon_x k_x^p J_x \right) \LiAllOut \right] 
+		+ (1-\hat\alpha) \left\lbrack {\sum_x k_x^q \epsilon_x \beta_x }  \right\rbrack \LiAllOut 
 		\\
 \end{array}
 \right.
@@ -375,13 +386,13 @@ Since we are concerned with the catalytic aspect, we use
 We define 
 \begin{equation}
 \left\lbrace
-\begin{array}{rcl}
-	\mu_x      & = & \dfrac{k_x}{k_h}\\
+\begin{array}{rcll}
+	\mu_x      & = & \dfrac{k_x}{k_h} & (\text{a scalar})\\
 	\\
-	\Upsilon_x & = & \dfrac{k_x^pJ_x \LiAllOut}{k_h \tilde{D}}
-	 = \dfrac{k_x^pJ_x \LiAllOut}{k_h\left(1+ J_\epsilon\LiAllOut\right)} \;\; (\text{in M}^{-1}),\;\; J_\epsilon= \epsilon J_6 + (1-\epsilon) J_7\\
+	\Upsilon_x & = & \dfrac{k_x^pJ_x \LiAllOut}{k_h\left(1+ J_\epsilon\LiAllOut\right)} & (\text{in M}^{-1})
 	 \\
-	% Q_x & = & \dfrac{k_x^q \LiAllOut}{k_h} \;\; (\text{a scalar})\\
+	 \\
+	Q_x & = & \dfrac{k_x^q \LiAllOut}{k_h} & (\text{a scalar})\\
 \end{array}
 \right.
 \end{equation}
@@ -389,68 +400,58 @@ so that
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_\tau \beta_x  & = &  \mu_x \left(\Theta -\beta_x \right) + \eta \hat\alpha \proton \Upsilon_x \\
-% \eta \left[ \hat\alpha \proton \Upsilon_x  -  \left(1-\hat\alpha\right) Q_x\beta_x \right] \\
+\partial_\tau \beta_x  & = &  \mu_x \left(\Theta -\beta_x \right) + \eta \left[ \hat\alpha \proton \Upsilon_x  -  \left(1-\hat\alpha\right) Q_x\beta_x \right] \\
 \\
 	\partial_\tau \hat\alpha & = & 1 - 
-		\hat\alpha \left\lbrack 1+ \proton \left(\sum_x \epsilon_x \Upsilon_x \right)\right] \\
-		%+ (1-\hat\alpha) \left\lbrack {\sum_x  \epsilon_x Q_x \beta_x }  \right\rbrack \\
+		\hat\alpha \left\lbrack 1+ \proton \left(\sum_x \epsilon_x \Upsilon_x \right)\right] + (1-\hat\alpha) \left\lbrack {\sum_x  \epsilon_x Q_x \beta_x }  \right\rbrack \\
 \end{array}
 \right.
 \end{equation}
 
-\section{Steady State and consequences}
-\subsection{Coupled Expression}
+\section{Specific Values}
+\subsection{Short times}
+Since $\hat\alpha\to1$,
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\beta_{x,0} & \simeq & \left(\mu_x \Theta + \eta h_0 \Upsilon_x)\right)\tau\\
+\hat\alpha_{0} & \simeq & -h_0 \left(\sum_x \epsilon_x \Upsilon_x\right) \tau\\
+\end{array}
+\right.
+\end{equation}
+so that
+\begin{equation}
+	r_0 = \dfrac{\beta_{7,0}}{\beta_{6,0}} = \dfrac{1+10^{-3}\deltaLi_0}{1+10^{-3}\deltaLiOut}
+	 = \dfrac{\mu_7\Theta+\eta h_0 \Upsilon_7}{\mu_6\Theta+\eta h_0 \Upsilon_6}
+\end{equation}
+only depends on the linear part...
+
+\subsection{Steady State}
 We get the system of equations
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\beta_x^\infty & = & %\dfrac{\mu_x\Theta + \eta \hat\alpha_\infty h_\infty \Upsilon_x}{\mu_x + \eta (1-\hat\alpha_\infty) Q_x}\\
-		\Theta + \eta \dfrac{\hat\alpha_\infty h_\infty \Upsilon_x}{\mu_x}\\
+	\beta_x^\infty & = & \dfrac{\mu_x\Theta + \eta \hat\alpha_\infty h_\infty \Upsilon_x}{\mu_x + \eta (1-\hat\alpha_\infty) Q_x}\\\
 	\\
-	\hat\alpha_\infty & = & \dfrac{1%%\sum_x\epsilon_x Q_x\beta_x^\infty
-	}{1 + \left(\sum_x \epsilon_x h_\infty \Upsilon_x \right) %+ \sum_x\epsilon_x Q_x\beta_x^\infty
-	}\\
+	\hat\alpha_\infty & = & \dfrac{1+\sum_x\epsilon_x Q_x\beta_x^\infty
+	}{1 + \left(\sum_x \epsilon_x h_\infty \Upsilon_x \right) + \sum_x\epsilon_x Q_x\beta_x^\infty
+	}, \;\; 0<\hat\alpha_\infty \leq 1\\\
 \end{array}
 \right.
 \end{equation}
-%and $\hat\alpha_\infty$ may be expressed as the solution of a second order polynomial....
 
-%\subsection{Low quadratic values (a.k.a linear case)}
-%In that case,
-%\begin{equation}
-%		\hat\alpha_1^\infty \simeq \dfrac{1}{1+\left(\sum_x \epsilon_x h_\infty \Upsilon_x \right)}
-%\end{equation}
-%and 
-%\begin{equation}
-%	\beta_{x,1}^\infty \simeq \Theta + \dfrac{\eta}{\mu_x}  h_\infty \Upsilon_x \hat\alpha_1^\infty
-%\end{equation}
-%is greater that $\Theta$
-%\subsection{High quadratic values}
-%In that case,
-%\begin{equation}
-%	\hat\alpha_2^\infty \simeq 1
-%\end{equation}
-%and we can show that \underline{mathematically} and because the catalytic path becomes a fast reversible path,
-%\begin{equation}
-%	\beta_{x,2}^\infty \simeq \Theta 
-%\end{equation}
+\begin{equation}
+\left\lbrace
+\begin{array}{lcc}
+\text{parameters} & : & \\
+\text{known/imposed} & : & \\
+\end{array}
+\right.
+\end{equation}
 
-%\section{Short Times Behavior}
-%
-%\begin{equation}
-%	\left.\dfrac{\beta_7}{\beta_6}\right|_{\tau\to0} = \dfrac{\mu_7 \Theta + \eta h_0 \Upsilon_7 }{\mu_6 \Theta + \eta h_0 \Upsilon_6 }
-%\end{equation}
-%while the leak-only ratio is
-%\begin{equation}
-%	\left.\dfrac{\beta_7}{\beta_6}\right|_{\tau\to0}^{leak} = \dfrac{\mu_7}{\mu_6} = \dfrac{k_7}{k_6}
-%\end{equation}
-%And we can have a better isotopic separation if
-%\begin{equation}
-%\dfrac{k_7^pJ_7}{k_6^pJ_6}<\dfrac{k_7}{k_6}
-%\end{equation}
 
 \section{Solving}
+\color{blue}
 \subsection{Solving $\hat\alpha$}
 
 \subsubsection{Generic $\proton$}

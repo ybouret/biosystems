@@ -1,4 +1,4 @@
-\documentclass[aps,onecolumn,12pt]{revtex4}
+\documentclass[aps,onecolumn,10pt]{revtex4}
 \usepackage{graphicx}
 \usepackage{amssymb,amsfonts,amsmath,amsthm}
 \usepackage{chemarr}
@@ -415,7 +415,7 @@ Since $\hat\alpha\to1$,
 \left\lbrace
 \begin{array}{rcl}
 \beta_{x,0} & \simeq & \left(\mu_x \Theta + \eta h_0 \Upsilon_x)\right)\tau\\
-\hat\alpha_{0} & \simeq & -h_0 \left(\sum_x \epsilon_x \Upsilon_x\right) \tau\\
+\hat\alpha_{0} & \simeq & 1 - \left[1+h_0 \left(\sum_x \epsilon_x \Upsilon_x\right)\right] \tau\\
 \end{array}
 \right.
 \end{equation}
@@ -441,14 +441,20 @@ We get the system of equations
 \end{equation}
 
 \begin{equation}
-\left\lbrace
-\begin{array}{lcc}
-\text{parameters} & : & \\
-\text{known/imposed} & : & \\
-\end{array}
-\right.
+\text{parameters} : k_h, \mu_6, \mu_7, \Theta, \epsilon_6, \epsilon_7, Q_6, Q_7, \eta, \Upsilon_6, \Upsilon_7, h_0, h_\infty (13)
 \end{equation}
 
+\begin{itemize}
+	\item We fix $r_0$ from the initial $\deltaLi_0$
+	\item We fix $r_\infty$ from the final $\deltaLi_\infty$
+	\item We fix $\epsilon_6$ and $\epsilon_7$ from the initial composition
+	\item We set $\Theta$ from the $GHK$ equation
+	$$
+		\Theta = e^{ -\frac{FV_m}{RT} }
+	$$
+	\item We fix $h_0$ and $h_\infty$, which shall depend and the initial condition and $\LiAllOut$.
+	\item and we have three steady state relations...
+\end{itemize}
 
 \section{Solving}
 \color{blue}

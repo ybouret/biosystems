@@ -464,11 +464,19 @@ We start by the initial guess
 \end{equation}
 Then if we change $h_0$ to $h_\infty$,
 \begin{equation}
-	1+\tan^2\theta_\infty = 1+\left(\sum_x \epsilon_x h_\infty \Upsilon_x \right)
+	1+\tan^2\theta_\infty = 1+\left(\sum_x \epsilon_x h_\infty \Upsilon_x \right),\;\;\tan^2\theta_\infty=\dfrac{h_\infty}{h_0} \tan^2\theta_0
 \end{equation}
 so that
 \begin{equation}
-	\cos^2\theta_\infty \leq \hat\alpha_\infty \leq 1
+	\cos^2\theta_\infty \leq \hat\alpha_\infty < 1
+\end{equation}
+and we can define the coupling factor $\psi$ such that
+\begin{equation}
+	\hat\alpha_\infty = \cos^2\theta_\infty \cos^2 \psi + \sin^2\psi,\;\;1-\hat\alpha_\infty=\sin^2\theta_\infty \cos^2\psi
+\end{equation}
+Meaning that
+\begin{equation}
+	\sum_x \epsilon_x Q_x \beta_x^\infty = (1+\tan^2\theta_\infty) \tan^2 \psi
 \end{equation}
 
 \section{Solving}

@@ -5,7 +5,7 @@
 \usepackage{bm}
 \usepackage{pslatex}
 \usepackage{xfrac}
-\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{bookman}
 \usepackage{dsfont}
 \usepackage{mathptmx}
@@ -421,6 +421,7 @@ Since $\hat\alpha\to1$,
 \end{equation}
 so that
 \begin{equation}
+	\label{eq:r0}
 	r_0 = \dfrac{\beta_{7,0}}{\beta_{6,0}} = \dfrac{1+10^{-3}\deltaLi_0}{1+10^{-3}\deltaLiOut}
 	 = \dfrac{\mu_7\Theta+\eta h_0 \Upsilon_7}{\mu_6\Theta+\eta h_0 \Upsilon_6}
 \end{equation}
@@ -436,7 +437,7 @@ We get the system of equations
 	\\
 	\hat\alpha_\infty & = & \dfrac{1+\sum_x\epsilon_x Q_x\beta_x^\infty
 	}{1 + \left(\sum_x \epsilon_x h_\infty \Upsilon_x \right) + \sum_x\epsilon_x Q_x\beta_x^\infty
-	}, \;\; 0<\hat\alpha_\infty \leq 1\\\
+	}, \;\; \dfrac{1}{1+\left(\sum_x \epsilon_x h_\infty \Upsilon_x \right)}\leq\hat\alpha_\infty \leq 1\\\
 \end{array}
 \right.
 \end{equation}
@@ -451,7 +452,7 @@ We get the system of equations
 	\item We fix $\epsilon_6$ and $\epsilon_7$ from the initial composition
 	\item We set $\Theta$ from the $GHK$ equation
 	$$
-		\Theta = e^{ -\frac{FV_m}{RT} }
+		\Theta = e^{ -\frac{FV_m}{RT} },\;\;V_m\simeq -40\text{mV}
 	$$
 	\item We fix $h_0$ and $h_\infty$, which shall depend and the initial condition and $\LiAllOut$.
 	\item and we have three steady state relations...
@@ -459,6 +460,67 @@ We get the system of equations
 
 \subsection{Choosing Parameters}
 
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+		\mu_6     & = & \sigma \mu_7\\
+		\sigma    & \simeq & 1.00229 \\
+		\\
+		\hline
+		\\
+		\Upsilon_6 & = & \kappa \Upsilon_7\\
+		\\
+		\hline
+		\\
+		\Theta     & \simeq  & e^{\frac{-F V_m}{RT} } \simeq 4.47\\
+		\\
+\end{array}
+\right.
+\end{equation}
+
+\begin{itemize}
+\item We choose $\mu_7$ so that $\mu_6=\sigma\mu_7$, $\Theta$ from the electroosmotic gradient, and $\kappa$ as the intake speed up.
+\item Then we choose $\theta_0$ such that
+\begin{equation}
+\boxed{
+	1+\tan^2\theta_0 = 1+\left(\sum_x \epsilon_x h_0 \Upsilon_x \right) = \dfrac{1}{\cos^2\theta_0}
+	}
+\end{equation}
+which provides a guess
+\begin{equation}
+	h_0\Upsilon_7 = \dfrac{\tan^2\theta_0}{ 1+\epsilon\left(\kappa-1\right)} \in \mathbb{R}^+
+\end{equation}
+\item Since we must satisfy \eqref{eq:r0},
+\begin{equation}
+	r_0 = \dfrac{\mu_7\Theta+\eta h_0 \Upsilon_7}{\mu_6\Theta+\eta h_0 \Upsilon_6}
+\end{equation}
+the catalytic ratio is
+\begin{equation}
+	\eta = \Theta\dfrac{\mu_7-r_0\mu_6}{r_0 h_0 \Upsilon_6-h_0\Upsilon_7} 
+	= \dfrac{\Theta\mu_7}{h_0\Upsilon_7} \dfrac{1-\sigma r_0}{r_0\kappa-1}
+\end{equation}
+
+{
+	\underline{The catalytic process is observed if}
+\begin{equation}
+\boxed{
+\left\lbrace
+\begin{array}{rcl}
+	r_0 & = & \dfrac{1+10^{-3}\deltaLi_0}{1+10^{-3}\deltaLiOut} < \dfrac{1}{\sigma} = 0.99772\\
+	\kappa & > & 1/r_0\\
+\end{array}
+\right.
+}
+\end{equation}
+}
+
+\item
+If we sum the $\beta_x^\infty$ from \eqref{eq:steady} with the weights $\epsilon_x$, we get
+
+
+\end{itemize}
+
+\color{RedViolet}
 We start by the initial guess
 \begin{equation}
 \boxed{

@@ -514,50 +514,45 @@ the catalytic ratio is
 \end{equation}
 }
 
-\item
-If we sum the $\beta_x^\infty$ from \eqref{eq:steady} with the weights $\epsilon_x$, we get
+\item From \eqref{eq:steady} we deduce the expression of individual $Q_x$ from
+\begin{equation}
+	\label{eq:Qx}
+	\eta \left(1-\hat\alpha_\infty\right) \beta_x Q_x = \mu_x \left(\Theta-\beta_x\right) + \eta \hat\alpha_\infty h_\infty \Upsilon_x
+\end{equation}
 
-
+\item We replace $Q_x$ by its value to solve $\alpha_\infty$ using
+\begin{equation}
+	\hat\alpha_\infty = 
+	\dfrac{1
+	+\dfrac{1}{\eta(1-\hat\alpha_\infty)}\left[ \left(\sum_x \epsilon_x \mu_x\left[\Theta-\beta_x\right]\right) 
+		+\eta \hat\alpha_\infty \left(\sum_x \epsilon_x h_\infty \Upsilon_x\right) \right]
+		}
+	{1+\left(\sum_x \epsilon_x h_\infty \Upsilon_x\right) + \dfrac{1}{\eta(1-\hat\alpha_\infty)}\left[ \left(\sum_x \epsilon_x \mu_x\left[\Theta-\beta_x\right]\right) 
+		+\eta \hat\alpha_\infty \left(\sum_x \epsilon_x h_\infty \Upsilon_x\right) \right]
+}
+\end{equation}
+We formally use
+\begin{equation}
+	G = \dfrac{\sum_x \epsilon_x \mu_x\left[\Theta-\beta_x\right]}{\eta}, \;\;A=\sum_x \epsilon_x h_\infty \Upsilon_x = \dfrac{h_\infty}{h_0} \tan^2\theta_0
+\end{equation}
+to get
+\begin{equation}
+	\hat\alpha_\infty = \dfrac{1
+	+\dfrac{1}{\eta(1-\hat\alpha_\infty)}\left[\eta G+\eta \hat\alpha_\infty A \right]}
+	{1+A+\dfrac{1}{\eta(1-\hat\alpha_\infty)}\left[G+\eta \hat\alpha_\infty A \right]}
+	= \dfrac{
+	(1-\hat\alpha_\infty) + \left[ G+ \hat\alpha_\infty A \right]
+	}
+	{
+	\left(1+A\right)(1-\hat\alpha_\infty) + \left[ G+ \hat\alpha_\infty A \right]
+	}
+\end{equation}
+An we find
+\begin{equation}
+	\hat\alpha_\infty = 1+G \;\;(\Rightarrow -1 < G < 0)
+\end{equation}
 \end{itemize}
 
-\color{RedViolet}
-We start by the initial guess
-\begin{equation}
-\boxed{
-	1+\tan^2\theta_0 = 1+\left(\sum_x \epsilon_x h_0 \Upsilon_x \right) = \dfrac{1}{\cos^2\theta_0}
-	}
-\end{equation}
-Then if we change $h_0$ to $h_\infty$,
-\begin{equation}
-\boxed{
-	1+\tan^2\theta_\infty = 1+\left(\sum_x \epsilon_x h_\infty \Upsilon_x \right),\;\;\tan^2\theta_\infty=\dfrac{h_\infty}{h_0} \tan^2\theta_0
-	}
-\end{equation}
-so that
-\begin{equation}
-	\cos^2\theta_\infty \leq \hat\alpha_\infty < 1
-\end{equation}
-and we can define the coupling factor $\psi$ such that
-\begin{equation}
-\boxed{
-	\hat\alpha_\infty = \cos^2\theta_\infty \cos^2 \psi + \sin^2\psi,\;\;1-\hat\alpha_\infty=\sin^2\theta_\infty \cos^2\psi
-	}
-\end{equation}
-Meaning that
-\begin{equation}
-\boxed{
-	\sum_x \epsilon_x Q_x \beta_x^\infty = (1+\tan^2\theta_\infty) \tan^2 \psi
-	}
-\end{equation}
-If we sum the $\beta_x^\infty$ from \eqref{eq:steady} with the weights $\epsilon_x$, we get
-\begin{equation}
-	\left(\sum_x \epsilon_x \mu_x \beta_x^\infty \right) + \eta \left(1-\hat\alpha_\infty\right) \left(\sum_x\epsilon_x Q_x \beta_x^\infty\right)
-	= \Theta \left(\sum_x \epsilon_x\mu_x\right) + \eta \hat\alpha_\infty \left(\sum_x \epsilon_x h_\infty \Upsilon_x \right)
-\end{equation}
-or
-\begin{equation}
-	\sum_x\epsilon_x \mu_x \left(\beta_x-\Theta\right)  = \eta \left[ \hat\alpha_\infty\tan^2\theta_\infty - (1-\hat\alpha_\infty) (1+\tan^2\theta_\infty) \tan^2 \psi\right] 
-\end{equation}
 
 
 

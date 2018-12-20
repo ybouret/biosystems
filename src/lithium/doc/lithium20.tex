@@ -438,6 +438,8 @@ We get the system of equations
 	\hat\alpha_\infty & = & \dfrac{1+\sum_x\epsilon_x Q_x\beta_x^\infty
 	}{1 + \left(\sum_x \epsilon_x h_\infty \Upsilon_x \right) + \sum_x\epsilon_x Q_x\beta_x^\infty
 	}, \;\; \dfrac{1}{1+\left(\sum_x \epsilon_x h_\infty \Upsilon_x \right)}\leq\hat\alpha_\infty \leq 1\\\
+	\\
+	& = & 1 - \dfrac{1}{\eta}\left( \sum_x \epsilon_x \mu_x \left[\beta_x - \Theta\right]\right) \;\; \text{by combination } Q_x\\
 \end{array}
 \right.
 \end{equation}
@@ -519,38 +521,7 @@ the catalytic ratio is
 	\label{eq:Qx}
 	\eta \left(1-\hat\alpha_\infty\right) \beta_x Q_x = \mu_x \left(\Theta-\beta_x\right) + \eta \hat\alpha_\infty h_\infty \Upsilon_x
 \end{equation}
-
-\item We replace $Q_x$ by its value to solve $\alpha_\infty$ using
-\begin{equation}
-	\hat\alpha_\infty = 
-	\dfrac{1
-	+\dfrac{1}{\eta(1-\hat\alpha_\infty)}\left[ \left(\sum_x \epsilon_x \mu_x\left[\Theta-\beta_x\right]\right) 
-		+\eta \hat\alpha_\infty \left(\sum_x \epsilon_x h_\infty \Upsilon_x\right) \right]
-		}
-	{1+\left(\sum_x \epsilon_x h_\infty \Upsilon_x\right) + \dfrac{1}{\eta(1-\hat\alpha_\infty)}\left[ \left(\sum_x \epsilon_x \mu_x\left[\Theta-\beta_x\right]\right) 
-		+\eta \hat\alpha_\infty \left(\sum_x \epsilon_x h_\infty \Upsilon_x\right) \right]
-}
-\end{equation}
-We formally use
-\begin{equation}
-	G = \dfrac{\sum_x \epsilon_x \mu_x\left[\Theta-\beta_x\right]}{\eta}, \;\;A=\sum_x \epsilon_x h_\infty \Upsilon_x = \dfrac{h_\infty}{h_0} \tan^2\theta_0
-\end{equation}
-to get
-\begin{equation}
-	\hat\alpha_\infty = \dfrac{1
-	+\dfrac{1}{\eta(1-\hat\alpha_\infty)}\left[\eta G+\eta \hat\alpha_\infty A \right]}
-	{1+A+\dfrac{1}{\eta(1-\hat\alpha_\infty)}\left[G+\eta \hat\alpha_\infty A \right]}
-	= \dfrac{
-	(1-\hat\alpha_\infty) + \left[ G+ \hat\alpha_\infty A \right]
-	}
-	{
-	\left(1+A\right)(1-\hat\alpha_\infty) + \left[ G+ \hat\alpha_\infty A \right]
-	}
-\end{equation}
-An we find
-\begin{equation}
-	\hat\alpha_\infty = 1+G \;\;(\Rightarrow -1 < G < 0)
-\end{equation}
+\item
 \end{itemize}
 
 

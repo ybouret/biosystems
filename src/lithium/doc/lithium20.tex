@@ -482,16 +482,16 @@ We get the system of equations
 
 \begin{itemize}
 \item We choose $\mu_7$ so that $\mu_6=\sigma\mu_7$, $\Theta$ from the electroosmotic gradient, and $\kappa$ as the intake speed up.
-\item Then we choose $\theta_0$ such that
-\begin{equation}
-\boxed{
-	1+\tan^2\theta_0 = 1+\left(\sum_x \epsilon_x h_0 \Upsilon_x \right) = \dfrac{1}{\cos^2\theta_0}
-	}
-\end{equation}
-which provides a guess
-\begin{equation}
-	h_0\Upsilon_7 = \dfrac{\tan^2\theta_0}{ 1+\epsilon\left(\kappa-1\right)} \in \mathbb{R}^+
-\end{equation}
+%\item Then we choose $\theta_0$ such that
+%\begin{equation}
+%\boxed{
+%	1+\tan^2\theta_0 = 1+\left(\sum_x \epsilon_x h_0 \Upsilon_x \right) = \dfrac{1}{\cos^2\theta_0}
+%	}
+%\end{equation}
+%which provides a guess
+%\begin{equation}
+%	h_0\Upsilon_7 = \dfrac{\tan^2\theta_0}{ 1+\epsilon\left(\kappa-1\right)} \in \mathbb{R}^+
+%\end{equation}
 \item Since we must satisfy \eqref{eq:r0},
 \begin{equation}
 	r_0 = \dfrac{\mu_7\Theta+\eta h_0 \Upsilon_7}{\mu_6\Theta+\eta h_0 \Upsilon_6}
@@ -522,9 +522,42 @@ the catalytic ratio is
 	\begin{array}{rcl}
 	\hat\alpha_\infty & = & \cos^2 \psi = 1-\sin^2\psi\\
 	\\
-	\sin^2\psi & = & \dfrac{1}{\eta} \left( \sum_x \epsilon_x \mu_x \left[\beta_x - \Theta\right]\right)
+	\sin^2\psi & = & \dfrac{1}{\eta} \left( \sum_x \epsilon_x \mu_x \left[\beta_x - \Theta\right]\right) \geq 0
 	\end{array}
 \right.
+\end{equation}
+which translates into
+\begin{equation}
+\left\lbrace
+	\begin{array}{rcl}
+	\sin^2\psi & = & 
+	\dfrac{\mu_7 \left[\epsilon\sigma\left(\beta_6-\Theta\right)+(1-\epsilon)\left(\beta_7-\Theta\right)\right]}
+	{\left(\dfrac{\Theta\mu_7}{h_0\Upsilon_7} \dfrac{1-\sigma r_0}{r_0\kappa-1}\right)}\\
+	\\
+	& = & h_0\Upsilon_7 \left(\dfrac{r_0\kappa-1}{1-\sigma r_0}\right) \dfrac{\left[\epsilon\sigma\left(\beta_6-\Theta\right)+(1-\epsilon)\left(\beta_7-\Theta\right)\right]}{\Theta}\\
+	\\
+	& = & h_0\Upsilon_7 \left(\dfrac{r_0\kappa-1}{1-\sigma r_0}\right) 
+	\left[\epsilon\sigma\left(\dfrac{\beta_6}{\Theta}-1\right)+(1-\epsilon)\left(\dfrac{\beta_7}{\Theta}-1\right)\right]
+	 \\
+	\end{array}
+\right.
+\end{equation}
+It is normal that $\sin^2\psi$ does not depend on $\mu_7$, since the (slower) time scaling should not influence the final steady state.
+So we got
+\begin{equation}
+\boxed{
+	h_0 \Upsilon_7 = \dfrac{\sin^2\psi \left( \dfrac{1-\sigma r_0}{r_0\kappa-1} \right)}
+	{
+		\left[\epsilon\sigma\left(\dfrac{\beta_6}{\Theta}-1\right)+(1-\epsilon)\left(\dfrac{\beta_7}{\Theta}-1\right)\right]
+	}
+	}
+\end{equation}
+and
+\begin{equation}
+	\boxed
+	{
+		\eta = 
+	}
 \end{equation}
 
 \item From \eqref{eq:steady} we deduce the expression of individual $Q_x$ from

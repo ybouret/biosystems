@@ -537,7 +537,7 @@ which translates into
 	& = & h_0\Upsilon_7 \left(\dfrac{r_0\kappa-1}{1-\sigma r_0}\right) \dfrac{\left[\epsilon\sigma\left(\beta_6-\Theta\right)+(1-\epsilon)\left(\beta_7-\Theta\right)\right]}{\Theta}\\
 	\\
 	& = & h_0\Upsilon_7 \left(\dfrac{r_0\kappa-1}{1-\sigma r_0}\right) 
-	\left[\epsilon\sigma\left(\dfrac{\beta_6}{\Theta}-1\right)+(1-\epsilon)\left(\dfrac{\beta_7}{\Theta}-1\right)\right]
+	\underbrace{\left[\epsilon\sigma\left(\dfrac{\beta_6}{\Theta}-1\right)+(1-\epsilon)\left(\dfrac{\beta_7}{\Theta}-1\right)\right]}_{\Omega}
 	 \\
 	\end{array}
 \right.
@@ -550,22 +550,41 @@ So we got
 	{
 		\left[\epsilon\sigma\left(\dfrac{\beta_6}{\Theta}-1\right)+(1-\epsilon)\left(\dfrac{\beta_7}{\Theta}-1\right)\right]
 	}
+	= \dfrac{\sin^2\psi}{\Omega} \left( \dfrac{1-\sigma r_0}{r_0\kappa-1} \right)
 	}
 \end{equation}
 and
 \begin{equation}
 	\boxed
 	{
-		\eta = 
+		\eta = \Theta \mu_7 \dfrac{\Omega}{\sin^2\psi} = \Theta \mu_7 \dfrac{\left[\epsilon\sigma\left(\dfrac{\beta_6}{\Theta}-1\right)+(1-\epsilon)\left(\dfrac{\beta_7}{\Theta}-1\right)\right]}{\sin^2\psi}
 	}
 \end{equation}
 
 \item From \eqref{eq:steady} we deduce the expression of individual $Q_x$ from
 \begin{equation}
-	\label{eq:Qx}
-	\eta \left(1-\hat\alpha_\infty\right) \beta_x Q_x = \mu_x \left(\Theta-\beta_x\right) + \eta \hat\alpha_\infty h_\infty \Upsilon_x
+\label{eq:Qx}
+\left\lbrace
+\begin{array}{rcl}
+	\eta \left(1-\hat\alpha_\infty\right) \beta_x Q_x & = & \mu_x \left(\Theta-\beta_x\right) + \eta \hat\alpha_\infty h_\infty \Upsilon_x\\
+	Q_x & = & \dfrac{1}{\beta_x} \left( \dfrac{\mu_x \left(\Theta-\beta_x\right)}{\eta\sin^2\psi} + \dfrac{h_\infty}{h_0}\dfrac{h_0\Upsilon_x}{\tan^2\psi} \right)\\
+\end{array}
+\right.
 \end{equation}
 \end{itemize}
+
+
+\begin{equation}
+\label{eq:Qx}
+\left\lbrace
+\begin{array}{rcl}
+	Q_7 & = & \dfrac{1}{\beta_7} \left( \dfrac{\mu_7 \left(\Theta-\beta_7\right)}{\eta\sin^2\psi} + \dfrac{h_\infty}{h_0}\dfrac{h_0\Upsilon_7}{\tan^2\psi} \right) \\
+	\\
+	Q_6 & = & \dfrac{1}{\beta_6} \left( \dfrac{\sigma\mu_7 \left(\Theta-\beta_6\right)}{\eta\sin^2\psi} + \dfrac{h_\infty}{h_0}\dfrac{\kappa h_0\Upsilon_7}{\tan^2\psi} \right)\\
+\end{array}
+\right.
+\end{equation}
+
 
 
 \end{document}

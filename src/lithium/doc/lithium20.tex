@@ -439,7 +439,7 @@ We get the system of equations
 	}{1 + \left(\sum_x \epsilon_x h_\infty \Upsilon_x \right) + \sum_x\epsilon_x Q_x\beta_x^\infty
 	}, \;\; \dfrac{1}{1+\left(\sum_x \epsilon_x h_\infty \Upsilon_x \right)}\leq\hat\alpha_\infty \leq 1\\\
 	\\
-	& = & 1 - \dfrac{1}{\eta}\left( \sum_x \epsilon_x \mu_x \left[\beta_x - \Theta\right]\right) \;\; \text{by combination } Q_x\\
+	& = & 1 - \dfrac{1}{\eta}\left( \sum_x \epsilon_x \mu_x \left[\beta_x^\infty - \Theta\right]\right) \;\; \text{by combination } Q_x\\
 \end{array}
 \right.
 \end{equation}
@@ -519,11 +519,37 @@ the catalytic ratio is
 \item The system imposes $\beta_x\geq\Theta$, shown by the two expressions of $\hat\alpha_\infty$, and because the catalytic process imposes a boost with respect to the $\Theta$ level.
 If we set
 \begin{equation}
-	\hat\alpha_\infty = \cos^2\theta_\infty \cos^2\psi + \sin^2\psi, \;\;\cos^2\theta_\infty = \dfrac{1}{1+\sum_x\epsilon_x h_\infty \Upsilon_x}
+	\hat\alpha_\infty = \cos^2\theta_\infty \cos^2\psi + \sin^2\psi, 
+	\;\;\cos^2\theta_\infty = \dfrac{1}{1+\sum_x\epsilon_x h_\infty \Upsilon_x},\;\;1-\hat\alpha_\infty = \sin^2\theta_\infty \cos^2\psi
 \end{equation}
 then $\psi$ is the quadratic coupling factor, since
 \begin{equation}
 	\sum_x \epsilon_x Q_x \beta_x^\infty = \dfrac{\tan^2\psi}{\cos^2\theta_\infty}
+\end{equation}
+We also have
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\beta_x^\infty Q_x &=& 
+\dfrac{1}{1-\hat\alpha_\infty}\left[\dfrac{\mu_x(\Theta-\beta_x^\infty)}{\eta} + \hat\alpha_\infty \left(\frac{h_\infty}{h_0}\right) h_0 	\Upsilon_x \right]\\
+\\
+ & = & \dfrac{1}{1-\hat\alpha_\infty} \left[ \hat\alpha_\infty \left(\frac{h_\infty}{h_0}\right) h_0 \Upsilon_x 
+ - \dfrac{\mu_x}{\mu_7} \dfrac{h_0\Upsilon_7}{f_0\Theta} \left(\beta_x^\infty-\Theta\right) \right]\\
+\end{array}
+\right.
+\end{equation}
+
+So
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\beta_7^\infty Q_7 &=& \dfrac{h_0\Upsilon_7}{1-\hat\alpha_\infty}
+\left[
+	\hat\alpha_\infty \left(\frac{h_\infty}{h_0}\right) - \dfrac{1}{f_0\Theta} \left(\beta_7^\infty-\Theta\right)
+\right]
+\\
+\end{array}
+\right.
 \end{equation}
 
 \color{Violet}

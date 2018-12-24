@@ -526,102 +526,24 @@ then $\psi$ is the quadratic coupling factor, since
 \begin{equation}
 	\sum_x \epsilon_x Q_x \beta_x^\infty = \dfrac{\tan^2\psi}{\cos^2\theta_\infty}
 \end{equation}
-We also have
+
+\item
+We use
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\beta_x^\infty Q_x &=& 
-\dfrac{1}{1-\hat\alpha_\infty}\left[\dfrac{\mu_x(\Theta-\beta_x^\infty)}{\eta} + \hat\alpha_\infty \left(\frac{h_\infty}{h_0}\right) h_0 	\Upsilon_x \right]\\
-\\
- & = & \dfrac{1}{1-\hat\alpha_\infty} \left[ \hat\alpha_\infty \left(\frac{h_\infty}{h_0}\right) h_0 \Upsilon_x 
- - \dfrac{\mu_x}{\mu_7} \dfrac{h_0\Upsilon_7}{f_0\Theta} \left(\beta_x^\infty-\Theta\right) \right]\\
-\end{array}
-\right.
-\end{equation}
-
-So
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-\beta_7^\infty Q_7 &=& \dfrac{h_0\Upsilon_7}{1-\hat\alpha_\infty}
-\left[
-	\hat\alpha_\infty \left(\frac{h_\infty}{h_0}\right) - \dfrac{1}{f_0\Theta} \left(\beta_7^\infty-\Theta\right)
-\right]
-\\
-\end{array}
-\right.
-\end{equation}
-
-\color{Violet}
-\item We also have
-\begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	\hat\alpha_\infty & = & \cos^2 \psi = 1-\sin^2\psi\\
-	\\
-	\sin^2\psi & = & \dfrac{1}{\eta} \left( \sum_x \epsilon_x \mu_x \left[\beta_x - \Theta\right]\right) \geq 0
-	\end{array}
-\right.
-\end{equation}
-which translates into
-\begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	\sin^2\psi & = & 
-	\dfrac{\mu_7 \left[\epsilon\sigma\left(\beta_6-\Theta\right)+(1-\epsilon)\left(\beta_7-\Theta\right)\right]}
-	{\left(\dfrac{\Theta\mu_7}{h_0\Upsilon_7} \dfrac{1-\sigma r_0}{r_0\kappa-1}\right)}\\
-	\\
-	& = & h_0\Upsilon_7 \left(\dfrac{r_0\kappa-1}{1-\sigma r_0}\right) \dfrac{\left[\epsilon\sigma\left(\beta_6-\Theta\right)+(1-\epsilon)\left(\beta_7-\Theta\right)\right]}{\Theta}\\
-	\\
-	& = & h_0\Upsilon_7 \left(\dfrac{r_0\kappa-1}{1-\sigma r_0}\right) 
-	\underbrace{\left[\epsilon\sigma\left(\dfrac{\beta_6}{\Theta}-1\right)+(1-\epsilon)\left(\dfrac{\beta_7}{\Theta}-1\right)\right]}_{\Omega}
-	 \\
-	\end{array}
-\right.
-\end{equation}
-It is normal that $\sin^2\psi$ does not depend on $\mu_7$, since the (slower) time scaling should not influence the final steady state.
-So we got
-\begin{equation}
-\boxed{
-	h_0 \Upsilon_7 = \dfrac{\sin^2\psi \left( \dfrac{1-\sigma r_0}{r_0\kappa-1} \right)}
-	{
-		\left[\epsilon\sigma\left(\dfrac{\beta_6}{\Theta}-1\right)+(1-\epsilon)\left(\dfrac{\beta_7}{\Theta}-1\right)\right]
-	}
-	= \dfrac{\sin^2\psi}{\Omega} \left( \dfrac{1-\sigma r_0}{r_0\kappa-1} \right)
-	}
-\end{equation}
-and
-\begin{equation}
-	\boxed
-	{
-		\eta = \Theta \mu_7 \dfrac{\Omega}{\sin^2\psi} = \Theta \mu_7 \dfrac{\left[\epsilon\sigma\left(\dfrac{\beta_6}{\Theta}-1\right)+(1-\epsilon)\left(\dfrac{\beta_7}{\Theta}-1\right)\right]}{\sin^2\psi}
-	}
-\end{equation}
-
-\item From \eqref{eq:steady} we deduce the expression of individual $Q_x$ from
-\begin{equation}
-\label{eq:Qx}
-\left\lbrace
-\begin{array}{rcl}
-	\eta \left(1-\hat\alpha_\infty\right) \beta_x Q_x & = & \mu_x \left(\Theta-\beta_x\right) + \eta \hat\alpha_\infty h_\infty \Upsilon_x\\
-	Q_x & = & \dfrac{1}{\beta_x} \left( \dfrac{\mu_x \left(\Theta-\beta_x\right)}{\eta\sin^2\psi} + \dfrac{h_\infty}{h_0}\dfrac{h_0\Upsilon_x}{\tan^2\psi} \right)\\
-\end{array}
-\right.
+ 1-\hat\alpha_\infty & = &\sin^2 \theta_\infty \cos^2 \psi\\
+ \\
+ & = &  \dfrac{\sum_x \epsilon_x \mu_x \left[\beta_x^\infty - \Theta\right]}{\eta} \\
+ \\
+ & = & h_0\Upsilon_7 \dfrac{ \sum_x \epsilon_x \mu_x \left[\beta_x^\infty - \Theta\right]}{\Theta \mu_7 f_0}\\
+ \\
+ & = & h_0\Upsilon_7 \dfrac{ \epsilon \sigma \left[\beta_6 - \Theta\right] + (1-\epsilon) \left[\beta_7 - \Theta\right]}
+ {\Theta f_0}\\
+ \end{array}
+ \right.
 \end{equation}
 \end{itemize}
-
-
-\begin{equation}
-\label{eq:Qx}
-\left\lbrace
-\begin{array}{rcl}
-	Q_7 & = & \dfrac{1}{\beta_7} \left( \dfrac{\mu_7 \left(\Theta-\beta_7\right)}{\eta\sin^2\psi} + \dfrac{h_\infty}{h_0}\dfrac{h_0\Upsilon_7}{\tan^2\psi} \right) \\
-	\\
-	Q_6 & = & \dfrac{1}{\beta_6} \left( \dfrac{\sigma\mu_7 \left(\Theta-\beta_6\right)}{\eta\sin^2\psi} + \dfrac{h_\infty}{h_0}\dfrac{\kappa h_0\Upsilon_7}{\tan^2\psi} \right)\\
-\end{array}
-\right.
-\end{equation}
-
 
 
 \end{document}

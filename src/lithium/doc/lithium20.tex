@@ -470,7 +470,7 @@ We get the system of equations
 		\\
 		\hline
 		\\
-		\Upsilon_6 & = & \kappa \Upsilon_7\\
+		%\Upsilon_6 & = & \kappa \Upsilon_7\\
 		\\
 		\hline
 		\\
@@ -481,40 +481,44 @@ We get the system of equations
 \end{equation}
 
 \begin{itemize}
-\item We choose $\mu_7$ so that $\mu_6=\sigma\mu_7$, $\Theta$ from the electroosmotic gradient, and $\kappa$ as the intake speed up.
-%\item Then we choose $\theta_0$ such that
-%\begin{equation}
-%\boxed{
-%	1+\tan^2\theta_0 = 1+\left(\sum_x \epsilon_x h_0 \Upsilon_x \right) = \dfrac{1}{\cos^2\theta_0}
-%	}
-%\end{equation}
-%which provides a guess
-%\begin{equation}
-%	h_0\Upsilon_7 = \dfrac{\tan^2\theta_0}{ 1+\epsilon\left(\kappa-1\right)} \in \mathbb{R}^+
-%\end{equation}
+\item We choose $\mu_7$ so that $\mu_6=\sigma\mu_7$, $\Theta$ from the electroosmotic gradient
 \item Since we must satisfy \eqref{eq:r0},
 \begin{equation}
 	r_0 = \dfrac{\mu_7\Theta+\eta h_0 \Upsilon_7}{\mu_6\Theta+\eta h_0 \Upsilon_6}
 \end{equation}
-the catalytic ratio is
-\begin{equation}
-	\eta = \Theta\dfrac{\mu_7-r_0\mu_6}{r_0 h_0 \Upsilon_6-h_0\Upsilon_7} 
-	= \dfrac{\Theta\mu_7}{h_0\Upsilon_7} \underbrace{\dfrac{1-\sigma r_0}{r_0\kappa-1}}_{f_0}
-\end{equation}
+Without catalytic process, $r_0$ cannot be lower than $\dfrac{1}{\sigma}$,
+%the catalytic ratio is
+%\begin{equation}
+%	\eta = \Theta\dfrac{\mu_7-r_0\mu_6}{r_0 h_0 \Upsilon_6-h_0\Upsilon_7} 
+%	= \dfrac{\Theta\mu_7}{h_0\Upsilon_7} \underbrace{\dfrac{1-\sigma r_0}{r_0\kappa-1}}_{f_0}
+%\end{equation}
 
-{
-	\underline{The catalytic process is observed if}
+\underline{The catalytic process is observed if}
 \begin{equation}
 \boxed{
 \left\lbrace
 \begin{array}{rcl}
-	r_0 & = & \dfrac{1+10^{-3}\deltaLi_0}{1+10^{-3}\deltaLiOut} < \dfrac{1}{\sigma} = 0.99772\\
-	\kappa & > & 1/r_0\\
+	r_0 & = & \dfrac{1+10^{-3}\deltaLi_0}{1+10^{-3}\deltaLiOut} \leq \dfrac{1}{\sigma} = 0.99772\\
+	    & \Leftrightarrow & \Upsilon_6 \geq \sigma \Upsilon_7\\
 \end{array}
 \right.
 }
 \end{equation}
-}
+which is quite normal, the intake speedup of $\spLi{6}$ must be itself greater than its leakage speedup!
+We define
+\begin{equation}
+	\Upsilon_6  = \kappa \sigma \Upsilon_7
+\end{equation}
+leading to
+\begin{equation}
+	r_0 =  \dfrac{\mu_7\Theta+\eta h_0 \Upsilon_7}{\mu_6\Theta+\eta h_0 \Upsilon_6} = \dfrac{1}{\sigma} \dfrac{\mu_7\Theta+\eta h_0 \Upsilon_7}{\mu_7\Theta+\eta \kappa h_0 \Upsilon_7}
+\end{equation}
+and
+\begin{equation}
+	\boxed{
+	\eta = \dfrac{\mu_7\Theta}{h_0\Upsilon_7} \dfrac{1-r_0\sigma}{\kappa\sigma-1} = \dfrac{\mu_7\Theta}{h_0\Upsilon_7} f_0
+	}
+\end{equation}
 
 \item The system imposes $\beta_x\geq\Theta$, shown by the two expressions of $\hat\alpha_\infty$, and because the catalytic process imposes a boost with respect to the $\Theta$ level.
 If we set

@@ -499,7 +499,7 @@ Without catalytic process, $r_0$ cannot be lower than $\dfrac{1}{\sigma}$,
 \left\lbrace
 \begin{array}{rcl}
 	r_0 & = & \dfrac{1+10^{-3}\deltaLi_0}{1+10^{-3}\deltaLiOut} \leq \dfrac{1}{\sigma} = 0.99772\\
-	    & \Leftrightarrow & \Upsilon_6 \geq \sigma \Upsilon_7\\
+	%    & \Leftrightarrow & \Upsilon_6 \geq \sigma \Upsilon_7\\
 \end{array}
 \right.
 }
@@ -507,7 +507,7 @@ Without catalytic process, $r_0$ cannot be lower than $\dfrac{1}{\sigma}$,
 which is quite normal, the intake speedup of $\spLi{6}$ must be itself greater than its leakage speedup!
 We define
 \begin{equation}
-	\Upsilon_6  = \kappa \sigma \Upsilon_7
+	\Upsilon_6  = \kappa \Upsilon_7
 \end{equation}
 leading to
 \begin{equation}
@@ -516,7 +516,8 @@ leading to
 and
 \begin{equation}
 	\boxed{
-	\eta = \dfrac{\mu_7\Theta}{h_0\Upsilon_7} \dfrac{1-r_0\sigma}{\kappa\sigma-1} = \dfrac{\mu_7\Theta}{h_0\Upsilon_7} f_0
+	\eta = \dfrac{\mu_7\Theta}{h_0\Upsilon_7} \dfrac{1-r_0\sigma}{\kappa r_0-1} = \dfrac{\mu_7\Theta}{h_0\Upsilon_7} f_0
+	,\;\; r_0 < \frac{1}{\sigma}, \;\; \kappa > \frac{1}{r_0}
 	}
 \end{equation}
 

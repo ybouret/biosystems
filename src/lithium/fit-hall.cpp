@@ -475,7 +475,7 @@ Y_PROGRAM_START()
         Vector       aerr(nvar);
         vector<bool> used(nvar,false);
 
-        const double p_ini   = average_of(P);
+        //const double p_ini   = average_of(P);
         //const double pHe_ini = average_of(pHe);
 
         gvars(aorg,"ve") = 7.1;

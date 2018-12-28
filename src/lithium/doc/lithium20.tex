@@ -522,38 +522,89 @@ and
 \end{equation}
 which are the conditions arising from a catalytic speedup...
 
-\item The system imposes $\beta_x\geq\Theta$, shown by the two expressions of $\hat\alpha_\infty$, and because the catalytic process imposes a boost with respect to the $\Theta$ level.
-If we set
-\begin{equation}
-	\hat\alpha_\infty = \cos^2\theta_\infty \cos^2\psi + \sin^2\psi, 
-	\;\;\cos^2\theta_\infty = \dfrac{1}{1+\sum_x\epsilon_x h_\infty \Upsilon_x},\;\;1-\hat\alpha_\infty = \sin^2\theta_\infty \cos^2\psi
-\end{equation}
-then $\psi$ is the quadratic coupling factor, since
-\begin{equation}
-	\sum_x \epsilon_x Q_x \beta_x^\infty = \dfrac{\tan^2\psi}{\cos^2\theta_\infty}
-\end{equation}
-
-\item
-We use
+\item Since we can't have a higher $\beta_x$ than the linear case,
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
- 1-\hat\alpha_\infty & = &\sin^2 \theta_\infty \cos^2 \psi\\
- \\
- & = &  \dfrac{\sum_x \epsilon_x \mu_x \left[\beta_x^\infty - \Theta\right]}{\eta} \\
- \\
- & = & h_0\Upsilon_7 \dfrac{ \sum_x \epsilon_x \mu_x \left[\beta_x^\infty - \Theta\right]}{\Theta \mu_7 f_0}\\
- \\
- & = & h_0\Upsilon_7 \dfrac{ \epsilon \sigma \left[\beta_6 - \Theta\right] + (1-\epsilon) \left[\beta_7 - \Theta\right]}
- {\Theta f_0}\\
- & = & h_0 \Upsilon_7 Z_\kappa\\
- \end{array}
- \right.
+\beta_x^\infty & \leq & \Theta + \eta \dfrac{h_\infty\Upsilon_x\cos^2\Omega}{\mu_x}\;\;\left(\text{with }\cos^2\Omega=\hat\alpha_\infty^1=\dfrac{1}{1+\sum_x\epsilon_x h_\infty \Upsilon_x}\right)\\
+\\
+&\leq& \Theta\left(1+ f_0 \dfrac{h_\infty}{h_0} \dfrac{\Upsilon_x}{\Upsilon_7}\dfrac{\mu_7}{\mu_x}\cos^2 \Omega \right)
+\end{array}
+\right.
 \end{equation}
+So that
+\begin{equation}
+	\beta_x = \Theta + \eta \dfrac{h_\infty\Upsilon_x\cos^2\Omega}{\mu_x} \cos^2 B_x,\;\;Q_x\to0\text{ when }B_x\to0
+\end{equation}
+and we notice
+\begin{equation}
+	\tan^2 \Omega = \sum_x h_\infty \epsilon_x \Upsilon_x = h_\infty \Upsilon_7 \left[\epsilon\kappa+(1-\epsilon)\right]
+\end{equation}
+We can write
+\begin{equation}
+	\beta_x^\infty = \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} \dfrac{\Upsilon_x}{\Upsilon_7}\dfrac{\mu_7}{\mu_x}\cos^2 \Omega\cos^2 B_x\right)
+	= \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} \dfrac{\Upsilon_x}{\Upsilon_7}\dfrac{\mu_7}{\mu_x}
+	\dfrac{\cos^2 B_x}{1+\left[\epsilon\kappa+(1-\kappa)\right] h_\infty \Upsilon_7 }
+	\right)
+\end{equation}
+so that
+\begin{equation}
+	\beta_7^\infty = \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} 
+	\dfrac{\cos^2 B_7}{1+\left[\epsilon\kappa+(1-\kappa)\right] h_\infty \Upsilon_7 }
+	\right)
+\end{equation}
+
+\begin{equation}
+	\beta_6^\infty = \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} \dfrac{\kappa}{\sigma}
+	\dfrac{\cos^2 B_7}{1+\left[\epsilon\kappa+(1-\kappa)\right] h_\infty \Upsilon_7 }
+	\right)
+\end{equation}
+
+
+\item The system imposes $\beta_x\geq\Theta$, shown by the two expressions of $\hat\alpha_\infty$, and because the catalytic process imposes a boost with respect to the $\Theta$ level.
+If we set
+\begin{equation}
+	\hat\alpha_\infty = \cos^2\Omega \cos^2\psi + \sin^2\psi, 
+	\;\;\cos^2\Omega  = \dfrac{1}{1+\sum_x\epsilon_x h_\infty \Upsilon_x},\;\;1-\hat\alpha_\infty = \sin^2\Omega  \cos^2\psi
+\end{equation}
+then $\psi$ is the quadratic coupling factor, since
+\begin{equation}
+	\sum_x \epsilon_x Q_x \beta_x^\infty = \dfrac{\tan^2\psi}{\cos^2\Omega}
+\end{equation}
+
+We deduce from each choice of $B_x$
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\eta (1-\hat\alpha_\infty) \beta_x^\infty Q_x & = & \eta \hat\alpha_\infty h_\infty \Upsilon_x - \mu_x\left(\beta_x^\infty - \Theta \right)\\
+	\\
+	 (1-\hat\alpha_\infty) \beta_x^\infty Q_x & = & \hat\alpha_\infty h_\infty \Upsilon_x -   {h_\infty\Upsilon_x\cos^2\Omega}\sin^2 B_x\\
+	 & = &  h_\infty \Upsilon_x \left( \underbrace{\cos^2\Omega \cos^2\psi + \sin^2\psi}_{\geq \cos^2\Omega} - \underbrace{\cos^2\Omega \cos^2 B_x}_{\leq\cos^2\Omega} \right)\\
+\end{array}
+\right.
+\end{equation}
+
+Then
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+ (1-\hat\alpha_\infty) \sum_x \epsilon_x \beta_x^\infty Q_x & = & 
+ \left(\cos^2\Omega \cos^2\psi + \sin^2\psi\right) \left(\sum_x \epsilon_x h_\infty \Upsilon_x\right) - \cos^2 \Omega \left(\sum_x \epsilon_x h_\infty \Upsilon_x \cos^2 B_x \right)\\
+ \\
+\sin^2\Omega  \cos^2\psi \dfrac{\tan^2\psi}{\cos^2\Omega} & = & \left(\cos^2\Omega \cos^2\psi + \sin^2\psi\right) \tan^2 \Omega
+ - \cos^2 \Omega \left(\sum_x \epsilon_x h_\infty \Upsilon_x \cos^2 B_x \right)\\
+ \\
+ \cos^2\psi & = & \dfrac{\sum_x \epsilon_x \Upsilon_x \cos^2 B_x }{\sum_x \epsilon_x \Upsilon_x} 
+ = \dfrac{\epsilon\kappa\cos^2B_6+(1-\epsilon)\cos^2B_7}{\epsilon\kappa+(1-\epsilon)}\\
+\end{array}
+\right.
+\end{equation}
+
 \end{itemize}
 
-
 \end{document}
+
+%%%%%%%%%%%%%
 
 \section{Solving}
 \color{blue}

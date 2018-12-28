@@ -7,12 +7,12 @@ tan = math.tan
 F=96485.3399;
 R=8.3144621;
 T=273.15;
-z=-1;
+z=1;
 V=-40e-3;
-Theta = exp( z*F*V/R/(T+37) );
+Theta = exp( -z*F*V/R/(T+37) );
 
 -- log(tau) shifting
-tau_shift = 4.8
+-- tau_shift = 4.8
 
 -- sigma is from diffusive processes
 sigma=1.0/0.99772 -- +/- 0.00026
@@ -26,3 +26,6 @@ d7in  = 1.02;
 
 -- leak scaling
 mu7 = 0.3;
+
+Q6=00;
+Q7=00;

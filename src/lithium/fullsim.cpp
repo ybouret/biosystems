@@ -66,8 +66,8 @@ public:
     Ua( eps6*U6+eps7*U7 ),
     f0( (1.0-r0*sigma)/(kappa*r0-1.0) ),
     eta( mu7*Theta*f0/U7 ),
-    Q6(0.0011),
-    Q7(0.001)
+    _INI(Q6),
+    _INI(Q7)
     {
         std::cerr << "Theta = " << Theta << std::endl;
         std::cerr << "sigma = " << sigma << std::endl;
@@ -78,6 +78,7 @@ public:
         std::cerr << "eps7  = " << eps7  << std::endl;
         std::cerr << "d7in  = " << d7in  << std::endl;
         std::cerr << "r0    = " << r0    << std::endl;
+        std::cerr << "kappa = " << kappa << std::endl;
         std::cerr << "f0    = " << f0    << std::endl;
         std::cerr << "eta   = " << eta   << std::endl;
     }
@@ -208,5 +209,6 @@ Y_PROGRAM_START()
         t0 = t1;
     }
     std::cerr << std::endl;
+    std::cerr << "Final Y=" << Y << std::endl;
 }
 Y_PROGRAM_END()

@@ -606,6 +606,42 @@ Then
 
 \section{Building a simulation}
 
+\begin{itemize}
+\item We choose $\sigma$, $\epsilon$ and $\Theta$ from physical values
+\item We choose $\mu_7$ (\textbf{parameter})
+\item We choose $\rho_\infty=h_\infty/h_0$ (from the experiments, it would depends on $\LiAllOut$, \textbf{heuristic})
+\item We choose $r_0<1/\sigma$  (from the experiments)
+\item We choose $\kappa>1/r_0>\sigma$ (\textbf{parameter})
+\item We choose $\cos^2\Omega$ (\textbf{parameter}), when $\Omega=0$ means no intake
+\item We compute 
+$$
+	h_0\Upsilon_7 = \dfrac{1}{\rho_\infty}\left(\dfrac{1}{\cos^2\Omega}-1\right)\dfrac{1}{\epsilon\kappa+(1-\epsilon)}
+	= \dfrac{1}{\epsilon\kappa+(1-\epsilon)} \dfrac{\tan^2\Omega}{\rho_\infty}
+$$
+\item We compute
+$$
+	f_0 = \dfrac{1-r_0\sigma}{\kappa r_0-1}
+$$
+\item We compute/choose
+$$
+	\beta_7^\infty = \Theta \left[ 1 + f_0 \rho_\infty \cos^2\Omega \cos^2 B_7 \right]
+$$
+
+$$	
+	\beta_6^\infty = \Theta \left[ 1 + f_0 \dfrac{\kappa}{\sigma} \rho_\infty \cos^2\Omega \cos^2 B_6 \right]
+$$
+\begin{itemize}
+\item
+We have $\kappa/\sigma>1$, but we check that we can adjust $\cos^2 B_6$ to retrieve, for example $\beta_6^\infty=\beta_7^\infty$, which imposes
+$Q_6>Q_7$, which is expected!
+\item $\kappa$ can be adjusted to have the desired amplitude on $\beta_7^\infty$
+\item We have
+$$
+	r_\infty = \dfrac{\beta_7^\infty}{\beta_6^\infty} = \dfrac{ 1 + f_0 \rho_\infty \cos^2\Omega \cos^2 B_7}{1 + f_0 \dfrac{\kappa}{\sigma} \rho_\infty \cos^2\Omega \cos^2 B_6}
+$$
+so that, without second order kinetics, we would always have a fixed ratio $<1$ (a.k.a $\deltaLi_\infty<\deltaLiOut$)
+\end{itemize}
+\end{itemize}
 
 \end{document}
 

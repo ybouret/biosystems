@@ -534,7 +534,7 @@ which are the conditions arising from a catalytic speedup...
 \end{equation}
 So that
 \begin{equation}
-	\beta_x = \Theta + \eta \dfrac{h_\infty\Upsilon_x\cos^2\Omega}{\mu_x} \cos^2 B_x,\;\;Q_x\to0\text{ when }B_x\to0
+	\beta_x = \Theta + \eta \dfrac{h_\infty\Upsilon_x\cos^2\Omega}{\mu_x} \cos^2 \varphi_x,\;\;Q_x\to0\text{ when }\varphi_x\to0
 \end{equation}
 and we notice
 \begin{equation}
@@ -542,21 +542,23 @@ and we notice
 \end{equation}
 We can write
 \begin{equation}
-	\beta_x^\infty = \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} \dfrac{\Upsilon_x}{\Upsilon_7}\dfrac{\mu_7}{\mu_x}\cos^2 \Omega\cos^2 B_x\right)
-	= \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} \dfrac{\Upsilon_x}{\Upsilon_7}\dfrac{\mu_7}{\mu_x}
-	\dfrac{\cos^2 B_x}{1+\left[\epsilon\kappa+(1-\kappa)\right] h_\infty \Upsilon_7 }
-	\right)
+	\beta_x^\infty = \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} \dfrac{\Upsilon_x}{\Upsilon_7}\dfrac{\mu_7}{\mu_x}\cos^2 \Omega\cos^2 \varphi_x\right)
+	%= \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} \dfrac{\Upsilon_x}{\Upsilon_7}\dfrac{\mu_7}{\mu_x}
+	%\dfrac{\cos^2 B_x}{1+\left[\epsilon\kappa+(1-\kappa)\right] h_\infty \Upsilon_7 }
+	%\cos^2\Omega \cos^2\varphi_x
+	%\right)
 \end{equation}
 so that
 \begin{equation}
 	\beta_7^\infty = \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} 
-	\dfrac{\cos^2 B_7}{1+\left[\epsilon\kappa+(1-\kappa)\right] h_\infty \Upsilon_7 }
+	%\dfrac{\cos^2 B_7}{1+\left[\epsilon\kappa+(1-\kappa)\right] h_\infty \Upsilon_7 }
+	\cos^2\Omega \cos^2\varphi_7
 	\right)
 \end{equation}
 
 \begin{equation}
 	\beta_6^\infty = \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} \dfrac{\kappa}{\sigma}
-	\dfrac{\cos^2 B_6}{1+\left[\epsilon\kappa+(1-\kappa)\right] h_\infty \Upsilon_7 }
+	\cos^2\Omega \cos^2\varphi_6 
 	\right)
 \end{equation}
 
@@ -589,22 +591,48 @@ Then
 \left\lbrace
 \begin{array}{rcl}
  (1-\hat\alpha_\infty) \sum_x \epsilon_x \beta_x^\infty Q_x & = & 
- \left(\cos^2\Omega \cos^2\psi + \sin^2\psi\right) \left(\sum_x \epsilon_x h_\infty \Upsilon_x\right) - \cos^2 \Omega \left(\sum_x \epsilon_x h_\infty \Upsilon_x \cos^2 B_x \right)\\
+ \left(\cos^2\Omega \cos^2\psi + \sin^2\psi\right) \left(\sum_x \epsilon_x h_\infty \Upsilon_x\right) - \cos^2 \Omega \left(\sum_x \epsilon_x h_\infty \Upsilon_x \cos^2 \varphi_x \right)\\
  \\
 \sin^2\Omega  \cos^2\psi \dfrac{\tan^2\psi}{\cos^2\Omega} & = & \left(\cos^2\Omega \cos^2\psi + \sin^2\psi\right) \tan^2 \Omega
- - \cos^2 \Omega \left(\sum_x \epsilon_x h_\infty \Upsilon_x \cos^2 B_x \right)\\
+ - \cos^2 \Omega \left(\sum_x \epsilon_x h_\infty \Upsilon_x \cos^2 \varphi_x \right)\\
  \\
- \cos^2\psi & = & \dfrac{\sum_x \epsilon_x \Upsilon_x \cos^2 B_x }{\sum_x \epsilon_x \Upsilon_x} 
- = \dfrac{\epsilon\kappa\cos^2B_6+(1-\epsilon)\cos^2B_7}{\epsilon\kappa+(1-\epsilon)}\\
- \\
-  & \in &  \left[\min\left(\cos^2B_6,\cos^2B_7\right):\max\left(\cos^2B_6,\cos^2B_7\right)\right] \\
+ \cos^2\psi & = & \dfrac{\sum_x \epsilon_x \Upsilon_x \cos^2 \varphi_x }{\sum_x \epsilon_x \Upsilon_x} 
+ = \dfrac{\epsilon\kappa\cos^2B_\varphi+(1-\epsilon)\cos^2\varphi_7}{\epsilon\kappa+(1-\epsilon)}\\
 \end{array}
 \right.
+\end{equation}
+
+\begin{equation}
+	\boxed
+	{
+	\cos^2\psi = \dfrac{\epsilon\kappa\cos^2\varphi_6+(1-\epsilon)\cos^2\varphi_7}{\epsilon\kappa+(1-\epsilon)} 
+	 \in  \left[\min\left(\cos^2\varphi_6,\cos^2\varphi_7\right):\max\left(\cos^2\varphi_6,\cos^2\varphi_7\right)\right] \\
+	}
 \end{equation}
 
 \end{itemize}
 
 \section{Building a simulation}
+
+\subsection{Constants}
+
+\begin{itemize}
+	\item We choose $\sigma$ from the diffusion coefficient ratio
+	\item We choose $\epsilon$ from the external solution
+	\item We choose $\Theta$ from the cellular potential
+\end{itemize}
+
+
+\subsection{Parameters}
+\begin{itemize}
+	\item We choose $r_0$ from the isotopic data
+	\item We choose $\beta_7^\infty>\Theta$
+\end{itemize}
+
+
+\subsection{older}
+
+\color{blue}
 
 \begin{itemize}
 \item We choose $\sigma$, $\epsilon$ and $\Theta$ from physical values

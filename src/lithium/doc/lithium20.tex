@@ -550,9 +550,8 @@ We can write
 \end{equation}
 so that
 \begin{equation}
-	\beta_7^\infty = \Theta \left(1 + f_0 \dfrac{h_\infty}{h_0} 
-	%\dfrac{\cos^2 B_7}{1+\left[\epsilon\kappa+(1-\kappa)\right] h_\infty \Upsilon_7 }
-	\cos^2\Omega \cos^2\varphi_7
+	\beta_7^\infty = \Theta \left(1 + 
+	f_0 \dfrac{h_\infty}{h_0} 	\cos^2\Omega \cos^2\varphi_7
 	\right)
 \end{equation}
 
@@ -623,11 +622,32 @@ Then
 \end{itemize}
 
 
-\subsection{Parameters}
+\subsection{Parameters To Choose}
 \begin{itemize}
 	\item We choose $r_0$ from the isotopic data
-	\item We choose $\beta_7^\infty>\Theta$
+	
+	\item We choose 
+	\begin{equation}
+		\rho_\infty =  \dfrac{h_\infty}{h_0}
+	\end{equation}
+	\textbf{and there is an heuristic coupling with $\LiAllOut$}
+	
+	\item We choose $\beta_7^\infty>\Theta$ so that
+	\begin{equation}
+		\dfrac{\beta_7^\infty}{\Theta}-1 = \tan^2 \gamma_7 % = f_0 	\rho_\infty \cos^2\Omega \cos^2\varphi_7
+	\end{equation}
+	
+	\item We choose $\cos^2\Omega$ (\textbf{parameter}), when $\Omega=0$ means no intake 
+	%and we remember
+%		$$
+%			\tan^2\Omega = h_\infty \Upsilon_7 \left[\epsilon\kappa+(1-\epsilon)\right]
+%		$$
+
+	\item We choose a linear level $\cos^2 \phi_7$
+	
 \end{itemize}
+
+\subsection{Parameters to compute}
 
 
 \subsection{older}

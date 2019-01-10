@@ -39,15 +39,7 @@ public:
 
     const double mu7;
     const double mu6;
-    const double kappa;
-    const double U7;
-    const double U6;
-    const double Ua;
-    const double f0;
 
-    const double eta;
-    const double Q6;
-    const double Q7;
 
     inline LiSim( const Lua::VM & _vm ) :
     vm( _vm ),
@@ -59,15 +51,7 @@ public:
     _INI(d7in),
     r0( (1.0+d7in/1000.0)/(1.0+d7out/1000.0) ),
     _INI(mu7),
-    mu6( sigma*mu7 ),
-    _INI(kappa),
-    U7( 1.0 ),
-    U6( U7*kappa ),
-    Ua( eps6*U6+eps7*U7 ),
-    f0( (1.0-r0*sigma)/(kappa*r0-1.0) ),
-    eta( mu7*Theta*f0/U7 ),
-    _INI(Q6),
-    _INI(Q7)
+    mu6( sigma*mu7 )
     {
         std::cerr << "Theta = " << Theta << std::endl;
         std::cerr << "sigma = " << sigma << std::endl;
@@ -77,16 +61,19 @@ public:
         std::cerr << "eps6  = " << eps6  << std::endl;
         std::cerr << "eps7  = " << eps7  << std::endl;
         std::cerr << "d7in  = " << d7in  << std::endl;
+#if 0
         std::cerr << "r0    = " << r0    << std::endl;
         std::cerr << "kappa = " << kappa << std::endl;
         std::cerr << "f0    = " << f0    << std::endl;
         std::cerr << "eta   = " << eta   << std::endl;
+#endif
     }
 
 
 
     void Compute( array<double> &dY, double, const array<double> &Y )
     {
+#if 0
         const double ac = Y[I_AC];
         const double b6 = Y[I_B6];
         const double b7 = Y[I_B7];
@@ -101,6 +88,7 @@ public:
         dY[I_AC] = 1.0 - ac * (1.0 + h * Ua ) + aa * (eps6*QB6+eps7*QB7);
         dY[I_B6] = mu6*(Theta-b6) + eta * ( ach * U6 - aa * QB6);
         dY[I_B7] = mu7*(Theta-b7) + eta * ( ach * U7 - aa * QB7);
+#endif
     }
 
     double computeDelta( const array<double> &Y )
@@ -153,6 +141,8 @@ Y_PROGRAM_START()
     LiSim       Li(vm);
     ODEquation  diffeq( &Li, & LiSim::Compute );
 
+    return 0;
+    
 
     const double lt_min = -6;
     double       lt_max =  8;

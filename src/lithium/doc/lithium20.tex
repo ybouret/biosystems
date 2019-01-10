@@ -637,16 +637,16 @@ Then
 	
 	\item We choose $\beta_7^\infty>\Theta$ so that
 	\begin{equation}
-		\dfrac{\beta_7^\infty}{\Theta}-1 = \tan^2 \gamma_7 % = f_0 	\rho_\infty \cos^2\Omega \cos^2\varphi_7
+		\dfrac{\beta_7^\infty}{\Theta}-1 = \tan^2 \gamma_7  = f_0 	\rho_\infty \cos^2\Omega \cos^2\varphi_7
 	\end{equation}
 	
-	\item We choose 
-	$$
-		r_\infty = \dfrac{\beta_7^\infty}{\beta_6^\infty}
-	$$
-	so that $\beta_6^\infty=\beta_7^\infty/r_\infty$.
+%	\item We choose 
+%	$$
+%		r_\infty = \dfrac{\beta_7^\infty}{\beta_6^\infty}
+%	$$
+%	so that $\beta_6^\infty=\beta_7^\infty/r_\infty$.
 	
-	\item We choose $\cos^2\Omega$ (\textbf{parameter}), when $\Omega=0$ means no intake 
+	\item We choose $\cos^2\Omega$, when $\Omega=0$ means no intake 
 	%and we remember
 %		$$
 %			\tan^2\Omega = h_\infty \Upsilon_7 \left[\epsilon\kappa+(1-\epsilon)\right]
@@ -654,7 +654,9 @@ Then
 
 	\item We choose a linear level $\cos^2 \varphi_7$
 	
-\end{itemize}
+	\item We choose a linear level $\cos^2 \varphi_6$, see below
+
+	\end{itemize}
 
 \subsection{Parameters to compute}
 
@@ -669,9 +671,41 @@ f_0  = \dfrac{\rho_\infty \cos^2\Omega \cos^2\varphi_7}{\tan^2 \gamma_7}
 	\kappa = \dfrac{1}{r_0}\left( 1 + \dfrac{1-r_0\sigma}{f_0}\right)
 \end{equation}
 
+\item Since
+	$$
+		\beta_6^\infty = \Theta \left( 1 + \left(\dfrac{\beta_7^\infty}{\Theta}-1\right) \dfrac{\kappa}{\sigma} \dfrac{\cos^2\varphi_6}{\cos^2\varphi_7} \right)
+	$$
+or
+\begin{equation}
+	\dfrac
+	{ 
+		\dfrac{\beta_6^\infty}{\Theta}-1
+	}
+	{
+		\dfrac{\beta_7^\infty}{\Theta}-1
+	} = \dfrac{\kappa}{\sigma} \dfrac{\cos^2\varphi_6}{\cos^2\varphi_7} \;\; \text{ with } \dfrac{\kappa}{\sigma}>1, \;\; \dfrac{1}{\cos^2\varphi_7}>1
+\end{equation}
+\begin{itemize}
+\item For a $Q_6=0 \Leftrightarrow \varphi_6=0$, we have a maximal $\beta_6^\infty$, meaning a minimal $r_\infty<1$, 
+\begin{equation}
+	r_\infty^{min} = ...
+\end{equation}
+
+\item Then when $\varphi_6$ increases, i.e. $Q_6$ increases, we increase $r_\infty$ up to 
+\begin{equation}
+		r_\infty^{max} = \frac{\beta_7^\infty}{\Theta} > 1
+\end{equation}
+
+\end{itemize}
+
 \item We compute
 \begin{equation}
 	h_0 \Upsilon_7 = \dfrac{\tan^2\Omega}{\rho_\infty\left[\epsilon\kappa+(1-\epsilon)\right]}
+\end{equation}
+
+\item We compute
+\begin{equation}
+	h_0 \Upsilon_6 = \kappa \; h_0 \Upsilon_7
 \end{equation}
 
 

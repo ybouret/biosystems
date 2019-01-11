@@ -23,9 +23,11 @@ d7out = 14.57;
 --d7in  = 0.92;
 d7in  = 1.02;
 
+rho=0.9
+beta7=6;
+
+Omega=0.1;
+phi7 =0.1;
 
 -- leak scaling
 mu7 = 0.3;
-
-Q6=00;
-Q7=00;

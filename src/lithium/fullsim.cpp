@@ -40,6 +40,43 @@ public:
     const double mu7;
     const double mu6;
 
+    const double rho;   //! h_end/h_ini
+
+    const double beta7; //! final beta7
+    const double xs7;   //!< beta7/Theta-1
+
+    const double Omega; //! intake parameter
+    const double cos2Omega;
+    const double tan2Omega;
+
+    const double phi7;
+    const double cos2phi7;
+
+    const double f0;
+    const double kappa;
+
+    const double U7; // h0*Upsilon7
+    const double U6; // kappa*U7
+
+
+    double check_r0( const double r0_guess )
+    {
+        std::cerr << "r0 guess=" << r0_guess << ", sigma=" << sigma << std::endl;
+        if(r0_guess>=1/sigma)
+        {
+            throw exception("invalid r0");
+        }
+        return r0_guess;
+    }
+
+    inline double check_beta7( const double beta7_guess )
+    {
+        if(beta7_guess<=Theta)
+        {
+            throw exception("invalid beta7");
+        }
+        return beta7_guess;
+    }
 
     inline LiSim( const Lua::VM & _vm ) :
     vm( _vm ),
@@ -49,9 +86,28 @@ public:
     eps6(1.0/(1.0+beta_s*(1.0+0.001*d7out))),
     eps7(1.0-eps6),
     _INI(d7in),
-    r0( (1.0+d7in/1000.0)/(1.0+d7out/1000.0) ),
+    r0( check_r0( (1.0+d7in/1000.0)/(1.0+d7out/1000.0)) ),
+
     _INI(mu7),
-    mu6( sigma*mu7 )
+    mu6( sigma*mu7 ),
+
+    _INI(rho),
+
+    beta7( check_beta7(vm->get<double>("beta7")) ),
+    xs7( beta7/Theta-1.0 ),
+
+    _INI( Omega ),
+    cos2Omega( square_of( cos(Omega) ) ),
+    tan2Omega( (1.0-cos2Omega)/cos2Omega ),
+
+    _INI(phi7),
+    cos2phi7( square_of(cos(phi7)) ),
+
+    f0( rho * cos2Omega * cos2phi7 / xs7 ),
+    kappa( (1+(1-r0*sigma)/f0)/r0 ),
+
+    U7( tan2Omega/rho/(eps6*kappa+eps7) ),
+    U6( kappa*U7 )
     {
         std::cerr << "Theta = " << Theta << std::endl;
         std::cerr << "sigma = " << sigma << std::endl;
@@ -61,10 +117,18 @@ public:
         std::cerr << "eps6  = " << eps6  << std::endl;
         std::cerr << "eps7  = " << eps7  << std::endl;
         std::cerr << "d7in  = " << d7in  << std::endl;
-#if 0
         std::cerr << "r0    = " << r0    << std::endl;
-        std::cerr << "kappa = " << kappa << std::endl;
+        std::cerr << "rho   = " << rho   << std::endl;
+        std::cerr << "beta7 = " << beta7 << ", xs7=" << xs7 << std::endl;
+        std::cerr << "Omega = " << Omega << ", cos2=" << cos2Omega << std::endl;
         std::cerr << "f0    = " << f0    << std::endl;
+        std::cerr << "kappa = " << kappa << std::endl;
+
+        std::cerr << "U7    = " << U7 << std::endl;
+        std::cerr << "U6    = " << U6 << std::endl;
+
+#if 0
+
         std::cerr << "eta   = " << eta   << std::endl;
 #endif
     }

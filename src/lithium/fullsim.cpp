@@ -272,6 +272,19 @@ Y_PROGRAM_START()
     progress bar;
     bar.start();
 
+    vector<double> dY(Y.size());
+
+    {
+        Y[Li.I_AC] = Li.ac_end;
+        Y[Li.I_B6] = Li.beta6;
+        Y[Li.I_B7] = Li.beta7;
+        std::cerr << "Y_end=" << Y << std::endl;
+        Li.Compute(dY, 1e30, Y);
+        std::cerr << "dY_end=" << dY << std::endl;
+    }
+
+    return 0;
+
     Li.setup(Y);
     {
         ios::ocstream::overwrite("output.dat");
@@ -279,7 +292,6 @@ Y_PROGRAM_START()
     }
 
     {
-        vector<double> dY(Y.size());
         Li.Compute(dY,0,Y);
         std::cerr << "Y0="   << Y << std::endl;
         std::cerr << "dY0=" << dY << std::endl;
@@ -287,7 +299,7 @@ Y_PROGRAM_START()
         std::cerr << "r0=" << r0 << " / " << Li.r0 << std::endl;
     }
 
-    return 0;
+    //return 0;
 
     double t0   = 0;
     double ctrl = exp(lt_min)/10;
@@ -312,6 +324,10 @@ Y_PROGRAM_START()
         t0 = t1;
     }
     std::cerr << std::endl;
-    std::cerr << "Final Y=" << Y << std::endl;
+    {
+        Li.Compute(dY,t0,Y);
+        std::cerr << "Final Y=" << Y << std::endl;
+        std::cerr << "Final dY=" << dY << std::endl;
+    }
 }
 Y_PROGRAM_END()

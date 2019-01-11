@@ -143,8 +143,8 @@ public:
     sin2psi( 1.0 - cos2psi ),
     ac_end( cos2Omega * cos2psi + sin2psi ),
 
-    Q6(0),
-    Q7(0)
+    Q6(rho*U6*(ac_end-cos2Omega*cos2phi6)/beta6/(1.0-ac_end)),
+    Q7(rho*U7*(ac_end-cos2Omega*cos2phi7)/beta7/(1.0-ac_end))
     {
         std::cerr << "Theta = " << Theta << std::endl;
         std::cerr << "sigma = " << sigma << std::endl;
@@ -173,6 +173,14 @@ public:
         std::cerr << "eta     = " << eta     << std::endl;
         std::cerr << "cos2psi = " << cos2psi << std::endl;
         std::cerr << "ac_end  = " << ac_end  << std::endl;
+
+        std::cerr << "Q6      = " << Q6 << std::endl;
+        std::cerr << "Q7      = " << Q7 << std::endl;
+
+        const double lhs = eps6*beta6*Q6+eps7*beta7*Q7;
+        const double rhs = sin2psi/cos2psi/cos2Omega;
+        std::cerr << "lhs=" << lhs << " / rhs=" << rhs << std::endl;
+
     }
 
 

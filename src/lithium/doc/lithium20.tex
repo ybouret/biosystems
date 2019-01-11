@@ -579,8 +579,8 @@ We deduce from each choice of $B_x$
 \begin{array}{rcl}
 	\eta (1-\hat\alpha_\infty) \beta_x^\infty Q_x & = & \eta \hat\alpha_\infty h_\infty \Upsilon_x - \mu_x\left(\beta_x^\infty - \Theta \right)\\
 	\\
-	 (1-\hat\alpha_\infty) \beta_x^\infty Q_x & = & \hat\alpha_\infty h_\infty \Upsilon_x -   {h_\infty\Upsilon_x\cos^2\Omega}\sin^2 B_x\\
-	 & = &  h_\infty \Upsilon_x \left( \underbrace{\cos^2\Omega \cos^2\psi + \sin^2\psi}_{\geq \cos^2\Omega} - \underbrace{\cos^2\Omega \cos^2 B_x}_{\leq\cos^2\Omega} \right)\\
+	 (1-\hat\alpha_\infty) \beta_x^\infty Q_x & = & \hat\alpha_\infty h_\infty \Upsilon_x -   {h_\infty\Upsilon_x\cos^2\Omega}\sin^2 \varphi_x\\
+	 & = &  h_\infty \Upsilon_x \left( \underbrace{\cos^2\Omega \cos^2\psi + \sin^2\psi}_{\geq \cos^2\Omega} - \underbrace{\cos^2\Omega \cos^2 \varphi_x}_{\leq\cos^2\Omega} \right)\text{ \textcolor{red}{NO!} }\\
 \end{array}
 \right.
 \end{equation}
@@ -596,7 +596,7 @@ Then
  - \cos^2 \Omega \left(\sum_x \epsilon_x h_\infty \Upsilon_x \cos^2 \varphi_x \right)\\
  \\
  \cos^2\psi & = & \dfrac{\sum_x \epsilon_x \Upsilon_x \cos^2 \varphi_x }{\sum_x \epsilon_x \Upsilon_x} 
- = \dfrac{\epsilon\kappa\cos^2B_\varphi+(1-\epsilon)\cos^2\varphi_7}{\epsilon\kappa+(1-\epsilon)}\\
+ = \dfrac{\epsilon\kappa\cos^2\varphi_6+(1-\epsilon)\cos^2\varphi_7}{\epsilon\kappa+(1-\epsilon)}\\
 \end{array}
 \right.
 \end{equation}
@@ -711,6 +711,21 @@ or
 \item We compute
 $$
 	\eta = f_0 \dfrac{\mu_7 \Theta}{h_0\Upsilon_7}
+$$
+
+\item We compute
+$$
+	\cos^2\psi = \dfrac{\epsilon\kappa\cos^2\varphi_6+(1-\epsilon)\cos^2\varphi_7}{\epsilon\kappa+(1-\epsilon)} 
+$$
+
+\item We compute
+$$
+	\hat\alpha_\infty = \cos^2\Omega\cos^2\psi + \sin^2\psi
+$$
+
+\item We compute
+$$
+	Q_x = \dfrac{\rho_\infty h_0 \Upsilon_7}{(1-\hat\alpha_\infty)\beta_x^\infty} \left[ \right]
 $$
 
 \end{itemize}

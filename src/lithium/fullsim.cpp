@@ -70,8 +70,13 @@ public:
 
     const double eta;
 
+    const double cos2psi;
+    const double sin2psi;
+    const double ac_end;  // final
     const double Q6;
     const double Q7;
+
+
 
     double check_r0( const double r0_guess )
     {
@@ -134,6 +139,10 @@ public:
 
     eta( mu7*Theta*f0/U7 ),
 
+    cos2psi( (eps6 * kappa * cos2phi6 + eps7 * cos2phi7 ) / ( eps6*kappa+eps7) ),
+    sin2psi( 1.0 - cos2psi ),
+    ac_end( cos2Omega * cos2psi + sin2psi ),
+
     Q6(0),
     Q7(0)
     {
@@ -161,8 +170,9 @@ public:
         std::cerr << "U6    = " << U6 << std::endl;
         std::cerr << "Ua    = " << Ua << std::endl;
 
-        std::cerr << "eta   = " << eta   << std::endl;
-
+        std::cerr << "eta     = " << eta     << std::endl;
+        std::cerr << "cos2psi = " << cos2psi << std::endl;
+        std::cerr << "ac_end  = " << ac_end  << std::endl;
     }
 
 

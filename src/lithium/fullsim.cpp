@@ -66,9 +66,12 @@ public:
 
     const double U7; // h0*Upsilon7
     const double U6; // kappa*U7
+    const double Ua; // eps6*U6+eps7*U7
 
     const double eta;
 
+    const double Q6;
+    const double Q7;
 
     double check_r0( const double r0_guess )
     {
@@ -127,8 +130,12 @@ public:
     d7end( 1000 * ( (1+0.001*d7out) * r_end -1 ) ),
     U7( tan2Omega/rho/(eps6*kappa+eps7) ),
     U6( kappa*U7 ),
+    Ua(eps6*U6+eps7*U7),
 
-    eta( mu7*Theta*f0/U7 )
+    eta( mu7*Theta*f0/U7 ),
+
+    Q6(0),
+    Q7(0)
     {
         std::cerr << "Theta = " << Theta << std::endl;
         std::cerr << "sigma = " << sigma << std::endl;
@@ -152,15 +159,16 @@ public:
         std::cerr << "r_end = " << r_end << " => d7end=" << d7end << "/d7out=" << d7out << std::endl;
         std::cerr << "U7    = " << U7 << std::endl;
         std::cerr << "U6    = " << U6 << std::endl;
+        std::cerr << "Ua    = " << Ua << std::endl;
+
         std::cerr << "eta   = " << eta   << std::endl;
-        
+
     }
 
 
 
     void Compute( array<double> &dY, double, const array<double> &Y )
     {
-#if 0
         const double ac = Y[I_AC];
         const double b6 = Y[I_B6];
         const double b7 = Y[I_B7];
@@ -175,7 +183,7 @@ public:
         dY[I_AC] = 1.0 - ac * (1.0 + h * Ua ) + aa * (eps6*QB6+eps7*QB7);
         dY[I_B6] = mu6*(Theta-b6) + eta * ( ach * U6 - aa * QB6);
         dY[I_B7] = mu7*(Theta-b7) + eta * ( ach * U7 - aa * QB7);
-#endif
+
     }
 
     double computeDelta( const array<double> &Y )
@@ -228,8 +236,7 @@ Y_PROGRAM_START()
     LiSim       Li(vm);
     ODEquation  diffeq( &Li, & LiSim::Compute );
 
-    return 0;
-    
+
 
     const double lt_min = -6;
     double       lt_max =  8;
@@ -262,6 +269,7 @@ Y_PROGRAM_START()
         std::cerr << "r0=" << r0 << " / " << Li.r0 << std::endl;
     }
 
+    return 0;
 
     double t0   = 0;
     double ctrl = exp(lt_min)/10;

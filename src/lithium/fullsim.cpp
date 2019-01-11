@@ -125,7 +125,7 @@ public:
     _INI(phi6),
     cos2phi6( square_of(cos(phi6)) ),
 
-    f0( rho * cos2Omega * cos2phi7 / xs7 ),
+    f0( xs7/(rho * cos2Omega * cos2phi7) ),
     kappa( (1+(1-r0*sigma)/f0)/r0 ),
 
     kappa_over_sigma( kappa/sigma ),
@@ -149,7 +149,7 @@ public:
         std::cerr << "Theta = " << Theta << std::endl;
         std::cerr << "sigma = " << sigma << std::endl;
         std::cerr << "mu7   = " << mu7   << std::endl;
-        std::cerr << "my6   = " << mu6   << std::endl;
+        std::cerr << "mu6   = " << mu6   << std::endl;
         std::cerr << "d7out = " << d7out << std::endl;
         std::cerr << "eps6  = " << eps6  << std::endl;
         std::cerr << "eps7  = " << eps7  << std::endl;
@@ -283,8 +283,7 @@ Y_PROGRAM_START()
         std::cerr << "dY_end=" << dY << std::endl;
     }
 
-    return 0;
-
+    
     Li.setup(Y);
     {
         ios::ocstream::overwrite("output.dat");

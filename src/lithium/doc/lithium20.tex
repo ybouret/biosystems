@@ -398,6 +398,7 @@ We define
 \end{equation}
 so that
 \begin{equation}
+\boxed{
 \left\lbrace
 \begin{array}{rcl}
 \partial_\tau \beta_x  & = &  \mu_x \left(\Theta -\beta_x \right) + \eta \left[ \hat\alpha \proton \Upsilon_x  -  \left(1-\hat\alpha\right) Q_x\beta_x \right] \\
@@ -406,11 +407,12 @@ so that
 		\hat\alpha \left\lbrack 1+ \proton \left(\sum_x \epsilon_x \Upsilon_x \right)\right] + (1-\hat\alpha) \left\lbrack {\sum_x  \epsilon_x Q_x \beta_x }  \right\rbrack \\
 \end{array}
 \right.
+}
 \end{equation}
 
 \section{Specific Values}
 \subsection{Short times}
-Since $\hat\alpha\to1$,
+Since $\hat\alpha\to1$, we get the expressions
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -419,7 +421,7 @@ Since $\hat\alpha\to1$,
 \end{array}
 \right.
 \end{equation}
-so that
+so that the initial ratio
 \begin{equation}
 	\label{eq:r0}
 	r_0 = \dfrac{\beta_{7,0}}{\beta_{6,0}} = \dfrac{1+10^{-3}\deltaLi_0}{1+10^{-3}\deltaLiOut}
@@ -448,19 +450,20 @@ We get the system of equations
 \text{parameters} : k_h, \mu_6, \mu_7, \Theta, \epsilon_6, \epsilon_7, Q_6, Q_7, \eta, \Upsilon_6, \Upsilon_7, h_0, h_\infty (13)
 \end{equation}
 
-\begin{itemize}
-	\item We fix $r_0$ from the initial $\deltaLi_0$
-	\item We fix $r_\infty$ from the final $\deltaLi_\infty$
-	\item We fix $\epsilon_6$ and $\epsilon_7$ from the initial composition
-	\item We set $\Theta$ from the $GHK$ equation
-	$$
-		\Theta = e^{ -\frac{FV_m}{RT} },\;\;V_m\simeq -40\text{mV}
-	$$
-	\item We fix $h_0$ and $h_\infty$, which shall depend and the initial condition and $\LiAllOut$.
-	\item and we have three steady state relations...
-\end{itemize}
+%\begin{itemize}
+%	\item We fix $r_0$ from the initial $\deltaLi_0$
+%	\item We fix $r_\infty$ from the final $\deltaLi_\infty$
+%	\item We fix $\epsilon_6$ and $\epsilon_7$ from the initial composition
+%	\item We set $\Theta$ from the $GHK$ equation
+%	$$
+%		\Theta = e^{ -\frac{FV_m}{RT} },\;\;V_m\simeq -40\text{mV}
+%	$$
+%	\item We fix $h_0$ and $h_\infty$, which shall depend and the initial condition and $\LiAllOut$.
+%	\item and we have three steady state relations...
+%\end{itemize}
 
-\subsection{Choosing Parameters}
+\subsection{Constraints on parameters}
+
 
 \begin{equation}
 \left\lbrace
@@ -481,17 +484,22 @@ We get the system of equations
 \end{equation}
 
 \begin{itemize}
-\item We choose $\mu_7$ so that $\mu_6=\sigma\mu_7$, $\Theta$ from the electroosmotic gradient
+\item We choose $\mu_7$ so that $\mu_6=\sigma\mu_7$, where $\sigma$ is the diffusive ratio
+	\begin{equation}
+		\sigma     \simeq 1.00229 
+	\end{equation}
+	
+\item We choose $\Theta$ from the electroosmotic gradient, 
+\begin{equation}
+	\Theta    \simeq   e^{\frac{-F V_m}{RT} } \simeq 4.47
+\end{equation}
+
 \item Since we must satisfy \eqref{eq:r0},
 \begin{equation}
 	r_0 = \dfrac{\mu_7\Theta+\eta h_0 \Upsilon_7}{\mu_6\Theta+\eta h_0 \Upsilon_6}
 \end{equation}
 Without catalytic process, $r_0$ cannot be lower than $\dfrac{1}{\sigma}$,
-%the catalytic ratio is
-%\begin{equation}
-%	\eta = \Theta\dfrac{\mu_7-r_0\mu_6}{r_0 h_0 \Upsilon_6-h_0\Upsilon_7} 
-%	= \dfrac{\Theta\mu_7}{h_0\Upsilon_7} \underbrace{\dfrac{1-\sigma r_0}{r_0\kappa-1}}_{f_0}
-%\end{equation}
+
 
 \underline{The catalytic process is observed if}
 \begin{equation}
@@ -499,13 +507,12 @@ Without catalytic process, $r_0$ cannot be lower than $\dfrac{1}{\sigma}$,
 \left\lbrace
 \begin{array}{rcl}
 	r_0 & = & \dfrac{1+10^{-3}\deltaLi_0}{1+10^{-3}\deltaLiOut} \leq \dfrac{1}{\sigma} = 0.99772\\
-	%    & \Leftrightarrow & \Upsilon_6 \geq \sigma \Upsilon_7\\
 \end{array}
 \right.
 }
 \end{equation}
-%which is quite normal, the intake speedup of $\spLi{6}$ must be itself greater than its leakage speedup!
-We define
+\item 
+We define the catalytic speedup
 \begin{equation}
 	\Upsilon_6  = \kappa \Upsilon_7
 \end{equation}
@@ -532,7 +539,7 @@ which are the conditions arising from a catalytic speedup...
 \end{array}
 \right.
 \end{equation}
-So that
+So that we define some non linearity coefficients
 \begin{equation}
 	\beta_x = \Theta + \eta \dfrac{h_\infty\Upsilon_x\cos^2\Omega}{\mu_x} \cos^2 \varphi_x,\;\;Q_x\to0\text{ when }\varphi_x\to0
 \end{equation}
@@ -651,19 +658,25 @@ Then
 %		$$
 %			\tan^2\Omega = h_\infty \Upsilon_7 \left[\epsilon\kappa+(1-\epsilon)\right]
 %		$$
-
+	
+	\item We choose some non-linearity coefficients:
+	\begin{itemize}
+	
 	\item We choose a linear level $\cos^2 \varphi_7$
 	
-	\item We choose a linear level $\cos^2 \varphi_6$, see below
+	\item We choose a linear level $\cos^2 \varphi_6$
+	
+	\end{itemize}	
+	WARNING: since either of those values will change $\hat\alpha\infty$, this means that both $Q_x$ will be affected!
 
-	\end{itemize}
+\end{itemize}
 
 \subsection{Parameters to compute}
 
 \begin{itemize}
 \item We deduce the factor
 \begin{equation}
-f_0  = \dfrac{\rho_\infty \cos^2\Omega \cos^2\varphi_7}{\tan^2 \gamma_7}
+f_0  = \dfrac{\tan^2 \gamma_7}{\rho_\infty \cos^2\Omega \cos^2\varphi_7}
 \end{equation}
 
 \item We compute $\kappa$ since $f_0=\dfrac{1-r_0\sigma}{\kappa r_0-1}$
@@ -725,52 +738,10 @@ $$
 
 \item We compute
 $$
-	Q_x = \dfrac{\rho_\infty h_0 \Upsilon_7}{(1-\hat\alpha_\infty)\beta_x^\infty} \left[ \right]
+	Q_x = ... %\dfrac{\rho_\infty h_0 \Upsilon_7}{(1-\hat\alpha_\infty)\beta_x^\infty} \left[ \right]
 $$
 
-\end{itemize}
-
-\subsection{older}
-
-\color{blue}
-
-\begin{itemize}
-\item We choose $\sigma$, $\epsilon$ and $\Theta$ from physical values
-\item We choose $\mu_7$ (\textbf{parameter})
-\item We choose $\rho_\infty=h_\infty/h_0$ (from the experiments, it would depends on $\LiAllOut$, \textbf{heuristic})
-\item We choose $r_0<1/\sigma$  (from the experiments)
-\item We choose $\kappa>1/r_0>\sigma$ (\textbf{parameter})
-\item We choose $\cos^2\Omega$ (\textbf{parameter}), when $\Omega=0$ means no intake
-\item We compute 
-$$
-	h_0\Upsilon_7 = \dfrac{1}{\rho_\infty}\left(\dfrac{1}{\cos^2\Omega}-1\right)\dfrac{1}{\epsilon\kappa+(1-\epsilon)}
-	= \dfrac{1}{\epsilon\kappa+(1-\epsilon)} \dfrac{\tan^2\Omega}{\rho_\infty}
-$$
-\item We compute
-$$
-	f_0 = \dfrac{1-r_0\sigma}{\kappa r_0-1}
-$$
-\item We compute/choose
-$$
-	\beta_7^\infty = \Theta \left[ 1 + f_0 \rho_\infty \cos^2\Omega \cos^2 B_7 \right]
-$$
-
-$$	
-	\beta_6^\infty = \Theta \left[ 1 + f_0 \dfrac{\kappa}{\sigma} \rho_\infty \cos^2\Omega \cos^2 B_6 \right]
-$$
-\begin{itemize}
-\item
-We have $\kappa/\sigma>1$, but we check that we can adjust $\cos^2 B_6$ to retrieve, for example $\beta_6^\infty=\beta_7^\infty$, which imposes
-$Q_6>Q_7$, which is expected!
-\item $\kappa$ can be adjusted to have the desired amplitude on $\beta_7^\infty$
-\item We have
-$$
-	r_\infty = \dfrac{\beta_7^\infty}{\beta_6^\infty} = \dfrac{ 1 + f_0 \rho_\infty \cos^2\Omega \cos^2 B_7}{1 + f_0 \dfrac{\kappa}{\sigma} \rho_\infty \cos^2\Omega \cos^2 B_6}
-$$
-so that, without second order kinetics, we would always have a fixed ratio $<1$ (a.k.a $\deltaLi_\infty<\deltaLiOut$)
-\end{itemize}
 \end{itemize}
 
 \end{document}
-
 

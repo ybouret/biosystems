@@ -52,11 +52,22 @@ public:
     const double phi7;
     const double cos2phi7;
 
+    const double phi6;
+    const double cos2phi6;
+
     const double f0;
     const double kappa;
 
+    const double kappa_over_sigma;
+    const double xs6;
+    const double beta6;
+    const double r_end;
+    const double d7end;
+
     const double U7; // h0*Upsilon7
     const double U6; // kappa*U7
+
+    const double eta;
 
 
     double check_r0( const double r0_guess )
@@ -103,11 +114,21 @@ public:
     _INI(phi7),
     cos2phi7( square_of(cos(phi7)) ),
 
+    _INI(phi6),
+    cos2phi6( square_of(cos(phi6)) ),
+
     f0( rho * cos2Omega * cos2phi7 / xs7 ),
     kappa( (1+(1-r0*sigma)/f0)/r0 ),
 
+    kappa_over_sigma( kappa/sigma ),
+    xs6( kappa_over_sigma * cos2phi6/cos2phi7 * xs7 ),
+    beta6( Theta * (1+xs6) ),
+    r_end( beta7/beta6 ),
+    d7end( 1000 * ( (1+0.001*d7out) * r_end -1 ) ),
     U7( tan2Omega/rho/(eps6*kappa+eps7) ),
-    U6( kappa*U7 )
+    U6( kappa*U7 ),
+
+    eta( mu7*Theta*f0/U7 )
     {
         std::cerr << "Theta = " << Theta << std::endl;
         std::cerr << "sigma = " << sigma << std::endl;
@@ -121,16 +142,18 @@ public:
         std::cerr << "rho   = " << rho   << std::endl;
         std::cerr << "beta7 = " << beta7 << ", xs7=" << xs7 << std::endl;
         std::cerr << "Omega = " << Omega << ", cos2=" << cos2Omega << std::endl;
-        std::cerr << "f0    = " << f0    << std::endl;
-        std::cerr << "kappa = " << kappa << std::endl;
+        std::cerr << "phi7  = " << phi7  << ", cos2=" << cos2phi7 << std::endl;
+        std::cerr << "phi6  = " << phi6  << ", cos2=" << cos2phi6 << std::endl;
 
+        std::cerr << "f0    = " << f0    << std::endl;
+        std::cerr << "kappa = " << kappa << ", kappa/sigma=" << kappa/sigma << std::endl;
+        std::cerr << "xs6   = " << xs6 << " (xs7=" << xs7 << ")" << std::endl;
+        std::cerr << "beta6 = " << beta6 << std::endl;
+        std::cerr << "r_end = " << r_end << " => d7end=" << d7end << "/d7out=" << d7out << std::endl;
         std::cerr << "U7    = " << U7 << std::endl;
         std::cerr << "U6    = " << U6 << std::endl;
-
-#if 0
-
         std::cerr << "eta   = " << eta   << std::endl;
-#endif
+        
     }
 
 

@@ -29,5 +29,7 @@ beta7=6;
 Omega=0.1;
 phi7 =0.1;
 
+phi6 = 0.15;
+
 -- leak scaling
 mu7 = 0.3;

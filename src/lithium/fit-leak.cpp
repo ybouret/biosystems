@@ -8,9 +8,9 @@
 using namespace upsylon;
 using namespace math;
 
-typedef Fit::Sample<double>  Sample;
-typedef Fit::Samples<double> Samples;
-typedef vector<double>       Vector;
+typedef Fit::Sample<double>     Sample;
+typedef Fit::Samples<double>    Samples;
+typedef vector<double>          Vector;
 typedef shared_ptr< Vector  >   VectorPtr;
 
 Y_PROGRAM_START()
@@ -75,6 +75,7 @@ Y_PROGRAM_START()
         // new sample
         samples.add(*pX, *pY, *pZ);
     }
+
     std::cerr << "-- Preparing fit functions" << std::endl;
     for(size_t i=1;i<=ns;++i)
     {

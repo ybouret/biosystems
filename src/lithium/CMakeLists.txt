@@ -1,9 +1,4 @@
 
-ADD_EXECUTABLE(linsim linsim.cpp fcnli.hpp linsim.lua)
-TARGET_LINK_Y(linsim lua++ m)
-INSTALL( TARGETS linsim RUNTIME DESTINATION bin )
-
-
 
 ADD_EXECUTABLE(fit-hall fit-hall.cpp)
 TARGET_LINK_Y(fit-hall m)
@@ -14,7 +9,17 @@ ADD_EXECUTABLE(fullsim fullsim.cpp fcnli.hpp fullsim.lua)
 TARGET_LINK_Y(fullsim lua++ m)
 INSTALL( TARGETS fullsim RUNTIME DESTINATION bin )
 
+ADD_EXECUTABLE(fit-leak fit-leak.cpp)
+TARGET_LINK_Y(fit-leak lua++ m)
+INSTALL( TARGETS fit-leak RUNTIME DESTINATION bin )
+
 IF(FALSE)
+
+
+ADD_EXECUTABLE(linsim linsim.cpp fcnli.hpp linsim.lua)
+TARGET_LINK_Y(linsim lua++ m)
+INSTALL( TARGETS linsim RUNTIME DESTINATION bin )
+
 
 ADD_EXECUTABLE(li-tot li-tot.cpp)
 TARGET_LINK_Y(li-tot m)

@@ -12,6 +12,47 @@ typedef Fit::Sample<double>     Sample;
 typedef Fit::Samples<double>    Samples;
 typedef vector<double>          Vector;
 typedef shared_ptr< Vector  >   VectorPtr;
+typedef array<double>           Array;
+typedef Fit::Variables          Variables;
+
+
+static const double beta_s = 12.0192;
+static const double d7out  = 14.57;
+static const double eps6   = 1.0/(1.0+beta_s*(1.0+0.001*d7out));
+static const double eps7   = 1.0 - eps6;
+static const double sigma  = 1.0/0.99772;
+
+static  double grow6(const double tau) { return 1.0-exp(-sigma*tau); }
+static  double grow7(const double tau) { return 1.0-exp(tau);        }
+static  double grow(const double tau)  { return eps6 * grow6(tau) + eps7 * grow7(tau); }
+
+class Leak
+{
+public:
+
+    explicit Leak() 
+    {
+    }
+
+    virtual ~Leak() throw()
+    {
+    }
+
+    double Compute(double           t,
+                   const Array     &aorg,
+                   const Variables &vars)
+    {
+        const double Theta = vars(aorg,"Theta");
+        const double k7    = vars(aorg,"k7");
+        const double LiOut = vars(aorg,"Li");
+
+        return LiOut * Theta * grow( k7 * t );
+
+    }
+
+private:
+    Y_DISABLE_COPY_AND_ASSIGN(Leak);
+};
 
 Y_PROGRAM_START()
 {
@@ -23,13 +64,13 @@ Y_PROGRAM_START()
     // finding files parameters
     std::cerr << "-- Parsing Arguments" << std::endl;
     {
-        Lang::MatchString     match( "[:digit:]+" );
+        Lang::MatchString     match_C( "[:digit:]+" );
         vector<Lang::Token>   tokens(4,as_capacity);
 
         for(int i=1;i<argc;++i)
         {
             const string fn = argv[i];
-            if( match(tokens,fn) <= 0 )
+            if( match_C(tokens,fn) <= 0 )
             {
                 throw exception("no concentration found in '%s'", *fn );
             }
@@ -80,8 +121,12 @@ Y_PROGRAM_START()
     for(size_t i=1;i<=ns;++i)
     {
         std::cerr << " |_samples[" << i << "] : #=" << samples[i]->count() << std::endl;
+
+        // individual fit
+
     }
-    
+
+
 
 
 }

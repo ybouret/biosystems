@@ -139,13 +139,33 @@ Y_PROGRAM_START()
     Variables &vars = samples.variables;
     vars << "k7"; //! global k7
 
+    // different Theta
     for(size_t i=1;i<=unique_labels.size();++i)
     {
-        const string th = "Theta_" + unique_labels[i];
-        vars << th;
+        {
+            const string th = "Theta_" + unique_labels[i];
+            vars << th;
+        }
+
+
     }
 
+    // different Li
+    for(size_t i=1;i<=ns;++i)
+    {
+        const string Li = vformat("Li#%u", unsigned(i) );
+        vars << Li;
+    }
+
+
+
     std::cerr << "vars=" << vars << std::endl;
+
+    const size_t nv = vars.size();
+    Vector       aorg(nv,0);
+    Vector       aerr(nv,0);
+    Vector       used(nv,true);
+
 
     for(size_t i=1;i<=ns;++i)
     {
@@ -153,6 +173,16 @@ Y_PROGRAM_START()
 
         Variables &local = samples[i]->variables;
         local("k7", vars["k7"]);
+
+        {
+            const string th = "Theta_" + labels[i];
+            local("Theta",vars[th]);
+        }
+
+        {
+            const string Li = vformat("Li#%u", unsigned(i) );
+            local("Li",vars[Li]);
+        }
 
         std::cerr << "local[" << i << "]=" << local << std::endl;
     }

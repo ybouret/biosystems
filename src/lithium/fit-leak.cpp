@@ -4,6 +4,7 @@
 #include "y/math/io/data-set.hpp"
 #include "y/math/fit/ls.hpp"
 #include "y/ptr/shared.hpp"
+#include "y/sort/unique.hpp"
 
 using namespace upsylon;
 using namespace math;
@@ -58,6 +59,7 @@ Y_PROGRAM_START()
 {
 
     vector<string>    files;
+    vector<string>    labels;
     vector<double>    concs;
     vector<VectorPtr> vectors;
 
@@ -65,6 +67,7 @@ Y_PROGRAM_START()
     std::cerr << "-- Parsing Arguments" << std::endl;
     {
         Lang::MatchString     match_C( "[:digit:]+" );
+        Lang::MatchString     match_L( "_[:word:]+" );
         vector<Lang::Token>   tokens(4,as_capacity);
 
         for(int i=1;i<argc;++i)
@@ -77,12 +80,26 @@ Y_PROGRAM_START()
             const string first_C = tokens.front().to_string();
             std::cerr << " |_found '" << first_C << "'" << std::endl;
 
+            if( match_L(tokens,fn) <= 0 )
+            {
+                throw exception("no acceptable label found in '%s'", *fn );
+            }
+            const string first_L = tokens.front().to_string(1,0);
+            std::cerr << " |_found '" << first_L << "'" << std::endl;
+
             files.push_back( fn );
+            labels.push_back( first_L );
             concs.push_back( string_convert::to<double>(first_C,"concentration") );
         }
     }
 
-    std::cerr << " |_Processing " << files << ", with C=" << concs << std::endl;
+    vector<string> unique_labels( labels );
+    unique(unique_labels);
+
+
+    std::cerr << " |_Processing " << files << std::endl;
+    std::cerr << "  |_with C=" << concs << std::endl;
+    std::cerr << "  |_labels=" << unique_labels << std::endl;
 
     std::cerr << "-- Loading Files and Building Samples" << std::endl;
     const size_t         ns = files.size();
@@ -118,6 +135,13 @@ Y_PROGRAM_START()
     }
 
     std::cerr << "-- Preparing fit functions" << std::endl;
+
+    Variables &vars = samples.variables;
+    vars << "k7"; //! global k7
+
+    std::cerr << "vars=" << vars << std::endl;
+
+
     for(size_t i=1;i<=ns;++i)
     {
         std::cerr << " |_samples[" << i << "] : #=" << samples[i]->count() << std::endl;

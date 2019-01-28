@@ -139,15 +139,22 @@ Y_PROGRAM_START()
     Variables &vars = samples.variables;
     vars << "k7"; //! global k7
 
-    std::cerr << "vars=" << vars << std::endl;
+    for(size_t i=1;i<=unique_labels.size();++i)
+    {
+        const string th = "Theta_" + unique_labels[i];
+        vars << th;
+    }
 
+    std::cerr << "vars=" << vars << std::endl;
 
     for(size_t i=1;i<=ns;++i)
     {
         std::cerr << " |_samples[" << i << "] : #=" << samples[i]->count() << std::endl;
 
-        // individual fit
+        Variables &local = samples[i]->variables;
+        local("k7", vars["k7"]);
 
+        std::cerr << "local[" << i << "]=" << local << std::endl;
     }
 
 

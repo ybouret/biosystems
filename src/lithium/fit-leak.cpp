@@ -24,7 +24,7 @@ static const double eps7   = 1.0 - eps6;
 static const double sigma  = 1.0/0.99772;
 
 static  double grow6(const double tau) { return 1.0-exp(-sigma*tau); }
-static  double grow7(const double tau) { return 1.0-exp(tau);        }
+static  double grow7(const double tau) { return 1.0-exp(-tau);        }
 static  double grow(const double tau)  { return eps6 * grow6(tau) + eps7 * grow7(tau); }
 
 class Leak
@@ -134,12 +134,13 @@ Y_PROGRAM_START()
         samples.add(*pX, *pY, *pZ);
     }
 
-    std::cerr << "-- Preparing fit functions" << std::endl;
+
+    std::cerr << "-- Preparing fit variables" << std::endl;
 
     Variables &vars = samples.variables;
-    vars << "k7"; //! global k7
+    vars << "k7"; // global k7
 
-    // different Theta
+    // different Theta's
     for(size_t i=1;i<=unique_labels.size();++i)
     {
         {
@@ -164,7 +165,7 @@ Y_PROGRAM_START()
     const size_t nv = vars.size();
     Vector       aorg(nv,0);
     Vector       aerr(nv,0);
-    Vector       used(nv,true);
+    vector<bool> used(nv,false);
 
 
     for(size_t i=1;i<=ns;++i)
@@ -177,16 +178,54 @@ Y_PROGRAM_START()
         {
             const string th = "Theta_" + labels[i];
             local("Theta",vars[th]);
+            local(aorg,"Theta") = 4.5;
+            local(used,"Theta") = true;
         }
 
         {
             const string Li = vformat("Li#%u", unsigned(i) );
             local("Li",vars[Li]);
+            local(aorg,"Li") = concs[i];
         }
 
-        std::cerr << "local[" << i << "]=" << local << std::endl;
+        std::cerr << "  |_local[" << i << "]=" << local << std::endl;
     }
 
+    vars(aorg,"k7") = 0.01;
+
+    std::cerr << "aorg=" << aorg << std::endl;
+
+
+    // preparing function
+    Leak                                leak;
+    Fit::LeastSquares<double>           LS;
+    Fit::LeastSquares<double>::Function F( &leak, & Leak::Compute );
+
+    vars(used,"k7")=true;
+
+
+    if( !LS.fit(samples, F, aorg, aerr, used) )
+    {
+        throw exception("couldn't fit");
+    }
+    std::cerr << "-- Results: " << std::endl;
+    const double R2 = samples.computeR2();
+    std::cerr << "R2=" << R2 << std::endl;
+
+    vars.display(std::cerr,aorg,aerr);
+
+    for(size_t i=1;i<=ns;++i)
+    {
+        string fitname = vfs::base_name_from(files[i]);
+        vfs::change_extension(fitname, "fit.dat");
+        std::cerr << "Saving [" << fitname << "]" << std::endl;
+        ios::ocstream fp(fitname);
+        const Sample &s = *samples[i];
+        for(size_t i=1;i<=s.X.size();++i)
+        {
+            fp("%.15g %.15g %.15g\n",s.X[i],s.Y[i],s.Yf[i]);
+        }
+    }
 
 
 

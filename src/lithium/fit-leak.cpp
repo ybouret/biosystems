@@ -18,6 +18,7 @@ typedef Fit::VectorsDB<double>  VecDB;
 typedef Fit::Vectors<double>    Vectors;
 
 
+//static const double beta_s = 12.0192;
 
 class Leak
 {

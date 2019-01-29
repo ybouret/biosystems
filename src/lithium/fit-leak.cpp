@@ -36,15 +36,8 @@ public:
                    const Variables &vars)
     {
         const double k      = vars(aorg,"k");
-        const double Theta0 = vars(aorg,"Theta0");
-        const double u2     = square_of(vars(aorg,"u"));
-        const double LiOut  = vars(aorg,"LiOut");
-
-        const double ThLi    = Theta0 * LiOut;
-        const double u2ThLi   = u2 * ThLi;
-        const double u2ThLip1 = 1.0 + u2ThLi;
-
-        return (ThLi/u2ThLip1) * ( 1.0 - exp( -k * u2ThLip1 * t ) );
+        const double A      = vars(aorg,"A");
+        return A*(1.0-exp(-k*t));
     }
 
 
@@ -132,27 +125,12 @@ Y_PROGRAM_START()
     ////////////////////////////////////////////////////////////////////////////
     const size_t ns   = samples.size();
     Variables   &vars = samples.variables;
-    vars << "k";       // common leak rate
-    vars << "Theta0";  // common steady-state GHK level
+    vars << "k";  // common leak rate
 
 
     vector<string> species( labels );
     unique(species);
 
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    //
-    // Building parameters for species
-    //
-    //
-    ////////////////////////////////////////////////////////////////////////////
-    vector<string> u_per_species(species.size(),as_capacity);
-    for(size_t i=1;i<=species.size();++i)
-    {
-        const string u = "u_" + species[i];
-        vars << u;
-        u_per_species.push_back(u);
-    }
 
     ////////////////////////////////////////////////////////////////////////////
     //
@@ -164,8 +142,8 @@ Y_PROGRAM_START()
 
     for(size_t i=1;i<=ns;++i)
     {
-        const string Li = "Li#" + vformat("%u", unsigned(i));
-        vars << Li;
+        const string Ai = "A" + vformat("%u",unsigned(i));
+        vars << Ai;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -190,35 +168,28 @@ Y_PROGRAM_START()
     //
     //
     ////////////////////////////////////////////////////////////////////////////
-
-    vars(aorg,"k")      = 0.001;
-    vars(aorg,"Theta0") = 4.47;
-    for(size_t i=1;i<=species.size();++i)
-    {
-        const string u = "u_" + species[i];
-        vars(used,u) = false;
-    }
+    const double k0 = 0.001;
+    vars(aorg,"k") = k0;
+    vars(used,"k") = true;
 
     for(size_t i=1;i<=ns;++i)
     {
         std::cerr << "-- Building sample#" << i << "=" << files[i] << std::endl;
         Sample    &s     = *samples[i];
         Variables &local = s.variables;
+
+        // link to master coefficient
         local("k",vars);
-        local("Theta0",vars);
-        // setting outside concentration
+
+        // setting amplitudes
         {
-            const string Li = "Li#" + vformat("%u", unsigned(i));
-            local("LiOut", vars[Li]);
-            local(aorg,"LiOut") = concs[i];
-            local(used,"LiOut") = false;
+            const string Ai = "A" + vformat("%u",unsigned(i));
+            local("A",vars[Ai]);
+            local(aorg,"A") = s.slope()/k0;
+            local(used,"A") = true;
         }
 
-        // setting shielding parameters
-        {
-            const string u = "u_" + labels[i];
-            local("u",vars[u]);
-        }
+
         std::cerr << "local=" << local << std::endl;
     }
 
@@ -238,40 +209,9 @@ Y_PROGRAM_START()
 
 
 
-    vars(used,"k") = true;
 
     {
         std::cerr << "== Fit Linear ==" << std::endl;
-        if( !LS.fit(samples, F, aorg, aerr, used) )
-        {
-            throw exception("couldn't fit");
-        }
-        std::cerr << "-- Results: " << std::endl;
-        const double R2 = samples.computeR2();
-        std::cerr << "R2=" << R2 << std::endl;
-
-        vars.display(std::cerr,aorg,aerr);
-    }
-
-    vars(used,u_per_species[1]) = true; vars(aorg,u_per_species[1]) = 0.01;
-    vars(used,u_per_species[2]) = true; vars(aorg,u_per_species[2]) = 0.01;
-
-    {
-        std::cerr << "== Fit Linear 1 ==" << std::endl;
-        if( !LS.fit(samples, F, aorg, aerr, used) )
-        {
-            throw exception("couldn't fit");
-        }
-        std::cerr << "-- Results: " << std::endl;
-        const double R2 = samples.computeR2();
-        std::cerr << "R2=" << R2 << std::endl;
-
-        vars.display(std::cerr,aorg,aerr);
-    }
-
-    vars(used,"Theta0") = true;
-    {
-        std::cerr << "== Fit Linear 2 ==" << std::endl;
         if( !LS.fit(samples, F, aorg, aerr, used) )
         {
             throw exception("couldn't fit");

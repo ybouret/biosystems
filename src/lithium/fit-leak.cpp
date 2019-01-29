@@ -1,10 +1,10 @@
 #include "y/program.hpp"
 #include "y/lang/pattern/matching.hpp"
-#include "y/sequence/vector.hpp"
 #include "y/math/io/data-set.hpp"
 #include "y/math/fit/ls.hpp"
 #include "y/ptr/shared.hpp"
 #include "y/sort/unique.hpp"
+#include "y/math/fit/vectors.hpp"
 
 using namespace upsylon;
 using namespace math;
@@ -12,10 +12,10 @@ using namespace math;
 typedef Fit::Sample<double>     Sample;
 typedef Fit::Samples<double>    Samples;
 typedef vector<double>          Vector;
-typedef shared_ptr< Vector  >   VectorPtr;
 typedef array<double>           Array;
 typedef Fit::Variables          Variables;
-
+typedef Fit::VectorsDB<double>  VecDB;
+typedef Fit::Vectors<double>    Vectors;
 
 #if 0
 static const double beta_s = 12.0192;
@@ -94,12 +94,21 @@ private:
 Y_PROGRAM_START()
 {
 
-    vector<string>    files;
-    vector<string>    labels;
-    vector<double>    concs;
-    vector<VectorPtr> vectors;
+    vector<string>         files;
+    vector<string>         labels;
+    vector<double>         concs;
+    VecDB                  vdb( argc );
+    Samples                samples(16,argc);
 
-    // finding files parameters
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // Processing and Loading files
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+
     std::cerr << "-- Parsing Arguments" << std::endl;
     {
         Lang::MatchString     match_C( "[:digit:]+" );
@@ -108,7 +117,11 @@ Y_PROGRAM_START()
 
         for(int i=1;i<argc;++i)
         {
+            ////////////////////////////////////////////////////////////////////
+            // Parsing file names
+            ////////////////////////////////////////////////////////////////////
             const string fn = argv[i];
+            std::cerr << " |_using '" << fn << "'" << std::endl;
             if( match_C(tokens,fn) <= 0 )
             {
                 throw exception("no concentration found in '%s'", *fn );
@@ -126,8 +139,39 @@ Y_PROGRAM_START()
             files.push_back( fn );
             labels.push_back( first_L );
             concs.push_back( string_convert::to<double>(first_C,"concentration") );
+
+            ////////////////////////////////////////////////////////////////////
+            // Loading data and making a sample out of it
+            ////////////////////////////////////////////////////////////////////
+            std::cerr << " |_loading '" << fn << "'" << std::endl;
+            {
+                Vectors &vecs = vdb.create(fn);
+                {
+                    data_set<double> ds;
+                    ds.use(1, vecs.X);
+                    ds.use(2, vecs.Y);
+                    ios::icstream fp( fn);
+                    ds.load(fp);
+                }
+                (void) vecs.add_to(samples);
+            }
+            std::cerr << "  \\_done" << std::endl;
         }
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // Building global parameters
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+
+    
+
+
+#if 0
 
     vector<string> unique_labels( labels );
     unique(unique_labels);
@@ -145,7 +189,6 @@ Y_PROGRAM_START()
     }
 
     vectors.ensure(3*ns);
-    Samples samples(4,ns);
     for(size_t i=1;i<=ns;++i)
     {
         // prepare X/Y
@@ -314,7 +357,7 @@ Y_PROGRAM_START()
         }
     }
 
-
+#endif
 
 }
 Y_PROGRAM_END()

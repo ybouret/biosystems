@@ -78,7 +78,7 @@ public:
 
 
 
-    double check_r0( const double r0_guess )
+    inline double check_r0( const double r0_guess )
     {
         std::cerr << "r0 guess=" << r0_guess << ", sigma=" << sigma << std::endl;
         if(r0_guess>=1/sigma)

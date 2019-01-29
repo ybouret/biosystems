@@ -17,28 +17,6 @@ typedef Fit::Variables          Variables;
 typedef Fit::VectorsDB<double>  VecDB;
 typedef Fit::Vectors<double>    Vectors;
 
-#if 0
-static const double beta_s = 12.0192;
-static const double d7out  = 14.57;
-static const double eps6   = 1.0/(1.0+beta_s*(1.0+0.001*d7out));
-#else
-static const double eps6 = 0;
-#endif
-
-static const double eps7   = 1.0 - eps6;
-static const double sigma  = 1.0/0.99772;
-
-static  double grow6(const double tau) { return 1.0-exp(-sigma*tau); }
-static  double grow7(const double tau) { return 1.0-exp(-tau);        }
-static  double grow( const double tau) { return eps6 * grow6(tau) + eps7 * grow7(tau); }
-
-static double grow6_linear(const double tau) { return sigma*tau; }
-static double grow7_linear(const double tau) { return       tau; }
-static double grow_linear(const double tau)  { return eps6 * grow6_linear(tau) + eps7 * grow7_linear(tau); }
-
-static double grow6_sq(const double tau) { return sigma*tau-square_of(sigma*tau)/2; }
-static double grow7_sq(const double tau) { return       tau-square_of(tau)/2; }
-static double grow_sq(const double tau)  { return eps6 * grow6_sq(tau) + eps7 * grow7_sq(tau); }
 
 
 class Leak
@@ -57,34 +35,19 @@ public:
                    const Array     &aorg,
                    const Variables &vars)
     {
-        const double Theta = vars(aorg,"Theta");
-        const double k7    = vars(aorg,"k7");
-        const double LiOut = vars(aorg,"Li");
+        const double k      = vars(aorg,"k");
+        const double Theta0 = vars(aorg,"Theta0");
+        const double u2     = square_of(vars(aorg,"u"));
+        const double LiOut  = vars(aorg,"LiOut");
 
-        return LiOut * Theta * grow( k7 * t );
+        const double ThLi    = Theta0 * LiOut;
+        const double u2ThLi   = u2 * ThLi;
+        const double u2ThLip1 = 1.0 + u2ThLi;
+
+        return (ThLi/u2ThLip1) * ( 1.0 - exp( -k * u2ThLip1 * t ) );
     }
 
-    double ComputeLinear(double           t,
-                         const Array     &aorg,
-                         const Variables &vars)
-    {
-        const double Theta = vars(aorg,"Theta");
-        const double k7    = vars(aorg,"k7");
-        const double LiOut = vars(aorg,"Li");
 
-        return LiOut * Theta * grow_linear( k7 * t );
-    }
-
-    double ComputeSq(double           t,
-                     const Array     &aorg,
-                     const Variables &vars)
-    {
-        const double Theta = vars(aorg,"Theta");
-        const double k7    = vars(aorg,"k7");
-        const double LiOut = vars(aorg,"Li");
-
-        return LiOut * Theta * grow_sq( k7 * t );
-    }
 
 
 private:
@@ -167,88 +130,51 @@ Y_PROGRAM_START()
     //
     //
     ////////////////////////////////////////////////////////////////////////////
-
-    
-
-
-#if 0
-
-    vector<string> unique_labels( labels );
-    unique(unique_labels);
+    const size_t ns   = samples.size();
+    Variables   &vars = samples.variables;
+    vars << "k";       // common leak rate
+    vars << "Theta0";  // common steady-state GHK level
 
 
-    std::cerr << " |_Processing " << files << std::endl;
-    std::cerr << "  |_with C=" << concs << std::endl;
-    std::cerr << "  |_labels=" << unique_labels << std::endl;
+    vector<string> species( labels );
+    unique(species);
 
-    std::cerr << "-- Loading Files and Building Samples" << std::endl;
-    const size_t         ns = files.size();
-    if(ns<=0)
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // Building parameters for species
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+    vector<string> u_per_species(species.size(),as_capacity);
+    for(size_t i=1;i<=species.size();++i)
     {
-        return 0;
+        const string u = "u_" + species[i];
+        vars << u;
+        u_per_species.push_back(u);
     }
 
-    vectors.ensure(3*ns);
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // Building parameters for samples
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+
     for(size_t i=1;i<=ns;++i)
     {
-        // prepare X/Y
-        VectorPtr pX = new Vector();
-        VectorPtr pY = new Vector();
-        data_set<double> ds;
-        ds.use(1, *pX);
-        ds.use(2, *pY);
-        {
-            ios::icstream fp( files[i] );
-            ds.load(fp);
-        }
-        // prepare Z with same size
-        const size_t nd = pX->size();
-        VectorPtr pZ = new Vector(nd);
-        vectors.push_back(pX);
-        vectors.push_back(pY);
-        vectors.push_back(pZ);
-        std::cerr << " |_Loaded '" << files[i] << "', #=" << nd << std::endl;
-
-        // new sample
-        samples.add(*pX, *pY, *pZ);
-    }
-
-
-    std::cerr << "-- Preparing fit variables" << std::endl;
-
-    Variables &vars = samples.variables;
-    vars << "k7"; // global k7
-
-    bool useSameTheta      = false;
-    bool useDifferentTheta = !useSameTheta;
-
-    // different Theta's
-    if(useSameTheta)
-    {
-        for(size_t i=1;i<=unique_labels.size();++i)
-        {
-            {
-                const string th = "Theta_" + unique_labels[i];
-            vars << th;
-            }
-        }
-    }
-
-
-    // different Li
-    for(size_t i=1;i<=ns;++i)
-    {
-        const string Li = vformat("Li#%u", unsigned(i) );
+        const string Li = "Li#" + vformat("%u", unsigned(i));
         vars << Li;
-        if(useDifferentTheta)
-        {
-            const string Th = vformat("Theta#%u",unsigned(i));
-            vars << Th;
-        }
     }
 
-
-
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // Allocating parameters
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
     std::cerr << "vars=" << vars << std::endl;
 
     const size_t nv = vars.size();
@@ -257,50 +183,65 @@ Y_PROGRAM_START()
     vector<bool> used(nv,false);
 
 
-    for(size_t i=1;i<=ns;++i)
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // initializing
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+
+    vars(aorg,"k")      = 0.001;
+    vars(aorg,"Theta0") = 4.47;
+    for(size_t i=1;i<=species.size();++i)
     {
-        std::cerr << " |_samples[" << i << "] : #=" << samples[i]->count() << std::endl;
-
-        Variables &local = samples[i]->variables;
-        local("k7", vars["k7"]);
-
-        if(useSameTheta)
-        {
-            const string Th = "Theta_" + labels[i];
-            local("Theta",vars[Th]);
-            local(aorg,"Theta") = i;
-        }
-        else
-        {
-            const string Th = vformat("Theta#%u",unsigned(i));
-            local("Theta",vars[Th]);
-            local(aorg,"Theta") = i;
-        }
-        local(used,"Theta") = true;
-
-        {
-            const string Li = vformat("Li#%u", unsigned(i) );
-            local("Li",vars[Li]);
-            local(aorg,"Li") = concs[i];
-        }
-
-        std::cerr << "  |_local[" << i << "]=" << local << std::endl;
+        const string u = "u_" + species[i];
+        vars(used,u) = false;
     }
 
-    vars(aorg,"k7") = 0.002;
+    for(size_t i=1;i<=ns;++i)
+    {
+        std::cerr << "-- Building sample#" << i << "=" << files[i] << std::endl;
+        Sample    &s     = *samples[i];
+        Variables &local = s.variables;
+        local("k",vars);
+        local("Theta0",vars);
+        // setting outside concentration
+        {
+            const string Li = "Li#" + vformat("%u", unsigned(i));
+            local("LiOut", vars[Li]);
+            local(aorg,"LiOut") = concs[i];
+            local(used,"LiOut") = false;
+        }
 
-    std::cerr << "aorg=" << aorg << std::endl;
+        // setting shielding parameters
+        {
+            const string u = "u_" + labels[i];
+            local("u",vars[u]);
+        }
+        std::cerr << "local=" << local << std::endl;
+    }
+
+    std::cerr << std::endl;
+    vars.display(std::cerr,aorg,"\t(set) ");
+    std::cerr << std::endl;
+    vars.display(std::cerr,used, "\t(use) ");
 
 
     // preparing function
     Leak                                leak;
     Fit::LeastSquares<double>           LS;
 
-    vars(used,"k7")=true;
+    LS.verbose = true;
+
+    Fit::LeastSquares<double>::Function F( &leak, & Leak::Compute );
+
+
+
+    vars(used,"k") = true;
 
     {
         std::cerr << "== Fit Linear ==" << std::endl;
-        Fit::LeastSquares<double>::Function F( &leak, & Leak::ComputeLinear );
         if( !LS.fit(samples, F, aorg, aerr, used) )
         {
             throw exception("couldn't fit");
@@ -311,10 +252,12 @@ Y_PROGRAM_START()
 
         vars.display(std::cerr,aorg,aerr);
     }
+
+    vars(used,u_per_species[1]) = true; vars(aorg,u_per_species[1]) = 0.01;
+    vars(used,u_per_species[2]) = true; vars(aorg,u_per_species[2]) = 0.01;
 
     {
-        std::cerr << "== Fit Quadratic ==" << std::endl;
-        Fit::LeastSquares<double>::Function F( &leak, & Leak::ComputeSq );
+        std::cerr << "== Fit Linear 1 ==" << std::endl;
         if( !LS.fit(samples, F, aorg, aerr, used) )
         {
             throw exception("couldn't fit");
@@ -326,9 +269,9 @@ Y_PROGRAM_START()
         vars.display(std::cerr,aorg,aerr);
     }
 
+    vars(used,"Theta0") = true;
     {
-        std::cerr << "== Fit Full ==" << std::endl;
-        Fit::LeastSquares<double>::Function F( &leak, & Leak::Compute );
+        std::cerr << "== Fit Linear 2 ==" << std::endl;
         if( !LS.fit(samples, F, aorg, aerr, used) )
         {
             throw exception("couldn't fit");
@@ -339,7 +282,6 @@ Y_PROGRAM_START()
 
         vars.display(std::cerr,aorg,aerr);
     }
-
 
 
 
@@ -348,7 +290,7 @@ Y_PROGRAM_START()
         std::cerr << "  |_Saving from " << files[i] << std::endl;
         string fitname = vfs::base_name_from(files[i]);
         vfs::change_extension(fitname, "fit.dat");
-        std::cerr << "   |_Saving [" << fitname << "]" << std::endl;
+        std::cerr << "  |_Saving [" << fitname << "]" << std::endl;
         ios::ocstream fp(fitname);
         const Sample &s = *samples[i];
         for(size_t i=1;i<=s.X.size();++i)
@@ -357,7 +299,6 @@ Y_PROGRAM_START()
         }
     }
 
-#endif
 
 }
 Y_PROGRAM_END()

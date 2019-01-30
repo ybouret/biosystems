@@ -20,6 +20,9 @@ SET(to_remove ${to_remove} ${tmp})
 ENDIF()
 
 #specific stuff
+MESSAGE( STATUS "collecting gnuplot fit.log" )
+FILE(GLOB_RECURSE tmp fit.log)
+SET(to_remove ${to_remove} ${tmp})
 
 FOREACH(item IN LISTS to_remove)
 	IF(EXISTS "${item}")

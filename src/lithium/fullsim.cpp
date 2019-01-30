@@ -243,6 +243,13 @@ namespace
 
 Y_PROGRAM_START()
 {
+
+    {
+        ios::ocstream::overwrite("output.dat");
+        ios::ocstream::overwrite("li.dat");
+        ios::ocstream::echo("li.dat", "#lt deltaLi Li/LiOut time\n");
+    }
+
     ODE_Driver driver;
     driver.eps = 1e-5;
     Lua::VM vm = new Lua::State;
@@ -253,8 +260,6 @@ Y_PROGRAM_START()
 
     LiSim       Li(vm);
     ODEquation  diffeq( &Li, & LiSim::Compute );
-
-
 
     const double lt_min = -6;
     double       lt_max =  8;
@@ -285,10 +290,7 @@ Y_PROGRAM_START()
 
     
     Li.setup(Y);
-    {
-        ios::ocstream::overwrite("output.dat");
-        ios::ocstream::overwrite("li.dat");
-    }
+
 
     {
         Li.Compute(dY,0,Y);
@@ -297,8 +299,6 @@ Y_PROGRAM_START()
         const double r0 = dY[ Li.I_B7 ]/ dY[Li.I_B6];
         std::cerr << "r0=" << r0 << " / " << Li.r0 << std::endl;
     }
-
-    //return 0;
 
     double t0   = 0;
     double ctrl = exp(lt_min)/10;
@@ -317,7 +317,7 @@ Y_PROGRAM_START()
             }
             {
                 ios::ocstream fp("li.dat",true);
-                fp("%g %g %g\n",lt1,Li.computeDelta(Y),Li.computeLiAllRatio(Y));
+                fp("%.15g %.15g %.15g %.15g\n",lt1,Li.computeDelta(Y),Li.computeLiAllRatio(Y),exp(lt1));
             }
         }
         t0 = t1;

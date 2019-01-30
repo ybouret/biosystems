@@ -32,4 +32,4 @@ phi7  = 0.1;
 phi6  = 0.15;
 
 -- leak scaling
-mu7 = 0.1;
+mu7 = 0.01;

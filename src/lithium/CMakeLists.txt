@@ -13,6 +13,11 @@ ADD_EXECUTABLE(fit-leak fit-leak.cpp)
 TARGET_LINK_Y(fit-leak lua++ m)
 INSTALL( TARGETS fit-leak RUNTIME DESTINATION bin )
 
+
+ADD_EXECUTABLE(fit-ph fit-ph.cpp)
+TARGET_LINK_Y(fit-ph m)
+INSTALL( TARGETS fit-ph RUNTIME DESTINATION bin )
+
 IF(FALSE)
 
 

@@ -29,6 +29,10 @@ public:
     const size_t N;
     double       t0;
     double       pH_asymp;
+    Vector       H;
+    double       Hmin;
+    double       Hmax;
+    double       Hend;
 
     inline const string & key() const throw() { return Li; }
 
@@ -39,7 +43,11 @@ public:
     pH(),
     N(0),
     t0(0),
-    pH_asymp(0)
+    pH_asymp(0),
+    H(),
+    Hmin(0),
+    Hmax(0),
+    Hend(0)
     {
         std::cerr << "|_Record: [" << Li << "] from '" << file_name << "'" << std::endl;
 
@@ -61,8 +69,36 @@ public:
             ds.load(fp);
         }
         (size_t&)N = t.size();
+
+        // computing H and metrics
+        H.make(N,0);
+        t0 = t[1];
+        Hmin = Hmax = H[1] = pow(10,-pH[1]);
+        Hend = pow(10,-pH_asymp);
+        for(size_t i=2;i<=N;++i)
+        {
+            const double h = (H[i]=pow(10.0,-pH[i]));
+            if(h>Hmax)
+            {
+                t0=t[i];
+                Hmax=h;
+            }
+            else if(h<Hmin)
+            {
+                Hmin = h;
+            }
+            else
+            {
+                // do nothing
+            }
+        }
+
         std::cerr << "| \\_Loaded #" << N << std::endl;
-        std::cerr << "| \\_pH_asymp=" << pH_asymp << std::endl;
+        std::cerr << "| \\_pH_asymp = " << pH_asymp << std::endl;
+        std::cerr << "| \\_Hmin     = " << Hmin     << std::endl;
+        std::cerr << "| \\_Hmax     = " << Hmax     << std::endl;
+        std::cerr << "| \\_Hend     = " << Hend     << std::endl;
+        std::cerr << "| \\_t0       = " << t0       << std::endl;
         std::cerr << "|" << std::endl;
 
     }

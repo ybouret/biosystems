@@ -1,8 +1,5 @@
 
 
-ADD_EXECUTABLE(fit-hall fit-hall.cpp)
-TARGET_LINK_Y(fit-hall m)
-INSTALL( TARGETS fit-hall RUNTIME DESTINATION bin )
 
 
 ADD_EXECUTABLE(fullsim fullsim.cpp fcnli.hpp fullsim.lua)
@@ -20,6 +17,9 @@ INSTALL( TARGETS fit-ph RUNTIME DESTINATION bin )
 
 IF(FALSE)
 
+ADD_EXECUTABLE(fit-hall fit-hall.cpp)
+TARGET_LINK_Y(fit-hall m)
+INSTALL( TARGETS fit-hall RUNTIME DESTINATION bin )
 
 ADD_EXECUTABLE(build-proton build-proton.cpp)
 TARGET_LINK_Y(build-proton m)

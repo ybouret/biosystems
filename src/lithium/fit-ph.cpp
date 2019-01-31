@@ -148,8 +148,8 @@ public:
             else
             {
                 assert(i>1);
-                Y[i] = min_of( H[i], Y[i-1] );
-                assert(Y[i]<=Y[i-1]);
+                Y[i] = min_of( H[i], Y[i-1] );assert(Y[i]<=Y[i-1]);
+                //Y[i] = H[i];
             }
         }
 
@@ -185,7 +185,7 @@ public:
         ios::ocstream fp(save_name);
         for(size_t i=1;i<=N;++i)
         {
-            fp("%g %g %g %g\n", t[i], H[i], Y[i], Yf[i] );
+            fp("%g %g %g %g %g %g\n", t[i], H[i], Y[i], Yf[i], pH[i], -log10(Yf[i]));
         }
     }
 
@@ -217,18 +217,18 @@ public:
         sort_keys(compare_natural);
     }
 
-    void processAsymptote()
+    void processParameters(const array<double> &aorg)
     {
+        std::cerr << "Saving Parameters..." << std::endl;
         Vector Li(size(),as_capacity);
-        Vector H(size(),as_capacity);
         {
-            ios::ocstream fp("asymp.dat");
+            ios::ocstream fp("pH_params.dat");
             for(iterator i=begin();i!=end();++i)
             {
-                const Record &r = **i;
+                const Record         &r    = **i;
+                const Fit::Variables &vars = r.sample.variables;
                 Li.push_back( string_convert::to<double>(r.Li,"Li") );
-                H. push_back( r.Hend );
-                fp("%.15g %.15g\n", Li.back(), r.Hmax-H.back() );
+                //fp("%.15g %.15g\n", Li.back(), r.Hmax-H.back() );
             }
 
         }
@@ -291,12 +291,12 @@ Y_PROGRAM_START()
 
     gvars.on(used,"p");
     gvars(aorg,"p") = 1;
-    //gvars(aorg,"q") = 10.0;
 
     for(Iterator i=db.begin();i!=db.end();++i)
     {
         Record         &r      = **i;
         Fit::Variables &lvars = r.sample.variables;
+
         lvars(aorg,"Hini") = r.Hmax;
         lvars(aorg,"Hend") = r.Hend;
         lvars(aorg,"t0"  ) = r.t0;
@@ -366,7 +366,24 @@ Y_PROGRAM_START()
         }
     }
 
-    db.processAsymptote();
+    gvars.off(used,"p");
+    gvars(aorg,"p") = 1;
+
+    if( true )
+    {
+        if( !LS.fit(samples, F, aorg, aerr, used) )
+        {
+            throw exception("couldn't fit level-%d",++level);
+        }
+        gvars.display(std::cerr,aorg,aerr);
+        for(Iterator i=db.begin();i!=db.end();++i)
+        {
+            Record         &r      = **i;
+            r.save();
+        }
+    }
+
+    db.processParameters(aorg);
 
 
 

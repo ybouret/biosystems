@@ -41,8 +41,8 @@ public:
     const double mu6;
 
     const double rho;   //! h_end/h_ini
-
-    const double beta7; //! final beta7
+    const double gam;   //!< scaling law for relaxation
+    const double beta7; //!< final beta7
     const double xs7;   //!< beta7/Theta-1
 
     const double Omega; //! intake parameter
@@ -111,6 +111,7 @@ public:
     mu6( sigma*mu7 ),
 
     _INI(rho),
+    _INI(gam),
 
     beta7( check_beta7(vm->get<double>("beta7")) ),
     xs7( beta7/Theta-1.0 ),
@@ -183,22 +184,35 @@ public:
 
     }
 
+    //! h/h0
+    inline double get_rho( const double tau ) const
+    {
+        if(tau<=0)
+        {
+            return 1.0;
+        }
+        else
+        {
+            const double tt = fabs(gam*tau);
+            return 1.0 + (rho-1.0) * tt/(1.0+tt);
+        }
 
+    }
 
-    void Compute( array<double> &dY, double, const array<double> &Y )
+    void Compute( array<double> &dY, double tau, const array<double> &Y )
     {
         const double ac = Y[I_AC];
         const double b6 = Y[I_B6];
         const double b7 = Y[I_B7];
 
-        const double h   = 1.0;
-        const double ach = ac*h;
-        const double aa  = 1.0-ac;
+        const double rho_h  = get_rho(tau);
+        const double ach    = ac*rho_h;
+        const double aa     = 1.0-ac;
 
         const double QB6 = Q6*b6;
         const double QB7 = Q7*b7;
 
-        dY[I_AC] = 1.0 - ac * (1.0 + h * Ua ) + aa * (eps6*QB6+eps7*QB7);
+        dY[I_AC] = 1.0 - ac * (1.0 + rho_h * Ua ) + aa * (eps6*QB6+eps7*QB7);
         dY[I_B6] = mu6*(Theta-b6) + eta * ( ach * U6 - aa * QB6);
         dY[I_B7] = mu7*(Theta-b7) + eta * ( ach * U7 - aa * QB7);
 

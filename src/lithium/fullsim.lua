@@ -23,13 +23,16 @@ d7out = 14.57;
 --d7in  = 0.92;
 d7in  = 1.02;
 
-rho  =1.0;
+-- rho=[H]_infty/H_0
+rho  = 0.1;
+gam  = 0.5;
+
 beta7=6;
 
-Omega = 0.5;
-phi7  = 0.1;
+Omega = 0.1;
+phi7  = 0.0;
 
-phi6  = 0.15;
+phi6  = 0.0;
 
 -- leak scaling
 mu7 = 0.01;

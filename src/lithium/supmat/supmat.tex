@@ -6,7 +6,7 @@
 \usepackage{pslatex}
 \usepackage{xfrac}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{bookman}
+%\usepackage{bookman}
 \usepackage{dsfont}
 \usepackage{mathptmx}
 \usepackage{hyperref}
@@ -60,6 +60,8 @@
 \newcommand{\LiAll}{\Lambda}
 \newcommand{\LiAllOut}{{\LiAll}_{\mathrm{out}}}
 
+\newcommand{\NHE}[1]{\mychem{NHE}{\!-\!#1}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %%
@@ -73,7 +75,22 @@
 \title{Supplementary Material...}
 \maketitle
 
-\section{Model}
+\section{Setting up the Model}
+
+\subsection{Description And Notations}
+Let us describe how a cell may intake a lithium isotope from the outer medium, which is formally described by the transformation
+of $\spLiOut{x}$ into $\spLiIn{x}$ for $x=6,7$. We distinguish two main paths.
+
+\begin{itemize}
+\item The Enzymatic path, using $\NHE{1}$ as the enzyme $\spEout$ works as follows:
+	\begin{itemize}
+	\item
+	\item
+	\end{itemize}
+
+\item The Passive path (or leak) consists in the use by the lithium species of some ion channels, following the electro-osmotic gradient as described by the Goldman-Hodkins-Katz equations. 
+
+\end{itemize}
 
 \begin{equation}
 \left\lbrace
@@ -84,10 +101,13 @@
 \\
 \spEHin               & \xrightarrow{~~k_h~~} & \spEout + \spproton_{\mathrm{out}} & (\text{Enzyme recycling})\\
 \\
-\spLiOut{x}           & \xrightleftharpoons[~~k_x~~]{~~k_x e^{-\frac{FV}{RT}}~~} & \spLiIn{x} & (\text{Passive Leak})\\
+\spLiOut{x}           & \xrightleftharpoons[~~k_x~~]{~~k_x e^{-\frac{FV_m}{RT}}~~} & \spLiIn{x} & (\text{Passive Leak})\\
 \end{array}
 \right.
 \end{equation}
+
+\subsection{Kinetic Scheme}
+
 
 
 \end{document}

@@ -79,6 +79,9 @@
 \section{Setting up the Model}
 
 \subsection{Description And Notations}
+
+\subsubsection{Lithium Transport}
+
 Let us describe how a cell may intake a lithium isotope from the outer medium, which is formally described by the transformation
 of $\spLiOut{x}$ into $\spLiIn{x}$ for $x=6,7$. We distinguish two main paths.
 
@@ -115,39 +118,55 @@ where $V_m$ is the membrane potential, $F$ is the Faraday's constant, $R$ is the
 
 \end{itemize}
 
+\subsubsection{Internal Proton Concentration}
+...
+
+\subsubsection{Potential Regulation}
+...
+
+
 \subsection{Full Kinetic Scheme}
-\subsubsection{Lithium dependent species}
 We define the 11 following rates:
 \begin{equation}
 	\label{eq:rates}
 \left\lbrace
 \begin{array}{rcl}
 	v^a_x & = & k^a_x \Eout \LiOut{x} \\
+	\\
 	v^d_x & = & k^d_x \LiE{x} \\
+	\\
 	v^p_x & = & k^p_x \LiE{x} \proton\\
+	\\
 	v^q_x & = & k^q_x \Li{x} \EHin\\
+	\\
 	v_h   & = & k_x \EHin\\
+	\\
 	v^l_x & = & k_x\left(\Theta \LiOut{x} - \Li{x}\right),\;\;\Theta = e^{-\frac{FV_m}{RT}}\\
 \end{array}
 \right.
 \end{equation}
-We deduce the full constrained kinetic scheme:
+We deduce the full constrained kinetic scheme with 6 variables:
 \begin{equation}
 	\label{eq:full}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t \EHin & = & \\
+\partial_t \EHin & = & -v_h + \sum_x\left(v^p_x - v^q_x\right)\\
+\\
+\partial_t \Eout & = & v_h + \sum_x(v^a_x -v^d_x)\\
+\\
+\partial_t \LiE{x} & = & v^a_x -v^d_x + v^q_x -v^p_x\\
+\\
+\partial_t \Li{x}  & = & v^l_x + v^p_x - v^q_x\\
 \end{array}
 \right.
 \end{equation}
+and we check that we always verify the conservation:
+\begin{equation}
+	E_0  =  \Eout + \EHin + \LiE{6} + \LiE{7},
+\end{equation}
+where $E_0$ is the cellular total $\NHE{1}$ membrane concentration.
 
-\subsubsection{Proton Kinetics}
-...
-
-\subsubsection{Potential Kinetics}
-...
-
-\subsection{Semi-Stationary Kinetic Scheme}
+\subsection{Complexity Reduction by Semi-Stationary Kinetic Scheme}
 
 
 \end{document}

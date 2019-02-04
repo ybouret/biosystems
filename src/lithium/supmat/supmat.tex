@@ -61,6 +61,7 @@
 \newcommand{\LiAllOut}{{\LiAll}_{\mathrm{out}}}
 
 \newcommand{\NHE}[1]{\mychem{NHE}{\!-\!#1}}
+\newcommand{\todo}[1]{\framebox{\textbf{\color{WildStrawberry}{#1}}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
@@ -82,32 +83,71 @@ Let us describe how a cell may intake a lithium isotope from the outer medium, w
 of $\spLiOut{x}$ into $\spLiIn{x}$ for $x=6,7$. We distinguish two main paths.
 
 \begin{itemize}
-\item The Enzymatic path, using $\NHE{1}$ as the enzyme $\spEout$ works as follows:
+\item We assume that the Enzymatic Path, using $\NHE{1}$ as the enzyme $\spEout$ works as follows. A more detailed description is found in \todo{ref}.
 	\begin{itemize}
-	\item
-	\item
+	\item The outer lithium is associated with a membrane enzyme:
+	\begin{equation}
+		\label{eq:pre}
+		\spLiOut{x} + \spEout  \xrightleftharpoons[~~k^d_x~~]{~~k^a_x~~} \spLiE{x},
+	\end{equation}
+	where $k^a_x$ and $k^d_x$ respectively are the association and the dissociation rate constants.
+	
+	\item Then the associated complex exchange an inner proton with a lithium ion:
+	\begin{equation}
+		\label{eq:xch}
+		\spLiE{x} + \spproton   \xrightleftharpoons[~~k^q_x~~]{~~k^p_x~~}   \spEHin + \spLi{x}, 
+	\end{equation}
+	where $k^p_x$ and $k^q_x$ respectively are the forward and reverse protonation rate constants.
+	
+	\item The attached inner proton is then transported out of the cell to recycle the enzyme:
+	\begin{equation}
+			\spEHin   \xrightarrow{~~k_h~~}   \spEout + \spproton_{\mathrm{out}} 
+	\end{equation}	
+	where $k_h$ is the apparent recycling constant rate, which may vary with $\proton$.
 	\end{itemize}
 
-\item The Passive path (or leak) consists in the use by the lithium species of some ion channels, following the electro-osmotic gradient as described by the Goldman-Hodkins-Katz equations. 
+\item The Passive Path (or Leak) consists in the use by the lithium species of some ion channels, following the electro-osmotic gradient as described by the Goldman-Hodkins-Katz \todo{ref} equations and leading to:
+	\begin{equation}
+	\label{eq:ghk}
+		\spLiOut{x} \xrightleftharpoons[~~k_x~~]{~~k_x e^{-\frac{FV_m}{RT}}~~}   \spLi{x} 
+	\end{equation}
+where $V_m$ is the membrane potential, $F$ is the Faraday's constant, $R$ is the perfect gas constant, and $T$ is the absolute temperature.
 
 \end{itemize}
 
+\subsection{Full Kinetic Scheme}
+\subsubsection{Lithium dependent species}
+We define the 11 following rates:
 \begin{equation}
+	\label{eq:rates}
 \left\lbrace
-\begin{array}{cccl}
-\spLiOut{x} + \spEout & \xrightleftharpoons[~~k^d_x~~]{~~k^a_x~~} & \spLiE{x} & (\text{pre-equilibrium})\\
-\\
-\spLiE{x} + \spproton & \xrightleftharpoons[~~k^q_x~~]{~~k^p_x~~} & \spEHin + \spLiIn{x} & (\text{Lithium intake and reverse path})\\
-\\
-\spEHin               & \xrightarrow{~~k_h~~} & \spEout + \spproton_{\mathrm{out}} & (\text{Enzyme recycling})\\
-\\
-\spLiOut{x}           & \xrightleftharpoons[~~k_x~~]{~~k_x e^{-\frac{FV_m}{RT}}~~} & \spLiIn{x} & (\text{Passive Leak})\\
+\begin{array}{rcl}
+	v^a_x & = & k^a_x \Eout \LiOut{x} \\
+	v^d_x & = & k^d_x \LiE{x} \\
+	v^p_x & = & k^p_x \LiE{x} \proton\\
+	v^q_x & = & k^q_x \Li{x} \EHin\\
+	v_h   & = & k_x \EHin\\
+	v^l_x & = & k_x\left(\Theta \LiOut{x} - \Li{x}\right),\;\;\Theta = e^{-\frac{FV_m}{RT}}\\
+\end{array}
+\right.
+\end{equation}
+We deduce the full constrained kinetic scheme:
+\begin{equation}
+	\label{eq:full}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \EHin & = & \\
 \end{array}
 \right.
 \end{equation}
 
-\subsection{Kinetic Scheme}
+\subsubsection{Proton Kinetics}
+...
 
+\subsubsection{Potential Kinetics}
+...
+
+\subsection{Semi-Stationary Kinetic Scheme}
 
 
 \end{document}

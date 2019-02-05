@@ -247,7 +247,7 @@ We define the following set of variables:
 \end{array}
 \right..
 \end{equation}
-The we rewrite:
+Then we rewrite:
 \begin{equation}
 \label{eq:sysnew}
 \left\lbrace
@@ -274,6 +274,59 @@ or, in terms of $\hat\alpha$:
 \end{array}
 \right..
 \end{equation}
+It is interesting to define:
+\begin{equation}
+\label{eq:upsilon}
+\left\lbrace
+\begin{array}{rcl}
+	\Upsilon_x & = & \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut}\\
+	\Upsilon_\alpha & = & \epsilon_6 \Upsilon_6 + \epsilon_7 \Upsilon_7\\
+\end{array}
+\right.,
+\end{equation}
+and to formally write the coupled system
+\begin{equation}
+\label{eq:sysall}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \hat\alpha & = & k_h \left(1-\hat\alpha\right) + \LiAllOut\left[ ... \right]\\
+\end{array}
+\right..
+\end{equation}
+
+The initial conditions for those equivalent systems are written as:
+\begin{equation}
+\label{eq:ini}
+\left\lbrace
+\begin{array}{rcl}
+\alpha(t=0) & = & 0\\
+\hat\alpha(t=0) &= & 1\\
+\beta_x(t=0)    &=& 0\\
+\end{array}
+\right..
+\end{equation}
+
+The isotopic separation is related to the amplification factor by:
+\begin{equation}
+	r=\dfrac{ \beta_7}{\beta_6} = \dfrac{\left[1+10^{-3}\deltaLi\right]}{\left[1+10^{-3}\deltaLiOut\right]}
+	.
+\end{equation}
+
+\section{Short Times Behaviours}
+
+\subsection{Isotopic Separation}
+We perform the short times integration of the system \eqref{eq:sysbis} using the initial
+conditions \eqref{eq:ini} to get:
+\begin{equation}
+\label{eq:short}
+\left\lbrace
+\hat\alpha
+\right.
+\end{equation}
+
+\subsection{Numerical Values}
+
+
 
 
 

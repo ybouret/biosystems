@@ -80,10 +80,41 @@
 
 \subsection{Description And Notations}
 
+\subsubsection{Isotopic Ratio}
+The isotopic separation of a mixture of $\spLi{6}$ and $\spLi{7}$ is defined by:
+\begin{equation}
+	\deltaLi = \left(
+		\dfrac{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample}}
+		{\left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard}}
+		 -1 
+	\right) \times 1000,
+\end{equation}
+or
+\begin{equation}
+	\left(\dfrac{\Li{7}}{\Li{6}}\right)_{sample} = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} \left[1+10^{-3}\deltaLi\right] = \lambda_s \left[1+10^{-3}\deltaLi\right].
+\end{equation}
+We define
+\begin{equation}
+\left\lbrace
+\begin{array}{rclcl}
+	\LiAll & = & \Li{6} + \Li{7}\\
+	\Li{6} & = & \dfrac{1}{1+\lambda_s \left[1+10^{-3}\deltaLiOut\right] } \LiAllOut & = & \epsilon_6 \LiAllOut   \\
+	\\
+	\Li{7} & = & \dfrac{\lambda_s \left[1+10^{-3}\deltaLiOut\right]}{1+\lambda_s \left[1+10^{-3}\deltaLiOut\right] } \LiAllOut & = & \epsilon_7 \LiAllOut\\
+\end{array}
+\right.
+\end{equation}
+
+For the presented experiments, the lithium composition is:
+\begin{equation}
+	\lambda_s = 12.0192, \; \deltaLi \simeq 14.7 \quad 	(\epsilon_6 \simeq 0.076,\;\epsilon_7 \simeq 0.924)
+\end{equation}
+
+
 \subsubsection{Lithium Transport}
 
 Let us describe how a cell may intake a lithium isotope from the outer medium, which is formally described by the transformation
-of $\spLiOut{x}$ into $\spLiIn{x}$ for $x=6,7$. We distinguish two main paths.
+of $\spLiOut{x}$ into $\spLi{x}$ for $x=6,7$. We distinguish two main paths.
 
 \begin{itemize}
 \item We assume that the Enzymatic Path, using $\NHE{1}$ as the enzyme $\spEout$ works as follows. A more detailed description is found in \todo{ref}.
@@ -119,11 +150,10 @@ where $V_m$ is the membrane potential, $F$ is the Faraday's constant, $R$ is the
 \end{itemize}
 
 \subsubsection{Internal Proton Concentration}
-...
+Even if we account here the proton as a transported species, it is also a reactive species which is involved in many reactions, as to ensure the cell homeostasis\todo{ref}. That is why we consider $\proton$ as a heuristic function of time, which will very depend on the full cell pH regulation process.
 
-\subsubsection{Potential Regulation}
-...
-
+\subsubsection{Membrane Potential Regulation}
+The full system is electroneutral, since it globally exchanges one $\spproton$ per one $\spLi{x}$. Though the Nernst's potential and currents are likely to be displaced \todo{more explanations?}
 
 \subsection{Full Kinetic Scheme}
 We define the 11 following rates:
@@ -167,6 +197,69 @@ and we check that we always verify the conservation:
 where $E_0$ is the cellular total $\NHE{1}$ membrane concentration.
 
 \subsection{Complexity Reduction by Semi-Stationary Kinetic Scheme}
+
+\subsubsection{Algebraic Simplification}
+We assume that the binding of the outer lithium to the enzyme is fast compared to its subsequent transport through the membrane. 
+Accordingly, we define the two equilibria:
+\begin{equation}
+\label{eq:J}
+\spLiOut{x} +  \spEout    \xrightleftharpoons[]{}  \spLiE{x}, \;\; J_x = \dfrac{\LiE{x}}{\LiOut{x} \Eout} = \dfrac{k_x^a}{k_x^d},
+\end{equation}
+which shall be always verified.
+We now harness the algebraic method previously established\todo{ref} to end up with only 3 coupled equations:
+\begin{equation}
+\label{eq:sys}
+\left\lbrace
+	\begin{array}{rcl}
+		\partial_t\EHin & = & -k_h \EHin + \left(E_0- \EHin\right) \dfrac{\proton}{\mathfrak{D}} \left(\sum_x k_x^p J_x\LiOut{x} \right)  
+		- \EHin \left({\sum_x k_x^q \Li{x}} \right)
+		\\
+		\\
+		& = & 
+		-k_h E_0+ \left(E_0- \EHin\right)\left\lbrack k_h+ \dfrac{\proton}{\mathfrak{D}} \left(\sum_x k_x^p J_x\LiOut{x}\right)\right] 
+		- \EHin \left( {\sum_x k_x^q \Li{x}} \right)
+		\\
+		\\
+		\partial_t\Li{x} & = & k_x \left(\Theta\LiOut{x} -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\mathfrak{D}}   k_x^p  J_x \LiOut{x}  
+		- \EHin k_x^q \Li{x}
+		\\
+		\\
+		(\mathfrak{D} & = & 1+\sum_x J_x \LiOut{x} )\\
+	\end{array}
+\right.
+\end{equation}
+
+\subsubsection{Rescaling and rewriting}
+We define the following set of variables:
+\begin{equation}
+\label{eq:scale}
+\left\lbrace
+\begin{array}{rcll}
+	\alpha & = & \dfrac{\EHin}{E_0} & \text{(fraction of protonated enzyme)}\\
+	\\
+	\hat\alpha & = & 1-\alpha       & \text{(fraction of not protonated enzyme)}\\
+	\\
+	\beta_x    & = & \dfrac{\Li{x}}{\LiOut{x}} & \text{(internal lithium amplification factor)}\\
+	\\
+	J_\epsilon & = & \sum_x \epsilon_x J_x & \text{(mixed affinity)}\\
+	\\
+	\LiAllOut  & = & \LiOut{6} + \LiOut{7} & \text{(external lithium concentration)}\\
+\end{array}
+\right.
+\end{equation}
+The we rewrite:
+\begin{equation}
+\label{eq:sysnew}
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \alpha & = & -k_h \alpha + (1-\alpha) \proton  \dfrac{\LiAllOut \left(\sum_x k^p_x \epsilon_x J_x\right) }{1+J_\epsilon \LiAllOut}
+	-\alpha \LiAllOut \left(\sum_x k^q_x \epsilon_x \beta_x \right)
+	\\
+	\\
+	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ (1-\alpha)  \proton \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} - \alpha k^q_x \beta_x \right]
+\end{array}
+\right.
+\end{equation}
 
 
 \end{document}

@@ -1,4 +1,4 @@
-\documentclass[aps,onecolumn,10pt]{revtex4}
+\documentclass[aps,onecolumn,11pt]{revtex4}
 \usepackage{graphicx}
 \usepackage{amssymb,amsfonts,amsmath,amsthm}
 \usepackage{chemarr}
@@ -10,7 +10,7 @@
 \usepackage{dsfont}
 \usepackage{mathptmx}
 \usepackage{hyperref}
-\usepackage{rotating}
+%\usepackage{rotating}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
@@ -107,7 +107,7 @@ We define
 
 For the presented experiments, the lithium composition is:
 \begin{equation}
-	\lambda_s = 12.0192, \; \deltaLi \simeq 14.7 \quad 	(\epsilon_6 \simeq 0.076,\;\epsilon_7 \simeq 0.924)
+	\lambda_s = 12.0192, \; \deltaLi = 14.57 \Rightarrow \epsilon_6 \simeq 0.076,\;\epsilon_7 \simeq 0.924
 \end{equation}
 
 
@@ -137,7 +137,7 @@ of $\spLiOut{x}$ into $\spLi{x}$ for $x=6,7$. We distinguish two main paths.
 	\begin{equation}
 			\spEHin   \xrightarrow{~~k_h~~}   \spEout + \spproton_{\mathrm{out}} 
 	\end{equation}	
-	where $k_h$ is the apparent recycling constant rate, which may vary with $\proton$.
+	where $k_h$ is the  apparent recycling constant rate, assuming that $\spEHin$ is the predominant form of the enzyme at the inner membrane surface \todo{Lacroix EMBO 2004 fig 3A}.
 	\end{itemize}
 
 \item The Passive Path (or Leak) consists in the use by the lithium species of some ion channels, following the electro-osmotic gradient as described by the Goldman-Hodkins-Katz \todo{ref} equations and leading to:
@@ -245,21 +245,36 @@ We define the following set of variables:
 	\\
 	\LiAllOut  & = & \LiOut{6} + \LiOut{7} & \text{(external lithium concentration)}\\
 \end{array}
-\right.
+\right..
 \end{equation}
 The we rewrite:
 \begin{equation}
 \label{eq:sysnew}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \alpha & = & -k_h \alpha + (1-\alpha) \proton  \dfrac{\LiAllOut \left(\sum_x k^p_x \epsilon_x J_x\right) }{1+J_\epsilon \LiAllOut}
-	-\alpha \LiAllOut \left(\sum_x k^q_x \epsilon_x \beta_x \right)
+	\partial_t \alpha & = & -k_h \alpha + \LiAllOut \left[ (1-\alpha) \proton  \dfrac{ \left(\sum_x k^p_x \epsilon_x J_x\right) }{1+J_\epsilon\LiAllOut}
+	-\alpha  \left(\sum_x k^q_x \epsilon_x \beta_x \right)\right]
 	\\
 	\\
 	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ (1-\alpha)  \proton \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} - \alpha k^q_x \beta_x \right]
 \end{array}
-\right.
+\right.,
 \end{equation}
+or, in terms of $\hat\alpha$:
+\begin{equation}
+\label{eq:sysbis}
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \hat\alpha & = & k_h  
+		- \hat\alpha\left\lbrack k_h+ \proton  \dfrac{ \LiAllOut \left(\sum_x k^p_x \epsilon_x J_x\right) }{1+J_\epsilon\LiAllOut}\right] 
+		+ (1-\hat\alpha) \LiAllOut\left( {\sum_x k_x^q \epsilon_x \beta_x} \right)
+	\\
+	\\
+	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ \hat\alpha  \proton \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} - (1-\hat\alpha) k^q_x \beta_x \right]
+\end{array}
+\right..
+\end{equation}
+
 
 
 \end{document}

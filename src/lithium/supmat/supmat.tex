@@ -62,6 +62,8 @@
 
 \newcommand{\NHE}[1]{\mychem{NHE}{\!-\!#1}}
 \newcommand{\todo}[1]{\framebox{\textbf{\color{WildStrawberry}{#1}}}}
+\newcommand{\ko}{\dagger}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
@@ -316,19 +318,45 @@ The isotopic separation is related to the amplification factor by:
 	.
 \end{equation}
 
-\subsubsection{Isotopic coefficients}
-We define some isotopic coefficients:
-
+\subsection{Information from Leakage}
+\subsubsection{Isotopic separation}
+With $E_0=0$, we readily obtain:
 \begin{equation}
-\label{eq:coeffs}
-\left\lbrace
-\begin{array}{rcll}
-\sigma & = & \dfrac{k_6}{k_7} & \text{(passive isotopic ratio)}\\
-\\
-\kappa & = & \dfrac{k^p_6}{k^p_7} = \dfrac{\Upsilon_6}{\Upsilon_7}& \text{(forward catalytic ratio)}\\
-\end{array}
-\right.
+	\beta^\ko_x = \Theta \left(1-e^{-k_xt} \right),
 \end{equation}
+leading to the leak-only ratio:
+\begin{equation}
+	r^\ko(t) =  \dfrac{\left(1-e^{-k_7t} \right)}{\left(1-e^{-k_6t} \right)},\;r^\ko_0 = r^\ko(t\to0) = \dfrac{k_7}{k_6}.
+\end{equation}
+We define the \textit{passive isotopic ratio}:
+\begin{equation}
+\label{eq:sigma}
+	\sigma  =  \dfrac{k_6}{k_7}.
+\end{equation}
+The GHK theory states that a passive-like behaviour is expected through the ion channel that lithium isotopes will cross.
+We hence expect the constant rates ($k_x$) to be in the same order of magnitude, so we assume \todo{ref}:
+\begin{equation}
+	\sigma \simeq 1.00229,
+\end{equation}
+and without active contribution, the initial isotopic ratio amounts to:
+\begin{equation}
+	r_0^\ko = \dfrac{1}{\sigma} \Rightarrow \deltaLi^\ko \simeq  12.25,
+\end{equation}
+which is far greater than the observed values even after some time \todo{ref figures}
+
+
+\subsubsection{Global passive lithium intake}
+Likewise, for membrane potential around $40\,\text{mV}$ at $37^\circ\text{C}$:
+\begin{equation}
+\label{eq:ThetaValue}
+	\Theta = \exp\left( -\dfrac{FV_m}{RT}\right) \approx 4.47,
+\end{equation}
+which means that the amplification factor shall be greater than this value, and eventually the inner lithium concentration shall
+be a few times the outer concentration. Indeed, the passive lithium intake is described by:
+\begin{equation}
+	\LiAll^\ko = \LiAllOut \Theta \left[ \epsilon_6 \left(1-e^{-k_6t}\right)  + \epsilon_7 \left(1-e^{-k_7t}\right)\right]
+\end{equation}
+
 
 
 \section{Short Times Behaviours}
@@ -341,10 +369,24 @@ conditions \eqref{eq:ini} to get:
 \end{equation}
 leading the initial ratio:
 \begin{equation}
-r_0 = \dfrac{k_7\Theta+E_0 \proton_0 \Upsilon_7}{k_6\Theta+E_0 \proton_0 \Upsilon_6}
+\label{eq:r0}
+\left\lbrace
+\begin{array}{rcl}
+r_0 & = & \dfrac{k_7\Theta+E_0 \proton_0 \Upsilon_7}{k_6\Theta+E_0 \proton_0 \Upsilon_6}\\
+	\\
+    & = & \dfrac{k_7\Theta+E_0 \proton_0 \Upsilon_7}{ \sigma k_7\Theta+ \kappa E_0 \proton_0 \Upsilon_7}\\
+\end{array}
+\right.
 \end{equation}
 
-\subsection{Numerical Values}
+
+\section{Parameters Estimation from Passive-Only Experiments}
+The catalytic pathway can be simply discarded through two conditions:
+\begin{itemize}
+	\item we block $\NHE{1}$ by keeping the acidic medium,
+	\item we use   $PS120$ cells lacking $\NHE{1}$.
+\end{itemize}
+In both cases, we shall observe 
 
 
 

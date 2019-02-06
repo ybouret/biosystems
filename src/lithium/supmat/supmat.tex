@@ -270,9 +270,9 @@ or, in terms of $\hat\alpha$:
 		+ (1-\hat\alpha) \LiAllOut\left( {\sum_x k_x^q \epsilon_x \beta_x} \right)
 	\\
 	\\
-	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ \hat\alpha  \proton \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} - (1-\hat\alpha) k^q_x \beta_x \right]
+	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ \hat\alpha  \proton \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} - (1-\hat\alpha) k^q_x \beta_x \right]\\
 \end{array}
-\right..
+\right.
 \end{equation}
 It is interesting to define:
 \begin{equation}
@@ -282,16 +282,20 @@ It is interesting to define:
 	\Upsilon_x & = & \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut}\\
 	\Upsilon_\alpha & = & \epsilon_6 \Upsilon_6 + \epsilon_7 \Upsilon_7\\
 \end{array}
-\right.,
+\right.
 \end{equation}
-and to formally write the coupled system
+and to formally write the coupled system:
 \begin{equation}
 \label{eq:sysall}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t \hat\alpha & = & k_h \left(1-\hat\alpha\right) + \LiAllOut\left[ ... \right]\\
+\partial_t \hat\alpha & = &
+	 k_h \left(1-\hat\alpha\right) 
+	 + \LiAllOut \left[ (1-\hat\alpha) \left( {\sum_x k_x^q \epsilon_x \beta_x} \right)  - \hat\alpha\proton \Upsilon_\alpha \right]\\
+	 \\
+	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ \hat\alpha  \proton \Upsilon_x - (1-\hat\alpha) k^q_x \beta_x \right]\\
 \end{array}
-\right..
+\right.
 \end{equation}
 
 The initial conditions for those equivalent systems are written as:
@@ -303,7 +307,7 @@ The initial conditions for those equivalent systems are written as:
 \hat\alpha(t=0) &= & 1\\
 \beta_x(t=0)    &=& 0\\
 \end{array}
-\right..
+\right.
 \end{equation}
 
 The isotopic separation is related to the amplification factor by:
@@ -312,16 +316,32 @@ The isotopic separation is related to the amplification factor by:
 	.
 \end{equation}
 
+\subsubsection{Isotopic coefficients}
+We define some isotopic coefficients:
+
+\begin{equation}
+\label{eq:coeffs}
+\left\lbrace
+\begin{array}{rcll}
+\sigma & = & \dfrac{k_6}{k_7} & \text{(passive isotopic ratio)}\\
+\\
+\kappa & = & \dfrac{k^p_6}{k^p_7} = \dfrac{\Upsilon_6}{\Upsilon_7}& \text{(forward catalytic ratio)}\\
+\end{array}
+\right.
+\end{equation}
+
+
 \section{Short Times Behaviours}
 
 \subsection{Isotopic Separation}
 We perform the short times integration of the system \eqref{eq:sysbis} using the initial
 conditions \eqref{eq:ini} to get:
 \begin{equation}
-\label{eq:short}
-\left\lbrace
-\hat\alpha
-\right.
+\beta_x(t) \underset{t\to0}{\approx} \left(k_x \Theta + E_0 \proton_0 \Upsilon_x\right) t,
+\end{equation}
+leading the initial ratio:
+\begin{equation}
+r_0 = \dfrac{k_7\Theta+E_0 \proton_0 \Upsilon_7}{k_6\Theta+E_0 \proton_0 \Upsilon_6}
 \end{equation}
 
 \subsection{Numerical Values}

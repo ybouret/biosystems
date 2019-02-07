@@ -18,7 +18,11 @@ typedef Fit::VectorsDB<double>  VecDB;
 typedef Fit::Vectors<double>    Vectors;
 
 
-//static const double beta_s = 12.0192;
+static const double lambda_s = 12.0192;
+static const double d7out  = 14.57;
+static const double sigma  = 1.0/0.99772;
+static const double eps6   = 1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out));
+static const double eps7   = 1.0-eps6;
 
 class Leak
 {
@@ -36,9 +40,12 @@ public:
                    const Array     &aorg,
                    const Variables &vars)
     {
-        const double k      = vars(aorg,"k");
-        const double A      = vars(aorg,"A");
-        return A*(1.0-exp(-k*t));
+        const double k7      = vars(aorg,"k7");
+        const double Theta   = vars(aorg,"Theta");
+        const double Li      = vars(aorg,"Li");
+        const double tau     = t*k7;
+
+        return Li * Theta * ( eps6*(1.0-exp(-sigma*tau)) + eps7*(1.0-exp(-tau)));
     }
 
 
@@ -53,6 +60,7 @@ Y_PROGRAM_START()
 
     vector<string>         files;
     vector<string>         labels;
+    vector<string>         concsID;
     vector<double>         concs;
     VecDB                  vdb( argc );
     Samples                samples(16,argc);
@@ -95,6 +103,7 @@ Y_PROGRAM_START()
 
             files.push_back( fn );
             labels.push_back( first_L );
+            concsID.push_back(first_C);
             concs.push_back( string_convert::to<double>(first_C,"concentration") );
 
             ////////////////////////////////////////////////////////////////////
@@ -116,7 +125,64 @@ Y_PROGRAM_START()
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // Building global parameters
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+    std::cerr << "concsID=" << concsID << std::endl;
+    std::cerr << "labels =" << labels  << std::endl;
 
+
+
+    vector<string> cell_types( labels );
+    unique(cell_types);
+    std::cerr << "cell_types=" << cell_types << std::endl;
+
+    vector<string> li_values( concsID );
+    unique(li_values);
+    std::cerr << "li_values=" << li_values << std::endl;
+
+
+    const size_t ns   = samples.size();
+    Variables   &vars = samples.variables;
+
+    // preparing variables
+    vars << "Theta";
+    for(size_t i=1;i<=ns;++i)
+    {
+        Variables &local = samples[i]->variables;
+        local("Theta",vars);
+
+        {
+            const string Li = vformat("Li#%u", unsigned(i));
+            vars << Li;
+            local("Li",vars[Li]);
+        }
+
+        {
+            const string k7 = vformat("k7#%u", unsigned(i));
+            vars << k7;
+            local("k7",vars[k7]);
+        }
+    }
+
+    {
+        std::cerr << "vars=" << vars << std::endl;
+    }
+
+    const size_t nv = vars.size();
+    Vector       aorg(nv,0);
+    Vector       aerr(nv,0);
+    vector<bool> used(nv,false);
+
+    // setting initial variables
+    vars(aorg,"Theta") = 4.47;
+
+
+#if 0
     ////////////////////////////////////////////////////////////////////////////
     //
     //
@@ -239,7 +305,7 @@ Y_PROGRAM_START()
             fp("%.15g %.15g %.15g\n",s.X[i],s.Y[i],s.Yf[i]);
         }
     }
-
+#endif
 
 }
 Y_PROGRAM_END()

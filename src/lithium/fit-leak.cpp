@@ -151,16 +151,40 @@ Y_PROGRAM_START()
 
     // preparing variables
     vars << "Theta";
-    for(size_t i=1;i<=ns;++i)
+
+    if(true)
     {
-        Variables &local = samples[i]->variables;
-        local("Theta",vars);
-        local("Li",vars,i);
-        local("k7",vars,i);
+        for(size_t i=1;i<=ns;++i)
+        {
+            Variables &local = samples[i]->variables;
+            local("Theta",vars);
+            local("Li",vars,i);
+            local("k7",vars,i);
+        }
+    }
+    else
+    {
+        for(size_t i=1;i<=cell_types.size();++i)
+        {
+            vars << ( "k7" + cell_types[i] );
+        }
+
+        for(size_t i=1;i<=ns;++i)
+        {
+            Variables &local = samples[i]->variables;
+            local("Theta",vars);
+            local("Li",vars,i);
+            const string id = "k7" + labels[i];
+            local("k7",vars[id]);
+        }
     }
 
     {
         std::cerr << "vars=" << vars << std::endl;
+        for(size_t i=1;i<=ns;++i)
+        {
+            std::cerr << "|_sub#" << i << "=" << samples[i]->variables << std::endl;
+        }
     }
 
     const size_t nv = vars.size();
@@ -212,6 +236,7 @@ Y_PROGRAM_START()
         vars.display(std::cerr,aorg,aerr);
     }
 
+    // relax Theta
     if(false)
     {
         vars.on(used, "Theta");
@@ -228,7 +253,14 @@ Y_PROGRAM_START()
     }
 
 
-
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // save results
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+    ios::ocstream lf("fit-leaks.dat");
     for(size_t i=1;i<=ns;++i)
     {
         std::cerr << "  |_Saving from " << files[i] << std::endl;
@@ -241,133 +273,26 @@ Y_PROGRAM_START()
         {
             fp("%.15g %.15g %.15g\n",s.X[i],s.Y[i],s.Yf[i]);
         }
-    }
+        const Variables &V = samples[i]->variables;
+        lf << fitname << '\n';
+        lf("\tLi    = %.15g\n", V(aorg,"Li") );
+        lf("\tTheta = %.15g\n", V(aorg,"Theta"));
+        lf("\tk7    = %.15g +/- %.15g\n", V(aorg,"k7"), V(aerr,"k7") );
+        lf("\t#x60:\n");
+        lf("\tk7    = %.15g +/- %.15g\n", V(aorg,"k7")*60, V(aerr,"k7")*60 );
+        //lf("\t#/60:\n");
+        //lf("\tk7    = %.15e +/- %.15e\n", V(aorg,"k7")/60, V(aerr,"k7")/60 );
 
-
-#if 0
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    //
-    // Building global parameters
-    //
-    //
-    ////////////////////////////////////////////////////////////////////////////
-    const size_t ns   = samples.size();
-    Variables   &vars = samples.variables;
-    vars << "k";  // common leak rate
-
-
-    vector<string> species( labels );
-    unique(species);
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    //
-    // Building parameters for samples
-    //
-    //
-    ////////////////////////////////////////////////////////////////////////////
-
-    for(size_t i=1;i<=ns;++i)
-    {
-        const string Ai = "A" + vformat("%u",unsigned(i));
-        vars << Ai;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     //
     //
-    // Allocating parameters
+    // save log_file
     //
     //
     ////////////////////////////////////////////////////////////////////////////
-    std::cerr << "vars=" << vars << std::endl;
 
-    const size_t nv = vars.size();
-    Vector       aorg(nv,0);
-    Vector       aerr(nv,0);
-    vector<bool> used(nv,false);
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    //
-    // initializing
-    //
-    //
-    ////////////////////////////////////////////////////////////////////////////
-    const double k0 = 0.001;
-    vars(aorg,"k") = k0;
-    vars(used,"k") = true;
-
-    for(size_t i=1;i<=ns;++i)
-    {
-        std::cerr << "-- Building sample#" << i << "=" << files[i] << std::endl;
-        Sample    &s     = *samples[i];
-        Variables &local = s.variables;
-
-        // link to master coefficient
-        local("k",vars);
-
-        // setting amplitudes
-        {
-            const string Ai = "A" + vformat("%u",unsigned(i));
-            local("A",vars[Ai]);
-            local(aorg,"A") = s.slope()/k0;
-            local(used,"A") = true;
-        }
-
-
-        std::cerr << "local=" << local << std::endl;
-    }
-
-    std::cerr << std::endl;
-    vars.display(std::cerr,aorg,"\t(set) ");
-    std::cerr << std::endl;
-    vars.display(std::cerr,used, "\t(use) ");
-
-
-    // preparing function
-    Leak                                leak;
-    Fit::LeastSquares<double>           LS;
-
-    LS.verbose = true;
-
-    Fit::LeastSquares<double>::Function F( &leak, & Leak::Compute );
-
-
-
-
-    {
-        std::cerr << "== Fit Linear ==" << std::endl;
-        if( !LS.fit(samples, F, aorg, aerr, used) )
-        {
-            throw exception("couldn't fit");
-        }
-        std::cerr << "-- Results: " << std::endl;
-        const double R2 = samples.computeR2();
-        std::cerr << "R2=" << R2 << std::endl;
-
-        vars.display(std::cerr,aorg,aerr);
-    }
-
-
-
-    for(size_t i=1;i<=ns;++i)
-    {
-        std::cerr << "  |_Saving from " << files[i] << std::endl;
-        string fitname = vfs::base_name_from(files[i]);
-        vfs::change_extension(fitname, "fit.dat");
-        std::cerr << "  |_Saving [" << fitname << "]" << std::endl;
-        ios::ocstream fp(fitname);
-        const Sample &s = *samples[i];
-        for(size_t i=1;i<=s.X.size();++i)
-        {
-            fp("%.15g %.15g %.15g\n",s.X[i],s.Y[i],s.Yf[i]);
-        }
-    }
-#endif
 
 }
 Y_PROGRAM_END()

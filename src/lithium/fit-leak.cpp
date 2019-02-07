@@ -128,7 +128,7 @@ Y_PROGRAM_START()
     ////////////////////////////////////////////////////////////////////////////
     //
     //
-    // Building global parameters
+    // Building global and local parameters
     //
     //
     ////////////////////////////////////////////////////////////////////////////
@@ -155,18 +155,8 @@ Y_PROGRAM_START()
     {
         Variables &local = samples[i]->variables;
         local("Theta",vars);
-
-        {
-            const string Li = vformat("Li#%u", unsigned(i));
-            vars << Li;
-            local("Li",vars[Li]);
-        }
-
-        {
-            const string k7 = vformat("k7#%u", unsigned(i));
-            vars << k7;
-            local("k7",vars[k7]);
-        }
+        local("Li",vars,i);
+        local("k7",vars,i);
     }
 
     {
@@ -180,6 +170,78 @@ Y_PROGRAM_START()
 
     // setting initial variables
     vars(aorg,"Theta") = 4.47;
+    for(size_t i=1;i<=ns;++i)
+    {
+        const Variables &local = samples[i]->variables;
+        local(aorg,"Li") = concs[i];
+        local(aorg,"k7") = 0.001;
+        local.on(used,"k7");
+    }
+
+    std::cerr << "values: " << std::endl;
+    vars.display(std::cerr,aorg);
+    std::cerr << "used:   " << std::endl;
+    vars.display(std::cerr,used);
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // Building LeastSquares context
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+
+    Leak                                leak;
+    Fit::LeastSquares<double>           LS;
+
+    //LS.verbose = true;
+
+    Fit::LeastSquares<double>::Function F( &leak, & Leak::Compute );
+
+    int level = 0;
+    {
+        std::cerr << "== Fit == Level " << ++level << std::endl;
+        if( !LS.fit(samples, F, aorg, aerr, used) )
+        {
+            throw exception("couldn't fit");
+        }
+        std::cerr << "-- Results: " << std::endl;
+        const double R2 = samples.computeR2();
+        std::cerr << "R2=" << R2 << std::endl;
+
+        vars.display(std::cerr,aorg,aerr);
+    }
+
+    if(false)
+    {
+        vars.on(used, "Theta");
+        std::cerr << "== Fit == Level " << ++level << std::endl;
+        if( !LS.fit(samples, F, aorg, aerr, used) )
+        {
+            throw exception("couldn't fit");
+        }
+        std::cerr << "-- Results: " << std::endl;
+        const double R2 = samples.computeR2();
+        std::cerr << "R2=" << R2 << std::endl;
+
+        vars.display(std::cerr,aorg,aerr);
+    }
+
+
+
+    for(size_t i=1;i<=ns;++i)
+    {
+        std::cerr << "  |_Saving from " << files[i] << std::endl;
+        string fitname = vfs::base_name_from(files[i]);
+        vfs::change_extension(fitname, "fit.dat");
+        std::cerr << "  |_Saving [" << fitname << "]" << std::endl;
+        ios::ocstream fp(fitname);
+        const Sample &s = *samples[i];
+        for(size_t i=1;i<=s.X.size();++i)
+        {
+            fp("%.15g %.15g %.15g\n",s.X[i],s.Y[i],s.Yf[i]);
+        }
+    }
 
 
 #if 0

@@ -66,6 +66,15 @@ Y_PROGRAM_START()
     VecDB                  vdb( argc );
     Samples                samples(16,argc);
 
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // Output information
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+    std::cerr << "eps6=" << eps6 << std::endl;
+    std::cerr << "eps7=" << eps7 << std::endl;
 
     ////////////////////////////////////////////////////////////////////////////
     //
@@ -198,7 +207,7 @@ Y_PROGRAM_START()
     // setting initial variables
     vars(aorg,"Theta") = 4.47;
     vars(aorg,"sigma") = sigma0;
-    
+
     for(size_t i=1;i<=ns;++i)
     {
         const Variables &local = samples[i]->variables;

@@ -60,7 +60,7 @@
 \newcommand{\LiAll}{\Lambda}
 \newcommand{\LiAllOut}{{\LiAll}_{\mathrm{out}}}
 
-\newcommand{\NHE}[1]{\mychem{NHE}{\!-\!#1}}
+\newcommand{\NHE}[1]{\mychem{NHE}{\mychem{\hbox{-}\!#1}}}
 \newcommand{\todo}[1]{\framebox{\textbf{\color{WildStrawberry}{#1}}}}
 \newcommand{\ko}{\dagger}
 
@@ -116,7 +116,7 @@ For the presented experiments, the lithium composition is:
 \subsubsection{Lithium Transport}
 
 Let us describe how a cell may intake a lithium isotope from the outer medium, which is formally described by the transformation
-of $\spLiOut{x}$ into $\spLi{x}$ for $x=6,7$. We distinguish two main paths.
+of $\spLiOut{x}$ into $\spLi{x}$ for $x=\lbrace 6,7 \rbrace$. We distinguish two main paths.
 
 \begin{itemize}
 \item We assume that the Enzymatic Path, using $\NHE{1}$ as the enzyme $\spEout$ works as follows. A more detailed description is found in \todo{ref}.
@@ -333,8 +333,8 @@ We define the \textit{passive isotopic ratio}:
 \label{eq:sigma}
 	\sigma  =  \dfrac{k_6}{k_7}.
 \end{equation}
-The GHK theory states that a passive-like behaviour is expected through the ion channel that lithium isotopes will cross.
-We hence expect the constant rates ($k_x$) to be in the same order of magnitude, so we assume \todo{ref}:
+The GHK theory states that a passive-like behaviour is expected through the ion channels that lithium isotopes will cross.
+We hence expect the ratio of the constant rates ($k_x$) to be in the same order of magnitude, so we assume \todo{ref}:
 \begin{equation}
 	\sigma \simeq 1.00229,
 \end{equation}
@@ -342,10 +342,10 @@ and without active contribution, the initial isotopic ratio amounts to:
 \begin{equation}
 	r_0^\ko = \dfrac{1}{\sigma} \Rightarrow \deltaLi^\ko \simeq  12.25,
 \end{equation}
-which is far greater than the observed values even after some time \todo{ref figures}
+which is far greater than the observed values even after some time \todo{ref figures in manuscript+values}
 
 
-\subsubsection{Global passive lithium intake}
+\subsubsection{Global Passive Lithium Intake}
 Likewise, for membrane potential around $40\,\text{mV}$ at $37^\circ\text{C}$:
 \begin{equation}
 \label{eq:ThetaValue}
@@ -354,8 +354,21 @@ Likewise, for membrane potential around $40\,\text{mV}$ at $37^\circ\text{C}$:
 which means that the amplification factor shall be greater than this value, and eventually the inner lithium concentration shall
 be a few times the outer concentration. Indeed, the passive lithium intake is described by:
 \begin{equation}
+\label{eq:LiAllKO}
 	\LiAll^\ko = \LiAllOut \Theta \left[ \epsilon_6 \left(1-e^{-k_6t}\right)  + \epsilon_7 \left(1-e^{-k_7t}\right)\right]
 \end{equation}
+
+\subsection{Parameters Estimation from Passive-Only Experiments}
+The catalytic pathway can be simply discarded through two conditions:
+\begin{itemize}
+	\item we block $\NHE{1}$ by keeping the acidic medium,
+	\item we use   $\mychem{PS120}$ cells which lack $\NHE{1}$
+\end{itemize}
+In both cases, we shall observe a slow lithium intake following Eq.\eqref{eq:LiAllKO}, which is fitted on the following figure.
+\begin{center}
+\includegraphics[width=0.5\textwidth]{leaks.pdf}
+\end{center}
+
 
 
 
@@ -380,13 +393,6 @@ r_0 & = & \dfrac{k_7\Theta+E_0 \proton_0 \Upsilon_7}{k_6\Theta+E_0 \proton_0 \Up
 \end{equation}
 
 
-\section{Parameters Estimation from Passive-Only Experiments}
-The catalytic pathway can be simply discarded through two conditions:
-\begin{itemize}
-	\item we block $\NHE{1}$ by keeping the acidic medium,
-	\item we use   $PS120$ cells lacking $\NHE{1}$.
-\end{itemize}
-In both cases, we shall observe 
 
 
 

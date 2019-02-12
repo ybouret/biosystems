@@ -19,10 +19,10 @@ typedef Fit::Vectors<double>    Vectors;
 
 
 static const double lambda_s = 12.0192;
-static const double d7out  = 14.57;
-static const double sigma  = 1.0/0.99772;
-static const double eps6   = 1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out));
-static const double eps7   = 1.0-eps6;
+static const double d7out    = 14.57;
+static const double sigma0   = 1.0/0.99772;
+static const double eps6     = 1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out));
+static const double eps7     = 1.0-eps6;
 
 class Leak
 {
@@ -43,6 +43,7 @@ public:
         const double k7      = vars(aorg,"k7");
         const double Theta   = vars(aorg,"Theta");
         const double Li      = vars(aorg,"Li");
+        const double sigma   = vars(aorg,"sigma");
         const double tau     = t*k7;
 
         return Li * Theta * ( eps6*(1.0-exp(-sigma*tau)) + eps7*(1.0-exp(-tau)));
@@ -151,6 +152,7 @@ Y_PROGRAM_START()
 
     // preparing variables
     vars << "Theta";
+    vars << "sigma";
 
     if(true)
     {
@@ -158,6 +160,7 @@ Y_PROGRAM_START()
         {
             Variables &local = samples[i]->variables;
             local("Theta",vars);
+            local("sigma",vars);
             local("Li",vars,i);
             local("k7",vars,i);
         }
@@ -194,6 +197,8 @@ Y_PROGRAM_START()
 
     // setting initial variables
     vars(aorg,"Theta") = 4.47;
+    vars(aorg,"sigma") = sigma0;
+    
     for(size_t i=1;i<=ns;++i)
     {
         const Variables &local = samples[i]->variables;

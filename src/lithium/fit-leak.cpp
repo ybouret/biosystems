@@ -24,6 +24,12 @@ static const double sigma0   = 1.0/0.99772;
 static const double eps6     = 1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out));
 static const double eps7     = 1.0-eps6;
 
+static const double t_sample = 1; // 1 mn
+static const double PS120_120mM_d7in[] = {
+    12.643522,
+    12.580658,
+    12.706386 };
+
 class Leak
 {
 public:
@@ -49,7 +55,28 @@ public:
         return Li * Theta * ( eps6*(1.0-exp(-sigma*tau)) + eps7*(1.0-exp(-tau)));
     }
 
+    static inline double ratio(const double t,
+                               const double k7,
+                               const double sigma)
+    {
+        const double tau = t*k7;
+        return (tau>0) ? (1.0-exp(-tau))/(1.0-exp(-sigma*tau)) : 1.0/sigma;
+    }
 
+    static inline double delta_of( const double r )
+    {
+        return 1000.0 * ( (1.0+d7out/1000.0)*r - 1.0 );
+    }
+
+    /*
+     double Estimate(double,
+     const Array     &aorg,
+     const Variables &vars)
+     {
+     const double k7      = vars(aorg,"k7");
+     const double sigma   = vars(aorg,"sigma");
+     }
+     */
 
 
 private:

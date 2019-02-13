@@ -332,6 +332,9 @@ CYCLE:
             const double sig = zfind::run1(zsigma,0.1, 10.0);
             std::cerr << "=> sig=" << sig << std::endl;
             if(level<=3) goto CYCLE;
+            std::cerr.flush();
+            fprintf(stderr, "sigma=%.15g\n",sig);
+            fflush(stderr);
         }
     }
 

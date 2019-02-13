@@ -7,6 +7,7 @@
 #include "y/math/fit/vectors.hpp"
 #include "y/math/stat/metrics.hpp"
 #include "y/math/fcn/zfind.hpp"
+#include "y/sort/sorted-sum.hpp"
 
 using namespace upsylon;
 using namespace math;
@@ -353,6 +354,8 @@ CYCLE:
     //
     ////////////////////////////////////////////////////////////////////////////
     ios::ocstream lf("fit-leaks.dat");
+    vector<double> k7v(ns,as_capacity);
+    vector<double> k7w(ns,as_capacity);
     for(size_t i=1;i<=ns;++i)
     {
         std::cerr << "  |_Saving from " << files[i] << std::endl;
@@ -370,17 +373,18 @@ CYCLE:
         lf("\tLi    = %.15g\n", V(aorg,"Li") );
         lf("\tTheta = %.15g\n", V(aorg,"Theta"));
         lf("\tk7    = %.15g +/- %.15g\n", V(aorg,"k7"), V(aerr,"k7") );
+        k7v.push_back(V(aorg,"k7"));
+        k7w.push_back( concs[i] );
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    //
-    // save log_file
-    //
-    //
-    ////////////////////////////////////////////////////////////////////////////
-
-
+    std::cerr << "k7=" << k7v  << std::endl;
+    std::cerr << "w7=" << k7w << std::endl;
+    for(size_t i=1;i<=ns;++i)
+    {
+        k7v[i] *= k7w[i];
+    }
+    const double k7ave = sorted_sum(k7v)/sorted_sum(k7w);
+    std::cerr << "weighted: " << k7ave << std::endl;
 }
 Y_PROGRAM_END()
 

@@ -407,12 +407,12 @@ r_0 & = & \dfrac{k_7\Theta+E_0 \proton_0 \Upsilon_7}{k_6\Theta+E_0 \proton_0 \Up
 \end{equation}
 
 \subsection{Passive Return}
-Let us assume that for a given time $t^\start$ we get the values $\beta_x^\start$ such that $\beta_6^\start+\beta_7^\start=B^\start$ and a given isotopic ratio $r^\start$:
+Let us assume that for a given time $t^\start$ we get the values $\beta_x^\start$ such that $\beta_6^\start+\beta_7^\start=B^\start\Theta$ and a given isotopic ratio $r^\start$:
 \begin{equation}
 \label{eq:start}
 \left\lbrace
 \begin{array}{rcl}
-\beta_6^\start+\beta_7^\start & = & B^\start \\
+\beta_6^\start+\beta_7^\start & = & B^\start\Theta \\
 \\
 \dfrac{\beta_7^\start}{\beta_6^\start} & = & r^\start\\
 \end{array}
@@ -420,11 +420,11 @@ Let us assume that for a given time $t^\start$ we get the values $\beta_x^\start
 \Rightarrow
 \left\lbrace
 \begin{array}{rcl}
-\beta_7^\start & = & \dfrac{r^\start B^\start}{1+r^\start}\\
+\beta_7^\start & = & \dfrac{r^\start B^\start}{1+r^\start}\Theta\\
 \\
-\beta_6^\start & = & \dfrac{B^\start}{1+r^\start}\\
+\beta_6^\start & = & \dfrac{B^\start}{1+r^\start}\Theta\\
 \\
-\beta_x & = & \beta_x^\start + \left(\Theta-\beta_x^\start\right)\left[1-e^{-k_x(t-t^\start)}\right]\\
+\beta_x(t\geq t^\start) & = & \beta_x^\start + \left(\Theta-\beta_x^\start\right)\left[1-e^{-k_x(t-t^\start)}\right]\\
 \end{array}
 \right.
 \end{equation}

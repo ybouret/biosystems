@@ -318,8 +318,8 @@ The isotopic separation is related to the amplification factor by:
 	.
 \end{equation}
 
-\subsection{Information from Leakage}
-\subsubsection{Isotopic separation}
+\section{Information from Leakage}
+\subsection{Isotopic separation}
 With $E_0=0$, we readily obtain:
 \begin{equation}
 	\beta^\ko_x = \Theta \left(1-e^{-k_xt} \right),
@@ -345,7 +345,7 @@ and without active contribution, the initial isotopic ratio amounts to:
 which is far greater than the observed values even after some time \todo{ref figures in manuscript+values}
 
 
-\subsubsection{Global Passive Lithium Intake}
+\subsection{Global Passive Lithium Intake}
 Likewise, for membrane potential around $40\,\text{mV}$ at $37^\circ\text{C}$:
 \begin{equation}
 \label{eq:ThetaValue}
@@ -358,19 +358,31 @@ be a few times the outer concentration. Indeed, the passive lithium intake is de
 	\LiAll^\ko = \LiAllOut \Theta \left[ \epsilon_6 \left(1-e^{-k_6t}\right)  + \epsilon_7 \left(1-e^{-k_7t}\right)\right]
 \end{equation}
 
-\subsubsection{Parameters Estimation from Passive-Only Experiments}
 The catalytic pathway can be simply discarded through two conditions:
 \begin{itemize}
 	\item we block $\NHE{1}$ by keeping the acidic medium,
 	\item we use   $\mychem{PS120}$ cells which lack $\NHE{1}$
 \end{itemize}
-In both cases, we shall observe a slow lithium intake following Eq.\eqref{eq:LiAllKO}, which is fitted on the following figure.
+In both cases, we shall observe a slow lithium intake following Eq.\eqref{eq:LiAllKO}, which is fitted on figure \ref{fig:leak}.
+\begin{figure}[!ht]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{leaks.pdf}
 \end{center}
-
-
-
+\caption{\label{fig:leak} Fit of experimental lithium electro-osmotic intake (points) according to the GHK theory (lines)}
+\end{figure}
+For different lithium concentrations and cell types, we find some consistent leak constants.
+Moreover, a set of isotopic sepatations for $\mychem{PS120}$ cells at $\LiAllOut=120\text{mM}$ were measured after 1 minute and it amounts to:
+\begin{equation}
+\label{eq:d7ps120}
+\deltaLi^\ko_{@1\text{mn}} = 12.6435 \pm 0.025.
+\end{equation}
+If we assume that
+for this case $k_7\approx0.0026\,\text{mn}^{-1}$, then
+\begin{equation}
+	\sigma^\ko \approx 1.0019 \pm 2\cdot10^{-5},
+\end{equation}
+which is a very good approximation to the diffusive $\sigma=1.00229$. Accordingly, we will keep the more precise and documented $\sigma$ 
+in the following theoretical and numerical work.
 
 \section{Short Times Behaviours}
 

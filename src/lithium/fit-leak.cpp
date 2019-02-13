@@ -332,8 +332,15 @@ CYCLE:
             const double sig = zfind::run1(zsigma,0.1, 10.0);
             std::cerr << "=> sig=" << sig << std::endl;
             if(level<=3) goto CYCLE;
+
+            zsigma.delta = d7ave-d7err;
+            const double sigm = zfind::run1(zsigma,0.1, 10.0);
+            zsigma.delta = d7ave+d7err;
+            const double sigp = zfind::run1(zsigma,0.1, 10.0);
+            std::cerr << "sigm=" << sigm << ", sigp=" << sigp << std::endl;
+            const double dsig = fabs(sigp-sigm)/2;
             std::cerr.flush();
-            fprintf(stderr, "sigma=%.15g\n",sig);
+            fprintf(stderr, "sigma=%.15g +/- %.15g\n",sig,dsig);
             fflush(stderr);
         }
     }

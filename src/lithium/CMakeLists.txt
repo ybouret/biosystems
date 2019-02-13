@@ -15,6 +15,11 @@ ADD_EXECUTABLE(fit-ph fit-ph.cpp)
 TARGET_LINK_Y(fit-ph m)
 INSTALL( TARGETS fit-ph RUNTIME DESTINATION bin )
 
+ADD_EXECUTABLE(fit-relax fit-relax.cpp)
+TARGET_LINK_Y(fit-relax m)
+INSTALL( TARGETS fit-relax RUNTIME DESTINATION bin )
+
+
 IF(FALSE)
 
 ADD_EXECUTABLE(fit-hall fit-hall.cpp)

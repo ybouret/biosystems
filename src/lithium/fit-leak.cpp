@@ -5,6 +5,8 @@
 #include "y/ptr/shared.hpp"
 #include "y/sort/unique.hpp"
 #include "y/math/fit/vectors.hpp"
+#include "y/math/stat/metrics.hpp"
+#include "y/math/fcn/zfind.hpp"
 
 using namespace upsylon;
 using namespace math;
@@ -25,10 +27,12 @@ static const double eps6     = 1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out));
 static const double eps7     = 1.0-eps6;
 
 static const double t_sample = 1; // 1 mn
-static const double PS120_120mM_d7in[] = {
+static const double PS120_120mM_d7in[] =
+{
     12.643522,
     12.580658,
-    12.706386 };
+    12.706386
+};
 
 class Leak
 {
@@ -83,6 +87,19 @@ private:
     Y_DISABLE_COPY_AND_ASSIGN(Leak);
 };
 
+struct ZSigma
+{
+    double k;
+    double delta;
+
+    double operator()(double sig)
+    {
+        const double tau = k * t_sample;
+        const double r   = (1.0-exp(-tau))/(1.0-exp(-sig*tau));
+        return Leak::delta_of(r) - delta;
+    }
+};
+
 Y_PROGRAM_START()
 {
 
@@ -102,6 +119,15 @@ Y_PROGRAM_START()
     ////////////////////////////////////////////////////////////////////////////
     std::cerr << "eps6=" << eps6 << std::endl;
     std::cerr << "eps7=" << eps7 << std::endl;
+
+    const size_t d7num = sizeof(PS120_120mM_d7in)/sizeof(PS120_120mM_d7in[0]);
+    double       d7sig = 0;
+    const double d7ave = __average_of(PS120_120mM_d7in,d7num, &d7sig);
+    const double d7err = d7sig/sqrt(d7num);
+    std::cerr << "d7ave=" << d7ave << " +/- " << d7err << std::endl;
+
+    ZSigma zsigma = { 0, d7ave };
+
 
     ////////////////////////////////////////////////////////////////////////////
     //
@@ -264,6 +290,7 @@ Y_PROGRAM_START()
     Fit::LeastSquares<double>::Function F( &leak, & Leak::Compute );
 
     int level = 0;
+CYCLE:
     {
         std::cerr << "== Fit == Level " << ++level << std::endl;
         if( !LS.fit(samples, F, aorg, aerr, used) )
@@ -293,6 +320,20 @@ Y_PROGRAM_START()
         vars.display(std::cerr,aorg,aerr);
     }
 
+    for(size_t i=1;i<=ns;++i)
+    {
+        if( concsID[i] == "120" && labels[i] == "PS120" )
+        {
+            std::cerr << "Should Match..." << std::endl;
+            const string k_id = "k7_" + vformat("%u",unsigned(i));
+            const double k7   = vars(aorg,k_id);
+            std::cerr << "Using k7=" << k7 << std::endl;
+            zsigma.k = k7;
+            const double sig = zfind::run1(zsigma,0.1, 10.0);
+            std::cerr << "=> sig=" << sig << std::endl;
+            if(level<=3) goto CYCLE;
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     //
@@ -319,11 +360,6 @@ Y_PROGRAM_START()
         lf("\tLi    = %.15g\n", V(aorg,"Li") );
         lf("\tTheta = %.15g\n", V(aorg,"Theta"));
         lf("\tk7    = %.15g +/- %.15g\n", V(aorg,"k7"), V(aerr,"k7") );
-        lf("\t#x60:\n");
-        lf("\tk7    = %.15g +/- %.15g\n", V(aorg,"k7")*60, V(aerr,"k7")*60 );
-        //lf("\t#/60:\n");
-        //lf("\tk7    = %.15e +/- %.15e\n", V(aorg,"k7")/60, V(aerr,"k7")/60 );
-
     }
 
     ////////////////////////////////////////////////////////////////////////////

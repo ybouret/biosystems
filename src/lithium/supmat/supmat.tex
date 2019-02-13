@@ -62,7 +62,9 @@
 
 \newcommand{\NHE}[1]{\mychem{NHE}{\mychem{\hbox{-}\!#1}}}
 \newcommand{\todo}[1]{\framebox{\textbf{\color{WildStrawberry}{#1}}}}
+
 \newcommand{\ko}{\dagger}
+\newcommand{\start}{\ast}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -386,7 +388,7 @@ in the following theoretical and numerical work.
 
 \section{Short Times Behaviours}
 
-\subsection{Isotopic Separation}
+\subsection{Initial Isotopic Separation}
 We perform the short times integration of the system \eqref{eq:sysbis} using the initial
 conditions \eqref{eq:ini} to get:
 \begin{equation}
@@ -404,6 +406,28 @@ r_0 & = & \dfrac{k_7\Theta+E_0 \proton_0 \Upsilon_7}{k_6\Theta+E_0 \proton_0 \Up
 \right.
 \end{equation}
 
+\subsection{Passive Return}
+Let us assume that for a given time $t^\start$ we get the values $\beta_x^\start$ such that $\beta_6^\start+\beta_7^\start=B^\start$ and a given isotopic ratio $r^\start$:
+\begin{equation}
+\label{eq:start}
+\left\lbrace
+\begin{array}{rcl}
+\beta_6^\start+\beta_7^\start & = & B^\start \\
+\\
+\dfrac{\beta_7^\start}{\beta_6^\start} & = & r^\start\\
+\end{array}
+\right.
+\Rightarrow
+\left\lbrace
+\begin{array}{rcl}
+\beta_7^\start & = & \dfrac{r^\start B^\start}{1+r^\start}\\
+\\
+\beta_6^\start & = & \dfrac{B^\start}{1+r^\start}\\
+\\
+\beta_x & = & \beta_x^\start + \left(\Theta-\beta_x^\start\right)\left[1-e^{-k_x(t-t^\start)}\right]\\
+\end{array}
+\right.
+\end{equation}
 
 
 

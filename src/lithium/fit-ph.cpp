@@ -222,8 +222,9 @@ public:
         std::cerr << "Saving Parameters..." << std::endl;
         Vector Li(size(),as_capacity);
         {
-            ios::ocstream fp("pH_params.dat");
-            //fp("0 0\n");
+            ios::ocstream fp("pH_delta.dat");
+            fp("#Li dpH\n");
+            fp("0 0\n");
             for(iterator i=begin();i!=end();++i)
             {
                 const Record         &r    = **i;
@@ -232,9 +233,27 @@ public:
                 const double Hini = vars(aorg,"Hini");
                 const double Hend = vars(aorg,"Hend");
                 const double dpH  = -log10(Hend) + log10(Hini);
-                const double q    = vars(aorg,"q");
-                fp("%.15g %.15g %.15g\n", Li.back(),dpH,q);
+                //const double q    = vars(aorg,"q");
+                //const double p    = vars(aorg,"p");
+
+                fp("%.15g %.15g\n", Li.back(),dpH);
             }
+
+
+            {
+                ios::ocstream fp("pH_q.dat");
+                //fp("0 0\n");
+                fp("#Li q\n");
+                for(iterator i=begin();i!=end();++i)
+                {
+                    const Record         &r    = **i;
+                    const Fit::Variables &vars = r.sample.variables;
+                    const double  ll = string_convert::to<double>(r.Li,"Li");
+                    const double  q  = vars(aorg,"q");
+                    fp("%.15g %.15g\n", ll,q);
+                }
+            }
+
 
         }
     }
@@ -265,7 +284,7 @@ Y_PROGRAM_START()
         std::cerr << "using " << r.file_name << std::endl;
 
         lvars("p",gvars);
-       // lvars("q",gvars);
+        // lvars("q",gvars);
 
         static const char *vnames[] =
         {

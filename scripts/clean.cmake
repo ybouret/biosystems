@@ -11,6 +11,7 @@ ENDFUNCTION(__ADD_PATTERN)
 MESSAGE( STATUS "collecting local temporary files")
 __ADD_PATTERN(*.dat)
 __ADD_PATTERN(src/lithium/*.dat)
+__ADD_PATTERN(src/lithium/supmat/*~)
 __ADD_PATTERN(bin/*)
 
 IF(APPLE)

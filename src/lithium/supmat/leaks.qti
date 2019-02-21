@@ -91,7 +91,7 @@ WindowLabel	/Users/ybouret/program/biosystems/src/lithium/supmat/leaks/data_fuit
 </data>
 </table>
 <multiLayer>
-Graph1	1	1	20/02/2019 14:58
+leaks	1	1	20/02/2019 14:58
 geometry	294	151	563	526	active
 WindowLabel		2
 Margins	5	5	5	5
@@ -140,10 +140,10 @@ curve	data_fuite120mM_PS120_1	data_fuite120mM_PS120_2	1	0	#0000ff	0	1	9	2	#00000
 curve	data_fuite120mM_PS120_1	data_fuite120mM_PS120_3	0	1	#000000	0	2	7	0	#00ffff	#00ffff	0	#000000	14	1	2	0	0	7	1
 curve	data_fuite120mM_NHE1_1	data_fuite120mM_NHE1_2	1	0	#ff00ff	0	1	9	2	#ff0000	-1	0	#000000	14	1	2	0	0	7	1
 curve	data_fuite120mM_NHE1_1	data_fuite120mM_NHE1_3	7	5	#ff0000	0	2	7	0	#ffff00	#ffff00	0	#000000	14	2	0	0	7	1
-scale	0	-5	145	20	9	5	0	0
-scale	1	-5	145	20	9	5	0	0
-scale	2	-5	65	0	8	5	0	0
-scale	3	-5	65	0	8	5	0	0
+scale	0	-5	145	25	7	1	0	0
+scale	1	-5	145	25	7	1	0	0
+scale	2	-5	65	10	8	1	0	0
+scale	3	-5	65	10	8	1	0	0
 LabelsFormat	0	6	0	6	0	6	0	6
 AxisType	0	0	0	0	
 MajorTicks	1	1	1	1
@@ -164,8 +164,8 @@ EnabledTickLabels	1	1	1	1
 <LineStyle>0</LineStyle>
 <x>-4.9593495934959</x>
 <y>132.77777777778</y>
-<right>26.7479674796748</right>
-<bottom>109.444444444444</bottom>
+<right>10.8383838383838</right>
+<bottom>129.057971014493</bottom>
 <attachTo>1</attachTo>
 <onTop>1</onTop>
 <visible>1</visible>

@@ -478,10 +478,10 @@ curve	phdata_pH60mM_1	phdata_pH60mM_5	1	0	#000000	0	1	5	2	#8000ff	-1	0	#000000	1
 curve	phdata_pH60mM_1	phdata_pH60mM_6	0	1	#8000ff	0	2	7	0	#000000	#000000	0	#000000	14	1	2	0	0	59	1
 curve	phdata_pH90mM_1	phdata_pH90mM_5	1	0	#000000	0	1	5	2	#ff8000	-1	0	#000000	14	1	2	0	0	59	1
 curve	phdata_pH90mM_1	phdata_pH90mM_6	0	1	#ff8000	0	2	7	0	#000000	#000000	0	#000000	14	1	2	0	0	59	1
-scale	0	5.8	7.05	0	8	5	0	0
-scale	1	5.8	7.05	0	8	5	0	0
-scale	2	-5	350	0	8	5	0	0
-scale	3	-5	350	0	8	5	0	0
+scale	0	5.7	7.05	0.25	7	0	0	0
+scale	1	5.7	7.05	0.25	7	0	0	0
+scale	2	-5	365	60	8	0	0	0
+scale	3	-5	365	60	8	0	0	0
 LabelsFormat	0	6	0	6	0	6	0	6
 AxisType	0	0	0	0	
 MajorTicks	1	1	1	1
@@ -502,8 +502,8 @@ EnabledTickLabels	1	1	1	1
 <LineStyle>0</LineStyle>
 <x>11.871287128713</x>
 <y>7.0841463414634</y>
-<right>115.207920792079</right>
-<bottom>6.55463414634146</bottom>
+<right>73.7326732673267</right>
+<bottom>6.91650485436893</bottom>
 <attachTo>1</attachTo>
 <onTop>1</onTop>
 <visible>1</visible>

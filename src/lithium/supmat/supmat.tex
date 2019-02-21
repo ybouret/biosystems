@@ -375,7 +375,8 @@ In both cases, we shall observe a slow lithium intake following Eq.\eqref{eq:LiA
 \begin{center}
 \includegraphics[width=0.5\textwidth]{leaks.pdf}
 \end{center}
-\caption{\label{fig:leak} Fit of experimental lithium electro-osmotic intake (points) according to the GHK theory (lines)}
+\caption{\label{fig:leak} Fit of experimental lithium electro-osmotic intake (points) according to the GHK theory (lines). Data were fitted with
+Eq. \eqref{eq:LiAllKO} with $k_7$ as the variable.}
 \end{figure}
 For different lithium concentrations and cell types, we find some consistent leak constants.
 Moreover, a set of isotopic sepatations for $\mychem{PS120}$ cells at $\LiAllOut=120\text{mM}$ were measured after 1 minute and it amounts to:
@@ -392,12 +393,20 @@ which is a very good approximation \todo{given the crude assumptions} to the dif
 in the following theoretical and numerical work.
 
 \subsection{Information from pH recovery}
+Since the kinetic scheme depends on $\proton$, other measurements were performed to monitor the pH rise after the initial acidification, 
+and are reported on Figure \ref{fig:protons} for different total external lithium concentrations. Since we do not include in this model the full homeostasis,
+we take $\proton$ as an experiment-dependent input, and it appears that we get roughly:
+\begin{equation}
+\label{eq:hfit}
+	\proton \simeq \proton_0 + \left(\proton_\infty-\proton_0\right) \dfrac{t}{t+t_h},
+\end{equation}
+and we use this equation to fit the current data as indicated on Figure \ref{fig:protons} 
 
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{protons.pdf}
 \end{center}
-\caption{\label{fig:protons} Fit (lines) of apparent experimental protons intake (open circles) }
+\caption{\label{fig:protons} Fit (lines, according to Eq. \eqref{eq:hfit}) of apparent experimental protons intake (open circles).}
 \end{figure}
 
 
@@ -443,7 +452,16 @@ Let us assume that for a given time $t^\start$ we get the values $\beta_x^\start
 \end{array}
 \right.
 \end{equation}
-
+which defines the relaxing separation ratio:
+\begin{equation}
+	r(t\geq t^\start) = \dfrac
+	{
+		r^\start B^\start + ( 1+r^\start - r^\start B^\start) \left[1-e^{-k_7(t-t^\start)}\right]
+	}
+	{
+		 B^\start + ( 1+r^\start -  B^\start) \left[1-e^{-k_7\sigma(t-t^\start)}\right]
+	}
+\end{equation}
 
 
 

@@ -221,22 +221,37 @@ public:
     {
         std::cerr << "Saving Parameters..." << std::endl;
         Vector Li(size(),as_capacity);
+
+        double Hnum = 0;
+        double Hden = 0;
+        for(iterator i=begin();i!=end();++i)
+        {
+            const Record         &r    = **i;
+            const Fit::Variables &vars = r.sample.variables;
+            Li.push_back( string_convert::to<double>(r.Li,"Li") );
+            const double Hini = vars(aorg,"Hini");
+            Hnum += Hini * Li.back();
+            Hden += Li.back();
+        }
+
+
+        const double Hini_ave = Hnum/Hden;
         {
             ios::ocstream fp("pH_delta.dat");
-            fp("#Li dpH\n");
-            fp("0 0\n");
+            fp("#Li dpH pHini pHend\n");
+            fp("0 0 %.15g %.15g\n", -log10(Hini_ave), -log10(Hini_ave));
             for(iterator i=begin();i!=end();++i)
             {
                 const Record         &r    = **i;
                 const Fit::Variables &vars = r.sample.variables;
-                Li.push_back( string_convert::to<double>(r.Li,"Li") );
                 const double Hini = vars(aorg,"Hini");
                 const double Hend = vars(aorg,"Hend");
                 const double dpH  = -log10(Hend) + log10(Hini);
                 //const double q    = vars(aorg,"q");
                 //const double p    = vars(aorg,"p");
+                const double  ll = string_convert::to<double>(r.Li,"Li");
 
-                fp("%.15g %.15g\n", Li.back(),dpH);
+                fp("%.15g %.15g %.15g %.15g\n", ll,dpH, -log10(Hini), -log10(Hend) );
             }
 
 

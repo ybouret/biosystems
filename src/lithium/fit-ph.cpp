@@ -238,8 +238,8 @@ public:
         const double Hini_ave = Hnum/Hden;
         {
             ios::ocstream fp("pH_delta.dat");
-            fp("#Li dpH pHini pHend\n");
-            fp("0 0 %.15g %.15g\n", -log10(Hini_ave), -log10(Hini_ave));
+            fp("#Li dpH pHasymp pHini pHend\n");
+            fp("0 0 %.15g %.15g %.15g\n", -log10(Hini_ave), -log10(Hini_ave), -log10(Hini_ave));
             for(iterator i=begin();i!=end();++i)
             {
                 const Record         &r    = **i;
@@ -251,7 +251,7 @@ public:
                 //const double p    = vars(aorg,"p");
                 const double  ll = string_convert::to<double>(r.Li,"Li");
 
-                fp("%.15g %.15g %.15g %.15g\n", ll,dpH, -log10(Hini), -log10(Hend) );
+                fp("%.15g %.15g %.15g %.15g %.15g\n", ll,dpH, r.pH_asymp, -log10(Hini), -log10(Hend) );
             }
 
 

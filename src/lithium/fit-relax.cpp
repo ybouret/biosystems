@@ -74,7 +74,7 @@ public:
 
     static inline bool Keep( const double t )
     {
-        return t>=60;
+        return t>=120;
     }
 
     static inline void Save(const Sample &s,
@@ -198,6 +198,23 @@ Y_PROGRAM_START()
     Leak::Save(sample,aorg,F);
     vars.display(std::cerr, aorg,aerr);
     std::cerr << std::endl;
+
+
+    if(true)
+    {
+        vars.off(used,"B");
+        vars(aorg,"B") = 1.0/8;
+        vars.display(std::cerr,used);
+
+        if(!LS.fit(sample, F, aorg, aerr, used) )
+        {
+            ++level;
+        std::cerr << "couldn't fit level-" << level << std::endl;
+        }
+        Leak::Save(sample,aorg,F);
+        vars.display(std::cerr, aorg,aerr);
+        std::cerr << std::endl;
+    }
 
 }
 Y_PROGRAM_END()

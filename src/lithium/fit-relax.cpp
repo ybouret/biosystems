@@ -77,14 +77,27 @@ public:
         return t>=60;
     }
 
-    static inline void Save( const Sample &s )
+    static inline void Save(const Sample &s,
+                            const Array  &aorg,
+                            Fit::Type<double>::Function &F)
     {
-        ios::ocstream fp("fit-relax.dat");
-        for(size_t i=1;i<=s.X.size();++i)
         {
+            ios::ocstream fp("fit-relax.dat");
+            for(size_t i=1;i<=s.X.size();++i)
+            {
 
-            fp("%.15g %.15g %.15g\n", s.X[i], s.Y[i], s.Yf[i] );
+                fp("%.15g %.15g %.15g\n", s.X[i], s.Y[i], s.Yf[i] );
+            }
         }
+
+        {
+            ios::ocstream fp("fit-relax-curve.dat");
+            for(double x = s.X[1]; x <= s.X[ s.count() ]; x += 0.1 )
+            {
+                fp("%.15g %.15g\n", x, F(x,aorg,s.variables) );
+            }
+        }
+
     }
 
 private:
@@ -119,8 +132,8 @@ Y_PROGRAM_START()
         maintain::build_indices(good, t, Leak::Keep,true);
         std::cerr << "#good=" << good.size() << std::endl;
 
-        maintain::strip(t,good);
-        maintain::strip(d7,good);
+        maintain::keep(t,good);
+        maintain::keep(d7,good);
 
     }
 
@@ -150,7 +163,7 @@ Y_PROGRAM_START()
 
     sample.computeD2(F,aorg);
 
-    Leak::Save(sample);
+    Leak::Save(sample,aorg,F);
 
     vars.on(used,"k7");
 
@@ -162,7 +175,7 @@ Y_PROGRAM_START()
         std::cerr << "couldn't fit level-" << level << std::endl;
     }
 
-    Leak::Save(sample);
+    Leak::Save(sample,aorg,F);
     vars.display(std::cerr, aorg,aerr);
     std::cerr << std::endl;
 
@@ -172,7 +185,7 @@ Y_PROGRAM_START()
         ++level;
         std::cerr << "couldn't fit level-" << level << std::endl;
     }
-    Leak::Save(sample);
+    Leak::Save(sample,aorg,F);
     vars.display(std::cerr, aorg,aerr);
     std::cerr << std::endl;
 
@@ -182,7 +195,7 @@ Y_PROGRAM_START()
         ++level;
         std::cerr << "couldn't fit level-" << level << std::endl;
     }
-    Leak::Save(sample);
+    Leak::Save(sample,aorg,F);
     vars.display(std::cerr, aorg,aerr);
     std::cerr << std::endl;
 

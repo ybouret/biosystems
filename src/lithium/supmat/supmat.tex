@@ -417,7 +417,19 @@ From the data presented in figure 3a of that manuscript which shows that the $\N
 assume:
 \begin{equation}
 \label{eq:kh}
-k_h \approx k_0 \eta(h),\; \eta(h) = \dfrac{\left(\frac{h}{4\,10^{-7}}\right)^{1.7}}{1+\left(\frac{h}{4\,10^{-7}}\right)^{1.7}}
+\left\lbrace
+\begin{array}{rcl}
+k_h & = & k_0 \eta(h)\\
+\eta(h) & \approx & \dfrac{\left(\frac{h}{4\,10^{-7}}\right)^{1.7}}{1+\left(\frac{h}{4\,10^{-7}}\right)^{1.7}} \approx 
+        \dfrac
+{
+10^{1.7(6.39-\mathrm{pH})}
+}
+{
+1+10^{1.7(6.39-\mathrm{pH})}
+}\\
+\end{array}
+\right.
 \end{equation}
 
 \section{Short Times Behaviours}

@@ -1,4 +1,7 @@
 
+ADD_EXECUTABLE(simlin simlin.cpp)
+TARGET_LINK_Y(simlin lua++ m)
+INSTALL( TARGETS simlin RUNTIME DESTINATION bin )
 
 
 

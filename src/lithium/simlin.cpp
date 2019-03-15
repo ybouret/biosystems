@@ -32,7 +32,7 @@ public:
     aorg()
     {
         vars << "pH_ini" << "pH_end" << "t_h";
-        vars << "pH_eta" << "pw_eta";
+        vars << "k0" << "pH_eta" << "pw_eta";
         
         aorg.make(vars.size(),0);
         initialize();
@@ -41,6 +41,12 @@ public:
     void initialize()
     {
         Lithium &self = *this;
+        
+        self["pH_ini"] = 5.8;
+        self["pH_end"] = 6.2;
+        self["t_h"]    = 30.0;
+        
+        self["k0"]     = 1.0/10;
         self["pH_eta"] = 6.39;
         self["pw_eta"] = 1.70;
     }
@@ -75,7 +81,7 @@ public:
         return -log10( get_h(t) );
     }
     
-    inline double eta( double h ) const
+    inline double get_eta( double h ) const
     {
         const Lithium &self = *this;
         const double   pH   = -log10(h);
@@ -98,7 +104,7 @@ public:
             for(size_t i=0;i<=N;++i)
             {
                 const double pH = pH_min + ( (pH_max-pH_min) * i)/N;
-                fp("%g %g\n", pH, eta( pow(10.0,-pH) ) );
+                fp("%g %g\n", pH, get_eta( pow(10.0,-pH) ) );
             }
         }
         
@@ -106,10 +112,14 @@ public:
     
     void Compute( array<double> &dY, double t, const array<double> &Y )
     {
+        const Lithium &self = *this;
+        
         const double ac = Y[I_AC];
         const double h  = get_h(t);
+        const double eta = get_eta(h);
+        const double kh  = self["k0"] * eta;
         
-        dY[I_AC] = -ac;
+        dY[I_AC] = kh*(1.0-ac);
         
     }
     
@@ -131,10 +141,7 @@ Y_PROGRAM_START()
     
     ODE_Driver driver;
     driver.eps = 1e-5;
-    
-    Li["pH_ini"] = 5.8;
-    Li["pH_end"] = 6.2;
-    Li["t_h"]    = 30.0;
+   
     
     Li.save_info(5,7);
     

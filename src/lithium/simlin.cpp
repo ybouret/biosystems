@@ -32,7 +32,10 @@ public:
     aorg()
     {
         vars << "pH_ini" << "pH_end" << "t_h";
+        
         vars << "k0" << "pH_eta" << "pw_eta";
+        
+        vars << "kappa";
         
         aorg.make(vars.size(),0);
         initialize();
@@ -43,12 +46,14 @@ public:
         Lithium &self = *this;
         
         self["pH_ini"] = 5.8;
-        self["pH_end"] = 6.2;
+        self["pH_end"] = 6.8;
         self["t_h"]    = 30.0;
         
         self["k0"]     = 1.0/10;
         self["pH_eta"] = 6.39;
         self["pw_eta"] = 1.70;
+        
+        self["kappa"]  = 2.0;
     }
     
     inline double & operator[](const string &id)
@@ -65,13 +70,13 @@ public:
     {
         const Lithium &self  = *this;
         const double   h_ini = pow(10.0,-self["pH_ini"]);
-        const double   h_end = pow(10.0,-self["pH_end"]);
         if(t<=0)
         {
             return h_ini;
         }
         else
         {
+            const double   h_end = pow(10.0,-self["pH_end"]);
             return h_ini + (h_end-h_ini) * t/(t+self["t_h"]);
         }
     }
@@ -114,25 +119,41 @@ public:
     {
         const Lithium &self = *this;
         
-        const double ac = Y[I_AC];
-        const double h  = get_h(t);
+        const double ac  = Y[I_AC];
+        const double h   = get_h(t);
         const double eta = get_eta(h);
         const double kh  = self["k0"] * eta;
+        const double rho = h/get_h(0);
         
-        dY[I_AC] = kh*(1.0-ac);
-        
+        dY[I_AC] = kh*(1.0-ac) - self["kappa"] * rho * ac;
+        dY[I_B6] = 0;
+        dY[I_B7] = 0;
     }
     
     void setup( Array &Y )
     {
         Y[I_AC] = 1;
+        Y[I_B6] = 0;
+        Y[I_B7] = 0;
     }
+    
+   
     
 private:
     Y_DISABLE_COPY_AND_ASSIGN(Lithium);
     
 };
 
+static inline
+void save(ios::ostream &fp, const double lt, const Array &Y )
+{
+    fp("%.15g", lt);
+    for(size_t i=1;i<=Y.size();++i)
+    {
+        fp(" %.15g", Y[i]);
+    }
+    fp << "\n";
+}
 
 Y_PROGRAM_START()
 {
@@ -147,7 +168,7 @@ Y_PROGRAM_START()
     
     
     const double lt_min = -6;
-    double       lt_max =  log(10*60);
+    double       lt_max =  log(30*60);
     double       lt_amp = lt_max-lt_min;
     double       lt_stp = 0.002;
     double       lt_sav = 0.05;
@@ -163,9 +184,12 @@ Y_PROGRAM_START()
     bar.start();
     
     vector<double> dY(Y.size());
-
+    
+    ios::ocstream::overwrite("output.dat");
+    
     double t0   = 0;
     double ctrl = exp(lt_min)/10;
+    Li.setup(Y);
     for(size_t i=1;i<=iters;++i)
     {
         const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
@@ -175,11 +199,12 @@ Y_PROGRAM_START()
         {
             bar.update(i,iters);
             bar.display(std::cerr) << '\r';
-#if 0
             {
                 ios::ocstream fp("output.dat",true);
                 save(fp,lt1,Y);
             }
+            
+#if 0
             {
                 ios::ocstream fp("li.dat",true);
                 fp("%.15g %.15g %.15g %.15g\n",lt1,Li.computeDelta(Y),Li.computeLiAllRatio(Y),exp(lt1));

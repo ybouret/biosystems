@@ -1,13 +1,11 @@
 
-ADD_EXECUTABLE(simlin simlin.cpp)
-TARGET_LINK_Y(simlin lua++ m)
-INSTALL( TARGETS simlin RUNTIME DESTINATION bin )
 
 
+ADD_EXECUTABLE(simalpha simalpha.cpp li-common.hpp)
+TARGET_LINK_Y(simalpha lua++ m)
+INSTALL( TARGETS simalpha RUNTIME DESTINATION bin )
 
-ADD_EXECUTABLE(fullsim fullsim.cpp fcnli.hpp fullsim.lua)
-TARGET_LINK_Y(fullsim lua++ m)
-INSTALL( TARGETS fullsim RUNTIME DESTINATION bin )
+
 
 ADD_EXECUTABLE(fit-leak fit-leak.cpp)
 TARGET_LINK_Y(fit-leak lua++ m)
@@ -27,6 +25,15 @@ TARGET_LINK_Y(fit-ph-delta m)
 INSTALL( TARGETS fit-ph-delta RUNTIME DESTINATION bin )
 
 IF(FALSE)
+
+ADD_EXECUTABLE(simlin simlin.cpp li-common.hpp)
+TARGET_LINK_Y(simlin lua++ m)
+INSTALL( TARGETS simlin RUNTIME DESTINATION bin )
+
+
+ADD_EXECUTABLE(fullsim fullsim.cpp fcnli.hpp fullsim.lua)
+TARGET_LINK_Y(fullsim lua++ m)
+INSTALL( TARGETS fullsim RUNTIME DESTINATION bin )
 
 ADD_EXECUTABLE(fit-hall fit-hall.cpp)
 TARGET_LINK_Y(fit-hall m)

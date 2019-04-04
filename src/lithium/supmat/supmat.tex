@@ -432,6 +432,24 @@ k_h & = & k_0 \eta(h)\\
 \right.
 \end{equation}
 
+\section{Linear System}
+\begin{equation}
+\label{eq:syslin}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \hat\alpha & = &
+	 k_h \left(1-\hat\alpha\right) 
+	 - \LiAllOut    \hat\alpha\proton \Upsilon_\alpha  \\
+	 \\
+	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0  \hat\alpha  \proton \Upsilon_x \\
+\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+\beta_x(t) = \Theta\left[1-e^{-k_xt}\right] + E_0 \Upsilon_x \left[ \int_0^t \hat\alpha(u) h(u) e^{k_x u }\,\mathrm{d} u \right] e^{-k_x t}
+\end{equation}
+
 \section{Short Times Behaviours}
 
 \subsection{Initial Isotopic Separation}

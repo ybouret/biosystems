@@ -35,7 +35,7 @@ public:
 
         self["pH_ini"] = 5.8;
         self["pH_end"] = 6.8;  //self["pH_end"] = self["pH_ini"];
-        self["t_h"]    = 30.0;
+        self["t_h"]    = 120.0;
 
         self["k0"]     = 0.5;
         self["pH_eta"] = 6.39;
@@ -98,6 +98,18 @@ public:
         return self["k0"] * __lithium::eta( _end,aorg,vars ) / _end * square_of( tan( self["Omega"] ) );
     }
 
+    double get_h( double t ) const
+    {
+        //const Lithium &self = *this;
+        return __lithium::h(t, aorg, vars);
+    }
+
+    double get_h_ini() const
+    {
+        return __lithium::h_ini(aorg,vars);
+    }
+
+
     double get_gamma0() const
     {
         const Lithium &self = *this;
@@ -109,7 +121,7 @@ public:
         const Lithium &self = *this;
 
         const double ac    = Y[I_AC];
-        const double h     = __lithium::h(t, aorg, vars);
+        const double h     =  get_h(t);
         const double eta   = __lithium::eta(h, aorg, vars);
         const double kh    = self["k0"] * eta;
         const double kappa = get_kappa();
@@ -190,8 +202,9 @@ Y_PROGRAM_START()
             bar.display(std::cerr) << '\r';
             {
                 ios::ocstream fp(sim_name,true);
-                const double rho = Y[Lithium::I_AC] / Li.get_master(t1);
-                __lithium::save(fp,lt1,Y,&rho);
+                //const double rho = Y[Lithium::I_AC] / Li.get_master(t1);
+                const double phi = Y[Lithium::I_AC] * Li.get_h(t1)/Li.get_h_ini();
+                __lithium::save(fp,lt1,Y,&phi);
             }
 
         }

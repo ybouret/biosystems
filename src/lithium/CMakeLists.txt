@@ -5,6 +5,9 @@ ADD_EXECUTABLE(simalpha simalpha.cpp li-common.hpp)
 TARGET_LINK_Y(simalpha lua++ m)
 INSTALL( TARGETS simalpha RUNTIME DESTINATION bin )
 
+ADD_EXECUTABLE(eta eta.cpp li-common.hpp)
+TARGET_LINK_Y(eta  m)
+INSTALL( TARGETS eta RUNTIME DESTINATION bin )
 
 
 ADD_EXECUTABLE(fit-leak fit-leak.cpp)

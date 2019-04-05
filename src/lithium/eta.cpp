@@ -47,19 +47,28 @@ public:
         return get_eta( h_end() );
     }
 
-    void save_info(double pH_min, double pH_max) const
+    void save_info(double pH_min, double pH_max)
     {
         if(pH_min>=pH_max) cswap(pH_max,pH_min);
 
         {
+            vars(aorg,"pH_ini") = pH_min;
+            vars(aorg,"pH_end") = pH_max;
             const string file_name = vformat("eta%1.1fto%1.1f.dat",pH_min,pH_max);
             ios::ocstream fp(file_name);
             const size_t  N = 200;
+            const double  eta_ini = get_eta_ini();
+            const double  eta_end = get_eta_end();
+            std::cerr << "eta_ini=" << eta_ini << std::endl;
+            std::cerr << "eta_end=" << eta_end << std::endl;
             for(size_t i=0;i<=N;++i)
             {
-                const double pH = pH_min + ( (pH_max-pH_min) * i)/N;
-                const double u  = double(i)/N;
-                fp("%g %g %g\n", u, get_eta( pow(10.0,-pH) ), pH);
+                const double u   = double(i)/N;
+                const double h   = h_ini() + u * (h_end()-h_ini());
+                const double pH  = -log10(h);
+                const double eta = get_eta(h );
+                const double red = (eta-eta_ini)/(eta_end-eta_ini);
+                fp("%g %g %g %g\n", u, red, pH, eta);
             }
         }
 
@@ -79,12 +88,12 @@ Y_PROGRAM_START()
 
     const double pH_end[] = { 5.8, 6.0, 6.2, 6.4, 6.6, 6.8, 7.0, 7.2 };
 
-    for(unsigned i=0;i<sizeof(pH_end)/sizeof(pH_end[0]);++i)
+    for(unsigned i=1;i<sizeof(pH_end)/sizeof(pH_end[0]);++i)
     {
         data.save_info(5.8,pH_end[i]);
     }
 
-    std::cerr << "plot 'eta5.8to5.8.dat' w l, 'eta5.8to6.0.dat' w l, 'eta5.8to6.2.dat' w l, 'eta5.8to6.4.dat' w l, 'eta5.8to6.6.dat' w l, 'eta5.8to6.8.dat' w l, 'eta5.8to7.0.dat' w l, 'eta5.8to7.2.dat' w l" << std::endl;
+    std::cerr << "plot 'eta5.8to6.0.dat' w l, 'eta5.8to6.2.dat' w l, 'eta5.8to6.4.dat' w l, 'eta5.8to6.6.dat' w l, 'eta5.8to6.8.dat' w l, 'eta5.8to7.0.dat' w l, 'eta5.8to7.2.dat' w l" << std::endl;
 
 
 }

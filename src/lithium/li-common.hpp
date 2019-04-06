@@ -65,7 +65,7 @@ struct __lithium
     }
 
     static inline
-    void save(ios::ostream &fp, const double lt, const Array &Y, const double *extra=NULL)
+    void save(ios::ostream &fp, const double lt, const Array &Y, const double *extra1=NULL, const double *extra2=NULL)
     {
         fp("%.15g", lt);
         for(size_t i=1;i<=Y.size();++i)
@@ -73,9 +73,21 @@ struct __lithium
             fp(" %.15g", Y[i]);
         }
         fp(" %.15g", exp(lt));
-        if( extra )
+        if( extra1 )
         {
-            fp(" %.15g", *extra);
+            fp(" %.15g", *extra1);
+        }
+        else
+        {
+            fp(" 0");
+        }
+        if( extra2 )
+        {
+            fp(" %.15g", *extra2);
+        }
+        else
+        {
+            fp(" 0");
         }
         fp << "\n";
     }

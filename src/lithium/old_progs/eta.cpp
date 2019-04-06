@@ -56,19 +56,15 @@ public:
             vars(aorg,"pH_end") = pH_max;
             const string file_name = vformat("eta%1.1fto%1.1f.dat",pH_min,pH_max);
             ios::ocstream fp(file_name);
-            const size_t  N = 200;
-            const double  eta_ini = get_eta_ini();
-            const double  eta_end = get_eta_end();
-            std::cerr << "eta_ini=" << eta_ini << std::endl;
-            std::cerr << "eta_end=" << eta_end << std::endl;
+            const size_t  N  = 200;
+
             for(size_t i=0;i<=N;++i)
             {
                 const double u   = double(i)/N;
                 const double h   = h_ini() + u * (h_end()-h_ini());
                 const double pH  = -log10(h);
                 const double eta = get_eta(h );
-                const double red = (eta-eta_ini)/(eta_end-eta_ini);
-                fp("%g %g %g %g\n", u, red, pH, eta);
+                fp("%g %g %g %g\n",eta);
             }
         }
 

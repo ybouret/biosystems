@@ -1,13 +1,11 @@
 
 
 
-ADD_EXECUTABLE(simalpha simalpha.cpp li-common.hpp)
+ADD_EXECUTABLE(simalpha simalpha.cpp li-common.hpp simalpha.lua)
 TARGET_LINK_Y(simalpha lua++ m)
 INSTALL( TARGETS simalpha RUNTIME DESTINATION bin )
 
-ADD_EXECUTABLE(eta eta.cpp li-common.hpp)
-TARGET_LINK_Y(eta  m)
-INSTALL( TARGETS eta RUNTIME DESTINATION bin )
+
 
 
 ADD_EXECUTABLE(fit-leak fit-leak.cpp)
@@ -28,6 +26,9 @@ TARGET_LINK_Y(fit-ph-delta m)
 INSTALL( TARGETS fit-ph-delta RUNTIME DESTINATION bin )
 
 IF(FALSE)
+ADD_EXECUTABLE(eta eta.cpp li-common.hpp)
+TARGET_LINK_Y(eta  m)
+INSTALL( TARGETS eta RUNTIME DESTINATION bin )
 
 ADD_EXECUTABLE(simlin simlin.cpp li-common.hpp)
 TARGET_LINK_Y(simlin lua++ m)

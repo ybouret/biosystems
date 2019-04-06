@@ -420,16 +420,23 @@ assume:
 \left\lbrace
 \begin{array}{rcl}
 k_h & = & k_0 \eta(h)\\
-\eta(h) & \approx & \dfrac{\left(\frac{h}{4\,10^{-7}}\right)^{1.7}}{1+\left(\frac{h}{4\,10^{-7}}\right)^{1.7}} \approx 
+\eta(h) & \approx & \dfrac{\left(\frac{h}{h_\eta}\right)^{p_\eta}}{1+\left(\frac{h}{h_\eta}\right)^{p_\eta}} \approx 
         \dfrac
 {
-10^{1.7(6.39-\mathrm{pH})}
+10^{p_\eta(\mathrm{pH}_\eta-\mathrm{pH})}
 }
 {
-1+10^{1.7(6.39-\mathrm{pH})}
+1+10^{p_\eta(\mathrm{pH}_\eta-\mathrm{pH})}
 }\\
+h_\eta & = & 4\,10^{-7} \; \text{M}\\
+\mathrm{pH}_\eta & = & 6.39 \\
+p_\eta & = & 1.7 \\
 \end{array}
 \right.
+\end{equation}
+and we note that:
+\begin{equation}
+	\eta'(h) = \left(\dfrac{p_\eta}{h}\right) \dfrac{\left(\frac{h}{h_\eta}\right)^{p_\eta}}{\left[1+\left(\frac{h}{h_\eta}\right)^{p_\eta}\right]^2}  > 0
 \end{equation}
 
 \section{Linear System}
@@ -468,9 +475,9 @@ With
 \begin{equation}
 \left\lbrace
 	\begin{array}{rcl}
-	g(t) & = & \kappa  h(t)  = \kappa  \left(  \proton_\infty + \left(\proton_0 - \proton_\infty\right) \dfrac{t_h}{t+t_h} \right)\\
+	g(t) & = & \gamma  h(t)  = \gamma  \left(  \proton_\infty + \left(\proton_0 - \proton_\infty\right) \dfrac{t_h}{t+t_h} \right)\\
 	\\
-	G(t) & = & \kappa \left( \proton_\infty t + \left(\proton_0 - \proton_\infty\right) t_h \ln\left(1+\dfrac{t}{t_h}\right)\right)\\
+	G(t) & = & \gamma \left( \proton_\infty t + \left(\proton_0 - \proton_\infty\right) t_h \ln\left(1+\dfrac{t}{t_h}\right)\right)\\
 	\end{array}
 \right.
 \end{equation}

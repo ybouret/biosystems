@@ -515,8 +515,13 @@ leading to
 \begin{equation}
 \begin{array}{rcl}
 	\partial_t \Lambda_{\vert t\to0} & = & \left[ (\epsilon_6 \sigma + \epsilon_7) k_7 \Theta + E_0 \proton_0 \Upsilon_\alpha \right] \LiAllOut \\
-	& = & s_0 \left[  (\epsilon_6 \sigma + \epsilon_7) k_7 \Theta \right] \LiAllOut \\
+	& = & s_0 \left[  (\epsilon_6 \sigma + \epsilon_7) k_7 \Theta \right] \LiAllOut,\\
 \end{array}	
+\end{equation}
+so that
+\begin{equation}
+\label{eq:speedup}
+	E_0 \proton_0 \Upsilon_\alpha = E_0 \proton_0 \left(\epsilon_6\kappa+\epsilon_7\right)\Upsilon_7 = (s_0-1) \left[  (\epsilon_6 \sigma + \epsilon_7) k_7 \Theta \right]
 \end{equation}
 
 \subsection{Final Isotopic Separation}
@@ -531,6 +536,27 @@ leading to
 \right.
 \end{equation}
 
+
+\subsection{Parameters evaluation}
+From \eqref{eq:speedup}, we gain the expression of the \underline{catalytic ratio} $\mu$ by:
+\begin{equation}
+\label{eq:mu_def}
+	\dfrac{\proton_0 E_0 \Upsilon_7}{k_7} = \Theta \underbrace{\left(s_0-1\right) 
+	\dfrac{ \left(\epsilon_6 \sigma + \epsilon_7\right) }{\left(\epsilon_6\kappa+\epsilon_7\right)}}_{\mu}.
+\end{equation}
+We inject this expression into to get the ratios:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	r_0 & = & \dfrac{1+\mu}{\sigma+\kappa\mu}\\
+	\\
+	r_\infty & = &
+	 \dfrac{\Theta + E_0 \hat\alpha_\infty \proton_\infty \dfrac{\Upsilon_7}{k_7} }
+	 {\Theta + E_0 \hat\alpha_\infty \proton_\infty \dfrac{\Upsilon_6}{k_6}}
+	 =\dfrac{1 + \left(\hat\alpha_\infty\frac{\proton_\infty}{\proton_0}\right) \mu }{1+ \left(\hat\alpha_\infty\frac{\proton_\infty}{\proton_0}\right)\dfrac{\kappa}{\sigma}\mu}
+\end{array}
+\right.
+\end{equation}
 
 
 \section{Passive Return}

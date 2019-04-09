@@ -287,7 +287,7 @@ It is interesting to define:
 \begin{array}{rcl}
 	\Upsilon_x & = & \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut}\\
 	\Upsilon_6 & = & \kappa \Upsilon_7 \\
-	\Upsilon_\alpha & = & \epsilon_6 \Upsilon_6 + \epsilon_7 \Upsilon_7 = (\epsilon_6 \kappa + \epsilon_7) \Upsilon_7\\
+	\Upsilon_\alpha & = & \epsilon_6 \Upsilon_6 + \epsilon_7 \Upsilon_7 = \underbrace{(\epsilon_6 \kappa + \epsilon_7)}_{\kappa'} \Upsilon_7\\
 \end{array}
 \right.
 \end{equation}
@@ -515,13 +515,13 @@ leading to
 \begin{equation}
 \begin{array}{rcl}
 	\partial_t \Lambda_{\vert t\to0} & = & \left[ (\epsilon_6 \sigma + \epsilon_7) k_7 \Theta + E_0 \proton_0 \Upsilon_\alpha \right] \LiAllOut \\
-	& = & s_0 \left[  (\epsilon_6 \sigma + \epsilon_7) k_7 \Theta \right] \LiAllOut,\\
+	& = & s_0 \left[  \underbrace{(\epsilon_6 \sigma + \epsilon_7)}_{\sigma'} k_7 \Theta \right] \LiAllOut,\\
 \end{array}	
 \end{equation}
 so that
 \begin{equation}
 \label{eq:speedup}
-	E_0 \proton_0 \Upsilon_\alpha = E_0 \proton_0 \left(\epsilon_6\kappa+\epsilon_7\right)\Upsilon_7 = (s_0-1) \left[  (\epsilon_6 \sigma + \epsilon_7) k_7 \Theta \right]
+	E_0 \proton_0 \Upsilon_\alpha = E_0 \proton_0 \kappa' \Upsilon_7 = (s_0-1)   \sigma' k_7 \Theta 
 \end{equation}
 
 \subsection{Final Isotopic Separation}
@@ -542,7 +542,7 @@ From \eqref{eq:speedup}, we gain the expression of the \underline{catalytic rati
 \begin{equation}
 \label{eq:mu_def}
 	\dfrac{\proton_0 E_0 \Upsilon_7}{k_7} = \Theta \underbrace{\left(s_0-1\right) 
-	\dfrac{ \left(\epsilon_6 \sigma + \epsilon_7\right) }{\left(\epsilon_6\kappa+\epsilon_7\right)}}_{\mu}.
+	\dfrac{ \sigma' }{\kappa'}}_{\mu}.
 \end{equation}
 We inject this expression into to get the ratios:
 \begin{equation}

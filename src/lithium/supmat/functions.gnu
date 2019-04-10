@@ -20,3 +20,8 @@ A(h0,h1) = (eta(h1)-(eta(h0)+(h1-h0)*d_eta(h0)))/(h1-h0)**2;
 
 approx_eta(x,h0,h1) = eta(h0) + d_eta(h0) * (x-h0) + (x-h0)**2 * A(h0,h1);
 
+eta_pH(pH) = eta( 10**(-pH) );
+
+ratio(h,hinf) = (eta(hinf)/hinf) * h/eta(h);
+
+ratio_pH(pH,pHinf) = ratio( 10**(-pH), 10**(-pHinf) );

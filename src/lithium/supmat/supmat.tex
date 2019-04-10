@@ -403,7 +403,7 @@ we take $\proton$ as an experiment-dependent input, and it appears that we get r
 \label{eq:hfit}
 	\proton \simeq \proton_0 + \left(\proton_\infty-\proton_0\right) \dfrac{t}{t+t_h} = \proton_\infty + \left(\proton_0 - \proton_\infty\right) \dfrac{t_h}{t+t_h},
 \end{equation}
-and we use this equation to fit the current data as indicated on Figure \ref{fig:protons} 
+and we use this equation to fit the current data as indicated on Figure \ref{fig:protons}. It is important to remember that $\proton_\infty$ depends on $\LiAllOut$.
 
 \begin{figure}[!ht]
 \begin{center}
@@ -527,13 +527,13 @@ so that
 \subsection{Final Isotopic Separation}
 \begin{equation}
 \label{eq:inf}
-\left\lbrace
+%\left\lbrace
 \begin{array}{rcl}
-	\hat\alpha_\infty & = & \dfrac{k_0\eta(\proton_\infty)}{k_0\eta(\proton_\infty)+\LiAllOut \proton_\infty \Upsilon_\alpha}\\
-	\\
+	%\hat\alpha_\infty & = & \dfrac{k_0\eta(\proton_\infty)}{k_0\eta(\proton_\infty)+\LiAllOut \proton_\infty \Upsilon_\alpha}\\
+	%\\
 	\beta_x^\infty & = &\Theta + E_0 \hat\alpha_\infty \proton_\infty \dfrac{\Upsilon_x}{k_x}\\
 \end{array}
-\right.
+%\right.
 \end{equation}
 
 
@@ -591,10 +591,24 @@ to get the matching expression for $\kappa$:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
+\partial_t \hat\alpha & = &
+	 k_h \left(1-\hat\alpha\right) 
+	 - \LiAllOut    \hat\alpha\proton \Upsilon_\alpha  \\
+	 \varphi(t) & = & \hat\alpha(t) \proton/\proton_0\\
 	\partial_t \beta_7 & = & k_7 \left[ \Theta \left( 1 + \mu \varphi(t) \right) - \beta_7 \right] \\
 	\partial_t \beta_6 & = & k_7 \left[ \Theta \left( \sigma + \kappa \mu \varphi(t) \right) - \sigma \beta_6 \right] \\
 \end{array}
 \right.
+\end{equation}
+We must study the bahavior of $\hat\alpha$.
+We define:
+\begin{equation}
+	\hat\alpha_\infty = \cos^2\Omega = \dfrac{k_0\eta_\infty}{k_0\eta_\infty+\LiAllOut \proton_\infty \Upsilon_\alpha}
+	= \dfrac{1}{1+\dfrac{\LiAllOut \proton_\infty \Upsilon_\alpha}{k_0\eta_\infty}},
+\end{equation}
+meaning that we scale the catalytic effect to the recycling effect with:
+\begin{equation}
+	\LiAllOut \Upsilon_\alpha \proton_\infty = {k_0\eta_\infty} \tan^2\Omega
 \end{equation}
 
 \section{Passive Return}

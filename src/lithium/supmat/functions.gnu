@@ -12,16 +12,13 @@ h_eta  = 4e-7;
 etaU(h) =  (h/h_eta) ** pw_eta 
 eta(h) = etaU(h)  / ( 1.0 + etaU(h) );
 
+proton(t,pH0,pH1,th) = 10**(-pH0) + (10**(-pH1)-10**(-pH0)) * t / (t+th);
+
+eta_pH(pH) = eta( 10**(-pH) );
+
 d_eta(h) = (pw_eta/h) * etaU(h) / (1.0+etaU(h))**2;
 
 tg_eta(x,h) = eta(h) + (x-h)*d_eta(h);
 
-A(h0,h1) = (eta(h1)-(eta(h0)+(h1-h0)*d_eta(h0)))/(h1-h0)**2;
+eta_approx(h,h0,h1,p) = eta(h0) + ((h-h0)/(h1-h0))**p * (eta(h1)-eta(h0));
 
-approx_eta(x,h0,h1) = eta(h0) + d_eta(h0) * (x-h0) + (x-h0)**2 * A(h0,h1);
-
-eta_pH(pH) = eta( 10**(-pH) );
-
-ratio(h,hinf) = (eta(hinf)/hinf) * h/eta(h);
-
-ratio_pH(pH,pHinf) = ratio( 10**(-pH), 10**(-pHinf) );

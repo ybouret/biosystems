@@ -454,35 +454,35 @@ and we note that:
 \end{array}
 \right.
 \end{equation}
-With 
-\begin{equation}
-\left\lbrace
-	\begin{array}{rcll}
-	k_h & = & f(t), & F(t) = \int_0^t f(u) \, \mathrm{d} u \\
-	\LiAllOut \Upsilon_\alpha\proton & = & g(t), & G(t) = \int_0^t g(u) \, \mathrm{d} u\\
-	\end{array}
-\right.
-\end{equation}
-
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-	\hat\alpha(t) & = & \left[ 1 + \int_0^t f(u) e^{F(u)}e^{G(u)}\,\mathrm{d} u \right] e^{-\left[F(t)+G(t)\right]}\\
-	\\
-	\beta_x(t)    & = & \Theta\left[1-e^{-k_xt}\right] + E_0 \Upsilon_x \left[ \int_0^t \hat\alpha(u) h(u) e^{k_x u }\,\mathrm{d} u \right] e^{-k_x t} \\
-\end{array}
-\right.
-\end{equation}
-
-\begin{equation}
-\left\lbrace
-	\begin{array}{rcl}
-	g(t) & = & \gamma  h(t)  = \gamma  \left(  \proton_\infty + \left(\proton_0 - \proton_\infty\right) \dfrac{t_h}{t+t_h} \right)\\
-	\\
-	G(t) & = & \gamma \left( \proton_\infty t + \left(\proton_0 - \proton_\infty\right) t_h \ln\left(1+\dfrac{t}{t_h}\right)\right)\\
-	\end{array}
-\right.
-\end{equation}
+%With 
+%\begin{equation}
+%\left\lbrace
+%	\begin{array}{rcll}
+%	k_h & = & f(t), & F(t) = \int_0^t f(u) \, \mathrm{d} u \\
+%	\LiAllOut \Upsilon_\alpha\proton & = & g(t), & G(t) = \int_0^t g(u) \, \mathrm{d} u\\
+%	\end{array}
+%\right.
+%\end{equation}
+%
+%\begin{equation}
+%\left\lbrace
+%\begin{array}{rcl}
+%	\hat\alpha(t) & = & \left[ 1 + \int_0^t f(u) e^{F(u)}e^{G(u)}\,\mathrm{d} u \right] e^{-\left[F(t)+G(t)\right]}\\
+%	\\
+%	\beta_x(t)    & = & \Theta\left[1-e^{-k_xt}\right] + E_0 \Upsilon_x \left[ \int_0^t \hat\alpha(u) h(u) e^{k_x u }\,\mathrm{d} u \right] e^{-k_x t} \\
+%\end{array}
+%\right.
+%\end{equation}
+%
+%\begin{equation}
+%\left\lbrace
+%	\begin{array}{rcl}
+%	g(t) & = & \gamma  h(t)  = \gamma  \left(  \proton_\infty + \left(\proton_0 - \proton_\infty\right) \dfrac{t_h}{t+t_h} \right)\\
+%	\\
+%	G(t) & = & \gamma \left( \proton_\infty t + \left(\proton_0 - \proton_\infty\right) t_h \ln\left(1+\dfrac{t}{t_h}\right)\right)\\
+%	\end{array}
+%\right.
+%\end{equation}
 
 	
 \subsection{Initial Isotopic Separation}
@@ -550,10 +550,12 @@ We inject this expression into to get the ratios:
 \begin{array}{rcl}
 	r_0 & = & \dfrac{1+\mu}{\sigma+\kappa\mu}\\
 	\\
+	\varphi & = &   \dfrac{\hat\alpha \proton}{\proton_0}\\
+	\\
 	r_\infty & = &
 	 \dfrac{\Theta + E_0 \hat\alpha_\infty \proton_\infty \dfrac{\Upsilon_7}{k_7} }
 	 {\Theta + E_0 \hat\alpha_\infty \proton_\infty \dfrac{\Upsilon_6}{k_6}}
-	 =\dfrac{1 + \left(\hat\alpha_\infty\frac{\proton_\infty}{\proton_0}\right) \mu }{1+ \left(\hat\alpha_\infty\frac{\proton_\infty}{\proton_0}\right)\dfrac{\kappa}{\sigma}\mu}
+	 =\dfrac{1 + \varphi_\infty \mu }{1+ \varphi_\infty \dfrac{\kappa}{\sigma}\mu}
 \end{array}
 \right.
 \end{equation}
@@ -568,21 +570,31 @@ so that we choose:
 \end{equation}
 to get the matching expression for $\kappa$:
 \begin{equation}
-%\left\lbrace
 	\kappa  =  \dfrac{1+\mu}{\mu}\left[\dfrac{1}{r_0} - \dfrac{\sigma}{1+\mu}\right].
-%\right.
 \end{equation}
-We define the function
+
+%We define the function
+%\begin{equation}
+%	\varphi = \hat\alpha \dfrac{\proton}{\proton_0},
+%\end{equation}
+%then there exists $\omega$
+%\begin{equation}
+% r_\infty = \underbrace{\cos^2\omega + \dfrac{\sigma}{\kappa} \sin^2\omega}_{\leq 1}
+%\end{equation}
+%and
+%\begin{equation}
+%	\varphi_\infty = \dfrac{1}{\mu} \dfrac{\sigma}{\kappa}  \tan^2 \omega.
+%\end{equation}
+
+\subsection{Parametric System}
+
 \begin{equation}
-	\varphi = \hat\alpha \dfrac{\proton}{\proton_0},
-\end{equation}
-then there exists $\omega$
-\begin{equation}
- r_\infty = \underbrace{\cos^2\omega + \dfrac{\sigma}{\kappa} \sin^2\omega}_{\leq 1}
-\end{equation}
-and
-\begin{equation}
-	\varphi_\infty = \dfrac{1}{\mu} \dfrac{\sigma}{\kappa}  \tan^2 \omega.
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \beta_7 & = & k_7 \left[ \Theta \left( 1 + \mu \varphi(t) \right) - \beta_7 \right] \\
+	\partial_t \beta_6 & = & k_7 \left[ \Theta \left( \sigma + \kappa \mu \varphi(t) \right) - \sigma \beta_6 \right] \\
+\end{array}
+\right.
 \end{equation}
 
 \section{Passive Return}

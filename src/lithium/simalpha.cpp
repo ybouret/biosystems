@@ -31,7 +31,22 @@ public:
     const double d7out;
     const double eps6;
     const double eps7;
+    const double Theta;
+    const double k7;
+    //const double k6;
+    const double d7ini;
+    const double r0;
 
+    const double pH_ini;
+    const double pH_end;
+    const double h_ini;
+    const double h_end;
+    const double t_h;
+
+
+    const double k0;
+    const double mu;
+    const double kappa;
 
     inline double DeltaOf( const double ratio ) const throw()
     {
@@ -39,14 +54,56 @@ public:
 
     }
 
-    Lithium( const double d7out_ ) :
+    inline double RatioOf( const double d ) const throw()
+    {
+        return (1.0+d/1000.0)/(1.0+d7out/1000.0);
+    }
+
+    Lithium(const double d7out_,
+            const double Theta_,
+            const double k7_,
+            const double d7ini_,
+            const double pHini_,
+            const double pHend_,
+            const double t_h_,
+            const double k0_,
+            const double mu_) :
     d7out(d7out_),
     eps6(1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out))),
-    eps7(1.0-eps6)
+    eps7(1.0-eps6),
+    Theta(Theta_),
+    k7(k7_),
+    //k6(sigma*k7),
+    d7ini(d7ini_),
+    r0( RatioOf(d7ini) ),
+    pH_ini(pHini_),
+    pH_end(pHend_),
+    h_ini( pow(10.0,-pH_ini) ),
+    h_end( pow(10.0,-pH_end) ),
+    t_h(  t_h_ ),
+    k0(k0_),
+    mu(mu_),
+    kappa( (1.0+mu)/mu * ( 1.0/r0 - sigma/(1.0+mu) ) )
     {
-        std::cerr << "d7out = " << d7out << std::endl;
-        std::cerr << "eps6  = " << eps6  << std::endl;
-        std::cerr << "eps7  = " << eps7  << std::endl;
+        std::cerr << "d7out = " << d7out  << std::endl;
+        std::cerr << "d7ini = " << d7ini  << std::endl;
+        std::cerr << "r0    = " << r0     << std::endl;
+
+        if( r0 >= 1.0/sigma )
+        {
+            throw exception("invalid d7ini");
+        }
+        std::cerr << "eps6   = " << eps6   << std::endl;
+        std::cerr << "eps7   = " << eps7   << std::endl;
+        std::cerr << "Theta  = " << Theta  << std::endl;
+        std::cerr << "k7     = " << k7     << std::endl;
+
+        std::cerr << "pH_ini = " << pH_ini << std::endl;
+        std::cerr << "pH_end = " << pH_ini << std::endl;
+
+        std::cerr << "mu     = " << mu    << std::endl;
+        std::cerr << "kappa  = " << kappa << std::endl;
+
     }
 
 
@@ -57,28 +114,68 @@ public:
         Y[I_B7] = 0;
     }
 
+    inline double get_h( double t )
+    {
+        if(t<=0)
+        {
+            return h_ini;
+        }
+        else
+        {
+            const double w_end = t / (t+t_h);
+            const double w_ini = clamp<double>(0,1.0-w_end,1);
+            return h_ini * w_ini + h_end * w_end;
+        }
+    }
 
 
+    inline double get_eta( double h ) const
+    {
+        const double h_eta = 4.0e-7;
+        const double p_eta = 1.70;
+        const double U = pow(h/h_eta,p_eta);
+        return U/(1.0+U);
+    }
 
     void Compute(Array &dY, double t, const Array &Y )
     {
-        const Lithium &self = *this;
+        //const Lithium &self = *this;
 
         const double ac    = Y[I_AC];
         const double beta6 = Y[I_B6];
         const double beta7 = Y[I_B7];
+        const double h     = get_h(t);
+        const double eta   = get_eta(h);
 
-        dY.ld(0);
+        const double phi = ac * h / h_ini;
+        const double mu_phi = mu*phi;
+        dY[I_AC] = k0*eta*(1.0-ac);
+        dY[I_B7] = k7 * ( Theta * (1.0 + mu* phi)      - beta7 );
+        dY[I_B6] = k7 * ( Theta * (sigma+kappa*mu_phi) - sigma * beta6);
+
+        //dY[I_B7] = k7 * ( Theta         - beta7 );
+        //dY[I_B6] = k7 * ( Theta * sigma - sigma * beta6);
+
     }
 
     void save(ios::ostream &fp,
+              const double  mark,
               Array        &Y,
-              const double  mark) const
+              const double *extra=0
+              ) const
     {
         fp("%.15g",mark);
         for(size_t i=1;i<=Y.size();++i)
         {
             fp(" %.15g", Y[i]);
+        }
+        if(extra)
+        {
+            fp(" %.15g",*extra);
+        }
+        else
+        {
+            fp << " 0";
         }
         fp << '\n';
     }
@@ -98,7 +195,15 @@ Y_PROGRAM_START()
     }
 
 
-    Lithium  Li( INI(d7out) );
+    Lithium  Li(INI(d7out),
+                INI(Theta),
+                INI(k7),
+                INI(d7ini),
+                INI(pH_ini),
+                INI(pH_end),
+                INI(t_h),
+                INI(k0),
+                INI(mu));
     ODEquation  diffeq( &Li, & Lithium::Compute );
     ODE_Driver  driver;
     driver.eps = 1e-5;
@@ -123,7 +228,7 @@ Y_PROGRAM_START()
 
     vector<double> dY(Y.size());
 
-    const string sim_name = "output.dat";
+    const string sim_name = vformat("output%g.dat",Li.mu);
 
     ios::ocstream::overwrite(sim_name);
 
@@ -135,20 +240,16 @@ Y_PROGRAM_START()
     {
         const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
         const double t1  = exp(lt1);
-        //driver( diffeq, Y, t0, t1, ctrl, NULL);
+        driver( diffeq, Y, t0, t1, ctrl, NULL);
         if(1==i||0==(i%every))
         {
             bar.update(i,iters);
             bar.display(std::cerr) << '\r';
-#if 0
             {
                 ios::ocstream fp(sim_name,true);
-                const double m = Li.get_master(t1);
-                const double r = Y[Lithium::I_B7]/Y[Lithium::I_B6];
-                const double d7 = Lithium::DeltaOf(r);
-                __lithium::save(fp,lt1,Y,&m,&d7);
+                const double  d = Li.DeltaOf( Y[Lithium::I_B7] / Y[Lithium::I_B6] );
+                Li.save(fp,lt1,Y,&d);
             }
-#endif
 
         }
         t0 = t1;

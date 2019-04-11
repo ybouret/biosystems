@@ -1,7 +1,7 @@
 
 
 
-ADD_EXECUTABLE(simalpha simalpha.cpp li-common.hpp simalpha.lua)
+ADD_EXECUTABLE(simalpha simalpha.cpp simalpha.lua)
 TARGET_LINK_Y(simalpha lua++ m)
 INSTALL( TARGETS simalpha RUNTIME DESTINATION bin )
 

@@ -1,5 +1,7 @@
 exp = math.exp;
 
+d7out = 14.57;
+
 pH_ini = 5.8;
 pH_end = 6.8;
 

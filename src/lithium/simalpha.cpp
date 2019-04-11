@@ -1,12 +1,21 @@
-#include "li-common.hpp"
 #include "y/program.hpp"
 #include "y/lua++/state.hpp"
+#include "y/math/ode/explicit/driver-ck.hpp"
+#include "y/sequence/vector.hpp"
+#include "y/ios/ocstream.hpp"
+#include "y/os/progress.hpp"
+#include "y/math/timings.hpp"
 
-static const double lambda_s = 12.0192;
-static const double d7out    = 14.57;
-static const double sigma    = 1.0/0.99772;
-static const double eps6     = 1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out));
-static const double eps7     = 1.0-eps6;
+using namespace upsylon;
+using namespace math;
+
+typedef array<double>                 Array;
+typedef ODE::DriverCK<double>::Type   ODE_Driver;
+typedef ODE::Field<double>::Equation  ODEquation;
+
+static double lambda_s = 12.0192;
+static double sigma    = 1.0/0.99772;
+
 
 
 
@@ -19,110 +28,25 @@ public:
     static const size_t I_B7 = 3;
     static const size_t NVAR = 3;
 
-    Variables      vars;
-    vector<double> aorg;
+    const double d7out;
+    const double eps6;
+    const double eps7;
 
 
-    explicit Lithium( Lua::VM &vm ) :
-    vars(),
-    aorg()
-    {
-        vars << "pH_ini" << "pH_end" << "t_h";
-
-        vars << "k0" << "pH_eta" << "pw_eta";
-
-        vars << "Omega";
-
-        vars << "k7" << "Theta";
-
-        aorg.make(vars.size(),0);
-        std::cerr << "eps6=" << eps6 << std::endl;
-        std::cerr << "eps7=" << eps7 << std::endl;
-        
-        initialize(vm);
-    }
-
-
-#define _LD(NAME) do { self[#NAME] = vm->get<double>(#NAME);\
-std::cerr << #NAME " = " << self[#NAME] << std::endl;       \
-} while(false)
-
-    void initialize(Lua::VM &vm)
-    {
-        Lithium &self = *this;
-        _LD(pH_ini);
-        _LD(pH_end);
-        _LD(t_h);
-        _LD(k0);
-        _LD(pH_eta);
-        _LD(pw_eta);
-        _LD(Omega);
-        _LD(k7);
-        _LD(Theta);
-    }
-
-    static inline double DeltaOf( const double ratio ) throw()
+    inline double DeltaOf( const double ratio ) const throw()
     {
         return 1000.0 * ( (1.0+d7out/1000.0) * ratio - 1.0 );
 
     }
 
-    string make_sim_name() const
+    Lithium( const double d7out_ ) :
+    d7out(d7out_),
+    eps6(1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out))),
+    eps7(1.0-eps6)
     {
-        const Lithium &self = *this;
-        return vformat("out_k0=%.1f_Omega=%.1f_ini=%.1f_end=%.1f_th=%g.dat",
-                       self["k0"],
-                       self["Omega"],
-                       self["pH_ini"],
-                       self["pH_end"],
-                       self["t_h"]
-                       );
-    }
-
-
-    inline double & operator[](const string &id)
-    {
-        return vars(aorg,id);
-    }
-
-    inline const double & operator[](const string &id) const
-    {
-        return vars(aorg,id);
-    }
-
-    inline double get_eta( const double h ) const
-    {
-        return __lithium::eta( h, aorg, vars);
-    }
-
-    inline double get_h_end() const
-    {
-        return __lithium::h_end(aorg,vars);
-    }
-
-    inline double get_h_ini() const
-    {
-        return __lithium::h_ini(aorg,vars);
-    }
-
-    void save_info(double pH_min, double pH_max) const
-    {
-        if(pH_min>=pH_max) cswap(pH_max,pH_min);
-
-        {
-            ios::ocstream fp("eta.dat");
-            const size_t  N = 200;
-            const double  h_inf   = pow(10.0,-pH_max);
-            const double  eta_inf = get_eta(h_inf);
-            for(size_t i=0;i<=N;++i)
-            {
-                const double pH  = pH_min + ( (pH_max-pH_min) * i)/N;
-                const double h   = pow(10.0,-pH);
-                const double eta = get_eta(h);
-                fp("%g %g %g\n", pH, eta, (eta_inf/eta)*(h/h_inf));
-            }
-        }
-
+        std::cerr << "d7out = " << d7out << std::endl;
+        std::cerr << "eps6  = " << eps6  << std::endl;
+        std::cerr << "eps7  = " << eps7  << std::endl;
     }
 
 
@@ -133,22 +57,10 @@ std::cerr << #NAME " = " << self[#NAME] << std::endl;       \
         Y[I_B7] = 0;
     }
 
-    double get_kappa( ) const
-    {
-        const Lithium &self = *this;
-        const double   _end = __lithium::h_end(aorg,vars);
-        return self["k0"] * __lithium::eta( _end,aorg,vars ) / _end * square_of( tan( self["Omega"] ) );
-    }
-
-    double get_h( double t ) const
-    {
-        return __lithium::h(t, aorg, vars);
-    }
 
 
 
-
-    void Compute( array<double> &dY, double t, const array<double> &Y )
+    void Compute(Array &dY, double t, const Array &Y )
     {
         const Lithium &self = *this;
 
@@ -156,44 +68,27 @@ std::cerr << #NAME " = " << self[#NAME] << std::endl;       \
         const double beta6 = Y[I_B6];
         const double beta7 = Y[I_B7];
 
-        const double h     = get_h(t);
-        const double eta   = get_eta(h);
-        const double kh    = self["k0"] * eta;
-        const double kappa = get_kappa();
-        const double k7    = self["k7"];
-        const double k6    = k7 * sigma;
-        const double Theta = self["Theta"];
-
-        const double ach = ac*h;
-        dY[I_AC] = kh*(1.0-ac) - ach * kappa;
-        dY[I_B6] = k6*(Theta-beta6);
-        dY[I_B7] = k7*(Theta-beta7);
+        dY.ld(0);
     }
 
-    double get_gamma0() const
+    void save(ios::ostream &fp,
+              Array        &Y,
+              const double  mark) const
     {
-        const Lithium &self = *this;
-        return self["k0"] * get_eta( get_h_ini() );
+        fp("%.15g",mark);
+        for(size_t i=1;i<=Y.size();++i)
+        {
+            fp(" %.15g", Y[i]);
+        }
+        fp << '\n';
     }
 
-    double get_master(double t) const
-    {
-        const Lithium &self  = *this;
-        const double   Omega = self["Omega"];
-        const double   S2    = square_of( sin(Omega) );
-        const double   C2    = square_of( cos(Omega) );
-        const double   gam0  = get_gamma0();
-        return 1.0 - S2 * (1.0 - exp( -t * gam0 / C2 ) );
-    }
 
-    double get_ac_end() const
-    {
-        const  Lithium &self = *this;
-        return square_of( cos( self["Omega"] ) );
-    }
+
 };
 
 
+#define INI(NAME) vm->get<double>(#NAME)
 Y_PROGRAM_START()
 {
     Lua::VM vm = new Lua::State();
@@ -202,14 +97,13 @@ Y_PROGRAM_START()
         vm->doFile(argv[i]);
     }
 
-    Lithium     Li(vm);
-    ODEquation  diffeq( &Li, & Lithium::Compute );
 
-    ODE_Driver driver;
+    Lithium  Li( INI(d7out) );
+    ODEquation  diffeq( &Li, & Lithium::Compute );
+    ODE_Driver  driver;
     driver.eps = 1e-5;
 
 
-    Li.save_info(5.8,6.8);
 
     const double lt_min = -6;
     double       lt_max =  log(60*60);
@@ -229,12 +123,7 @@ Y_PROGRAM_START()
 
     vector<double> dY(Y.size());
 
-    const string sim_name = Li.make_sim_name();
-    const double ac_end   = Li.get_ac_end();
-
-    std::cerr << "ac_end  =" << ac_end << std::endl;
-    std::cerr << "sim_name=[" << sim_name << "]" << std::endl;
-    std::cerr << "gam0    =" << Li.get_gamma0()  << std::endl;
+    const string sim_name = "output.dat";
 
     ios::ocstream::overwrite(sim_name);
 
@@ -246,11 +135,12 @@ Y_PROGRAM_START()
     {
         const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
         const double t1  = exp(lt1);
-        driver( diffeq, Y, t0, t1, ctrl, NULL);
+        //driver( diffeq, Y, t0, t1, ctrl, NULL);
         if(1==i||0==(i%every))
         {
             bar.update(i,iters);
             bar.display(std::cerr) << '\r';
+#if 0
             {
                 ios::ocstream fp(sim_name,true);
                 const double m = Li.get_master(t1);
@@ -258,7 +148,7 @@ Y_PROGRAM_START()
                 const double d7 = Lithium::DeltaOf(r);
                 __lithium::save(fp,lt1,Y,&m,&d7);
             }
-
+#endif
 
         }
         t0 = t1;

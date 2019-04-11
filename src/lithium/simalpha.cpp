@@ -33,7 +33,6 @@ public:
     const double eps7;
     const double Theta;
     const double k7;
-    //const double k6;
     const double d7ini;
     const double r0;
 
@@ -57,18 +56,11 @@ public:
     const double gam0;
     const double scale;
     const double scaleT2;
-    const double mx; // gam0/C2, master exponential
-
-    inline double DeltaOf( const double ratio ) const throw()
-    {
-        return 1000.0 * ( (1.0+d7out/1000.0) * ratio - 1.0 );
-
-    }
-
-    inline double RatioOf( const double d ) const throw()
-    {
-        return (1.0+d/1000.0)/(1.0+d7out/1000.0);
-    }
+    const double mx;   // gam0/C2, master exponential
+    const double kos;  //!< kappa over sigma
+    const double phi1; //!< C2 * h_end/h_ini
+    const double r1;
+    const double d7end;  //!< DeltaOf(r1)
 
     Lithium(const double d7out_,
             const double Theta_,
@@ -104,7 +96,11 @@ public:
     gam0( k0 * eta0 ),
     scale( (eta1/eta0) * (h_ini/h_end) ),
     scaleT2( scale * T2 ),
-    mx(gam0/C2)
+    mx(gam0/C2),
+    kos( kappa/sigma ),
+    phi1( C2 * h_end / h_ini ),
+    r1( (1.0+mu*phi1)/(1.0+mu*kos*phi1) ),
+    d7end( DeltaOf(r1) )
     {
         std::cerr << "d7out = " << d7out  << std::endl;
         std::cerr << "d7ini = " << d7ini  << std::endl;
@@ -125,13 +121,33 @@ public:
         std::cerr << "mu     = " << mu    << std::endl;
         std::cerr << "kappa  = " << kappa << std::endl;
 
+        std::cerr << "C2     = " << C2 << std::endl;
+        std::cerr << "S2     = " << S2 << std::endl;
+        std::cerr << "T2     = " << T2 << std::endl;
+
         std::cerr << "eta0   = " << eta0  << std::endl;
         std::cerr << "eta1   = " << eta1  << std::endl;
         std::cerr << "scale  = " << scale << std::endl;
         std::cerr << "gam0   = " << gam0  << std::endl;
         std::cerr << "mx     = " << mx    << std::endl;
+
+        std::cerr << "kos    = " << kos   << std::endl;
+        std::cerr << "phi1   = " << phi1  << std::endl;
+        std::cerr << "r1     = " << r1    << std::endl;
+        std::cerr << "d7end  = " << d7end << std::endl;
     }
 
+
+    inline double DeltaOf( const double ratio ) const throw()
+    {
+        return 1000.0 * ( (1.0+d7out/1000.0) * ratio - 1.0 );
+
+    }
+
+    inline double RatioOf( const double d ) const throw()
+    {
+        return (1.0+d/1000.0)/(1.0+d7out/1000.0);
+    }
 
     void setup( Array &Y )
     {
@@ -185,6 +201,11 @@ public:
 
     }
 
+    double get_total( const Array &Y ) const throw()
+    {
+        return eps6 * Y[I_B6] + eps7 * Y[I_B7];
+    }
+
     void save(ios::ostream &fp,
               const double  lt,
               Array        &Y,
@@ -197,7 +218,8 @@ public:
             fp(" %.15g", Y[i]);
         }
 
-        fp(" %.15g", C2+S2*exp(-mx*exp(lt)));
+        //fp(" %.15g", C2+S2*exp(-mx*exp(lt)));
+        fp(" %.15g", get_total(Y));
 
         if(extra)
         {
@@ -242,7 +264,7 @@ Y_PROGRAM_START()
 
 
     const double lt_min = -6;
-    double       lt_max =  log(60*60);
+    double       lt_max =  log(4*60*60);
     double       lt_amp = lt_max-lt_min;
     double       lt_stp = 0.002;
     double       lt_sav = 0.05;
@@ -266,7 +288,7 @@ Y_PROGRAM_START()
 
 
     double t0   = 0;
-    double ctrl = exp(lt_min)/10;
+    double ctrl = exp(lt_min)/100;
     Li.setup(Y);
     for(size_t i=1;i<=iters;++i)
     {

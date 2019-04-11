@@ -48,6 +48,17 @@ public:
     const double mu;
     const double kappa;
 
+    const double C2; //!< cos(Omega)^2
+    const double S2; //!< sin(Omega)^2
+    const double T2; //!< tan(Omega)^2
+
+    const double eta0;
+    const double eta1;
+    const double gam0;
+    const double scale;
+    const double scaleT2;
+    const double mx; // gam0/C2, master exponential
+
     inline double DeltaOf( const double ratio ) const throw()
     {
         return 1000.0 * ( (1.0+d7out/1000.0) * ratio - 1.0 );
@@ -67,7 +78,8 @@ public:
             const double pHend_,
             const double t_h_,
             const double k0_,
-            const double mu_) :
+            const double mu_,
+            const double C2_) :
     d7out(d7out_),
     eps6(1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out))),
     eps7(1.0-eps6),
@@ -83,7 +95,16 @@ public:
     t_h(  t_h_ ),
     k0(k0_),
     mu(mu_),
-    kappa( (1.0+mu)/mu * ( 1.0/r0 - sigma/(1.0+mu) ) )
+    kappa( (1.0+mu)/mu * ( 1.0/r0 - sigma/(1.0+mu) ) ),
+    C2( clamp<double>(0,C2_,1) ),
+    S2( 1.0 - C2 ),
+    T2( S2/C2 ),
+    eta0( get_eta(h_ini) ),
+    eta1( get_eta(h_end) ),
+    gam0( k0 * eta0 ),
+    scale( (eta1/eta0) * (h_ini/h_end) ),
+    scaleT2( scale * T2 ),
+    mx(gam0/C2)
     {
         std::cerr << "d7out = " << d7out  << std::endl;
         std::cerr << "d7ini = " << d7ini  << std::endl;
@@ -104,6 +125,11 @@ public:
         std::cerr << "mu     = " << mu    << std::endl;
         std::cerr << "kappa  = " << kappa << std::endl;
 
+        std::cerr << "eta0   = " << eta0  << std::endl;
+        std::cerr << "eta1   = " << eta1  << std::endl;
+        std::cerr << "scale  = " << scale << std::endl;
+        std::cerr << "gam0   = " << gam0  << std::endl;
+        std::cerr << "mx     = " << mx    << std::endl;
     }
 
 
@@ -147,9 +173,10 @@ public:
         const double h     = get_h(t);
         const double eta   = get_eta(h);
 
-        const double phi = ac * h / h_ini;
+        const double phi    = ac * h / h_ini;
         const double mu_phi = mu*phi;
-        dY[I_AC] = k0*eta*(1.0-ac);
+
+        dY[I_AC] = gam0*( (eta/eta0)*(1.0-ac) - scaleT2 * phi );
         dY[I_B7] = k7 * ( Theta * (1.0 + mu* phi)      - beta7 );
         dY[I_B6] = k7 * ( Theta * (sigma+kappa*mu_phi) - sigma * beta6);
 
@@ -159,16 +186,19 @@ public:
     }
 
     void save(ios::ostream &fp,
-              const double  mark,
+              const double  lt,
               Array        &Y,
               const double *extra=0
               ) const
     {
-        fp("%.15g",mark);
+        fp("%.15g",lt);
         for(size_t i=1;i<=Y.size();++i)
         {
             fp(" %.15g", Y[i]);
         }
+
+        fp(" %.15g", C2+S2*exp(-mx*exp(lt)));
+
         if(extra)
         {
             fp(" %.15g",*extra);
@@ -203,7 +233,8 @@ Y_PROGRAM_START()
                 INI(pH_end),
                 INI(t_h),
                 INI(k0),
-                INI(mu));
+                INI(mu),
+                INI(C2));
     ODEquation  diffeq( &Li, & Lithium::Compute );
     ODE_Driver  driver;
     driver.eps = 1e-5;
@@ -228,8 +259,9 @@ Y_PROGRAM_START()
 
     vector<double> dY(Y.size());
 
-    const string sim_name = vformat("output%g.dat",Li.mu);
+    const string sim_name = vformat("output_mu%g_k%g_C%g.dat",Li.mu,Li.k0,Li.C2);
 
+    std::cerr << "<saving into " << sim_name << ">" << std::endl;
     ios::ocstream::overwrite(sim_name);
 
 
@@ -255,6 +287,7 @@ Y_PROGRAM_START()
         t0 = t1;
     }
     std::cerr << std::endl;
+    std::cerr << "<saved  into " << sim_name << ">" << std::endl;
 
 }
 Y_PROGRAM_END()

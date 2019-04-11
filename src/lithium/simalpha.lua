@@ -7,7 +7,7 @@ pH_ini = 5.8;
 pH_end = 5.8;
 
 k0     = 1.0;  -- per second
-t_h    = 30; -- in seconds
+t_h    = 30;   -- in seconds
 
 
 pH_eta = 6.39;
@@ -27,3 +27,5 @@ V=-40e-3;
 Theta = exp( -z*F*V/R/(T+37) );
 
 mu = 3.0;
+
+C2 = 0.9;

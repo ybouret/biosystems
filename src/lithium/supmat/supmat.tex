@@ -587,19 +587,6 @@ to get the matching expression for $\kappa$:
 %\end{equation}
 
 \subsection{Parametric System}
-
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-\partial_t \hat\alpha & = &
-	 k_h \left(1-\hat\alpha\right) 
-	 - \LiAllOut    \hat\alpha\proton \Upsilon_\alpha  \\
-	 \varphi(t) & = & \hat\alpha(t) \proton/\proton_0\\
-	\partial_t \beta_7 & = & k_7 \left[ \Theta \left( 1 + \mu \varphi(t) \right) - \beta_7 \right] \\
-	\partial_t \beta_6 & = & k_7 \left[ \Theta \left( \sigma + \kappa \mu \varphi(t) \right) - \sigma \beta_6 \right] \\
-\end{array}
-\right.
-\end{equation}
 We must study the behavior of $\hat\alpha$.
 We define:
 \begin{equation}
@@ -609,6 +596,22 @@ We define:
 meaning that we scale the catalytic effect to the recycling effect with:
 \begin{equation}
 	\LiAllOut \Upsilon_\alpha \proton_\infty = {k_0\eta_\infty} \tan^2\Omega
+\end{equation}
+
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	 \varphi(t) & = & \dfrac{\hat\alpha(t) \proton}{\proton_0}\\
+	 \\
+	 \partial_t \hat\alpha & = &
+	 k_0 \eta_0 \left[ \dfrac{\eta( \proton )}{\eta_0} \left(1-\hat\alpha\right) 
+	 - \dfrac{\eta_\infty}{\eta_0} \dfrac{\proton_0}{\proton_\infty} \varphi(t) \tan^2\Omega\right]   \\
+	 \\
+	\partial_t \beta_7 & = & k_7 \left[ \Theta \left( 1 + \mu \varphi(t) \right) - \beta_7 \right] \\
+	\\
+	\partial_t \beta_6 & = & k_7 \left[ \Theta \left( \sigma + \kappa \mu \varphi(t) \right) - \sigma \beta_6 \right] \\
+\end{array}
+\right.
 \end{equation}
 
 \section{Passive Return}

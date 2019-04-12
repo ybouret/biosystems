@@ -571,13 +571,26 @@ so that we choose:
 \end{equation}
 to get the matching expression for $\kappa$:
 \begin{equation}
-	\kappa  =  \dfrac{1+\mu}{\mu}\left[\dfrac{1}{r_0} - \dfrac{\sigma}{1+\mu}\right].
+\left\lbrace
+\begin{array}{rcl}
+	\kappa  & = &  \dfrac{1+\mu}{\mu}\left[\dfrac{1}{r_0} - \dfrac{\sigma}{1+\mu}\right] 
+	=  \sigma + \underbrace{\dfrac{1+\mu}{\mu}\left[ \dfrac{1}{r_0} - \sigma \right]}_{>0}\\
+	%\\
+	\dfrac{\kappa}{\sigma} & = & 1 + {\dfrac{1+\mu}{\mu}\left[ \dfrac{1}{r_0\sigma} - 1\right]} \;\; \left(\dfrac{\kappa}{\sigma}> 1\right)\\
+	\\
+	\mu \dfrac{\kappa}{\sigma} & = & \dfrac{1+\mu}{r_0\sigma} - 1\\
+	\\
+ \kappa & > & \dfrac{1}{r_0} > \sigma \;\Rightarrow\; \dfrac{\sigma}{\kappa} < \sigma r_0 < 1\\
+\end{array}
+\right.
 \end{equation}
+
+
 We also remark that:
 \begin{equation}
 \left\lbrace
 \begin{array}{l}
-	r_\infty  \in  \left[\dfrac{\sigma}{\kappa};1\right]\\
+	r_\infty  \in  \left[\dfrac{\sigma}{\kappa};1\right] \;\; \left(r_\infty \geq \sigma r_0 \right)\\
 	 \Rightarrow  \exists \omega,\; r_\infty = \cos^2\omega + \dfrac{\sigma}{\kappa} \sin^2 \omega\\
 	 \Rightarrow  \varphi_\infty \mu = \dfrac{\sigma}{\kappa} \tan^2\omega\\
 \end{array}

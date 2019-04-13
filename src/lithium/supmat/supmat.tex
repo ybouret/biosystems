@@ -576,31 +576,43 @@ to get the matching expression for $\kappa$:
 	\kappa  & = &  \dfrac{1+\mu}{\mu}\left[\dfrac{1}{r_0} - \dfrac{\sigma}{1+\mu}\right] 
 	=  \sigma + \underbrace{\dfrac{1+\mu}{\mu}\left[ \dfrac{1}{r_0} - \sigma \right]}_{>0}\\
 	%\\
-	\dfrac{\kappa}{\sigma} & = & 1 + {\dfrac{1+\mu}{\mu}\left[ \dfrac{1}{r_0\sigma} - 1\right]} \;\; \left(\dfrac{\kappa}{\sigma}> 1\right)\\
+	\dfrac{\kappa}{\sigma} & = & 1 + {\dfrac{1+\mu}{\mu}\left[ \dfrac{1}{\rho_0} - 1\right]} = \dfrac{1}{\rho}\;\; \left(\dfrac{\kappa}{\sigma}> 1,\; \rho_0=r_0\sigma\right)\\
 	\\
-	\mu \dfrac{\kappa}{\sigma} & = & \dfrac{1+\mu}{r_0\sigma} - 1\\
+	\mu \dfrac{\kappa}{\sigma} & = & \dfrac{1+\mu}{\rho_0} - 1 = \dfrac{\mu}{\rho}\\
 	\\
- \kappa & > & \dfrac{1}{r_0} > \sigma \;\Rightarrow\; \dfrac{\sigma}{\kappa} < \sigma r_0 < 1\\
+ \kappa & > & \dfrac{1}{r_0} > \sigma \;\Rightarrow\; \dfrac{\sigma}{\kappa}=\rho < \sigma r_0 = \rho_0 < 1\\
 \end{array}
 \right.
 \end{equation}
-
 
 We also remark that:
 \begin{equation}
+	r_\infty  \in  \left[\dfrac{\sigma}{\kappa} < \sigma r_0;1\right],
+\end{equation}
+so that
+\begin{equation}
+	\varphi_\infty =
+	 \dfrac{\rho}{\mu} 
+	\left(
+	\dfrac{1-r_\infty}{r_\infty-\rho}
+	\right) = \dfrac{1-r_\infty}{\dfrac{\mu}{\rho}r_\infty - \mu }
+\end{equation}
+We define
+\begin{equation}
+	\gamma_h = \dfrac{\proton_\infty}{\proton_0},\;\varphi_\infty = \gamma_h \hat\alpha_\infty
+\end{equation}
+which imposes a constraint on $\mu$ since we must respect:
+\begin{equation}
 \left\lbrace
-\begin{array}{l}
-	r_\infty  \in  \left[\dfrac{\sigma}{\kappa};1\right] \;\; \left(r_\infty \geq \sigma r_0 \right)\\
-	 \Rightarrow  \exists \omega,\; r_\infty = \cos^2\omega + \dfrac{\sigma}{\kappa} \sin^2 \omega\\
-	 \Rightarrow  \varphi_\infty \mu = \dfrac{\sigma}{\kappa} \tan^2\omega\\
+\begin{array}{rcl}
+	\dfrac{1-r_\infty}{\dfrac{\mu}{\rho}r_\infty - \mu } & \leq & \gamma_h\\
+	\\
+	r_\infty \left(\dfrac{1+\mu}{\rho_0} - 1\right) - \mu & \geq & \dfrac{1-r_\infty}{\gamma_h}\\
+	\\
+	\mu \left(\dfrac{r_\infty}{\rho_0}-1 \right) & \geq & \dfrac{1-r_\infty}{\gamma_h} - r_\infty\left(\dfrac{1}{\rho_0}-1\right)\\
 \end{array}
 \right.
 \end{equation}
-Accordinly, the final ratio is governed by:
-\begin{equation}
-	\tan^2 \omega = \mu \dfrac{\kappa}{\sigma} \dfrac{\proton_\infty}{\proton_0} \alpha_\infty
-\end{equation}
-
 
 \subsection{Parametric System}
 We must study the behavior of $\hat\alpha$.

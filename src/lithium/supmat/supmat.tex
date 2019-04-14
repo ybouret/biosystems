@@ -580,17 +580,35 @@ to get the matching expression for $\kappa$:
 	\\
 	\mu \dfrac{\kappa}{\sigma} & = & \dfrac{1+\mu}{r_0\sigma} - 1\\
 	\\
- \kappa & > & \dfrac{1}{r_0} > \sigma \;\Rightarrow\; \dfrac{\sigma}{\kappa}=\rho < \sigma r_0 = \rho_0 < 1\\
+ \kappa & > & \dfrac{1}{r_0} > \sigma \;\Rightarrow\; \dfrac{\sigma}{\kappa} < \sigma r_0  < 1\\
 \end{array}
 \right.
 \end{equation}
 These expressions arising from the initial conditions are directly influencing the steady state values:
 \begin{equation}
-	r_\infty = \dfrac{1+\mu \varphi_\infty}{1+\left(\dfrac{1+\mu}{r_0\sigma} - 1\right)\varphi_\infty}.
+\label{eq:r_ss}
+	r_\infty = \dfrac{1+\mu \varphi_\infty}{1+\left(\dfrac{1+\mu}{r_0\sigma} - 1\right)\varphi_\infty} \geq r_0 \sigma .
 \end{equation}
 For a given value of $\mu$, $r_\infty$ is a {\bf decreasing} value of $\varphi_\infty$, 	and this is the only way
 to recover a high value.
-
+We define $\omega$ such that:
+\begin{equation}
+	r_\infty = \cos^2 \omega + r_0\sigma \sin^2 \omega \;\; \left(\tan^2\omega = \dfrac{1-r_\infty}{r_\infty-r_0\sigma}\right), 
+\end{equation}
+so that the inversion of \eqref{eq:r_ss} yields:
+\begin{equation}
+\label{eq:phi_ss}
+\varphi_\infty = \dfrac{1}{1+\left(\dfrac{1+\mu}{r_0\sigma}\right) \cot^2 \omega} = \underbrace{\hat\alpha_\infty}_{\leq 1} \gamma_h,\;\;\gamma_h = \dfrac{\proton_\infty}{\proton_0}.
+\end{equation}
+We hence observe a constraint on the model since for a give $\omega$ we must satisfy:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\dfrac{1}{1+\left(\dfrac{1+\mu}{r_0\sigma}\right) \cot^2 \omega} & \leq & \gamma_h\\
+\end{array}
+\right.
+\end{equation}
+...
 
 
 \subsection{Parametric System}

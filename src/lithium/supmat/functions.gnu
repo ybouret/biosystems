@@ -10,11 +10,11 @@ kappa(mu)    = ((1.0+mu)/mu)*(1.0/r0 - sigma/(1.0+mu));
 kos(mu)      = ((1.0+mu)/mu)*(1.0/(r0*sigma)-1.0/(1.0+mu));
 mukos(mu)    = (1.0+mu)/(r0*sigma) - 1.0;
 
-rinf(mu,phi) = (1.0+mu*phi)/(1.0+mukos(mu)*phi);
+#rinf(mu,phi) = (1.0+mu*phi)/(1.0+mukos(mu)*phi);
+#rinf0(phi) = 1.0/(1+(1.0/r0/sigma-1.0)*phi);
 
-rinf0(phi) = 1.0/(1+(1.0/r0/sigma-1.0)*phi);
-
-
+rinf(mu,gam,ac) = (1.0+mu*gam*ac)/(1.0+mukos(mu)*gam*ac);
+rlim(mu,gam) = rinf(mu,gam,1.0);
 
 
 pw_eta = 1.7;

@@ -306,7 +306,7 @@ Y_PROGRAM_START()
 
 
 
-    const double lt_min = -6;
+    const double lt_min = 0;
     double       lt_max =  log(4*60*60);
     double       lt_amp = lt_max-lt_min;
     double       lt_stp = 0.002;
@@ -331,7 +331,7 @@ Y_PROGRAM_START()
 
 
     double t0   = 0;
-    double ctrl = exp(lt_min)/100;
+    double ctrl = exp(lt_min)/1000;
     Li.setup(Y);
     for(size_t i=1;i<=iters;++i)
     {

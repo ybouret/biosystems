@@ -7,14 +7,14 @@ d7end = 14;
 pH_ini = 5.8;
 pH_end = 6.8;
 
-k0     = 1.0;  -- per second
+k0     = 0.001;  -- per second
 t_h    = 30;   -- in seconds
 
 
 pH_eta = 6.39;
 pw_eta = 1.70;
 
-k7 = 1e-4; -- k7 = 1e-3;
+k7 = 1e-3
 
 
 F=96485.3399;

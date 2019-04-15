@@ -600,9 +600,19 @@ These expressions arising from the initial conditions are directly influencing t
 We show that to recover a high $r_\infty$, we must have $\varphi_\infty\leq 1$, and \textbf{we will assume that $\gamma_h\leq1$}.
 For any $\mu$:
 \begin{equation}
-	r_0\sigma \leq \dfrac{1+\mu\gamma_h}{1+\left(\dfrac{1+\mu}{r_0\sigma}-1\right) \gamma_h} \leq r_\infty \leq 1
+	r_0\sigma \leq \dfrac{1+\mu\gamma_h}{1+\left(\dfrac{1+\mu}{r_0\sigma}-1\right) \gamma_h} < r_\infty < 1.
 \end{equation}
-
+We define:
+\begin{equation}
+	r_\mu = \dfrac{1+\mu\gamma_h}{1+\left(\dfrac{1+\mu}{r_0\sigma}-1\right) \gamma_h}
+\end{equation}
+and we get the value
+\begin{equation}
+	\hat\alpha_\infty = \dfrac{\left(1-r_\infty\right)}
+	{ \left(1-r_\infty\right) + 
+	\left[1+\left(\dfrac{1+\mu}{r_0\sigma}-1\right) \gamma_h\right] \left(r_\infty-r_\mu\right)
+	}
+\end{equation}
 
 \subsection{Parametric System}
 We must study the behavior of $\hat\alpha$.

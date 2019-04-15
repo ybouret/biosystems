@@ -41,26 +41,19 @@ public:
     const double h_ini;
     const double h_end;
     const double t_h;
-
+    const double gamma_h;
 
     const double k0;
     const double mu;
     const double kappa;
+    const double r_mu;
 
-    const double C2; //!< cos(Omega)^2
-    const double S2; //!< sin(Omega)^2
-    const double T2; //!< tan(Omega)^2
+    const double d7end;
+    const double r_end;
 
-    const double eta0;
-    const double eta1;
-    const double gam0;
-    const double scale;
-    const double scaleT2;
-    const double mx;   // gam0/C2, master exponential
-    const double kos;  //!< kappa over sigma
-    const double phi1; //!< C2 * h_end/h_ini
-    const double r1;
-    const double d7end;  //!< DeltaOf(r1)
+    const double C2; //!< ac_end
+
+
 
     Lithium(const double d7out_,
             const double Theta_,
@@ -71,36 +64,27 @@ public:
             const double t_h_,
             const double k0_,
             const double mu_,
-            const double C2_) :
+            const double d7end_):
     d7out(d7out_),
     eps6(1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out))),
     eps7(1.0-eps6),
     Theta(Theta_),
     k7(k7_),
-    //k6(sigma*k7),
     d7ini(d7ini_),
-    r0( RatioOf(d7ini) ),
+    r0( check_r0() ),
     pH_ini(pHini_),
     pH_end(pHend_),
     h_ini( pow(10.0,-pH_ini) ),
     h_end( pow(10.0,-pH_end) ),
     t_h(  t_h_ ),
+    gamma_h( compute_gamma_h() ),
     k0(k0_),
     mu(mu_),
     kappa( (1.0+mu)/mu * ( 1.0/r0 - sigma/(1.0+mu) ) ),
-    C2( clamp<double>(0,C2_,1) ),
-    S2( 1.0 - C2 ),
-    T2( S2/C2 ),
-    eta0( get_eta(h_ini) ),
-    eta1( get_eta(h_end) ),
-    gam0( k0 * eta0 ),
-    scale( (eta1/eta0) * (h_ini/h_end) ),
-    scaleT2( scale * T2 ),
-    mx(gam0/C2),
-    kos( kappa/sigma ),
-    phi1( C2 * h_end / h_ini ),
-    r1( (1.0+mu*phi1)/(1.0+mu*kos*phi1) ),
-    d7end( DeltaOf(r1) )
+    r_mu( compute_r_mu() ),
+    d7end( d7end_ ),
+    r_end( check_r_end() ),
+    C2( compute_C2() )
     {
         std::cerr << "d7out = " << d7out  << std::endl;
         std::cerr << "d7ini = " << d7ini  << std::endl;
@@ -121,20 +105,10 @@ public:
         std::cerr << "mu     = " << mu    << std::endl;
         std::cerr << "kappa  = " << kappa << std::endl;
 
-        std::cerr << "C2     = " << C2 << std::endl;
-        std::cerr << "S2     = " << S2 << std::endl;
-        std::cerr << "T2     = " << T2 << std::endl;
-
-        std::cerr << "eta0   = " << eta0  << std::endl;
-        std::cerr << "eta1   = " << eta1  << std::endl;
-        std::cerr << "scale  = " << scale << std::endl;
-        std::cerr << "gam0   = " << gam0  << std::endl;
-        std::cerr << "mx     = " << mx    << std::endl;
-
-        std::cerr << "kos    = " << kos   << std::endl;
-        std::cerr << "phi1   = " << phi1  << std::endl;
-        std::cerr << "r1     = " << r1    << std::endl;
+        std::cerr << "r_mu   = " << r_mu  << std::endl;
         std::cerr << "d7end  = " << d7end << std::endl;
+        std::cerr << "r_end  = " << r_end << std::endl;
+        std::cerr << "C2     = " << C2    << std::endl;
     }
 
 
@@ -147,6 +121,65 @@ public:
     inline double RatioOf( const double d ) const throw()
     {
         return (1.0+d/1000.0)/(1.0+d7out/1000.0);
+    }
+
+
+    inline double compute_gamma_h() const
+    {
+        if(h_end>h_ini)
+        {
+            throw exception("invalid [H] ratio");
+        }
+        return clamp<double>(0,h_end/h_ini,1);
+    }
+
+    inline double check_r0() const
+    {
+        const double ans = RatioOf(d7ini);
+        if(ans >= 1.0/sigma)
+        {
+            throw exception("d7ini is too high!");
+        }
+        return ans;
+    }
+
+    inline double compute_r_mu() const
+    {
+        const double sr0 = sigma * r0;
+        if(gamma_h>=1.0)
+        {
+            return sr0;
+        }
+        else
+        {
+            return (1.0+mu*gamma_h) / ( 1.0 + ( (1.0+mu)/sr0 - 1.0 ) * gamma_h );
+        }
+    }
+
+    inline double check_r_end() const
+    {
+        const double ans  = RatioOf(d7end);
+        if(ans<r_mu)
+        {
+            throw exception("d7end is too small, should increase mu!");
+        }
+
+        if(ans>1.0)
+        {
+            throw exception("d7end is too high!!!");
+        }
+
+        return ans;
+    }
+
+    inline double compute_C2() const
+    {
+        if(r_end>1.0||r_end<r_mu) throw exception("final ratio is invalid, shouldn't happen at this point");
+        const double omr = clamp<double>(0,1.0   - r_end,1);
+        const double rmr = clamp<double>(0,r_end - r_mu,1);
+        const double sr0 = sigma*r0;
+        const double cof = ( (gamma_h>=1.0) ? 1.0/sr0 : 1.0 + ( (1.0+mu)/(sigma*r0) - 1.0) * gamma_h );
+        return omr / ( omr + cof * rmr );
     }
 
     void setup( Array &Y )
@@ -189,13 +222,14 @@ public:
         const double h     = get_h(t);
         const double eta   = get_eta(h);
 
+#if 0
         const double phi    = ac * h / h_ini;
         const double mu_phi = mu*phi;
 
         dY[I_AC] = gam0*( (eta/eta0)*(1.0-ac) - scaleT2 * phi );
         dY[I_B7] = k7 * ( Theta * (1.0 + mu* phi)      - beta7 );
         dY[I_B6] = k7 * ( Theta * (sigma+kappa*mu_phi) - sigma * beta6);
-
+#endif
         //dY[I_B7] = k7 * ( Theta         - beta7 );
         //dY[I_B6] = k7 * ( Theta * sigma - sigma * beta6);
 
@@ -256,7 +290,7 @@ Y_PROGRAM_START()
                 INI(t_h),
                 INI(k0),
                 INI(mu),
-                INI(C2));
+                INI(d7end));
     ODEquation  diffeq( &Li, & Lithium::Compute );
     ODE_Driver  driver;
     driver.eps = 1e-5;
@@ -281,7 +315,7 @@ Y_PROGRAM_START()
 
     vector<double> dY(Y.size());
 
-    const string sim_name = vformat("output_mu%g_k%g_C%g.dat",Li.mu,Li.k0,Li.C2);
+    const string sim_name = "output.dat"; //vformat("output_mu%g_k%g_C%g.dat",Li.mu,Li.k0,Li.C2);
 
     std::cerr << "<saving into " << sim_name << ">" << std::endl;
     ios::ocstream::overwrite(sim_name);

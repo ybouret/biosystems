@@ -2,6 +2,7 @@ exp = math.exp;
 
 d7out = 14.57;
 d7ini = 1.02;
+d7end = 14;
 
 pH_ini = 5.8;
 pH_end = 6.8;
@@ -12,8 +13,6 @@ t_h    = 30;   -- in seconds
 
 pH_eta = 6.39;
 pw_eta = 1.70;
-
-Omega  = 0.2;
 
 k7 = 1e-4; -- k7 = 1e-3;
 
@@ -27,4 +26,4 @@ V=-40e-3;
 Theta = exp( -z*F*V/R/(T+37) );
 
 mu = 0.3;
-C2 = 0.1;
+mu = 3;

@@ -580,7 +580,7 @@ to get the matching expression for $\kappa$:
 	\\
 	\dfrac{\kappa}{\sigma} & = & 1 + {\dfrac{1+\mu}{\mu}\left[ \dfrac{1}{r_0\sigma} - 1\right]} \; \left(\dfrac{\kappa}{\sigma}> 1\right)\\
 	\\
-	\mu \dfrac{\kappa}{\sigma} & = & \dfrac{1+\mu}{r_0\sigma} - 1\\
+	\mu \dfrac{\kappa}{\sigma} & = & \dfrac{1+\mu}{r_0\sigma} - 1 = \mu'\\
 	\\
  \kappa & > & \dfrac{1}{r_0} > \sigma \;\Rightarrow\; \dfrac{\sigma}{\kappa} < \sigma r_0  < 1\\
 \end{array}
@@ -593,51 +593,58 @@ These expressions arising from the initial conditions are directly influencing t
 \begin{array}{rcl}
 	r_\infty & = & \dfrac{1+\mu \varphi_\infty}{1+\left(\dfrac{1+\mu}{r_0\sigma} - 1\right)\varphi_\infty} \geq r_0 \sigma\\
 	\\
-	& = & \dfrac{1+\mu \gamma_h \hat\alpha_\infty}{1+\left(\dfrac{1+\mu}{r_0\sigma} - 1\right)\gamma_h \hat\alpha_\infty} 
+	& = & \dfrac{1+\mu \gamma_h \hat\alpha_\infty}{1+\mu'\gamma_h \hat\alpha_\infty} 
 \end{array}
 \right.
 \end{equation}
 We show that to recover a high $r_\infty$, we must have $\varphi_\infty\leq 1$, and \textbf{we will assume that $\gamma_h\leq1$}.
 For any $\mu$:
 \begin{equation}
-	r_0\sigma \leq \dfrac{1+\mu\gamma_h}{1+\left(\dfrac{1+\mu}{r_0\sigma}-1\right) \gamma_h} < r_\infty < 1.
+	r_0\sigma \leq \dfrac{1+\mu\gamma_h}{1+\mu' \gamma_h} < r_\infty < 1.
 \end{equation}
 We define:
 \begin{equation}
-	r_\mu = \dfrac{1+\mu\gamma_h}{1+\left(\dfrac{1+\mu}{r_0\sigma}-1\right) \gamma_h}
+	r_\mu = \dfrac{1+\mu\gamma_h}{1+\mu' \gamma_h}
 \end{equation}
 and we get the value
 \begin{equation}
-	\hat\alpha_\infty = \dfrac{\left(1-r_\infty\right)}
+\left\lbrace
+\begin{array}{rcl}
+	\hat\alpha_\infty & = & \dfrac{\left(1-r_\infty\right)}
 	{ \left(1-r_\infty\right) + 
-	\left[1+\left(\dfrac{1+\mu}{r_0\sigma}-1\right) \gamma_h\right] \left(r_\infty-r_\mu\right)
-	}
+	\left[1+\mu' \gamma_h\right] \left(r_\infty-r_\mu\right)
+	} \\
+	\\
+	& = & \cos^2 \Omega\\
+	\\
+	& = & \dfrac{k_0\eta_\infty}{k_0\eta_\infty+\LiAllOut \proton_\infty \Upsilon_\alpha}\\
+	\\
+	& = & \dfrac{1}{1+\dfrac{\LiAllOut \proton_\infty \Upsilon_\alpha}{k_0\eta_\infty}}\\
+\end{array}
+\right.
+\end{equation}
+This means that one $\hat\alpha_\infty = \cos^2 \Omega $ is computed, this imposes the scaling:
+\begin{equation}
+	\LiAllOut \Upsilon_\alpha \proton_\infty = {k_0\eta_\infty} \tan^2\Omega,\;\;  \tan^2\Omega = \dfrac{1-\hat\alpha_\infty}{\hat\alpha_\infty}
 \end{equation}
 
-\subsection{Parametric System}
-We must study the behavior of $\hat\alpha$.
-We define:
-\begin{equation}
-	\hat\alpha_\infty = \cos^2\Omega = \dfrac{k_0\eta_\infty}{k_0\eta_\infty+\LiAllOut \proton_\infty \Upsilon_\alpha}
-	= \dfrac{1}{1+\dfrac{\LiAllOut \proton_\infty \Upsilon_\alpha}{k_0\eta_\infty}},
-\end{equation}
-meaning that we scale the catalytic effect to the recycling effect with:
-\begin{equation}
-	\LiAllOut \Upsilon_\alpha \proton_\infty = {k_0\eta_\infty} \tan^2\Omega
-\end{equation}
 
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
 	 \varphi(t) & = & \dfrac{\hat\alpha(t) \proton}{\proton_0}\\
 	 \\
-	 \partial_t \hat\alpha & = &
+	  \partial_t \hat\alpha & = &
+	 k_0  \left[ \eta\left(\proton\right) \left(1-\hat\alpha\right) 
+	 -  \dfrac{\eta_\infty}{\proton_\infty} \proton \hat\alpha \tan^2\Omega\right]   \\
+	 \\
+	 & = &
 	 k_0 \eta_0 \left[ \dfrac{\eta( \proton )}{\eta_0} \left(1-\hat\alpha\right) 
 	 - \dfrac{\eta_\infty}{\eta_0} \dfrac{\proton_0}{\proton_\infty} \varphi(t) \tan^2\Omega\right]   \\
 	 \\
 	\partial_t \beta_7 & = & k_7 \left[ \Theta \left( 1 + \mu \varphi(t) \right) - \beta_7 \right] \\
 	\\
-	\partial_t \beta_6 & = & k_7 \left[ \Theta \left( \sigma + \kappa \mu \varphi(t) \right) - \sigma \beta_6 \right] \\
+	\partial_t \beta_6 & = & \sigma k_7 \left[ \Theta \left( 1 + \mu' \varphi(t) \right) -  \beta_6 \right] \\
 \end{array}
 \right.
 \end{equation}

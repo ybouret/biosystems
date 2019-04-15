@@ -27,3 +27,4 @@ Theta = exp( -z*F*V/R/(T+37) );
 
 mu = 0.3;
 mu = 3;
+mu = 30

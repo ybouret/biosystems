@@ -33,6 +33,7 @@ public:
     const double eps7;
     const double Theta;
     const double k7;
+    const double k6;
     const double d7ini;
     const double r0;
 
@@ -45,6 +46,7 @@ public:
 
     const double k0;
     const double mu;
+    const double mup;
     const double kappa;
     const double r_mu;
 
@@ -52,8 +54,11 @@ public:
     const double r_end;
 
     const double C2; //!< ac_end
-
-
+    const double S2; //!< 1-C2;
+    const double T2; //!< S2/C2
+    const double eta_ini;
+    const double eta_end;
+    const double scaling;
 
     Lithium(const double d7out_,
             const double Theta_,
@@ -70,6 +75,7 @@ public:
     eps7(1.0-eps6),
     Theta(Theta_),
     k7(k7_),
+    k6(sigma*k7),
     d7ini(d7ini_),
     r0( check_r0() ),
     pH_ini(pHini_),
@@ -80,11 +86,17 @@ public:
     gamma_h( compute_gamma_h() ),
     k0(k0_),
     mu(mu_),
+    mup( (1.0+mu)/(r0*sigma) - 1.0 ),
     kappa( (1.0+mu)/mu * ( 1.0/r0 - sigma/(1.0+mu) ) ),
     r_mu( compute_r_mu() ),
     d7end( d7end_ ),
     r_end( check_r_end() ),
-    C2( compute_C2() )
+    C2( compute_C2() ),
+    S2( 1.0 - C2 ),
+    T2( S2/C2 ),
+    eta_ini( get_eta(h_ini) ),
+    eta_end( get_eta(h_end) ),
+    scaling( (eta_end/eta_ini)*(h_ini/h_end)*T2 )
     {
         std::cerr << "d7out = " << d7out  << std::endl;
         std::cerr << "d7ini = " << d7ini  << std::endl;
@@ -109,6 +121,8 @@ public:
         std::cerr << "d7end  = " << d7end << std::endl;
         std::cerr << "r_end  = " << r_end << std::endl;
         std::cerr << "C2     = " << C2    << std::endl;
+        std::cerr << "eta_ini= " << eta_ini << std::endl;
+        std::cerr << "eta_end= " << eta_end << std::endl;
     }
 
 
@@ -152,7 +166,7 @@ public:
         }
         else
         {
-            return (1.0+mu*gamma_h) / ( 1.0 + ( (1.0+mu)/sr0 - 1.0 ) * gamma_h );
+            return (1.0+mu*gamma_h) / (1.0+ mup * gamma_h );
         }
     }
 
@@ -222,16 +236,11 @@ public:
         const double h     = get_h(t);
         const double eta   = get_eta(h);
 
-#if 0
         const double phi    = ac * h / h_ini;
-        const double mu_phi = mu*phi;
 
-        dY[I_AC] = gam0*( (eta/eta0)*(1.0-ac) - scaleT2 * phi );
-        dY[I_B7] = k7 * ( Theta * (1.0 + mu* phi)      - beta7 );
-        dY[I_B6] = k7 * ( Theta * (sigma+kappa*mu_phi) - sigma * beta6);
-#endif
-        //dY[I_B7] = k7 * ( Theta         - beta7 );
-        //dY[I_B6] = k7 * ( Theta * sigma - sigma * beta6);
+        dY[I_AC] = k0 * ( eta * (1.0-ac) - scaling * phi );
+        dY[I_B7] = k7 * ( Theta * (1.0+mu*phi)   -   beta7);
+        dY[I_B6] = k6 * ( Theta * (1.0+mup*phi)  -   beta6);
 
     }
 

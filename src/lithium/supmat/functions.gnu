@@ -25,6 +25,10 @@ eta(h) = etaU(h)  / ( 1.0 + etaU(h) );
 proton(t,pH0,pH1,th) = 10**(-pH0) + (10**(-pH1)-10**(-pH0)) * t / (t+th);
 
 eta_pH(pH) = eta( 10**(-pH) );
+eta_pH_over_H(pH) = eta_pH(pH)/( 10**(-pH) );
+eta_pH_ratio(pH,pH0) = eta_pH_over_H(pH)/eta_pH_over_H(pH0);
+
+
 
 #d_eta(h) = (pw_eta/h) * etaU(h) / (1.0+etaU(h))**2;
 

@@ -4,8 +4,11 @@ d7out = 14.57;
 d7ini = 1.02;
 d7end = 14;
 
-pH_ini = 5.8;
-pH_end = 6.8;
+Lambda = 15.0; -- mM
+Lambda_h = 15.2; -- mM
+
+pH_ini = 5.92;
+pH_end = pH_ini + (7.40 - pH_ini) * Lambda/(Lambda_h+Lambda);
 
 k0     = 0.001;  -- per second
 t_h    = 30;   -- in seconds

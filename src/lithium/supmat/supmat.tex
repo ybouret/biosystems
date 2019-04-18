@@ -67,6 +67,7 @@
 \newcommand{\start}{\ast}
 
 \DeclareMathOperator\erf{erf}
+\newcommand{\pH}{\ensuremath{\mathrm{pH}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
@@ -405,13 +406,23 @@ we take $\proton$ as an experiment-dependent input, and it appears that we get r
 	\proton \simeq \proton_0 + \left(\proton_\infty-\proton_0\right) \dfrac{t}{t+t_h} = \proton_\infty + \left(\proton_0 - \proton_\infty\right) \dfrac{t_h}{t+t_h},
 \end{equation}
 and we use this equation to fit the current data as indicated on Figure \ref{fig:protons}. It is important to remember that $\proton_\infty$ depends on $\LiAllOut$.
-We inject an integrated function
+From the measurements, we use an heuristic expression for $\proton$ dynamics depending on $\LiAllOut$:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
 t_h & = & \dfrac{A_h}{\erf\left(B_h\LiAllOut\right)}\\
-A_h & = & 0.0404981 \pm 0.006\text{ s}\\
-B_h & = & 0.0341778 \pm 0.013\text{ M}^{-1}\\ 
+A_h & = & 24.7      \pm 3.2 \text{ s}\\
+B_h & = & 0.034     \pm 0.011\text{ M}^{-1}\\ 
+\end{array}
+\right.
+\end{equation}
+and
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\pH_0      & = & 5.92 \pm 0.2 \\
+\pH_\infty & = & \pH_0 + \left(7.40-\pH_0\right) \dfrac{\LiAllOut}{\LiAll_h+\LiAllOut}\\
+\LiAll_h   & = & 15.2\pm4.2\text{ M}\\
 \end{array}
 \right.
 \end{equation}

@@ -279,11 +279,21 @@ public:
 
 };
 
+#include "y/math/fcn/functions.hpp"
+
+static inline
+int lua_erf( lua_State *L )
+{
+    const double arg = luaL_checknumber(L,1);
+    lua_pushnumber(L, qerf(arg) );
+    return 1;
+}
 
 #define INI(NAME) vm->get<double>(#NAME)
 Y_PROGRAM_START()
 {
     Lua::VM vm = new Lua::State();
+    vm->load("erf", lua_erf);
     for( int i=1; i<argc; ++i)
     {
         vm->doFile(argv[i]);

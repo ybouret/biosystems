@@ -112,7 +112,7 @@ public:
         std::cerr << "k7     = " << k7     << std::endl;
 
         std::cerr << "pH_ini = " << pH_ini << std::endl;
-        std::cerr << "pH_end = " << pH_ini << std::endl;
+        std::cerr << "pH_end = " << pH_end << std::endl;
 
         std::cerr << "mu     = " << mu    << std::endl;
         std::cerr << "kappa  = " << kappa << std::endl;
@@ -310,6 +310,7 @@ Y_PROGRAM_START()
                 INI(k0),
                 INI(mu),
                 INI(d7end));
+
     ODEquation  diffeq( &Li, & Lithium::Compute );
     ODE_Driver  driver;
     driver.eps = 1e-5;

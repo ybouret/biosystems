@@ -257,8 +257,12 @@ public:
 
             {
                 ios::ocstream fp("pH_q.dat");
+                ios::ocstream ifp("pH_iq.dat");
+
                 //fp("0 0\n");
                 fp("#Li q\n");
+                ifp("#Li iq\n");
+                ifp("0 0\n");
                 for(iterator i=begin();i!=end();++i)
                 {
                     const Record         &r    = **i;
@@ -266,6 +270,7 @@ public:
                     const double  ll = string_convert::to<double>(r.Li,"Li");
                     const double  q  = vars(aorg,"q");
                     fp("%.15g %.15g\n", ll,q);
+                    ifp("%.15g %.15g\n", ll,1.0/q);
                 }
             }
 

@@ -113,7 +113,7 @@ public:
 
         std::cerr << "pH_ini = " << pH_ini << std::endl;
         std::cerr << "pH_end = " << pH_end << std::endl;
-
+        std::cerr << "t_h    = " << t_h    << std::endl;
         std::cerr << "mu     = " << mu    << std::endl;
         std::cerr << "kappa  = " << kappa << std::endl;
 

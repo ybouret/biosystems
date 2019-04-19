@@ -60,6 +60,8 @@ public:
     const double eta_end;
     const double scaling;
 
+    const double Lambda;
+
     Lithium(const double d7out_,
             const double Theta_,
             const double k7_,
@@ -69,7 +71,8 @@ public:
             const double t_h_,
             const double k0_,
             const double mu_,
-            const double d7end_):
+            const double d7end_,
+            const double Lambda_):
     d7out(d7out_),
     eps6(1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out))),
     eps7(1.0-eps6),
@@ -96,7 +99,8 @@ public:
     T2( S2/C2 ),
     eta_ini( get_eta(h_ini) ),
     eta_end( get_eta(h_end) ),
-    scaling( (eta_end/eta_ini)*(h_ini/h_end)*T2 )
+    scaling( (eta_end/eta_ini)*(h_ini/h_end)*T2 ),
+    Lambda(Lambda_)
     {
         std::cerr << "d7out = " << d7out  << std::endl;
         std::cerr << "d7ini = " << d7ini  << std::endl;
@@ -123,6 +127,8 @@ public:
         std::cerr << "C2     = " << C2    << std::endl;
         std::cerr << "eta_ini= " << eta_ini << std::endl;
         std::cerr << "eta_end= " << eta_end << std::endl;
+
+        std::cerr << "Lambda = " << Lambda << std::endl;
     }
 
 
@@ -246,7 +252,7 @@ public:
 
     double get_total( const Array &Y ) const throw()
     {
-        return eps6 * Y[I_B6] + eps7 * Y[I_B7];
+        return Lambda* ( eps6 * Y[I_B6] + eps7 * Y[I_B7] );
     }
 
     void save(ios::ostream &fp,
@@ -261,7 +267,6 @@ public:
             fp(" %.15g", Y[i]);
         }
 
-        //fp(" %.15g", C2+S2*exp(-mx*exp(lt)));
         fp(" %.15g", get_total(Y));
 
         if(extra)
@@ -281,19 +286,15 @@ public:
 
 #include "y/math/fcn/functions.hpp"
 
-static inline
-int lua_erf( lua_State *L )
-{
-    const double arg = luaL_checknumber(L,1);
-    lua_pushnumber(L, qerf(arg) );
-    return 1;
-}
+
+static inline Y_LUA_IMPL_CFUNCTION(erf,qerf)
 
 #define INI(NAME) vm->get<double>(#NAME)
 Y_PROGRAM_START()
 {
     Lua::VM vm = new Lua::State();
-    vm->load("erf", lua_erf);
+    Y_LUA_LOAD_CFUNCTION(vm,erf);
+
     for( int i=1; i<argc; ++i)
     {
         vm->doFile(argv[i]);
@@ -309,7 +310,8 @@ Y_PROGRAM_START()
                 INI(t_h),
                 INI(k0),
                 INI(mu),
-                INI(d7end));
+                INI(d7end),
+                INI(Lambda));
 
     ODEquation  diffeq( &Li, & Lithium::Compute );
     ODE_Driver  driver;
@@ -318,7 +320,7 @@ Y_PROGRAM_START()
 
 
     const double lt_min = 0;
-    double       lt_max =  log(4*60*60);
+    double       lt_max =  log(1000);
     double       lt_amp = lt_max-lt_min;
     double       lt_stp = 0.002;
     double       lt_sav = 0.05;

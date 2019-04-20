@@ -672,6 +672,32 @@ This means that one $\hat\alpha_\infty = \cos^2 \Omega $ is computed, this impos
 \right.
 \end{equation}
 
+\subsection{Short Times integration}
+If we write
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \hat\alpha & = & f(t)(1-\hat\alpha) - g(t)\hat\alpha = f(t) - [f(t)+g(t)]\hat\alpha\\
+	F(t) & = & \int_0^t f(u)\,\mathrm{d}u\\
+	G(t) & = & \int_0^t g(u)\,\mathrm{d}u\\
+\end{array}
+\right.
+\end{equation}
+then
+\begin{equation}
+	\partial_t \hat\alpha = \left( 1 + \int_0^t f(u) e^{\left[F(u)+G(u)\right]} \,\mathrm{d}u \right) e^{-\left[F(t)+G(t)\right]}
+\end{equation}
+We assume now that:
+\begin{equation}
+\left\lbrace
+\begin{array}{rclcl}
+	f(t) &  = & f_0 + f'_0 t & \Rightarrow & F(u) = f_0 u + \dfrac{f'_0}{2} u^2\\
+	g(t) &  = & g_0 + g'_0 t & \Rightarrow & G(u) = g_0 u + \dfrac{g'_0}{2} u^2\\
+
+\end{array}
+\right.
+\end{equation}
+
 \section{Passive Return}
 Let us assume that for a given time $t^\start$ we get the values $\beta_x^\start$ such that $\beta_6^\start+\beta_7^\start=B^\start\Theta$ and a given isotopic ratio $r^\start$:
 \begin{equation}

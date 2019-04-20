@@ -300,7 +300,19 @@ Y_PROGRAM_START()
         vm->doFile(argv[i]);
     }
 
+    // time parameters
+    const double lt_min = 0;
+    double       lt_max =  log(1000);
+    double       lt_amp = lt_max-lt_min;
+    double       lt_stp = 0.002;
+    double       lt_sav = 0.05;
+    size_t       every  = 0;
+    const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
+    lt_max = lt_amp + lt_min;
+    std::cerr << "#iters=" << iters  << ", saving every " << every << " lt_stp=" << lt_stp << " from " << lt_min << " to " << lt_max << std::endl;
 
+
+    // computation
     Lithium  Li(INI(d7out),
                 INI(Theta),
                 INI(k7),
@@ -319,15 +331,6 @@ Y_PROGRAM_START()
 
 
 
-    const double lt_min = 0;
-    double       lt_max =  log(1000);
-    double       lt_amp = lt_max-lt_min;
-    double       lt_stp = 0.002;
-    double       lt_sav = 0.05;
-    size_t       every  = 0;
-    const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
-    lt_max = lt_amp + lt_min;
-    std::cerr << "#iters=" << iters  << ", saving every " << every << " lt_stp=" << lt_stp << " from " << lt_min << " to " << lt_max << std::endl;
 
     vector<double> Y( Lithium::NVAR,0 );
 
@@ -341,7 +344,8 @@ Y_PROGRAM_START()
 
     std::cerr << "<saving into " << sim_name << ">" << std::endl;
     ios::ocstream::overwrite(sim_name);
-
+    ios::ocstream::overwrite("eta_h.dat");
+    ios::ocstream::echo("eta_h.dat","#log_t eta/eta0 h/h0 pH-pH0\n");
 
     double t0   = 0;
     double ctrl = exp(lt_min)/1000;
@@ -360,8 +364,14 @@ Y_PROGRAM_START()
                 const double  d = Li.DeltaOf( Y[Lithium::I_B7] / Y[Lithium::I_B6] );
                 Li.save(fp,lt1,Y,&d);
             }
+            {
+                const double h   = Li.get_h(t1);
+                const double eta = Li.get_eta(h);
+                ios::ocstream::echo("eta_h.dat","%g %g %g %g\n",lt1,eta/Li.eta_ini,h/Li.h_ini,-log10(h)-Li.pH_ini);
 
+            }
         }
+
         t0 = t1;
     }
     std::cerr << std::endl;

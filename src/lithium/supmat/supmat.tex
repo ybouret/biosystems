@@ -673,59 +673,73 @@ This means that one $\hat\alpha_\infty = \cos^2 \Omega $ is computed, this impos
 \end{equation}
 
 \subsection{Short Times integration}
-We write
-\begin{equation}
- \partial_t \hat\alpha =  k_0 \eta_0 \left[ \dfrac{\eta( \proton )}{\eta_0} \left(1-\hat\alpha\right) 
-	 - \dfrac{\eta_\infty}{\eta_0} \dfrac{\proton_0}{\proton_\infty} \dfrac{\proton}{\proton_0} \hat\alpha \tan^2\Omega\right]  
-\end{equation}
-We assume
-\begin{equation}
-	\proton = \proton_0 \left( 1 - \delta_h \cdot \rho(t)\right), \;\; \delta_h = \dfrac{\proton_0-\proton_\infty}{\proton_0},\;\;\rho(t) = \dfrac{t}{t+t_h}
-\end{equation}
-and
-\begin{equation}
-	\eta(\proton) \simeq \eta_0 + \eta'_0 \cdot \left( \proton - \proton_0 \right)
-	 \Rightarrow 
-	 \dfrac{\eta(\proton)}{\eta_0} \simeq 1 - \dfrac{\eta'_0\proton_0}{\eta_0} \delta_h \cdot \rho(t)
-\end{equation}
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
- \partial_t \hat\alpha & = & k_0 \eta_0 \left( \left[1-\delta'_h \cdot \rho(t)\right] (1-\hat\alpha) - \omega^2 \left[1-\delta_h \rho(t)\right]\hat\alpha \right)\\
-  & = & k_0 \eta_0 \left(
-  \left[1-\delta'_h \cdot \rho(t)\right] - \left[ (1+\omega^2) - \underbrace{(\delta'_h+\omega^2 \delta_h)}_{\delta''_h} \rho(t)\right] \hat\alpha
-  \right)
+	\partial_t \hat\alpha & = & k_0 \left[ \eta(\proton) - \left[ \omega^2 \proton + \eta(\proton) \right] \hat\alpha \right]\\
+	 & = & f(t) - \left[ f(t) + g(t) \right] \hat\alpha\\
+	 f(u) & = & k_0 \eta\left( \proton(u) \right) \\
+	 g(u) & = & k_0 \omega^2 \proton(u)\\
+	 F(t) & = & \int_0^t f(u) \; \mathrm{d}u \\
+	 G(t) & = & \int_0^t g(u) \; \mathrm{d}u \\
+	 \hat\alpha(t) & = & \left[ 1 + \int_0^t f(u) e^{\left[F(u)+G(u)\right]}\;\mathrm{d}u\right] e^{-\left[F(t)+G(t)\right]}\\
 \end{array}
 \right.
 \end{equation}
 
-If we write
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-	\partial_t \hat\alpha & = & f(t)  - g(t)\hat\alpha\\
-	f(u) & \simeq & k_0\eta_0 \left[1-\delta'_h\rho(u)\right]\\
-	g(u) & \simeq & k_0\eta_0 \left[ (1+\omega^2) - \delta''_h \rho(u)\right]\\
-	R(t) & = & \int_0^t \rho(u)\,\mathrm{d}u = t - t_h \ln\left(1+\dfrac{t}{t_h}\right)\\
-	%F(t) & \simeq & \int_0^t f(u)\,\mathrm{d}u = k_0 \eta_0 \left[ t - \delta'_h R(t)\right]\\
-	G(t) & \simeq & \int_0^t g(u)\,\mathrm{d}u = k_0\eta_0 \left[ (1+\omega^2) t - \delta''_h R(t)\right]\\
-\end{array}
-\right.
-\end{equation}
-then
-\begin{equation}
-	 \hat\alpha = \left( 1 + \int_0^t f(u) e^{G(u)} \,\mathrm{d}u \right) e^{-G(t)}
-\end{equation}
-We assume now that:
-\begin{equation}
-\left\lbrace
-\begin{array}{rclcl}
-	f(t) &  = & f_0 + f'_0 t & \Rightarrow & F(u) = f_0 u + \dfrac{f'_0}{2} u^2\\
-	g(t) &  = & g_0 + g'_0 t & \Rightarrow & G(u) = g_0 u + \dfrac{g'_0}{2} u^2\\
-
-\end{array}
-\right.
-\end{equation}
+%We write
+%\begin{equation}
+% \partial_t \hat\alpha =  k_0 \eta_0 \left[ \dfrac{\eta( \proton )}{\eta_0} \left(1-\hat\alpha\right) 
+%	 - \dfrac{\eta_\infty}{\eta_0} \dfrac{\proton_0}{\proton_\infty} \dfrac{\proton}{\proton_0} \hat\alpha \tan^2\Omega\right]  
+%\end{equation}
+%We assume
+%\begin{equation}
+%	\proton = \proton_0 \left( 1 - \delta_h \cdot \rho(t)\right), \;\; \delta_h = \dfrac{\proton_0-\proton_\infty}{\proton_0},\;\;\rho(t) = \dfrac{t}{t+t_h}
+%\end{equation}
+%and
+%\begin{equation}
+%	\eta(\proton) \simeq \eta_0 + \eta'_0 \cdot \left( \proton - \proton_0 \right)
+%	 \Rightarrow 
+%	 \dfrac{\eta(\proton)}{\eta_0} \simeq 1 - \dfrac{\eta'_0\proton_0}{\eta_0} \delta_h \cdot \rho(t)
+%\end{equation}
+%\begin{equation}
+%\left\lbrace
+%\begin{array}{rcl}
+% \partial_t \hat\alpha & = & k_0 \eta_0 \left( \left[1-\delta'_h \cdot \rho(t)\right] (1-\hat\alpha) - \omega^2 \left[1-\delta_h \rho(t)\right]\hat\alpha \right)\\
+%  & = & k_0 \eta_0 \left(
+%  \left[1-\delta'_h \cdot \rho(t)\right] - \left[ (1+\omega^2) - \underbrace{(\delta'_h+\omega^2 \delta_h)}_{\delta''_h} \rho(t)\right] \hat\alpha
+%  \right)
+%\end{array}
+%\right.
+%\end{equation}
+%
+%If we write
+%\begin{equation}
+%\left\lbrace
+%\begin{array}{rcl}
+%	\partial_t \hat\alpha & = & f(t)  - g(t)\hat\alpha\\
+%	f(u) & \simeq & k_0\eta_0 \left[1-\delta'_h\rho(u)\right]\\
+%	g(u) & \simeq & k_0\eta_0 \left[ (1+\omega^2) - \delta''_h \rho(u)\right]\\
+%	R(t) & = & \int_0^t \rho(u)\,\mathrm{d}u = t - t_h \ln\left(1+\dfrac{t}{t_h}\right)\\
+%	%F(t) & \simeq & \int_0^t f(u)\,\mathrm{d}u = k_0 \eta_0 \left[ t - \delta'_h R(t)\right]\\
+%	G(t) & \simeq & \int_0^t g(u)\,\mathrm{d}u = k_0\eta_0 \left[ (1+\omega^2) t - \delta''_h R(t)\right]\\
+%\end{array}
+%\right.
+%\end{equation}
+%then
+%\begin{equation}
+%	 \hat\alpha = \left( 1 + \int_0^t f(u) e^{G(u)} \,\mathrm{d}u \right) e^{-G(t)}
+%\end{equation}
+%We assume now that:
+%\begin{equation}
+%\left\lbrace
+%\begin{array}{rclcl}
+%	f(t) &  = & f_0 + f'_0 t & \Rightarrow & F(u) = f_0 u + \dfrac{f'_0}{2} u^2\\
+%	g(t) &  = & g_0 + g'_0 t & \Rightarrow & G(u) = g_0 u + \dfrac{g'_0}{2} u^2\\
+%
+%\end{array}
+%\right.
+%\end{equation}
 
 \section{Passive Return}
 Let us assume that for a given time $t^\start$ we get the values $\beta_x^\start$ such that $\beta_6^\start+\beta_7^\start=B^\start\Theta$ and a given isotopic ratio $r^\start$:

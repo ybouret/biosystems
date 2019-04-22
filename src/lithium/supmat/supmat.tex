@@ -682,7 +682,7 @@ This means that one $\hat\alpha_\infty = \cos^2 \Omega $ is computed, this impos
 	\dfrac{\eta(\proton)}{\eta_0} & \simeq & \rho( v_0 t) = \tilde\rho(t) \\
 	v_0 & = & \dfrac{p_\eta}{1+\left(\frac{\proton_0}{h_\eta}\right)^{p_\eta}}\simeq 0.233\text{ for $\pH_0=5.92$, does not depend on $t_h$}\\
 	\\
-\partial_t\hat\alpha	 & = &  f(v_0t) - \left[ \omega^2 f(t) +  f(v_0t) \right] \hat\alpha,\;\;f(t) = k_0 \dfrac{\proton}{\proton_0}\\
+\partial_t\hat\alpha	 & \simeq &  f(v_0t) - \left[ \omega^2 f(t) +  f(v_0t) \right] \hat\alpha,\;\;f(t) = k_0 \rho(t) \\
 	 F(t) & = & \int_0^t f(u) \; \mathrm{d}u \\
 	 \tilde F(t) & = & \int_0^t f(v_0 u) \; \mathrm{d}u = \dfrac{1}{v_0} F(v_0t)\\
 \end{array}
@@ -694,6 +694,14 @@ This means that one $\hat\alpha_\infty = \cos^2 \Omega $ is computed, this impos
 		  e^{-\left[\omega^2 F(t)+\frac{1}{v_0}F(v_0 t)\right]}
 \end{equation}
 
+\begin{equation}
+	f(t) = k_0\left[ 1 - \delta_h \dfrac{t}{t+t_h} \right] = k_0\left[ 1 - \delta_h \left( 1- \dfrac{t_h}{t+t_h}\right) \right] 
+	= k_0 \left[ (1-\delta_h) + \delta_h \dfrac{t_h}{t+t_h}\right]
+\end{equation}
+
+\begin{equation}
+ F(t) =  k_0 \left[ (1-\delta_h) t + \delta_h t_h \ln\left( 1+ \dfrac{t}{t_h}\right)\right]
+\end{equation}
 %We write
 %\begin{equation}
 % \partial_t \hat\alpha =  k_0 \eta_0 \left[ \dfrac{\eta( \proton )}{\eta_0} \left(1-\hat\alpha\right) 

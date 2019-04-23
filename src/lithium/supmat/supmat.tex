@@ -700,7 +700,13 @@ This means that one $\hat\alpha_\infty = \cos^2 \Omega $ is computed, this impos
 \end{equation}
 
 \begin{equation}
- F(t) =  k_0 \left[ (1-\delta_h) t + \delta_h t_h \ln\left( 1+ \dfrac{t}{t_h}\right)\right]
+\left\lbrace
+\begin{array}{rcl}
+ F(t) & = & k_0 \left[ (1-\delta_h) t + \delta_h t_h \ln\left( 1+ \dfrac{t}{t_h}\right)\right]\\
+ \\
+ \dfrac{1}{v_0}F(v_0t) & = & k_0 \left[ (1-\delta_h) t + \delta_h \dfrac{t_h}{v_0} \ln\left( 1+ \dfrac{tv_0}{t_h}\right)\right] \\
+\end{array}
+\right.
 \end{equation}
 
 \begin{equation}
@@ -708,7 +714,7 @@ This means that one $\hat\alpha_\infty = \cos^2 \Omega $ is computed, this impos
 \begin{array}{rcl}
 	\partial_t \beta_x  & = & k_x \left[ \Theta\left( 1 + \mu_x \rho(t) \hat\alpha(t) \right)- \beta_x\right]\\
 	\\
-	\beta_x(t) & = & k_x\left[ \int_0^t \left[ \Theta\left( 1 + \mu_x \rho(u) \hat\alpha(u) \right) \right] e^{k_xu} \; \mathrm{d} u \right] e^{-k_x t}\\
+	\beta_x(t) & = & \displaystyle k_x\left[ \int_0^t \left[ \Theta\left( 1 + \mu_x \rho(u) \hat\alpha(u) \right) \right] e^{k_xu} \; \mathrm{d} u \right] e^{-k_x t}\\
 \end{array}
 \right.
 \end{equation}

@@ -32,6 +32,8 @@ mu_p(mu)    = (1.0+mu)/(r0*sigma) - 1.0;
 
 rlim(mu) = (1.0+mu*gamma_h)/(1.0+mu_p(mu)*gamma_h);
 
+ac_end(mu) = (1-r1)/( (1-r1) + (1+gamma_h*mu_p(mu)) * (r1-rlim(mu)));
+
 
 
 pw_eta = 1.7;

@@ -2,8 +2,12 @@ d7ini =  1.02;
 d7out = 14.57;
 d7end = 14;
 
-r0    = (1.0+d7ini/1000.0)/(1.0+d7out/1000.0);
-r1    = (1.0+d7ini/1000.0)/(1.0+d7out/1000.0);
+RatioOf( delta ) = (1.0+delta/1000.0)/(1.0+d7out/1000.0);
+DeltaOf( ratio ) = 1000.0 * ( (1.0+d7out/1000.0) * ratio - 1.0 );
+
+r0    = RatioOf( d7ini );
+r1    = RatioOf( d7end );
+
 sigma = 1.0/0.99772;
 rho0   = sigma*r0;
 
@@ -26,8 +30,8 @@ kappa(mu)   = ((1.0+mu)/mu)*(1.0/r0 - sigma/(1.0+mu));
 mu_p(mu)    = (1.0+mu)/(r0*sigma) - 1.0;
 
 
-rinf(mu,gam,ac) = (1.0+mu*gam*ac)/(1.0+mukos(mu)*gam*ac);
-rlim(mu,gam) = rinf(mu,gam,1.0);
+rlim(mu) = (1.0+mu*gamma_h)/(1.0+mu_p(mu)*gamma_h);
+
 
 
 pw_eta = 1.7;

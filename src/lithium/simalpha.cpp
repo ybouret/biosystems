@@ -344,8 +344,13 @@ Y_PROGRAM_START()
 
     std::cerr << "<saving into " << sim_name << ">" << std::endl;
     ios::ocstream::overwrite(sim_name);
-    ios::ocstream::overwrite("eta_h.dat");
-    ios::ocstream::echo("eta_h.dat","#log_t eta/eta0 h/h0 pH-pH0\n");
+
+    bool save_eta_h = false;
+    if(save_eta_h)
+    {
+        ios::ocstream::overwrite("eta_h.dat");
+        ios::ocstream::echo("eta_h.dat","#log_t eta/eta0 h/h0 pH-pH0\n");
+    }
 
     double t0   = 0;
     double ctrl = exp(lt_min)/1000;
@@ -364,6 +369,7 @@ Y_PROGRAM_START()
                 const double  d = Li.DeltaOf( Y[Lithium::I_B7] / Y[Lithium::I_B6] );
                 Li.save(fp,lt1,Y,&d);
             }
+            if(save_eta_h)
             {
                 const double h   = Li.get_h(t1);
                 const double eta = Li.get_eta(h);
@@ -376,6 +382,8 @@ Y_PROGRAM_START()
     }
     std::cerr << std::endl;
     std::cerr << "<saved  into " << sim_name << ">" << std::endl;
+
+    std::cerr << "plot 'src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt' u (log($1)):2 w lp, 'output.dat' u 1:6 w lp, 'src/lithium/data/nhe1_intake_15mM.txt' u (log($1)):2 axis x1y2 w lp, 'output.dat' u 1:5 w l axis x1y2" << std::endl;
 
 }
 Y_PROGRAM_END()

@@ -374,7 +374,6 @@ Y_PROGRAM_START()
                 const double h   = Li.get_h(t1);
                 const double eta = Li.get_eta(h);
                 ios::ocstream::echo("eta_h.dat","%g %g %g %g\n",lt1,eta/Li.eta_ini,h/Li.h_ini,-log10(h)-Li.pH_ini);
-
             }
         }
 

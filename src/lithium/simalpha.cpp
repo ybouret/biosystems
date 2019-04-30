@@ -5,18 +5,49 @@
 #include "y/ios/ocstream.hpp"
 #include "y/os/progress.hpp"
 #include "y/math/timings.hpp"
+#include "y/math/fit/ls.hpp"
+#include "y/math/fit/samples-io.hpp"
+
 
 using namespace upsylon;
 using namespace math;
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//
+// types definitions
+//
+//
+////////////////////////////////////////////////////////////////////////////////
 
 typedef array<double>                 Array;
 typedef ODE::DriverCK<double>::Type   ODE_Driver;
 typedef ODE::Field<double>::Equation  ODEquation;
 
+typedef Fit::Sample<double>       Sample;
+typedef Fit::LeastSquares<double> LSF;
+typedef LSF::Function             Function;
+typedef Fit::Variables            Variables;
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//
+// global definitions
+//
+//
+////////////////////////////////////////////////////////////////////////////////
 static double lambda_s = 12.0192;
 static double sigma    = 1.0/0.99772;
 
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//
+// lithium class
+//
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -284,22 +315,32 @@ public:
 
 };
 
-#include "y/math/fcn/functions.hpp"
-
-
-static inline Y_LUA_IMPL_CFUNCTION(erf,qerf)
+////////////////////////////////////////////////////////////////////////////////
+//
+//
+// perform one run based on lua settings
+//
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #define INI(NAME) vm->get<double>(#NAME)
-Y_PROGRAM_START()
+
+#define INI_LIST \
+INI(d7out),\
+INI(Theta),\
+INI(k7),\
+INI(d7ini),\
+INI(pH_ini),\
+INI(pH_end),\
+INI(t_h),\
+INI(k0),\
+INI(mu),\
+INI(d7end),\
+INI(Lambda)
+
+static inline
+void perform_simulation( Lua::VM &vm )
 {
-    Lua::VM vm = new Lua::State();
-    Y_LUA_LOAD_CFUNCTION(vm,erf);
-
-    for( int i=1; i<argc; ++i)
-    {
-        vm->doFile(argv[i]);
-    }
-
     // time parameters
     const double lt_min = 0;
     double       lt_max =  log(3*60*60);
@@ -313,17 +354,7 @@ Y_PROGRAM_START()
 
 
     // computation
-    Lithium  Li(INI(d7out),
-                INI(Theta),
-                INI(k7),
-                INI(d7ini),
-                INI(pH_ini),
-                INI(pH_end),
-                INI(t_h),
-                INI(k0),
-                INI(mu),
-                INI(d7end),
-                INI(Lambda));
+    Lithium  Li(INI_LIST);
 
     ODEquation  diffeq( &Li, & Lithium::Compute );
     ODE_Driver  driver;
@@ -345,12 +376,6 @@ Y_PROGRAM_START()
     std::cerr << "<saving into " << sim_name << ">" << std::endl;
     ios::ocstream::overwrite(sim_name);
 
-    bool save_eta_h = false;
-    if(save_eta_h)
-    {
-        ios::ocstream::overwrite("eta_h.dat");
-        ios::ocstream::echo("eta_h.dat","#log_t eta/eta0 h/h0 pH-pH0\n");
-    }
 
     double t0   = 0;
     double ctrl = exp(lt_min)/1000;
@@ -369,20 +394,105 @@ Y_PROGRAM_START()
                 const double  d = Li.DeltaOf( Y[Lithium::I_B7] / Y[Lithium::I_B6] );
                 Li.save(fp,lt1,Y,&d);
             }
-            if(save_eta_h)
-            {
-                const double h   = Li.get_h(t1);
-                const double eta = Li.get_eta(h);
-                ios::ocstream::echo("eta_h.dat","%g %g %g %g\n",lt1,eta/Li.eta_ini,h/Li.h_ini,-log10(h)-Li.pH_ini);
-            }
         }
-
         t0 = t1;
     }
     std::cerr << std::endl;
     std::cerr << "<saved  into " << sim_name << ">" << std::endl;
 
     std::cerr << "plot 'src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt' u (log($1)):2 w lp, 'output.dat' u 1:6 w lp, 'src/lithium/data/nhe1_intake_15mM.txt' u (log($1)):2 axis x1y2 w lp, 'output.dat' u 1:5 w l axis x1y2" << std::endl;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// fit function
+//
+////////////////////////////////////////////////////////////////////////////////
+#undef INI
+#define INI(NAME) vars(aorg,#NAME)
+class LiFit
+{
+public:
+    ODE_Driver     driver;
+    vector<double> Y;
+    inline  LiFit() :
+    driver(), Y(Lithium::NVAR)
+    {
+        driver.start(Y.size());
+        driver.eps = 1e-5;
+    }
+
+    inline ~LiFit() throw() {}
+
+    inline
+    double ComputeDelta7( double lt, const Array &aorg, const Variables &vars )
+    {
+        assert(lt>0);
+
+        Lithium  Li(INI_LIST);
+
+        ODEquation  diffeq( &Li, & Lithium::Compute );
+
+        Li.setup(Y);
+
+        double ctrl = lt/1000;
+        driver( diffeq,Y,0,exp(lt), ctrl, NULL);
+
+        const double r = Y[Lithium::I_B7]/Y[Lithium::I_B6];
+        return Li.DeltaOf(r);
+    }
+
+
+private:
+    Y_DISABLE_COPY_AND_ASSIGN(LiFit);
+};
+
+
+
+
+#include "y/math/fcn/functions.hpp"
+
+static inline Y_LUA_IMPL_CFUNCTION(erf,qerf)
+
+#undef INI
+
+#define INI(NAME) vars.create_global( #NAME )
+
+Y_PROGRAM_START()
+{
+    Lua::VM vm = new Lua::State();
+    Y_LUA_LOAD_CFUNCTION(vm,erf);
+
+    if(argc<=2)
+    {
+        throw exception("need parameters.lua and delta7.txt");
+    }
+    vm->doFile(argv[1]);
+
+    if(false) perform_simulation(vm);
+
+    vector<double> lt;
+    vector<double> delta7;
+    vector<double> delta7fit;
+
+    const size_t nd = Fit::IO::Load(argv[2], 1, lt, 2, delta7, delta7fit);
+    std::cerr << "nd=" << nd << std::endl;
+    for(size_t i=nd;i>0;--i)
+    {
+        lt[i] = log(lt[i]);
+    }
+    Sample     delta7sample(lt,delta7,delta7fit);
+    Variables &vars = delta7sample.variables;
+
+    INI_LIST;
+
+
+
+    LiFit    FitLithium;
+    Function F( &FitLithium, & LiFit::ComputeDelta7 );
+
+
+
 
 }
 Y_PROGRAM_END()

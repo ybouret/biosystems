@@ -302,7 +302,7 @@ Y_PROGRAM_START()
 
     // time parameters
     const double lt_min = 0;
-    double       lt_max =  log(1000);
+    double       lt_max =  log(3*60*60);
     double       lt_amp = lt_max-lt_min;
     double       lt_stp = 0.002;
     double       lt_sav = 0.05;

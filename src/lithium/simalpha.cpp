@@ -54,6 +54,7 @@ static double sigma    = 1.0/0.99772;
 class Lithium
 {
 public:
+    static bool  Verbose;
     static const size_t I_AC = 1;
     static const size_t I_B6 = 2;
     static const size_t I_B7 = 3;
@@ -133,33 +134,36 @@ public:
     scaling( (eta_end/eta_ini)*(h_ini/h_end)*T2 ),
     Lambda(Lambda_)
     {
-        std::cerr << "d7out = " << d7out  << std::endl;
-        std::cerr << "d7ini = " << d7ini  << std::endl;
-        std::cerr << "r0    = " << r0     << std::endl;
-
-        if( r0 >= 1.0/sigma )
+        if(Verbose)
         {
-            throw exception("invalid d7ini");
+            std::cerr << "d7out = " << d7out  << std::endl;
+            std::cerr << "d7ini = " << d7ini  << std::endl;
+            std::cerr << "r0    = " << r0     << std::endl;
+
+            if( r0 >= 1.0/sigma )
+            {
+                throw exception("invalid d7ini");
+            }
+            std::cerr << "eps6   = " << eps6   << std::endl;
+            std::cerr << "eps7   = " << eps7   << std::endl;
+            std::cerr << "Theta  = " << Theta  << std::endl;
+            std::cerr << "k7     = " << k7     << std::endl;
+
+            std::cerr << "pH_ini = " << pH_ini << std::endl;
+            std::cerr << "pH_end = " << pH_end << std::endl;
+            std::cerr << "t_h    = " << t_h    << std::endl;
+            std::cerr << "mu     = " << mu    << std::endl;
+            std::cerr << "kappa  = " << kappa << std::endl;
+
+            std::cerr << "r_mu   = " << r_mu  << std::endl;
+            std::cerr << "d7end  = " << d7end << std::endl;
+            std::cerr << "r_end  = " << r_end << std::endl;
+            std::cerr << "C2     = " << C2    << std::endl;
+            std::cerr << "eta_ini= " << eta_ini << std::endl;
+            std::cerr << "eta_end= " << eta_end << std::endl;
+
+            std::cerr << "Lambda = " << Lambda << std::endl;
         }
-        std::cerr << "eps6   = " << eps6   << std::endl;
-        std::cerr << "eps7   = " << eps7   << std::endl;
-        std::cerr << "Theta  = " << Theta  << std::endl;
-        std::cerr << "k7     = " << k7     << std::endl;
-
-        std::cerr << "pH_ini = " << pH_ini << std::endl;
-        std::cerr << "pH_end = " << pH_end << std::endl;
-        std::cerr << "t_h    = " << t_h    << std::endl;
-        std::cerr << "mu     = " << mu    << std::endl;
-        std::cerr << "kappa  = " << kappa << std::endl;
-
-        std::cerr << "r_mu   = " << r_mu  << std::endl;
-        std::cerr << "d7end  = " << d7end << std::endl;
-        std::cerr << "r_end  = " << r_end << std::endl;
-        std::cerr << "C2     = " << C2    << std::endl;
-        std::cerr << "eta_ini= " << eta_ini << std::endl;
-        std::cerr << "eta_end= " << eta_end << std::endl;
-
-        std::cerr << "Lambda = " << Lambda << std::endl;
     }
 
 
@@ -315,6 +319,8 @@ public:
 
 };
 
+bool Lithium::Verbose = false;
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -427,8 +433,7 @@ public:
     inline
     double ComputeDelta7( double lt, const Array &aorg, const Variables &vars )
     {
-        assert(lt>0);
-
+        
         Lithium  Li(INI_LIST);
 
         ODEquation  diffeq( &Li, & Lithium::Compute );
@@ -440,6 +445,27 @@ public:
 
         const double r = Y[Lithium::I_B7]/Y[Lithium::I_B6];
         return Li.DeltaOf(r);
+    }
+
+    void save_ln(const double tmax, const Array &aorg,const Variables &vars)
+    {
+        const double lt_min = 0;
+        double       lt_max =  log(tmax);
+        double       lt_amp = lt_max-lt_min;
+        double       lt_stp = 0.05;
+        double       lt_sav = lt_stp;
+        size_t       every  = 0;
+        const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
+        lt_max = lt_amp + lt_min;
+
+        ios::ocstream::overwrite("savefit.dat");
+        for(size_t i=1;i<=iters;++i)
+        {
+            const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
+            //const double t1  = exp(lt1);
+            const double d7  = ComputeDelta7(lt1,aorg,vars);
+            ios::ocstream::echo("savefit.dat", "%g %g\n",lt1,d7);
+        }
     }
 
 
@@ -454,9 +480,7 @@ private:
 
 static inline Y_LUA_IMPL_CFUNCTION(erf,qerf)
 
-#undef INI
 
-#define INI(NAME) vars.create_global( #NAME )
 
 Y_PROGRAM_START()
 {
@@ -469,14 +493,13 @@ Y_PROGRAM_START()
     }
     vm->doFile(argv[1]);
 
-    if(false) perform_simulation(vm);
 
     vector<double> lt;
     vector<double> delta7;
     vector<double> delta7fit;
 
     const size_t nd = Fit::IO::Load(argv[2], 1, lt, 2, delta7, delta7fit);
-    std::cerr << "nd=" << nd << std::endl;
+    //std::cerr << "nd=" << nd << std::endl;
     for(size_t i=nd;i>0;--i)
     {
         lt[i] = log(lt[i]);
@@ -484,15 +507,33 @@ Y_PROGRAM_START()
     Sample     delta7sample(lt,delta7,delta7fit);
     Variables &vars = delta7sample.variables;
 
+    // create variables
+#undef  INI
+#define INI(NAME) vars.create_global( #NAME )
     INI_LIST;
 
+    const size_t   nvar = vars.size();
+    vector<double> aorg(nvar,0);
+    vector<double> aerr(nvar,0);
+    vector<bool>   used(nvar,false);
 
+#undef INI
+#define INI(NAME) vars(aorg,#NAME) = vm->get<double>(#NAME)
+
+    INI_LIST;
+    vars.display(std::cerr, aorg, "\t" );
 
     LiFit    FitLithium;
     Function F( &FitLithium, & LiFit::ComputeDelta7 );
 
+    perform_simulation(vm);
+    FitLithium.save_ln(3*3600, aorg, vars);
 
-
+    LSF ls;
+    if( ! ls.fit(delta7sample, F, aorg, aerr, used) )
+    {
+        throw exception("couldn't fit level-1");
+    }
 
 }
 Y_PROGRAM_END()

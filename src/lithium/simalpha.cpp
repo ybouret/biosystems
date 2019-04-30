@@ -60,6 +60,7 @@ public:
     static const size_t I_B7 = 3;
     static const size_t NVAR = 3;
 
+    const double SCALING;
     const double d7out;
     const double eps6;
     const double eps7;
@@ -94,7 +95,8 @@ public:
 
     const double Lambda;
 
-    Lithium(const double d7out_,
+    Lithium(const double SCALING_,
+            const double d7out_,
             const double Theta_,
             const double k7_,
             const double d7ini_,
@@ -105,11 +107,12 @@ public:
             const double mu_,
             const double d7end_,
             const double Lambda_):
+    SCALING(SCALING_),
     d7out(d7out_),
     eps6(1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out))),
     eps7(1.0-eps6),
     Theta(Theta_),
-    k7(k7_),
+    k7(k7_*SCALING),
     k6(sigma*k7),
     d7ini(d7ini_),
     r0( check_r0() ),
@@ -119,7 +122,7 @@ public:
     h_end( pow(10.0,-pH_end) ),
     t_h(  t_h_ ),
     gamma_h( compute_gamma_h() ),
-    k0(k0_),
+    k0(k0_*SCALING),
     mu(mu_),
     mup( (1.0+mu)/(r0*sigma) - 1.0 ),
     kappa( (1.0+mu)/mu * ( 1.0/r0 - sigma/(1.0+mu) ) ),
@@ -332,16 +335,17 @@ bool Lithium::Verbose = false;
 #define INI(NAME) vm->get<double>(#NAME)
 
 #define INI_LIST \
-INI(d7out),\
-INI(Theta),\
-INI(k7),\
-INI(d7ini),\
-INI(pH_ini),\
-INI(pH_end),\
-INI(t_h),\
-INI(k0),\
-INI(mu),\
-INI(d7end),\
+INI(SCALING),    \
+INI(d7out),      \
+INI(Theta),      \
+INI(k7),         \
+INI(d7ini),      \
+INI(pH_ini),     \
+INI(pH_end),     \
+INI(t_h),        \
+INI(k0),         \
+INI(mu),         \
+INI(d7end),      \
 INI(Lambda)
 
 static inline

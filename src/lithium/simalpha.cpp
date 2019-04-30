@@ -502,14 +502,16 @@ Y_PROGRAM_START()
     vector<double> delta7;
     vector<double> delta7fit;
 
-    const size_t nd = Fit::IO::Load(argv[2], 1, lt, 2, delta7, delta7fit);
-    //std::cerr << "nd=" << nd << std::endl;
+    const size_t nd    = Fit::IO::Load(argv[2], 1, lt, 2, delta7, delta7fit);
+    const double t_max = lt[nd]+30*60;
+
+
     for(size_t i=nd;i>0;--i)
     {
         lt[i] = log(lt[i]);
     }
-    Sample     delta7sample(lt,delta7,delta7fit);
-    Variables &vars = delta7sample.variables;
+    Sample       delta7sample(lt,delta7,delta7fit);
+    Variables   &vars = delta7sample.variables;
 
     // create variables
 #undef  INI
@@ -530,14 +532,36 @@ Y_PROGRAM_START()
     LiFit    FitLithium;
     Function F( &FitLithium, & LiFit::ComputeDelta7 );
 
-    perform_simulation(vm);
-    FitLithium.save_ln(3*3600, aorg, vars);
+    if(false) perform_simulation(vm);
+    FitLithium.save_ln(t_max, aorg, vars);
 
     LSF ls;
+    vars.on(used,"k7");
+    std::cerr << "fitting..." << std::endl;
+
     if( ! ls.fit(delta7sample, F, aorg, aerr, used) )
     {
         throw exception("couldn't fit level-1");
     }
+    vars.display(std::cerr, aorg, aerr, "\t");
+    FitLithium.save_ln(t_max, aorg, vars);
+
+
+    vars.on(used,"k0");
+    if( ! ls.fit(delta7sample, F, aorg, aerr, used) )
+    {
+        throw exception("couldn't fit level-2");
+    }
+    vars.display(std::cerr, aorg, aerr, "\t");
+    FitLithium.save_ln(t_max, aorg, vars);
+
+    vars.on(used,"mu");
+    if( ! ls.fit(delta7sample, F, aorg, aerr, used) )
+    {
+        throw exception("couldn't fit level-3");
+    }
+    vars.display(std::cerr, aorg, aerr, "\t");
+    FitLithium.save_ln(t_max, aorg, vars);
 
 }
 Y_PROGRAM_END()

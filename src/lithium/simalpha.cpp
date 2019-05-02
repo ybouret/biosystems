@@ -469,8 +469,9 @@ public:
 
 
 
-    void save_ln(const double tmax, const Array &aorg,const Variables &vars)
+    void save_ln(const string &filename, const double tmax, const Array &aorg,const Variables &vars)
     {
+        std::cerr << "<saving to '" << filename << "'>" << std::endl;
         const double lt_min = 0;
         double       lt_max =  log(tmax);
         double       lt_amp = lt_max-lt_min;
@@ -480,13 +481,13 @@ public:
         const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
         lt_max = lt_amp + lt_min;
 
-        ios::ocstream::overwrite("savefit.dat");
+        ios::ocstream::overwrite(filename);
         for(size_t i=1;i<=iters;++i)
         {
             const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
             const double d7  = ComputeDelta7(lt1,aorg,vars);
             const double tot = ComputeTotal(lt1,aorg,vars);
-            ios::ocstream::echo("savefit.dat", "%.15g %.15g %.15g\n",lt1,d7,tot);
+            ios::ocstream::echo(filename, "%.15g %.15g %.15g\n",lt1,d7,tot);
         }
     }
 
@@ -597,7 +598,8 @@ Y_PROGRAM_START()
     {
         perform_simulation(vm);
     }
-    FitLithium.save_ln(t_max, aorg, vars);
+    string savename = "savefit.dat";
+    FitLithium.save_ln(savename,t_max, aorg, vars);
 
     
     LSF ls;
@@ -613,20 +615,24 @@ Y_PROGRAM_START()
         throw exception("couldn't fit level-%d",level);
     }
     vars.display(std::cerr, aorg, aerr, "\t");
-    FitLithium.save_ln(t_max, aorg, vars);
+    FitLithium.save_ln(savename,t_max, aorg, vars);
     std::cerr << std::endl;
 
-    vars.on(used,"k0");
-    ++level;
-    std::cerr << "level " << level << std::endl;
-    if( ! ls.fit(delta7sample, F, aorg, aerr, used) )
+
+    if(true)
     {
-        throw exception("couldn't fit level-%d",level);
-    }
-    vars.display(std::cerr, aorg, aerr, "\t");
-    FitLithium.save_ln(t_max, aorg, vars);
-    std::cerr << std::endl;
 
+        vars.on(used,"k0");
+        ++level;
+        std::cerr << "level " << level << std::endl;
+        if( ! ls.fit(delta7sample, F, aorg, aerr, used) )
+        {
+            throw exception("couldn't fit level-%d",level);
+        }
+        vars.display(std::cerr, aorg, aerr, "\t");
+        FitLithium.save_ln(savename,t_max, aorg, vars);
+        std::cerr << std::endl;
+    }
 
 
     if(true)
@@ -639,12 +645,38 @@ Y_PROGRAM_START()
             throw exception("couldn't fit level-%d",level);
         }
         vars.display(std::cerr, aorg, aerr, "\t");
-        FitLithium.save_ln(t_max, aorg, vars);
+        FitLithium.save_ln(savename,t_max, aorg, vars);
         std::cerr << std::endl;
     }
 
+    {
+        double num = 0;
+        double den = 0;
+        for(size_t i=ni;i>0;--i)
+        {
+            const double yi = intake[i];
+            const double fi = FitLithium.ComputeTotal(lti[i], aorg, vars);
+            num += fi*yi;
+            den += fi*fi;
+        }
+        const double a = num/den;
+        std::cerr << "a=" << a << std::endl;
+    }
+
+    return 0;
+
+    const double rescale_by = 0.5;
+    vars(aorg,"k0") *= rescale_by;
+    vars(aorg,"k7") *= rescale_by;
+
+    FitLithium.save_ln("savefitx.dat",t_max, aorg, vars);
+
+
+    return 0;
+
     if(false)
     {
+        // test influence of d7end for k0,k7,d7ini
         const double d7end0 = vars(aorg,"d7end");
         const double d7out  = vars(aorg,"d7out");
 
@@ -658,7 +690,7 @@ Y_PROGRAM_START()
             {
                 throw exception("couldn't fit level-%d",level);
             }
-            FitLithium.save_ln(t_max, aorg, vars);
+            FitLithium.save_ln(savename,t_max, aorg, vars);
             ios::ocstream::echo("depvars.dat","%g %g %g %g\n",
                                 d7end,
                                 vars(aorg,"k7"),
@@ -669,6 +701,8 @@ Y_PROGRAM_START()
 
     }
 
+
+    // rescaling
     Function G( &FitLithium, & LiFit::ComputeTotal);
     Rescaler rs(G,aorg,vars);
     Function R( &rs, & Rescaler::Compute );

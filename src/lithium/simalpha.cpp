@@ -7,6 +7,7 @@
 #include "y/math/timings.hpp"
 #include "y/math/fit/ls.hpp"
 #include "y/math/fit/samples-io.hpp"
+#include "y/math/fit/ls-rescale.hpp"
 
 
 using namespace upsylon;
@@ -28,6 +29,7 @@ typedef Fit::Sample<double>       Sample;
 typedef Fit::LeastSquares<double> LSF;
 typedef LSF::Function             Function;
 typedef Fit::Variables            Variables;
+typedef Fit::Rescaling<double>    Rescaler;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -497,37 +499,42 @@ private:
     Y_DISABLE_COPY_AND_ASSIGN(LiFit);
 };
 
-
-class Rescaler
+struct LiWrapper
 {
-public:
-    Function        &f;
-    const Array     &a;
-    const Variables &v;
+    Function        *pG;
+    const Array     *pA;
+    const Variables *pV;
 
-    explicit Rescaler( Function &F, const Array &A, const Variables &V ) throw() :
-    f(F),
-    a(A),
-    v(V)
+    inline double operator()(double lt)
     {
+        assert(pG);
+        assert(pA);
+        assert(pG);
+        return (*pG)(lt,*pA,*pV);
     }
 
-    virtual ~Rescaler() throw()
+    void SaveLn(const string &filename, const double tmax, const Rescaler &rs)
     {
+        std::cerr << "<saving to '" << filename << "'>" << std::endl;
+        const double lt_min = 0;
+        double       lt_max =  log(tmax);
+        double       lt_amp = lt_max-lt_min;
+        double       lt_stp = 0.05;
+        double       lt_sav = lt_stp;
+        size_t       every  = 0;
+        const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
+        lt_max = lt_amp + lt_min;
 
+        ios::ocstream::overwrite(filename);
+        for(size_t i=1;i<=iters;++i)
+        {
+            const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
+
+            ios::ocstream::echo(filename, "%.15g %.15g\n",lt1,rs( *this, lt1 ));
+        }
     }
-
-    inline
-    double Compute( double lt, const Array &aorg, const Variables &vars )
-    {
-        const double shift = vars(aorg,"shift");
-        const double scale = vars(aorg,"scale");
-        return scale * f(lt+shift,a,v);
-    }
-
-private:
-    Y_DISABLE_COPY_AND_ASSIGN(Rescaler);
 };
+
 
 
 #include "y/math/fcn/functions.hpp"
@@ -538,6 +545,13 @@ static inline Y_LUA_IMPL_CFUNCTION(erf,qerf)
 
 Y_PROGRAM_START()
 {
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // create VM
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
     Lua::VM vm = new Lua::State();
     Y_LUA_LOAD_CFUNCTION(vm,erf);
 
@@ -547,11 +561,17 @@ Y_PROGRAM_START()
     }
     vm->doFile(argv[1]);
 
-
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    //
+    // create delta7 sample
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
     vector<double> lt;
     vector<double> delta7;
     vector<double> delta7fit;
-
 
     const size_t nd    = Fit::IO::Load(argv[2], 1, lt, 2, delta7, delta7fit);
     const double t_max = lt[nd]+30*60;
@@ -561,21 +581,36 @@ Y_PROGRAM_START()
     {
         lt[i] = log(lt[i]);
     }
-    Sample       delta7sample(lt,delta7,delta7fit);
-    Variables   &vars = delta7sample.variables;
+    Sample       delta7Sample(lt,delta7,delta7fit);
+    Variables   &vars = delta7Sample.variables;
 
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    //
+    // create intake sample, for rescaling purpose
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
     vector<double> lti;
     vector<double> intake;
-    vector<double> intakeFit;
+    vector<double> intakefit;
 
-    const size_t ni = Fit::IO::Load(argv[3], 1, lti, 2, intake, intakeFit);
+    const size_t ni = Fit::IO::Load(argv[3], 1, lti, 2, intake, intakefit);
     for(size_t i=ni;i>0;--i)
     {
         lti[i] = log(lti[i]);
     }
-    Sample intakeSample(lti,intake,intakeFit);
+    Sample intakeSample(lti,intake,intakefit);
 
-    // create variables
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // create delta7 variables
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
 #undef  INI
 #define INI(NAME) vars.create_global( #NAME )
     INI_LIST;
@@ -591,88 +626,100 @@ Y_PROGRAM_START()
     INI_LIST;
     vars.display(std::cerr, aorg, "\t" );
 
-    LiFit    FitLithium;
-    Function F( &FitLithium, & LiFit::ComputeDelta7 );
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // create fit functions and wrapper for rescaling
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    LiFit     FitLithium;
+    Function  delta7Fit( &FitLithium, & LiFit::ComputeDelta7); //!< fit delta
+    Function  intakeFit( &FitLithium, & LiFit::ComputeTotal);  //!< fit intake
+    LiWrapper intakeFcn ={ &intakeFit, &aorg, &vars };         //!< fit intake wrapper
+
+    Rescaler rs;
+    LSF      ls;
 
     if(false)
     {
         perform_simulation(vm);
     }
-    string savename = "savefit.dat";
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // initialize rescaling
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+    string savename  = "savefit.dat";
+    string savenamex = "savefitx.dat";
     FitLithium.save_ln(savename,t_max, aorg, vars);
 
-    
-    LSF ls;
-    vars.on(used,"k7");
-    std::cerr << "fitting..." << std::endl;
-
+    rs.use_coeff() = true;
+    rs.use_scale() = false;
+    rs.use_shift() = false;
     int level = 0;
-
-    ++level;
-    std::cerr << "level " << level << std::endl;
-    if( ! ls.fit(delta7sample, F, aorg, aerr, used) )
+    if( !rs.update(ls,intakeSample,intakeFcn, rs.MinimizeAmplitude ) )
     {
-        throw exception("couldn't fit level-%d",level);
+        throw exception("couldn't rescale level-%d",level);
     }
-    vars.display(std::cerr, aorg, aerr, "\t");
-    FitLithium.save_ln(savename,t_max, aorg, vars);
-    std::cerr << std::endl;
+    rs.vars.display(std::cerr,rs.values(),rs.errors());
+    intakeFcn.SaveLn(savenamex, t_max, rs);
 
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // Start Fitting
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+    std::cerr << "Fitting..." << std::endl;
+
+#define FIT_SESSION() do {\
+++level;\
+std::cerr << "level " << level << std::endl; \
+if( ! ls.fit(delta7Sample, delta7Fit, aorg, aerr, used) ) throw exception("couldn't fit level-%d",level);\
+vars.display(std::cerr, aorg, aerr, "\t");\
+FitLithium.save_ln(savename,t_max, aorg, vars);\
+if( !rs.update(ls,intakeSample,intakeFcn, rs.WouldTakeNextStep ) ) throw exception("couldn't rescale level-%d",level);\
+rs.vars.display(std::cerr,rs.values(),rs.errors(),"\t(*) ");\
+intakeFcn.SaveLn(savenamex, t_max, rs);\
+std::cerr << std::endl; } while(false)
+
+    if(false)
+    {
+        vars.on(used,"k7");
+        FIT_SESSION();
+    }
 
     if(true)
     {
 
         vars.on(used,"k0");
-        ++level;
-        std::cerr << "level " << level << std::endl;
-        if( ! ls.fit(delta7sample, F, aorg, aerr, used) )
-        {
-            throw exception("couldn't fit level-%d",level);
-        }
-        vars.display(std::cerr, aorg, aerr, "\t");
-        FitLithium.save_ln(savename,t_max, aorg, vars);
-        std::cerr << std::endl;
+        FIT_SESSION();
     }
-
-
+    
     if(true)
     {
         vars.on(used,"d7ini");
-        ++level;
-        std::cerr << "level " << level << std::endl;
-        if( ! ls.fit(delta7sample, F, aorg, aerr, used) )
-        {
-            throw exception("couldn't fit level-%d",level);
-        }
-        vars.display(std::cerr, aorg, aerr, "\t");
-        FitLithium.save_ln(savename,t_max, aorg, vars);
-        std::cerr << std::endl;
+        FIT_SESSION();
     }
 
-    {
-        double num = 0;
-        double den = 0;
-        for(size_t i=ni;i>0;--i)
-        {
-            const double yi = intake[i];
-            const double fi = FitLithium.ComputeTotal(lti[i], aorg, vars);
-            num += fi*yi;
-            den += fi*fi;
-        }
-        const double a = num/den;
-        std::cerr << "a=" << a << std::endl;
-    }
+#if 0
+    vars(aorg,"k0") *= 10;
+    vars(aorg,"k7") *= 5;
+    FitLithium.save_ln("factor.dat",t_max, aorg, vars);
+#endif
+
 
     return 0;
 
-    const double rescale_by = 0.5;
-    vars(aorg,"k0") *= rescale_by;
-    vars(aorg,"k7") *= rescale_by;
-
-    FitLithium.save_ln("savefitx.dat",t_max, aorg, vars);
-
-
-    return 0;
+   
 
     if(false)
     {
@@ -686,7 +733,7 @@ Y_PROGRAM_START()
             vars(aorg,"d7end") = d7end;
             ++level;
             std::cerr << "level " << level << std::endl;
-            if( ! ls.fit(delta7sample, F, aorg, aerr, used) )
+            if( ! ls.fit(delta7Sample, delta7Fit, aorg, aerr, used) )
             {
                 throw exception("couldn't fit level-%d",level);
             }
@@ -702,40 +749,6 @@ Y_PROGRAM_START()
     }
 
 
-    // rescaling
-    Function G( &FitLithium, & LiFit::ComputeTotal);
-    Rescaler rs(G,aorg,vars);
-    Function R( &rs, & Rescaler::Compute );
-
-    Variables &invars = intakeSample.variables;
-
-    invars << "shift" << "scale";
-    const size_t   in_nv = invars.size();
-    vector<double> in_aorg(in_nv,0);
-    vector<double> in_aerr(in_nv,0);
-    vector<bool>   in_used(in_nv,false);
-
-    invars(in_aorg,"scale")=0.8;
-    invars(in_aorg,"shift")=-0.5;
-
-    if(true)
-    {
-        invars.on(in_used,"scale:shift");
-        if( !ls.fit(intakeSample,R, in_aorg, in_aerr, in_used ) )
-        {
-            throw exception("cannot rescale intake scale");
-        }
-    }
-
-    invars.display(std::cerr,in_aorg,in_aerr,"\t");
-    intakeSample.computeD2(R,in_aorg);
-    {
-        ios::ocstream fp("rescale.dat");
-        for(size_t i=1;i<=ni;++i)
-        {
-            fp("%.15g %.15g %.15g\n", intakeSample.X[i],intakeSample.Y[i],intakeSample.Yf[i]);
-        }
-    }
 
 
 

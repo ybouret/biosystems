@@ -691,7 +691,7 @@ rs.vars.display(std::cerr,rs.values(),rs.errors(),"\t(*) ");\
 intakeFcn.SaveLn(savenamex, t_max, rs);\
 std::cerr << std::endl; } while(false)
 
-    if(false)
+    if(true)
     {
         vars.on(used,"k7");
         FIT_SESSION();
@@ -699,7 +699,6 @@ std::cerr << std::endl; } while(false)
 
     if(true)
     {
-
         vars.on(used,"k0");
         FIT_SESSION();
     }
@@ -709,49 +708,40 @@ std::cerr << std::endl; } while(false)
         vars.on(used,"d7ini");
         FIT_SESSION();
     }
+    
+    if(false)
+    {
+        vars.on(used,"mu");
+        FIT_SESSION();
+    }
 
+    
+    
 #if 0
     vars(aorg,"k0") *= 10;
     vars(aorg,"k7") *= 5;
     FitLithium.save_ln("factor.dat",t_max, aorg, vars);
 #endif
 
+    std::cerr << "plot 'src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt' u (log($1)):2 w lp, 'savefit.dat' u 1:2 w l, 'src/lithium/data/nhe1_intake_15mM.txt' u (log($1)):2 axis x1y2 w lp, 'savefit.dat' u 1:3 w l axis x1y2" << std::endl;
 
-    return 0;
-
-   
-
-    if(false)
-    {
-        // test influence of d7end for k0,k7,d7ini
-        const double d7end0 = vars(aorg,"d7end");
-        const double d7out  = vars(aorg,"d7out");
-
-        ios::ocstream::overwrite("depvars.dat");
-        for(double d7end = d7end0;  d7end <= d7out-0.01; d7end += 0.01 )
-        {
-            vars(aorg,"d7end") = d7end;
-            ++level;
-            std::cerr << "level " << level << std::endl;
-            if( ! ls.fit(delta7Sample, delta7Fit, aorg, aerr, used) )
-            {
-                throw exception("couldn't fit level-%d",level);
-            }
-            FitLithium.save_ln(savename,t_max, aorg, vars);
-            ios::ocstream::echo("depvars.dat","%g %g %g %g\n",
-                                d7end,
-                                vars(aorg,"k7"),
-                                vars(aorg,"k0"),
-                                vars(aorg,"d7ini")
-                                );
-        }
-
-    }
-
-
-
-
-
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    //
+    // Data exploitation
+    //
+    //
+    ////////////////////////////////////////////////////////////////////////////
+    std::cerr << std::endl;
+    std::cerr << "<DATA>" << std::endl;
+    
+#undef INI
+#define INI(NAME) vars(aorg,#NAME)
+    Lithium::Verbose = true;
+    Lithium  Li(INI_LIST);
+    
+    
+    
     }
     Y_PROGRAM_END()
-
+    

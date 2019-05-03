@@ -541,7 +541,8 @@ struct LiWrapper
 
 static inline Y_LUA_IMPL_CFUNCTION(erf,qerf)
 
-
+static const double t_dose  = 60.0;
+static const double lt_dose = log(t_dose);
 
 Y_PROGRAM_START()
 {

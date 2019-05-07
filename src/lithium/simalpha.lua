@@ -53,6 +53,6 @@ Theta = exp( -z*F*V/R/(T+37) );
 -- -----------------------------------------------------------------------------
 -- experimental speedup
 -- -----------------------------------------------------------------------------
-mu = 40;
+s0 = 41; 
 
 -- ./bin/simalpha src/lithium/simalpha.lua src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt src/lithium/data/nhe1_intake_15mM.txt

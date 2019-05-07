@@ -79,6 +79,8 @@ public:
     const double gamma_h;
 
     const double k0;
+    const double s0;
+    const double s0m1;
     const double mu;
     const double mup;
     const double kappa;
@@ -106,7 +108,7 @@ public:
             const double pHend_,
             const double t_h_,
             const double k0_,
-            const double mu_,
+            const double s0_,
             const double d7end_,
             const double Lambda_):
     SCALING(SCALING_),
@@ -126,7 +128,9 @@ public:
     t_h(  t_h_ ),
     gamma_h( compute_gamma_h() ),
     k0(k0_*SCALING),
-    mu(mu_),
+    s0(s0_),
+    s0m1(s0-1),
+    mu( (r0*sigmap * s0m1 - eps6*(1-r0*sigma) ) / (eps7*r0+eps6) ),
     mup( (1.0+mu)/(r0*sigma) - 1.0 ),
     kappa( (1.0+mu)/mu * ( 1.0/r0 - sigma/(1.0+mu) ) ),
     kappap( eps6*kappa+eps7 ),
@@ -161,6 +165,8 @@ public:
             std::cerr << "pH_ini  = " << pH_ini << std::endl;
             std::cerr << "pH_end  = " << pH_end << std::endl;
             std::cerr << "t_h     = " << t_h    << std::endl;
+
+            std::cerr << "s0      = " << s0    << std::endl;
             std::cerr << "mu      = " << mu    << std::endl;
             std::cerr << "kappa   = " << kappa << std::endl;
             std::cerr << "kappap  = " << kappap << std::endl;
@@ -350,7 +356,7 @@ INI(pH_ini),     \
 INI(pH_end),     \
 INI(t_h),        \
 INI(k0),         \
-INI(mu),         \
+INI(s0),         \
 INI(d7end),      \
 INI(Lambda)
 

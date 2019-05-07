@@ -64,6 +64,7 @@ public:
     const double d7out;
     const double eps6;
     const double eps7;
+    const double sigmap;
     const double Theta;
     const double k7;
     const double k6;
@@ -81,6 +82,7 @@ public:
     const double mu;
     const double mup;
     const double kappa;
+    const double kappap; //!< eps6*kappa+eps7
     const double r_mu;
 
     const double d7end;
@@ -93,7 +95,7 @@ public:
     const double eta_end;
     const double scaling;
 
-    const double Lambda;
+    const double Lambda; //!< total external lithium
 
     Lithium(const double SCALING_,
             const double d7out_,
@@ -111,6 +113,7 @@ public:
     d7out(d7out_),
     eps6(1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out))),
     eps7(1.0-eps6),
+    sigmap( eps6*sigma + eps7 ),
     Theta(Theta_),
     k7(k7_*SCALING),
     k6(sigma*k7),
@@ -126,6 +129,7 @@ public:
     mu(mu_),
     mup( (1.0+mu)/(r0*sigma) - 1.0 ),
     kappa( (1.0+mu)/mu * ( 1.0/r0 - sigma/(1.0+mu) ) ),
+    kappap( eps6*kappa+eps7 ),
     r_mu( compute_r_mu() ),
     d7end( d7end_ ),
     r_end( check_r_end() ),
@@ -139,33 +143,36 @@ public:
     {
         if(Verbose)
         {
-            std::cerr << "d7out = " << d7out  << std::endl;
-            std::cerr << "d7ini = " << d7ini  << std::endl;
-            std::cerr << "r0    = " << r0     << std::endl;
+            std::cerr << "d7out   = " << d7out  << std::endl;
+            std::cerr << "d7ini   = " << d7ini  << std::endl;
+            std::cerr << "r0      = " << r0     << std::endl;
 
             if( r0 >= 1.0/sigma )
             {
                 throw exception("invalid d7ini");
             }
-            std::cerr << "eps6   = " << eps6   << std::endl;
-            std::cerr << "eps7   = " << eps7   << std::endl;
-            std::cerr << "Theta  = " << Theta  << std::endl;
-            std::cerr << "k7     = " << k7     << std::endl;
+            std::cerr << "eps6    = " << eps6   << std::endl;
+            std::cerr << "eps7    = " << eps7   << std::endl;
+            std::cerr << "sigma   = " << sigma  << std::endl;
+            std::cerr << "sigmap  = " << sigmap << std::endl;
+            std::cerr << "Theta   = " << Theta  << std::endl;
+            std::cerr << "k7      = " << k7     << std::endl;
 
-            std::cerr << "pH_ini = " << pH_ini << std::endl;
-            std::cerr << "pH_end = " << pH_end << std::endl;
-            std::cerr << "t_h    = " << t_h    << std::endl;
-            std::cerr << "mu     = " << mu    << std::endl;
-            std::cerr << "kappa  = " << kappa << std::endl;
+            std::cerr << "pH_ini  = " << pH_ini << std::endl;
+            std::cerr << "pH_end  = " << pH_end << std::endl;
+            std::cerr << "t_h     = " << t_h    << std::endl;
+            std::cerr << "mu      = " << mu    << std::endl;
+            std::cerr << "kappa   = " << kappa << std::endl;
+            std::cerr << "kappap  = " << kappap << std::endl;
 
-            std::cerr << "r_mu   = " << r_mu  << std::endl;
-            std::cerr << "d7end  = " << d7end << std::endl;
-            std::cerr << "r_end  = " << r_end << std::endl;
-            std::cerr << "C2     = " << C2    << std::endl;
-            std::cerr << "eta_ini= " << eta_ini << std::endl;
-            std::cerr << "eta_end= " << eta_end << std::endl;
+            std::cerr << "r_mu    = " << r_mu  << std::endl;
+            std::cerr << "d7end   = " << d7end << std::endl;
+            std::cerr << "r_end   = " << r_end << std::endl;
+            std::cerr << "C2      = " << C2    << std::endl;
+            std::cerr << "eta_ini = " << eta_ini << std::endl;
+            std::cerr << "eta_end = " << eta_end << std::endl;
 
-            std::cerr << "Lambda = " << Lambda << std::endl;
+            std::cerr << "Lambda  = " << Lambda << std::endl;
         }
     }
 

@@ -411,8 +411,9 @@ void perform_simulation( Lua::VM &vm )
     }
     std::cerr << std::endl;
     std::cerr << "<saved  into " << sim_name << ">" << std::endl;
-
+#if 0
     std::cerr << "plot 'src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt' u (log($1)):2 w lp, 'output.dat' u 1:6 w lp, 'src/lithium/data/nhe1_intake_15mM.txt' u (log($1)):2 axis x1y2 w lp, 'output.dat' u 1:5 w l axis x1y2" << std::endl;
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -541,8 +542,10 @@ struct LiWrapper
 
 static inline Y_LUA_IMPL_CFUNCTION(erf,qerf)
 
+#if 0
 static const double t_dose  = 60.0;
 static const double lt_dose = log(t_dose);
+#endif
 
 Y_PROGRAM_START()
 {
@@ -556,9 +559,10 @@ Y_PROGRAM_START()
     Lua::VM vm = new Lua::State();
     Y_LUA_LOAD_CFUNCTION(vm,erf);
 
-    if(argc<=3)
+    if(argc<=2)
     {
         throw exception("need parameters.lua, delta7.txt, intake");
+        //throw exception("need parameters.lua, delta7.txt, intake");
     }
     vm->doFile(argv[1]);
 
@@ -586,6 +590,8 @@ Y_PROGRAM_START()
     Variables   &vars = delta7Sample.variables;
 
 
+
+#if 0
     ////////////////////////////////////////////////////////////////////////////
     //
     //
@@ -604,6 +610,7 @@ Y_PROGRAM_START()
         lti[i] = log(lti[i]);
     }
     Sample intakeSample(lti,intake,intakefit);
+#endif
 
     ////////////////////////////////////////////////////////////////////////////
     //
@@ -638,8 +645,8 @@ Y_PROGRAM_START()
 
     LiFit     FitLithium;
     Function  delta7Fit( &FitLithium, & LiFit::ComputeDelta7); //!< fit delta
-    Function  intakeFit( &FitLithium, & LiFit::ComputeTotal);  //!< fit intake
-    LiWrapper intakeFcn ={ &intakeFit, &aorg, &vars };         //!< fit intake wrapper
+    //Function  intakeFit( &FitLithium, & LiFit::ComputeTotal);  //!< fit intake
+    //LiWrapper intakeFcn ={ &intakeFit, &aorg, &vars };         //!< fit intake wrapper
 
     Rescaler rs;
     LSF      ls;
@@ -656,21 +663,22 @@ Y_PROGRAM_START()
     //
     //
     ////////////////////////////////////////////////////////////////////////////
+    int level = 0;
     string savename  = "savefit.dat";
+#if 0
     string savenamex = "savefitx.dat";
     FitLithium.save_ln(savename,t_max, aorg, vars);
 
     rs.use_coeff() = true;
     rs.use_scale() = false;
     rs.use_shift() = false;
-    int level = 0;
     if( !rs.update(ls,intakeSample,intakeFcn, rs.MinimizeAmplitude ) )
     {
         throw exception("couldn't rescale level-%d",level);
     }
     rs.vars.display(std::cerr,rs.values(),rs.errors());
     intakeFcn.SaveLn(savenamex, t_max, rs);
-
+#endif
 
     ////////////////////////////////////////////////////////////////////////////
     //
@@ -681,16 +689,19 @@ Y_PROGRAM_START()
     ////////////////////////////////////////////////////////////////////////////
     std::cerr << "Fitting..." << std::endl;
 
+#define FIT_RS() \
+if( !rs.update(ls,intakeSample,intakeFcn, rs.WouldTakeNextStep ) ) throw exception("couldn't rescale level-%d",level);\
+rs.vars.display(std::cerr,rs.values(),rs.errors(),"\t(*) ");\
+intakeFcn.SaveLn(savenamex, t_max, rs);\
+
 #define FIT_SESSION() do {\
 ++level;\
 std::cerr << "level " << level << std::endl; \
 if( ! ls.fit(delta7Sample, delta7Fit, aorg, aerr, used) ) throw exception("couldn't fit level-%d",level);\
 vars.display(std::cerr, aorg, aerr, "\t");\
 FitLithium.save_ln(savename,t_max, aorg, vars);\
-if( !rs.update(ls,intakeSample,intakeFcn, rs.WouldTakeNextStep ) ) throw exception("couldn't rescale level-%d",level);\
-rs.vars.display(std::cerr,rs.values(),rs.errors(),"\t(*) ");\
-intakeFcn.SaveLn(savenamex, t_max, rs);\
 std::cerr << std::endl; } while(false)
+
 
     if(true)
     {
@@ -717,14 +728,10 @@ std::cerr << std::endl; } while(false)
     }
 
     
-    
-#if 0
-    vars(aorg,"k0") *= 10;
-    vars(aorg,"k7") *= 5;
-    FitLithium.save_ln("factor.dat",t_max, aorg, vars);
-#endif
 
+#if 0
     std::cerr << "plot 'src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt' u (log($1)):2 w lp, 'savefit.dat' u 1:2 w l, 'src/lithium/data/nhe1_intake_15mM.txt' u (log($1)):2 axis x1y2 w lp, 'savefit.dat' u 1:3 w l axis x1y2" << std::endl;
+#endif
 
     ////////////////////////////////////////////////////////////////////////////
     //
@@ -743,6 +750,6 @@ std::cerr << std::endl; } while(false)
     
     
     
-    }
-    Y_PROGRAM_END()
-    
+}
+Y_PROGRAM_END()
+

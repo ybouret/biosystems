@@ -272,7 +272,7 @@ public:
 
     void Compute(Array &dY, double t, const Array &Y )
     {
-        
+
         const double ac    = Y[I_AC];
         const double beta6 = Y[I_B6];
         const double beta7 = Y[I_B7];
@@ -520,7 +520,7 @@ Y_PROGRAM_START()
 
     if(argc<=2)
     {
-        throw exception("need parameters.lua, delta7.txt, intake");
+        throw exception("usage: %s parameters.lua delta7.txt", program);
         //throw exception("need parameters.lua, delta7.txt, intake");
     }
     vm->doFile(argv[1]);

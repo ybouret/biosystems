@@ -98,6 +98,7 @@ public:
     const double scaling;
 
     const double Lambda; //!< total external lithium
+    ODEquation   diffeq; //!< compute
 
     Lithium(const double SCALING_,
             const double d7out_,
@@ -143,7 +144,8 @@ public:
     eta_ini( get_eta(h_ini) ),
     eta_end( get_eta(h_end) ),
     scaling( (eta_end/eta_ini)*(h_ini/h_end)*T2 ),
-    Lambda(Lambda_)
+    Lambda(Lambda_),
+    diffeq(this, & Lithium::Compute )
     {
         if(Verbose)
         {
@@ -330,7 +332,54 @@ public:
         fp << '\n';
     }
 
+    void run( ODE_Driver &driver )
+    {
+        const double lt_min = 0;
+        double       lt_max =  log(60*60);
+        double       lt_amp = lt_max-lt_min;
+        double       lt_stp = 0.002;
+        double       lt_sav = 0.05;
+        size_t       every  = 0;
+        const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
+        lt_max = lt_amp + lt_min;
+        std::cerr << "#iters=" << iters  << ", saving every " << every << " lt_stp=" << lt_stp << " from " << lt_min << " to " << lt_max << std::endl;
+        vector<double> Y( NVAR,0 );
 
+        driver.start( Y.size() );
+        progress bar;
+        bar.start();
+
+        vector<double> dY(Y.size());
+
+        const string sim_name = "output.dat"; //vformat("output_mu%g_k%g_C%g.dat",Li.mu,Li.k0,Li.C2);
+
+        std::cerr << "<saving into " << sim_name << ">" << std::endl;
+        ios::ocstream::overwrite(sim_name);
+
+
+        double t0   = 0;
+        double ctrl = exp(lt_min)/1000;
+        setup(Y);
+        for(size_t i=1;i<=iters;++i)
+        {
+            const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
+            const double t1  = exp(lt1);
+            driver( diffeq, Y, t0, t1, ctrl, NULL);
+            if(1==i||0==(i%every))
+            {
+                bar.update(i,iters);
+                bar.display(std::cerr) << '\r';
+                {
+                    ios::ocstream fp(sim_name,true);
+                    const double  d = DeltaOf( Y[Lithium::I_B7] / Y[Lithium::I_B6] );
+                    save(fp,lt1,Y,&d);
+                }
+            }
+            t0 = t1;
+        }
+        std::cerr << std::endl;
+        std::cerr << "<saved  into " << sim_name << ">" << std::endl;
+    }
 
 };
 
@@ -361,7 +410,7 @@ INI(d7end),      \
 INI(Lambda)
 
 static inline
-void perform_simulation( Lua::VM &vm )
+void perform_simulation( Lua::VM &vm  )
 {
     // time parameters
     const double lt_min = 0;
@@ -377,14 +426,12 @@ void perform_simulation( Lua::VM &vm )
 
     // computation
     Lithium  Li(INI_LIST);
-
-    ODEquation  diffeq( &Li, & Lithium::Compute );
     ODE_Driver  driver;
     driver.eps = 1e-5;
 
+    Li.run(driver);
 
-
-
+#if 0
     vector<double> Y( Lithium::NVAR,0 );
 
     driver.start( Y.size() );
@@ -421,6 +468,7 @@ void perform_simulation( Lua::VM &vm )
     }
     std::cerr << std::endl;
     std::cerr << "<saved  into " << sim_name << ">" << std::endl;
+#endif
 #if 0
     std::cerr << "plot 'src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt' u (log($1)):2 w lp, 'output.dat' u 1:6 w lp, 'src/lithium/data/nhe1_intake_15mM.txt' u (log($1)):2 axis x1y2 w lp, 'output.dat' u 1:5 w l axis x1y2" << std::endl;
 #endif
@@ -453,12 +501,10 @@ public:
         
         Lithium  Li(INI_LIST);
 
-        ODEquation  diffeq( &Li, & Lithium::Compute );
-
         Li.setup(Y);
 
         double ctrl = lt/1000;
-        driver( diffeq,Y,0,exp(lt), ctrl, NULL);
+        driver( Li.diffeq,Y,0,exp(lt), ctrl, NULL);
 
         const double r = Y[Lithium::I_B7]/Y[Lithium::I_B6];
         return Li.DeltaOf(r);
@@ -470,12 +516,12 @@ public:
 
         Lithium  Li(INI_LIST);
 
-        ODEquation  diffeq( &Li, & Lithium::Compute );
+        //ODEquation  diffeq( &Li, & Lithium::Compute );
 
         Li.setup(Y);
 
         double ctrl = lt/1000;
-        driver( diffeq,Y,0,exp(lt), ctrl, NULL);
+        driver( Li.diffeq,Y,0,exp(lt), ctrl, NULL);
 
         return Li.get_total(Y);
     }
@@ -677,7 +723,11 @@ std::cerr << std::endl; } while(false)
 #define INI(NAME) vars(aorg,#NAME)
     Lithium::Verbose = true;
     Lithium  Li(INI_LIST);
-    
+
+    ODE_Driver &driver = FitLithium.driver;
+    Li.run(driver);
+
+
     std::cerr << "<DATA/>" << std::endl;
     
 }

@@ -7,7 +7,6 @@
 #include "y/math/timings.hpp"
 #include "y/math/fit/ls.hpp"
 #include "y/math/fit/samples-io.hpp"
-#include "y/math/fit/ls-rescale.hpp"
 
 
 using namespace upsylon;
@@ -29,7 +28,6 @@ typedef Fit::Sample<double>       Sample;
 typedef Fit::LeastSquares<double> LSF;
 typedef LSF::Function             Function;
 typedef Fit::Variables            Variables;
-typedef Fit::Rescaling<double>    Rescaler;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -274,8 +272,7 @@ public:
 
     void Compute(Array &dY, double t, const Array &Y )
     {
-        //const Lithium &self = *this;
-
+        
         const double ac    = Y[I_AC];
         const double beta6 = Y[I_B6];
         const double beta7 = Y[I_B7];
@@ -500,44 +497,6 @@ private:
     Y_DISABLE_COPY_AND_ASSIGN(LiFit);
 };
 
-struct LiWrapper
-{
-    Function        *pG;
-    const Array     *pA;
-    const Variables *pV;
-
-    inline double operator()(double lt)
-    {
-        assert(pG);
-        assert(pA);
-        assert(pG);
-        return (*pG)(lt,*pA,*pV);
-    }
-
-    void SaveLn(const string &filename, const double tmax, const Rescaler &rs)
-    {
-        std::cerr << "<saving to '" << filename << "'>" << std::endl;
-        const double lt_min = 0;
-        double       lt_max =  log(tmax);
-        double       lt_amp = lt_max-lt_min;
-        double       lt_stp = 0.05;
-        double       lt_sav = lt_stp;
-        size_t       every  = 0;
-        const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
-        lt_max = lt_amp + lt_min;
-
-        ios::ocstream::overwrite(filename);
-        for(size_t i=1;i<=iters;++i)
-        {
-            const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
-
-            ios::ocstream::echo(filename, "%.15g %.15g\n",lt1,rs( *this, lt1 ));
-        }
-    }
-};
-
-
-
 #include "y/math/fcn/functions.hpp"
 
 static inline Y_LUA_IMPL_CFUNCTION(erf,qerf)
@@ -590,28 +549,6 @@ Y_PROGRAM_START()
     Variables   &vars = delta7Sample.variables;
 
 
-
-#if 0
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    //
-    //
-    // create intake sample, for rescaling purpose
-    //
-    //
-    ////////////////////////////////////////////////////////////////////////////
-    vector<double> lti;
-    vector<double> intake;
-    vector<double> intakefit;
-
-    const size_t ni = Fit::IO::Load(argv[3], 1, lti, 2, intake, intakefit);
-    for(size_t i=ni;i>0;--i)
-    {
-        lti[i] = log(lti[i]);
-    }
-    Sample intakeSample(lti,intake,intakefit);
-#endif
-
     ////////////////////////////////////////////////////////////////////////////
     //
     //
@@ -645,10 +582,7 @@ Y_PROGRAM_START()
 
     LiFit     FitLithium;
     Function  delta7Fit( &FitLithium, & LiFit::ComputeDelta7); //!< fit delta
-    //Function  intakeFit( &FitLithium, & LiFit::ComputeTotal);  //!< fit intake
-    //LiWrapper intakeFcn ={ &intakeFit, &aorg, &vars };         //!< fit intake wrapper
 
-    Rescaler rs;
     LSF      ls;
 
     if(false)
@@ -665,20 +599,7 @@ Y_PROGRAM_START()
     ////////////////////////////////////////////////////////////////////////////
     int level = 0;
     string savename  = "savefit.dat";
-#if 0
-    string savenamex = "savefitx.dat";
-    FitLithium.save_ln(savename,t_max, aorg, vars);
 
-    rs.use_coeff() = true;
-    rs.use_scale() = false;
-    rs.use_shift() = false;
-    if( !rs.update(ls,intakeSample,intakeFcn, rs.MinimizeAmplitude ) )
-    {
-        throw exception("couldn't rescale level-%d",level);
-    }
-    rs.vars.display(std::cerr,rs.values(),rs.errors());
-    intakeFcn.SaveLn(savenamex, t_max, rs);
-#endif
 
     ////////////////////////////////////////////////////////////////////////////
     //
@@ -688,11 +609,6 @@ Y_PROGRAM_START()
     //
     ////////////////////////////////////////////////////////////////////////////
     std::cerr << "Fitting..." << std::endl;
-
-#define FIT_RS() \
-if( !rs.update(ls,intakeSample,intakeFcn, rs.WouldTakeNextStep ) ) throw exception("couldn't rescale level-%d",level);\
-rs.vars.display(std::cerr,rs.values(),rs.errors(),"\t(*) ");\
-intakeFcn.SaveLn(savenamex, t_max, rs);\
 
 #define FIT_SESSION() do {\
 ++level;\
@@ -742,13 +658,14 @@ std::cerr << std::endl; } while(false)
     ////////////////////////////////////////////////////////////////////////////
     std::cerr << std::endl;
     std::cerr << "<DATA>" << std::endl;
-    
+
+    // create the fitted lithium simulator...
 #undef INI
 #define INI(NAME) vars(aorg,#NAME)
     Lithium::Verbose = true;
     Lithium  Li(INI_LIST);
     
-    
+    std::cerr << "<DATA/>" << std::endl;
     
 }
 Y_PROGRAM_END()

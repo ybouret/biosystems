@@ -752,7 +752,7 @@ std::cerr << std::endl; } while(false)
         ios::ocstream::echo("mu.dat","\n");
     }
 
-
+    std::cerr << "plot 'mu.dat' w l lc var" << std::endl;
     std::cerr << "<DATA/>" << std::endl;
     
 }

@@ -16,17 +16,25 @@ Lambda   = 15.0; -- mM
 -- pH recovery amplitude
 -- -----------------------------------------------------------------------------
 Lambda_h = 15.2; -- mM
-
 pH_ini = 5.92;
-pH_end = pH_ini + (7.40 - pH_ini) * Lambda/(Lambda_h+Lambda);
-print( 'pH_end=' .. pH_end );
+
+function get_pH_end(L)
+return pH_ini + (7.40 - pH_ini) * L/(Lambda_h+L);
+end
+
+pH_end = get_pH_end(Lambda);
 
 -- -----------------------------------------------------------------------------
 -- pH recovery kinetics
 -- -----------------------------------------------------------------------------
 A_h = 24.7; -- in seconds
 B_h = 0.034; -- in mM/L
-t_h = A_h/erf(B_h*Lambda);   -- in seconds
+
+function get_t_h(L)
+return A_h/erf(B_h*L)
+end
+
+t_h = get_t_h(Lambda);   -- in seconds
 
 
 -- -----------------------------------------------------------------------------
@@ -55,4 +63,4 @@ Theta = exp( -z*F*V/R/(T+37) );
 -- -----------------------------------------------------------------------------
 s0 = 41; 
 
--- ./bin/simalpha src/lithium/simalpha.lua src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt src/lithium/data/nhe1_intake_15mM.txt
+-- ./bin/simalpha src/lithium/simalpha.lua src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt #src/lithium/data/nhe1_intake_15mM.txt

@@ -1,5 +1,6 @@
 #include "y/program.hpp"
-#include "y/lua++/state.hpp"
+#include "y/lua++/function.hpp"
+
 #include "y/math/ode/explicit/driver-ck.hpp"
 #include "y/sequence/vector.hpp"
 #include "y/ios/ocstream.hpp"
@@ -48,8 +49,6 @@ static double sigma    = 1.0/0.99772;
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-
-
 
 class Lithium
 {
@@ -718,6 +717,9 @@ std::cerr << std::endl; } while(false)
     std::cerr << std::endl;
     std::cerr << "<DATA>" << std::endl;
 
+    //Lua::Function<double> get_t_h("get_t_h",vm);
+    Lua::Function<double> get_t_h("toto",vm);
+
     // create the fitted lithium simulator...
 #undef INI
 #define INI(NAME) vars(aorg,#NAME)
@@ -726,6 +728,29 @@ std::cerr << std::endl; } while(false)
 
     ODE_Driver &driver = FitLithium.driver;
     Li.run(driver);
+
+
+    static const double   Jval[] = { 0.01, 0.025, 0.05, 0.075, 0.1 };
+    static const unsigned Jnum   = sizeof(Jval)/sizeof(Jval[0]);
+
+    const double L_u   = Li.Lambda;
+    const double mu_u  = Li.mu;
+    const double kappa = Li.kappa;
+
+    ios::ocstream::overwrite("mu.dat");
+
+    for(unsigned j=0;j<Jnum;++j)
+    {
+        const double Jeps = Jval[j];
+        for(double L_v = 0; L_v <= 150; L_v+=1)
+        {
+            const double mu_v = ((1.0+Jeps*L_u)*mu_u)/((1+Jeps*L_v));
+            const double r0_v = (1+mu_v)/(sigma+kappa*mu_v);
+            const double d0_v = Li.DeltaOf(r0_v);
+            ios::ocstream::echo("mu.dat","%g %g %u\n",L_v,d0_v,j);
+        }
+        ios::ocstream::echo("mu.dat","\n");
+    }
 
 
     std::cerr << "<DATA/>" << std::endl;

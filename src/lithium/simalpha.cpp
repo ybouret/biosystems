@@ -41,6 +41,13 @@ typedef Fit::Variables            Variables;
 static double lambda_s = 12.0192;
 static double sigma    = 1.0/0.99772;
 
+static inline double get_eta( double h )
+{
+    static const double h_eta = 4.0e-7;
+    static const double p_eta = 1.70;
+    const double U = pow(h/h_eta,p_eta);
+    return U/(1.0+U);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -95,9 +102,11 @@ public:
     const double eta_ini;
     const double eta_end;
     const double scaling;
-
+    const double kfac;
     const double Lambda; //!< total external lithium
     ODEquation   diffeq; //!< compute
+
+    const double Ua;     //!< Upsilon_alpha
 
     Lithium(const double SCALING_,
             const double d7out_,
@@ -143,8 +152,10 @@ public:
     eta_ini( get_eta(h_ini) ),
     eta_end( get_eta(h_end) ),
     scaling( (eta_end/eta_ini)*(h_ini/h_end)*T2 ),
+    kfac( k0*eta_ini ),
     Lambda(Lambda_),
-    diffeq(this, & Lithium::Compute )
+    diffeq(this, & Lithium::Compute ),
+    Ua( (k0*T2*eta_end)/(Lambda*h_end) )
     {
         if(Verbose)
         {
@@ -162,6 +173,8 @@ public:
             std::cerr << "sigmap  = " << sigmap << std::endl;
             std::cerr << "Theta   = " << Theta  << std::endl;
             std::cerr << "k7      = " << k7     << std::endl;
+            std::cerr << "k6      = " << k6     << std::endl;
+            std::cerr << "k0      = " << k0     << std::endl;
 
             std::cerr << "pH_ini  = " << pH_ini << std::endl;
             std::cerr << "pH_end  = " << pH_end << std::endl;
@@ -171,15 +184,21 @@ public:
             std::cerr << "mu      = " << mu    << std::endl;
             std::cerr << "kappa   = " << kappa << std::endl;
             std::cerr << "kappap  = " << kappap << std::endl;
+            std::cerr << "mup     = " << mup    << std::endl;
 
             std::cerr << "r_mu    = " << r_mu  << std::endl;
             std::cerr << "d7end   = " << d7end << std::endl;
             std::cerr << "r_end   = " << r_end << std::endl;
             std::cerr << "C2      = " << C2    << std::endl;
+            std::cerr << "S2      = " << S2    << std::endl;
+            std::cerr << "T2      = " << T2    << std::endl;
+
             std::cerr << "eta_ini = " << eta_ini << std::endl;
             std::cerr << "eta_end = " << eta_end << std::endl;
 
-            std::cerr << "Lambda  = " << Lambda << std::endl;
+            std::cerr << "Lambda    = " << Lambda << std::endl;
+            std::cerr << "Ua        = " << Ua     << std::endl;
+
         }
     }
 
@@ -276,13 +295,7 @@ public:
     }
 
 
-    inline double get_eta( double h ) const
-    {
-        const double h_eta = 4.0e-7;
-        const double p_eta = 1.70;
-        const double U = pow(h/h_eta,p_eta);
-        return U/(1.0+U);
-    }
+
 
     void Compute(Array &dY, double t, const Array &Y )
     {
@@ -295,7 +308,7 @@ public:
 
         const double phi    = ac * h / h_ini;
 
-        dY[I_AC] = k0 * ( eta * (1.0-ac) - scaling * phi );
+        dY[I_AC] = kfac * ( (eta/eta_ini) * (1.0-ac) - scaling * phi );
         dY[I_B7] = k7 * ( Theta * (1.0+mu*phi)   -   beta7);
         dY[I_B6] = k6 * ( Theta * (1.0+mup*phi)  -   beta6);
 
@@ -331,10 +344,10 @@ public:
         fp << '\n';
     }
 
-    void run( ODE_Driver &driver )
+    void run( ODE_Driver &driver, const double tmax )
     {
         const double lt_min = 0;
-        double       lt_max =  log(60*60);
+        double       lt_max =  log(tmax);
         double       lt_amp = lt_max-lt_min;
         double       lt_stp = 0.002;
         double       lt_sav = 0.05;
@@ -349,9 +362,10 @@ public:
         bar.start();
 
         vector<double> dY(Y.size());
+        Compute(dY,0,Y);
+        std::cerr << "dY0=" << dY << std::endl;
 
-        const string sim_name = "output.dat"; //vformat("output_mu%g_k%g_C%g.dat",Li.mu,Li.k0,Li.C2);
-
+        const string sim_name = "output.dat";
         std::cerr << "<saving into " << sim_name << ">" << std::endl;
         ios::ocstream::overwrite(sim_name);
 
@@ -408,70 +422,7 @@ INI(s0),         \
 INI(d7end),      \
 INI(Lambda)
 
-static inline
-void perform_simulation( Lua::VM &vm  )
-{
-    // time parameters
-    const double lt_min = 0;
-    double       lt_max =  log(3*60*60);
-    double       lt_amp = lt_max-lt_min;
-    double       lt_stp = 0.002;
-    double       lt_sav = 0.05;
-    size_t       every  = 0;
-    const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
-    lt_max = lt_amp + lt_min;
-    std::cerr << "#iters=" << iters  << ", saving every " << every << " lt_stp=" << lt_stp << " from " << lt_min << " to " << lt_max << std::endl;
 
-
-    // computation
-    Lithium  Li(INI_LIST);
-    ODE_Driver  driver;
-    driver.eps = 1e-5;
-
-    Li.run(driver);
-
-#if 0
-    vector<double> Y( Lithium::NVAR,0 );
-
-    driver.start( Y.size() );
-    progress bar;
-    bar.start();
-
-    vector<double> dY(Y.size());
-
-    const string sim_name = "output.dat"; //vformat("output_mu%g_k%g_C%g.dat",Li.mu,Li.k0,Li.C2);
-
-    std::cerr << "<saving into " << sim_name << ">" << std::endl;
-    ios::ocstream::overwrite(sim_name);
-
-
-    double t0   = 0;
-    double ctrl = exp(lt_min)/1000;
-    Li.setup(Y);
-    for(size_t i=1;i<=iters;++i)
-    {
-        const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
-        const double t1  = exp(lt1);
-        driver( diffeq, Y, t0, t1, ctrl, NULL);
-        if(1==i||0==(i%every))
-        {
-            bar.update(i,iters);
-            bar.display(std::cerr) << '\r';
-            {
-                ios::ocstream fp(sim_name,true);
-                const double  d = Li.DeltaOf( Y[Lithium::I_B7] / Y[Lithium::I_B6] );
-                Li.save(fp,lt1,Y,&d);
-            }
-        }
-        t0 = t1;
-    }
-    std::cerr << std::endl;
-    std::cerr << "<saved  into " << sim_name << ">" << std::endl;
-#endif
-#if 0
-    std::cerr << "plot 'src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt' u (log($1)):2 w lp, 'output.dat' u 1:6 w lp, 'src/lithium/data/nhe1_intake_15mM.txt' u (log($1)):2 axis x1y2 w lp, 'output.dat' u 1:5 w l axis x1y2" << std::endl;
-#endif
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -554,6 +505,231 @@ public:
 private:
     Y_DISABLE_COPY_AND_ASSIGN(LiFit);
 };
+
+
+class LiGHT
+{
+public:
+    static const size_t I_AC = 1;
+    static const size_t I_B6 = 2;
+    static const size_t I_B7 = 3;
+    static const size_t NVAR = 3;
+
+    const double d7out;
+    const double eps6;
+    const double eps7;
+    const double Lambda;
+    const double k6;
+    const double k7;
+    const double k0;
+    const double Ua;
+    const double t_h;
+    const double pH_ini;
+    const double h_ini;
+    const double pH_end;
+    const double h_end;
+    const double mu;
+    const double kappa;
+    const double mup;
+    const double LamUa;
+    const double Theta;
+    ODEquation   diffeq;
+
+    inline double get_h( double t ) const
+    {
+        if(t<=0)
+        {
+            return h_ini;
+        }
+        else
+        {
+            const double w_end = t / (t+t_h);
+            const double w_ini = clamp<double>(0,1.0-w_end,1);
+            return h_ini * w_ini + h_end * w_end;
+        }
+    }
+
+
+    static bool Verbose;
+
+    explicit LiGHT(const double d7out_,
+                   const double Lambda_,
+                   const double k6_,
+                   const double k7_,
+                   const double k0_,
+                   const double Ua_,
+                   const double t_h_,
+                   const double pH_ini_,
+                   const double pH_end_,
+                   const double mu_,
+                   const double kappa_,
+                   const double Theta_) :
+    d7out(d7out_),
+    eps6(1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out))),
+    eps7(1.0-eps6),
+    Lambda(Lambda_),
+    k6( k6_ ),
+    k7( k7_ ),
+    k0( k0_ ),
+    Ua( Ua_ ),
+    t_h(t_h_),
+    pH_ini( pH_ini_ ),
+    h_ini( pow(10.0,-pH_ini) ),
+    pH_end( pH_end_ ),
+    h_end( pow(10.0, -pH_end) ),
+    mu(mu_),
+    kappa(kappa_),
+    mup(mu*kappa/sigma),
+    LamUa( Lambda * Ua ),
+    Theta( Theta_),
+    diffeq(this,& LiGHT::Compute )
+    {
+        if(Verbose)
+        {
+            std::cerr << "d7out   = " << d7out  << std::endl;
+           // std::cerr << "d7ini   = " << d7ini  << std::endl;
+            //std::cerr << "r0      = " << r0     << std::endl;
+
+
+            std::cerr << "eps6    = " << eps6   << std::endl;
+            std::cerr << "eps7    = " << eps7   << std::endl;
+            std::cerr << "sigma   = " << sigma  << std::endl;
+            //std::cerr << "sigmap  = " << sigmap << std::endl;
+            std::cerr << "Theta   = " << Theta  << std::endl;
+            std::cerr << "k7      = " << k7     << std::endl;
+            std::cerr << "k6      = " << k6     << std::endl;
+            std::cerr << "k0      = " << k0     << std::endl;
+
+            std::cerr << "pH_ini  = " << pH_ini << std::endl;
+            std::cerr << "pH_end  = " << pH_end << std::endl;
+            std::cerr << "t_h     = " << t_h    << std::endl;
+
+            std::cerr << "mu      = " << mu    << std::endl;
+            std::cerr << "kappa   = " << kappa << std::endl;
+            std::cerr << "mup     = " << mup   << std::endl;
+
+            //std::cerr << "eta_ini = " << eta_ini << std::endl;
+            //std::cerr << "eta_end = " << eta_end << std::endl;
+
+            std::cerr << "Lambda  = " << Lambda << std::endl;
+            std::cerr << "Ua      = " << Ua     << std::endl;
+        }
+    }
+
+    virtual ~LiGHT() throw()
+    {
+    }
+
+    void setup(Array &Y)
+    {
+        Y[I_AC] = 1;
+        Y[I_B6] = 0;
+        Y[I_B7] = 0;
+    }
+
+    void Compute(Array &dY, double t, const Array &Y )
+    {
+
+        const double ac    = Y[I_AC];
+        const double beta6 = Y[I_B6];
+        const double beta7 = Y[I_B7];
+        const double h     = get_h(t);
+        const double eta   = get_eta(h);
+
+        dY[I_AC] = k0 * eta * (1.0-ac) - LamUa * h * ac;
+        dY[I_B7] = k7*(Theta-beta7);
+        dY[I_B6] = k6*(Theta-beta6);
+
+    }
+
+    void run( ODE_Driver &driver, const double tmax )
+    {
+        const double lt_min = 0;
+        double       lt_max =  log(tmax);
+        double       lt_amp = lt_max-lt_min;
+        double       lt_stp = 0.002;
+        double       lt_sav = 0.05;
+        size_t       every  = 0;
+        const size_t iters  = timings::setup(lt_amp, lt_stp, lt_sav, every);
+        lt_max = lt_amp + lt_min;
+        std::cerr << "#iters=" << iters  << ", saving every " << every << " lt_stp=" << lt_stp << " from " << lt_min << " to " << lt_max << std::endl;
+        vector<double> Y( NVAR,0 );
+
+        driver.start( Y.size() );
+        progress bar;
+        bar.start();
+
+        vector<double> dY(Y.size());
+
+        Compute(dY,0,Y);
+        std::cerr << "dY0=" << dY << std::endl;
+
+        const string sim_name = "outopt.dat";
+
+        std::cerr << "<saving into " << sim_name << ">" << std::endl;
+        ios::ocstream::overwrite(sim_name);
+
+
+        double t0   = 0;
+        double ctrl = exp(lt_min)/1000;
+        setup(Y);
+        for(size_t i=1;i<=iters;++i)
+        {
+            const double lt1 = lt_min + ( (i-1)*lt_amp )/(iters-1);
+            const double t1  = exp(lt1);
+            driver( diffeq, Y, t0, t1, ctrl, NULL);
+            if(1==i||0==(i%every))
+            {
+                bar.update(i,iters);
+                bar.display(std::cerr) << '\r';
+                {
+                    ios::ocstream fp(sim_name,true);
+                    //const double  d = DeltaOf( Y[Lithium::I_B7] / Y[Lithium::I_B6] );
+                    save(fp,lt1,Y,NULL);
+                }
+            }
+            t0 = t1;
+        }
+        std::cerr << std::endl;
+        std::cerr << "<saved  into " << sim_name << ">" << std::endl;
+    }
+
+    inline double get_total( const Array &Y ) const throw()
+    {
+        return Lambda* ( eps6 * Y[I_B6] + eps7 * Y[I_B7] );
+    }
+
+    void save(ios::ostream &fp,
+              const double  lt,
+              Array        &Y,
+              const double *extra=0
+              ) const
+    {
+        fp("%.15g",lt);
+        for(size_t i=1;i<=Y.size();++i)
+        {
+            fp(" %.15g", Y[i]);
+        }
+
+        fp(" %.15g", get_total(Y));
+
+        if(extra)
+        {
+            fp(" %.15g",*extra);
+        }
+        else
+        {
+            fp << " 0";
+        }
+        fp << '\n';
+    }
+
+private:
+    Y_DISABLE_COPY_AND_ASSIGN(LiGHT);
+};
+
+bool LiGHT::Verbose = true;
+
 
 #include "y/math/fcn/functions.hpp"
 
@@ -643,10 +819,6 @@ Y_PROGRAM_START()
 
     LSF      ls;
 
-    if(false)
-    {
-        perform_simulation(vm);
-    }
 
     ////////////////////////////////////////////////////////////////////////////
     //
@@ -717,42 +889,72 @@ std::cerr << std::endl; } while(false)
     std::cerr << std::endl;
     std::cerr << "<DATA>" << std::endl;
 
-    //Lua::Function<double> get_t_h("get_t_h",vm);
-    Lua::Function<double> get_t_h("toto",vm);
+    Lua::Function<double> get_t_h("get_t_h",vm);
+    Lua::Function<double> get_pH_end("get_pH_end",vm);
 
+    //__________________________________________________________________________
+    //
     // create the fitted lithium simulator...
+    //__________________________________________________________________________
 #undef INI
 #define INI(NAME) vars(aorg,#NAME)
+    std::cerr << "\t<Li>" << std::endl;
     Lithium::Verbose = true;
     Lithium  Li(INI_LIST);
 
     ODE_Driver &driver = FitLithium.driver;
-    Li.run(driver);
+    Li.run(driver,60*60);
 
 
     static const double   Jval[] = { 0.01, 0.025, 0.05, 0.075, 0.1 };
     static const unsigned Jnum   = sizeof(Jval)/sizeof(Jval[0]);
 
-    const double L_u   = Li.Lambda;
-    const double mu_u  = Li.mu;
-    const double kappa = Li.kappa;
+    const double d7out  = Li.d7out;
+    const double L_u    = Li.Lambda;
+    const double mu_u   = Li.mu;
+    const double kappa  = Li.kappa;
+    const double k6     = Li.k6;
+    const double k7     = Li.k7;
+    const double k0     = Li.k0;
+    const double pH_ini = Li.pH_ini;
+    const double Ua     = Li.Ua;
+    const double Theta  = Li.Theta;
 
-    ios::ocstream::overwrite("mu.dat");
+    {
+        const double th_v   = get_t_h(L_u);
+        const double pH_v   = get_pH_end(L_u);
+        std::cerr << "\t<LiGHT>" << std::endl;
+        LiGHT light(d7out,L_u,k6,k7,k0,Ua,th_v,pH_ini,pH_v,mu_u,kappa,Theta);
+        light.run(driver,60*60);
+    }
+
+
+    return 0;
+
+    const string d7name = "delta0.dat";
+
+    ios::ocstream::overwrite(d7name );
 
     for(unsigned j=0;j<Jnum;++j)
     {
         const double Jeps = Jval[j];
-        for(double L_v = 0; L_v <= 150; L_v+=1)
+        for(double L_v = 1; L_v <= 150; L_v+=1)
         {
-            const double mu_v = ((1.0+Jeps*L_u)*mu_u)/((1+Jeps*L_v));
-            const double r0_v = (1+mu_v)/(sigma+kappa*mu_v);
-            const double d0_v = Li.DeltaOf(r0_v);
-            ios::ocstream::echo("mu.dat","%g %g %u\n",L_v,d0_v,j);
+            const double mu_v   = ((1.0+Jeps*L_u)*mu_u)/((1+Jeps*L_v));
+            const double r0_v   = (1+mu_v)/(sigma+kappa*mu_v);
+            const double d0_v   = Li.DeltaOf(r0_v);
+            const double th_v   = get_t_h(L_v);
+            const double pH_v   = get_pH_end(L_v);
+
+            LiGHT light(d7out,L_v,k6,k7,k0,Ua,th_v,pH_ini,pH_v,mu_v,kappa,Theta);
+
+            ios::ocstream::echo(d7name ,"%g %g %u\n",L_v,d0_v,j);
         }
-        ios::ocstream::echo("mu.dat","\n");
+        ios::ocstream::echo(d7name,"\n");
     }
 
     std::cerr << "plot 'mu.dat' w l lc var" << std::endl;
+
     std::cerr << "<DATA/>" << std::endl;
     
 }

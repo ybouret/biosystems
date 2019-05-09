@@ -549,6 +549,10 @@ public:
         }
     }
 
+    inline double DeltaOf( const double ratio ) const throw()
+    {
+        return 1000.0 * ( (1.0+d7out/1000.0) * ratio - 1.0 );
+    }
 
     static bool Verbose;
 
@@ -636,9 +640,12 @@ public:
         const double h     = get_h(t);
         const double eta   = get_eta(h);
 
-        dY[I_AC] = k0 * eta * (1.0-ac) - LamUa * h * ac;
-        dY[I_B7] = k7*(Theta-beta7);
-        dY[I_B6] = k6*(Theta-beta6);
+        const double ach = ac*h;
+        const double phi = ach/h_ini;
+
+        dY[I_AC] = k0 * eta * (1.0-ac) - LamUa * ach;
+        dY[I_B7] = k7 * ( Theta * (1.0+mu*phi)   -   beta7);
+        dY[I_B6] = k6 * ( Theta * (1.0+mup*phi)  -   beta6);
 
     }
 
@@ -684,8 +691,8 @@ public:
                 bar.display(std::cerr) << '\r';
                 {
                     ios::ocstream fp(sim_name,true);
-                    //const double  d = DeltaOf( Y[Lithium::I_B7] / Y[Lithium::I_B6] );
-                    save(fp,lt1,Y,NULL);
+                    const double  d = DeltaOf( Y[Lithium::I_B7] / Y[Lithium::I_B6] );
+                    save(fp,lt1,Y,&d);
                 }
             }
             t0 = t1;
@@ -722,6 +729,11 @@ public:
             fp << " 0";
         }
         fp << '\n';
+    }
+
+    void computeTotal( double lt, ODE_Driver &driver )
+    {
+
     }
 
 private:
@@ -904,7 +916,7 @@ std::cerr << std::endl; } while(false)
 
     ODE_Driver &driver = FitLithium.driver;
     Li.run(driver,60*60);
-
+    std::cerr << "plot 'src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt' u (log($1)):2 w lp, 'savefit.dat' u 1:2 w l" << std::endl;
 
     static const double   Jval[] = { 0.01, 0.025, 0.05, 0.075, 0.1 };
     static const unsigned Jnum   = sizeof(Jval)/sizeof(Jval[0]);

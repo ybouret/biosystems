@@ -731,9 +731,17 @@ public:
         fp << '\n';
     }
 
-    void computeTotal( double lt, ODE_Driver &driver )
+    double computeD7( double lt, ODE_Driver &driver )
     {
+        vector<double> Y(NVAR,0);
 
+        driver.start(NVAR);
+
+        setup(Y);
+
+        double ctrl = lt/1000;
+        driver(  diffeq,Y,0,exp(lt), ctrl, NULL);
+        return DeltaOf( Y[I_B7]/Y[I_B6] );
     }
 
 private:
@@ -747,7 +755,7 @@ bool LiGHT::Verbose = true;
 
 static inline Y_LUA_IMPL_CFUNCTION(erf,qerf)
 
-#if 0
+#if 1
 static const double t_dose  = 60.0;
 static const double lt_dose = log(t_dose);
 #endif
@@ -910,15 +918,16 @@ std::cerr << std::endl; } while(false)
     //__________________________________________________________________________
 #undef INI
 #define INI(NAME) vars(aorg,#NAME)
-    std::cerr << "\t<Li>" << std::endl;
+    std::cerr << "\t<Li>: computing output from fit" << std::endl;
     Lithium::Verbose = true;
     Lithium  Li(INI_LIST);
 
     ODE_Driver &driver = FitLithium.driver;
     Li.run(driver,60*60);
     std::cerr << "plot 'src/lithium/doc/nhe1_delta7_full_15mM_37_v2.txt' u (log($1)):2 w lp, 'savefit.dat' u 1:2 w l" << std::endl;
+    std::cerr << std::endl;
 
-    static const double   Jval[] = { 0.01, 0.025, 0.05, 0.075, 0.1 };
+    static const double   Jval[] = { 0, 0.01, 0.025, 0.05, 0.075, 0.1, 1 };
     static const unsigned Jnum   = sizeof(Jval)/sizeof(Jval[0]);
 
     const double d7out  = Li.d7out;
@@ -935,24 +944,40 @@ std::cerr << std::endl; } while(false)
     {
         const double th_v   = get_t_h(L_u);
         const double pH_v   = get_pH_end(L_u);
-        std::cerr << "\t<LiGHT>" << std::endl;
-        LiGHT light(d7out,L_u,k6,k7,k0,Ua,th_v,pH_ini,pH_v,mu_u,kappa,Theta);
-        light.run(driver,60*60);
+        std::cerr << "\t<LiGHT>: computing light optimal version" << std::endl;
+        {
+            LiGHT light(d7out,L_u,k6,k7,k0,Ua,th_v,pH_ini,pH_v,mu_u,kappa,Theta);
+            light.run(driver,60*60);
+            const double dose0 = light.computeD7(lt_dose,driver);
+            std::cerr << "dose0=" << dose0 << std::endl;
+        }
+        {
+            LiGHT light(d7out,L_u,k6,k7,k0,Ua,th_v,pH_ini,pH_v,mu_u,kappa,Theta);
+            //light.run(driver,60*60);
+            const double dose0 = light.computeD7(lt_dose,driver);
+            std::cerr << "dose1=" << dose0 << std::endl;
+        }
     }
+    std::cerr << std::endl;
 
+    //return 0;
 
-    return 0;
+    std::cerr << "\t<EXTRAPOLATING>" << std::endl;
 
-    const string d7name = "delta0.dat";
+    LiGHT::Verbose = false;
 
-    ios::ocstream::overwrite(d7name );
+    const string delta0Name = "delta0.dat";
+    const string dose60Name = "dose60.dat";
+
+    ios::ocstream::overwrite(delta0Name);
+    ios::ocstream::overwrite(dose60Name);
 
     for(unsigned j=0;j<Jnum;++j)
     {
         const double Jeps = Jval[j];
         for(double L_v = 1; L_v <= 150; L_v+=1)
         {
-            const double mu_v   = ((1.0+Jeps*L_u)*mu_u)/((1+Jeps*L_v));
+            const double mu_v   = ((1.0+Jeps*L_u)*mu_u)/((1.0+Jeps*L_v));
             const double r0_v   = (1+mu_v)/(sigma+kappa*mu_v);
             const double d0_v   = Li.DeltaOf(r0_v);
             const double th_v   = get_t_h(L_v);
@@ -960,12 +985,19 @@ std::cerr << std::endl; } while(false)
 
             LiGHT light(d7out,L_v,k6,k7,k0,Ua,th_v,pH_ini,pH_v,mu_v,kappa,Theta);
 
-            ios::ocstream::echo(d7name ,"%g %g %u\n",L_v,d0_v,j);
+            const double dose = light.computeD7(lt_dose,driver);
+
+            ios::ocstream::echo(delta0Name ,"%g %g %u\n",L_v,d0_v,j);
+            ios::ocstream::echo(dose60Name ,"%g %g %u\n",L_v,dose,j);
+
         }
-        ios::ocstream::echo(d7name,"\n");
+        ios::ocstream::echo(delta0Name,"\n");
+        ios::ocstream::echo(dose60Name,"\n");
+
     }
 
-    std::cerr << "plot 'mu.dat' w l lc var" << std::endl;
+    std::cerr << "plot '" << delta0Name << "' w l lc var" << std::endl;
+    std::cerr << "plot '" << dose60Name << "' w l lc var" << std::endl;
 
     std::cerr << "<DATA/>" << std::endl;
     

@@ -1,4 +1,4 @@
-\documentclass[aps,onecolumn,11pt]{revtex4}
+\documentclass[aps,onecolumn,12pt]{revtex4}
 \usepackage{graphicx}
 \usepackage{amssymb,amsfonts,amsmath,amsthm}
 \usepackage{chemarr}
@@ -83,8 +83,6 @@
 \maketitle
 
 \section{Setting up the Model}
-At 1mn, Lithium is about 5mM inside with 15mM outside...for both passive or NHE...
-La fuite irait moins vite d'un facteur 2 ou 3
 
 \subsection{Description And Notations}
 
@@ -286,10 +284,11 @@ It is interesting to define:
 \begin{equation}
 \label{eq:upsilon}
 \left\lbrace
-\begin{array}{rcl}
-	\Upsilon_x & = & \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut}\\
-	\Upsilon_6 & = & \kappa \Upsilon_7 \\
-	\Upsilon_\alpha & = & \epsilon_6 \Upsilon_6 + \epsilon_7 \Upsilon_7 = \underbrace{(\epsilon_6 \kappa + \epsilon_7)}_{\kappa'} \Upsilon_7\\
+\begin{array}{rcll}
+	\Upsilon_x & = & \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} & \text{(with lithium dependent saturation effect)}\\
+	\Upsilon_6 & = & \kappa \Upsilon_7 & \text{($\kappa$=intake speed up)} \\
+	\Upsilon_\alpha & = & \epsilon_6 \Upsilon_6 + \epsilon_7 \Upsilon_7 = \underbrace{(\epsilon_6 \kappa + \epsilon_7)}_{\kappa'} \Upsilon_7 & 
+	\text{(mixed intake coefficient)}\\
 \end{array}
 \right.
 \end{equation}
@@ -302,7 +301,11 @@ and to formally write the coupled system:
 	 k_h \left(1-\hat\alpha\right) 
 	 + \LiAllOut \left[ (1-\hat\alpha) \left( {\sum_x k_x^q \epsilon_x \beta_x} \right)  - \hat\alpha\proton \Upsilon_\alpha \right]\\
 	 \\
+\partial_t \alpha & = & -k_h \alpha + \LiAllOut \left[ (1-\alpha) \proton  \Upsilon_\alpha
+	-\alpha  \left(\sum_x k^q_x \epsilon_x \beta_x \right)\right]\\
+\\
 	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ \hat\alpha  \proton \Upsilon_x - (1-\hat\alpha) k^q_x \beta_x \right]\\
+	 & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ (1-\alpha)  \proton \Upsilon_x - \alpha k^q_x \beta_x \right]
 \end{array}
 \right.
 \end{equation}
@@ -463,6 +466,8 @@ and we note that:
 	\eta'(h) = \left(\dfrac{p_\eta}{h}\right) \dfrac{\left(\frac{h}{h_\eta}\right)^{p_\eta}}{\left[1+\left(\frac{h}{h_\eta}\right)^{p_\eta}\right]^2}  > 0
 \end{equation}
 
+\end{document}
+
 \section{Linear System}
 \subsection{System}
 \begin{equation}
@@ -477,36 +482,6 @@ and we note that:
 \end{array}
 \right.
 \end{equation}
-
-%With 
-%\begin{equation}
-%\left\lbrace
-%	\begin{array}{rcll}
-%	k_h & = & f(t), & F(t) = \int_0^t f(u) \, \mathrm{d} u \\
-%	\LiAllOut \Upsilon_\alpha\proton & = & g(t), & G(t) = \int_0^t g(u) \, \mathrm{d} u\\
-%	\end{array}
-%\right.
-%\end{equation}
-%
-%\begin{equation}
-%\left\lbrace
-%\begin{array}{rcl}
-%	\hat\alpha(t) & = & \left[ 1 + \int_0^t f(u) e^{F(u)}e^{G(u)}\,\mathrm{d} u \right] e^{-\left[F(t)+G(t)\right]}\\
-%	\\
-%	\beta_x(t)    & = & \Theta\left[1-e^{-k_xt}\right] + E_0 \Upsilon_x \left[ \int_0^t \hat\alpha(u) h(u) e^{k_x u }\,\mathrm{d} u \right] e^{-k_x t} \\
-%\end{array}
-%\right.
-%\end{equation}
-%
-%\begin{equation}
-%\left\lbrace
-%	\begin{array}{rcl}
-%	g(t) & = & \gamma  h(t)  = \gamma  \left(  \proton_\infty + \left(\proton_0 - \proton_\infty\right) \dfrac{t_h}{t+t_h} \right)\\
-%	\\
-%	G(t) & = & \gamma \left( \proton_\infty t + \left(\proton_0 - \proton_\infty\right) t_h \ln\left(1+\dfrac{t}{t_h}\right)\right)\\
-%	\end{array}
-%\right.
-%\end{equation}
 
 	
 \subsection{Initial Isotopic Separation}
@@ -741,59 +716,8 @@ For $t\ll t_h$,
 \right.
 \end{equation}
 
-%We write
-%\begin{equation}
-% \partial_t \hat\alpha =  k_0 \eta_0 \left[ \dfrac{\eta( \proton )}{\eta_0} \left(1-\hat\alpha\right) 
-%	 - \dfrac{\eta_\infty}{\eta_0} \dfrac{\proton_0}{\proton_\infty} \dfrac{\proton}{\proton_0} \hat\alpha \tan^2\Omega\right]  
-%\end{equation}
-%We assume
-%\begin{equation}
-%	\proton = \proton_0 \left( 1 - \delta_h \cdot \rho(t)\right), \;\; \delta_h = \dfrac{\proton_0-\proton_\infty}{\proton_0},\;\;\rho(t) = \dfrac{t}{t+t_h}
-%\end{equation}
-%and
-%\begin{equation}
-%	\eta(\proton) \simeq \eta_0 + \eta'_0 \cdot \left( \proton - \proton_0 \right)
-%	 \Rightarrow 
-%	 \dfrac{\eta(\proton)}{\eta_0} \simeq 1 - \dfrac{\eta'_0\proton_0}{\eta_0} \delta_h \cdot \rho(t)
-%\end{equation}
-%\begin{equation}
-%\left\lbrace
-%\begin{array}{rcl}
-% \partial_t \hat\alpha & = & k_0 \eta_0 \left( \left[1-\delta'_h \cdot \rho(t)\right] (1-\hat\alpha) - \omega^2 \left[1-\delta_h \rho(t)\right]\hat\alpha \right)\\
-%  & = & k_0 \eta_0 \left(
-%  \left[1-\delta'_h \cdot \rho(t)\right] - \left[ (1+\omega^2) - \underbrace{(\delta'_h+\omega^2 \delta_h)}_{\delta''_h} \rho(t)\right] \hat\alpha
-%  \right)
-%\end{array}
-%\right.
-%\end{equation}
-%
-%If we write
-%\begin{equation}
-%\left\lbrace
-%\begin{array}{rcl}
-%	\partial_t \hat\alpha & = & f(t)  - g(t)\hat\alpha\\
-%	f(u) & \simeq & k_0\eta_0 \left[1-\delta'_h\rho(u)\right]\\
-%	g(u) & \simeq & k_0\eta_0 \left[ (1+\omega^2) - \delta''_h \rho(u)\right]\\
-%	R(t) & = & \int_0^t \rho(u)\,\mathrm{d}u = t - t_h \ln\left(1+\dfrac{t}{t_h}\right)\\
-%	%F(t) & \simeq & \int_0^t f(u)\,\mathrm{d}u = k_0 \eta_0 \left[ t - \delta'_h R(t)\right]\\
-%	G(t) & \simeq & \int_0^t g(u)\,\mathrm{d}u = k_0\eta_0 \left[ (1+\omega^2) t - \delta''_h R(t)\right]\\
-%\end{array}
-%\right.
-%\end{equation}
-%then
-%\begin{equation}
-%	 \hat\alpha = \left( 1 + \int_0^t f(u) e^{G(u)} \,\mathrm{d}u \right) e^{-G(t)}
-%\end{equation}
-%We assume now that:
-%\begin{equation}
-%\left\lbrace
-%\begin{array}{rclcl}
-%	f(t) &  = & f_0 + f'_0 t & \Rightarrow & F(u) = f_0 u + \dfrac{f'_0}{2} u^2\\
-%	g(t) &  = & g_0 + g'_0 t & \Rightarrow & G(u) = g_0 u + \dfrac{g'_0}{2} u^2\\
-%
-%\end{array}
-%\right.
-%\end{equation}
+
+\end{document}
 
 \section{Passive Return}
 Let us assume that for a given time $t^\start$ we get the values $\beta_x^\start$ such that $\beta_6^\start+\beta_7^\start=B^\start\Theta$ and a given isotopic ratio $r^\start$:

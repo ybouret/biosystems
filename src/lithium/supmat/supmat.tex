@@ -135,7 +135,7 @@ of $\spLiOut{x}$ into $\spLi{x}$ for $x=\lbrace 6,7 \rbrace$. We distinguish two
 	\item Then the associated complex exchange an inner proton with a lithium ion:
 	\begin{equation}
 		\label{eq:xch}
-		\spLiE{x} + \spproton   \xrightleftharpoons[~~k^q_x~~]{~~k^p_x~~}   \spEHin + \spLi{x}, 
+		\spLiE{x} + \spproton   \xrightleftharpoons[~~q_x~~]{~~k^p_x~~}   \spEHin + \spLi{x}, 
 	\end{equation}
 	where $k^p_x$ and $k^q_x$ respectively are the forward and reverse protonation rate constants.
 	
@@ -173,7 +173,7 @@ We define the 11 following rates:
 	\\
 	v^p_x & = & k^p_x \LiE{x} \proton\\
 	\\
-	v^q_x & = & k^q_x \Li{x} \EHin\\
+	v^q_x & = & q_x \Li{x} \EHin\\
 	\\
 	v_h   & = & k_x \EHin\\
 	\\
@@ -218,16 +218,16 @@ We now harness the algebraic method previously established\todo{ref} to end up w
 \left\lbrace
 	\begin{array}{rcl}
 		\partial_t\EHin & = & -k_h \EHin + \left(E_0- \EHin\right) \dfrac{\proton}{\mathfrak{D}} \left(\sum_x k_x^p J_x\LiOut{x} \right)  
-		- \EHin \left({\sum_x k_x^q \Li{x}} \right)
+		- \EHin \left({\sum_x q_x \Li{x}} \right)
 		\\
 		\\
 		& = & 
 		-k_h E_0+ \left(E_0- \EHin\right)\left\lbrack k_h+ \dfrac{\proton}{\mathfrak{D}} \left(\sum_x k_x^p J_x\LiOut{x}\right)\right] 
-		- \EHin \left( {\sum_x k_x^q \Li{x}} \right)
+		- \EHin \left( {\sum_x q_x \Li{x}} \right)
 		\\
 		\\
 		\partial_t\Li{x} & = & k_x \left(\Theta\LiOut{x} -\Li{x} \right)  + \left(E_0-\EHin\right) \dfrac{\proton}{\mathfrak{D}}   k_x^p  J_x \LiOut{x}  
-		- \EHin k_x^q \Li{x}
+		- \EHin q_x \Li{x}
 		\\
 		\\
 		(\mathfrak{D} & = & 1+\sum_x J_x \LiOut{x} )\\
@@ -259,10 +259,10 @@ Then we rewrite:
 \left\lbrace
 \begin{array}{rcl}
 	\partial_t \alpha & = & -k_h \alpha + \LiAllOut \left[ (1-\alpha) \proton  \dfrac{ \left(\sum_x k^p_x \epsilon_x J_x\right) }{1+J_\epsilon\LiAllOut}
-	-\alpha  \left(\sum_x k^q_x \epsilon_x \beta_x \right)\right]
+	-\alpha  \left(\sum_x q_x \epsilon_x \beta_x \right)\right]
 	\\
 	\\
-	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ (1-\alpha)  \proton \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} - \alpha k^q_x \beta_x \right]
+	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ (1-\alpha)  \proton \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} - \alpha q_x \beta_x \right]
 \end{array}
 \right.,
 \end{equation}
@@ -273,10 +273,10 @@ or, in terms of $\hat\alpha$:
 \begin{array}{rcl}
 	\partial_t \hat\alpha & = & k_h  
 		- \hat\alpha\left\lbrack k_h+ \proton  \dfrac{ \LiAllOut \left(\sum_x k^p_x \epsilon_x J_x\right) }{1+J_\epsilon\LiAllOut}\right] 
-		+ (1-\hat\alpha) \LiAllOut\left( {\sum_x k_x^q \epsilon_x \beta_x} \right)
+		+ (1-\hat\alpha) \LiAllOut\left( {\sum_x q_x \epsilon_x \beta_x} \right)
 	\\
 	\\
-	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ \hat\alpha  \proton \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} - (1-\hat\alpha) k^q_x \beta_x \right]\\
+	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ \hat\alpha  \proton \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} - (1-\hat\alpha) q_x \beta_x \right]\\
 \end{array}
 \right.
 \end{equation}
@@ -299,13 +299,14 @@ and to formally write the coupled system:
 \begin{array}{rcl}
 \partial_t \hat\alpha & = &
 	 k_h \left(1-\hat\alpha\right) 
-	 + \LiAllOut \left[ (1-\hat\alpha) \left( {\sum_x k_x^q \epsilon_x \beta_x} \right)  - \hat\alpha\proton \Upsilon_\alpha \right]\\
+	 + \LiAllOut \left[ (1-\hat\alpha) \left( {\sum_x q_x \epsilon_x \beta_x} \right)  - \hat\alpha\proton \Upsilon_\alpha \right]\\
 	 \\
 \partial_t \alpha & = & -k_h \alpha + \LiAllOut \left[ (1-\alpha) \proton  \Upsilon_\alpha
-	-\alpha  \left(\sum_x k^q_x \epsilon_x \beta_x \right)\right]\\
+	-\alpha  \left(\sum_x q_x \epsilon_x \beta_x \right)\right]\\
 \\
-	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ \hat\alpha  \proton \Upsilon_x - (1-\hat\alpha) k^q_x \beta_x \right]\\
-	 & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ (1-\alpha)  \proton \Upsilon_x - \alpha k^q_x \beta_x \right]
+	\partial_t \beta_x & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ \hat\alpha  \proton \Upsilon_x - (1-\hat\alpha) q_x\beta_x \right]\\
+	\\
+	 & = & k_x\left(\Theta - \beta_x\right) +E_0\left[ (1-\alpha)  \proton \Upsilon_x - \alpha q_x \beta_x \right]
 \end{array}
 \right.
 \end{equation}
@@ -327,6 +328,35 @@ The isotopic separation is related to the amplification factor by:
 	r=\dfrac{ \beta_7}{\beta_6} = \dfrac{\left[1+10^{-3}\deltaLi\right]}{\left[1+10^{-3}\deltaLiOut\right]}
 	.
 \end{equation}
+
+\section{Boundary Values}
+
+\subsection{Initial Times}
+
+\begin{equation}
+	\beta_x \simeq \left( k_x \Theta + E_0 h_0 \Upsilon_x \right) t 
+\end{equation}
+
+\begin{equation}
+	r_0 = \dfrac{k_7 \Theta + E_0 h_0 \Upsilon_7}{k_6 \Theta + E_0 h_0 \Upsilon_6 }
+\end{equation}
+
+\subsection{Steady State}
+\begin{equation}
+	\alpha_\infty = \sin^2 \Omega, \hat\alpha_\infty = \cos^2 \Omega
+\end{equation}
+
+\begin{equation}
+\begin{array}{rcl}
+	\beta_x^\infty & = & \dfrac{k_x\Theta+E_0 h_\infty \Upsilon_x \cos^2\Omega}{k_x+E_0q_x\sin^2\Omega}\\
+	\\
+	\sin^2\Omega   & = & \dfrac{\LiAllOut h_\infty \Upsilon_\alpha}{k_h^\infty + \LiAllOut\left[ h_\infty \Upsilon_\alpha + \left(\sum_x q_x \epsilon_x \beta_x^\infty\right)\right]}\\
+	\\
+	\cos^2 \Omega  & = & \dfrac{k_x^\infty + \LiAllOut\left(\sum_x q_x \epsilon_x \beta_x^\infty\right) }{k_h^\infty + \LiAllOut\left[ h_\infty \Upsilon_\alpha + \left(\sum_x q_x \epsilon_x \beta_x^\infty\right)\right]}\\
+\end{array}
+\end{equation}
+
+
 
 
 

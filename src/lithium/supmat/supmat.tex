@@ -286,7 +286,7 @@ It is interesting to define:
 \left\lbrace
 \begin{array}{rcll}
 	\Upsilon_x & = & \dfrac{k^p_x J_x}{1+J_\epsilon \LiAllOut} & \text{(with lithium dependent saturation effect)}\\
-	\Upsilon_6 & = & \kappa \Upsilon_7 & \text{($\kappa$=intake speed up)} \\
+	\Upsilon_6 & = & \gamma \Upsilon_7 & \text{($\gamma$=intake speed up)} \\
 	\Upsilon_\alpha & = & \epsilon_6 \Upsilon_6 + \epsilon_7 \Upsilon_7 = \underbrace{(\epsilon_6 \kappa + \epsilon_7)}_{\kappa'} \Upsilon_7 & 
 	\text{(mixed intake coefficient)}\\
 \end{array}
@@ -341,6 +341,15 @@ The isotopic separation is related to the amplification factor by:
 	r_0 = \dfrac{k_7 \Theta + E_0 h_0 \Upsilon_7}{k_6 \Theta + E_0 h_0 \Upsilon_6 }
 \end{equation}
 
+We define the amplification factor:
+\begin{equation}
+	\mu = \dfrac{E_0 h_0 \Upsilon_7}{k_7\Theta}
+\end{equation}
+so that:
+\begin{equation}
+	r_0 = \dfrac{1+\mu}{\sigma+\mu\gamma} \in \left[ \dfrac{1}{\gamma};\dfrac{1}{\sigma}\right]
+\end{equation}
+
 \subsection{Steady State}
 \begin{equation}
 	\alpha_\infty = \sin^2 \Omega, \hat\alpha_\infty = \cos^2 \Omega
@@ -352,7 +361,7 @@ The isotopic separation is related to the amplification factor by:
 	\\
 	\sin^2\Omega   & = & \dfrac{\LiAllOut h_\infty \Upsilon_\alpha}{k_h^\infty + \LiAllOut\left[ h_\infty \Upsilon_\alpha + \left(\sum_x q_x \epsilon_x \beta_x^\infty\right)\right]}\\
 	\\
-	\cos^2 \Omega  & = & \dfrac{k_x^\infty + \LiAllOut\left(\sum_x q_x \epsilon_x \beta_x^\infty\right) }{k_h^\infty + \LiAllOut\left[ h_\infty \Upsilon_\alpha + \left(\sum_x q_x \epsilon_x \beta_x^\infty\right)\right]}\\
+	\cos^2 \Omega  & = & \dfrac{k_h^\infty + \LiAllOut\left(\sum_x q_x \epsilon_x \beta_x^\infty\right) }{k_h^\infty + \LiAllOut\left[ h_\infty \Upsilon_\alpha + \left(\sum_x q_x \epsilon_x \beta_x^\infty\right)\right]}\\
 \end{array}
 \end{equation}
 

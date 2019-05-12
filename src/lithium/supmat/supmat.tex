@@ -334,20 +334,29 @@ The isotopic separation is related to the amplification factor by:
 \subsection{Initial Times}
 
 \begin{equation}
-	\beta_x \simeq \left( k_x \Theta + E_0 h_0 \Upsilon_x \right) t 
+	\beta_x \simeq \left( k_x \Theta_0 + E_0 h_0 \Upsilon_x \right) t 
 \end{equation}
 
 \begin{equation}
-	r_0 = \dfrac{k_7 \Theta + E_0 h_0 \Upsilon_7}{k_6 \Theta + E_0 h_0 \Upsilon_6 }
+	r_0 = \dfrac{k_7 \Theta_0 + E_0 h_0 \Upsilon_7}{k_6 \Theta + E_0 h_0 \Upsilon_6 }
 \end{equation}
 
 We define the amplification factor:
 \begin{equation}
-	\mu = \dfrac{E_0 h_0 \Upsilon_7}{k_7\Theta}
+	\mu = \dfrac{E_0 h_0 \Upsilon_7}{k_7\Theta_0}
 \end{equation}
 so that:
 \begin{equation}
-	r_0 = \dfrac{1+\mu}{\sigma+\mu\gamma} \in \left[ \dfrac{1}{\gamma};\dfrac{1}{\sigma}\right]
+	r_0 = \dfrac{1+\mu}{\sigma+\mu\gamma} \in \left[ \dfrac{1}{\gamma};\dfrac{1}{\sigma}\right].
+\end{equation}
+Since we have
+\begin{equation}
+	r_0 \leq \dfrac{1}{\sigma} \;\; \left(r_0\sigma \leq 1 \right).
+\end{equation}
+once we choose an amplification factor (that shall depends on $\LiAllOut$), then
+the isotopic speedup $\gamma$ is:
+\begin{equation}
+	\gamma = \dfrac{1+\mu}{\mu}\left(\dfrac{1}{r_0} - \dfrac{\sigma}{1+\mu}\right)
 \end{equation}
 
 \subsection{Steady State}

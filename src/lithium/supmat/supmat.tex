@@ -329,6 +329,112 @@ The isotopic separation is related to the amplification factor by:
 	.
 \end{equation}
 
+\subsection{Potential}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcll}
+	\dfrac{FV_m}{RT} & \simeq & \dfrac{FV_0}{RT} + \zeta_m \LiAll & = \zeta_0 + \zeta_m \LiAll\\
+	\\
+	\Theta & = & \exp\left[ - \dfrac{FV_m}{RT}\right] & \simeq \Theta_0 e^{-u \left(\epsilon_6 \beta_6 + \epsilon_7 \beta_7 \right) }
+	\\
+\end{array}
+\right.
+\end{equation}
+~\\
+Let us assume that
+\begin{equation}
+	\partial_t \beta = k \left(\Theta-\beta\right) = k\left(\Theta_0e^{-u\beta} - \beta\right) \simeq k \left( \dfrac{\Theta_0}{1+u\beta} - \beta\right)
+\end{equation}
+we get
+\begin{equation}
+	\dfrac{1+u\beta}{u\beta^2+\beta-\Theta_0} \partial_t \beta = -k
+\end{equation}
+using
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\beta^{\pm} & = & \dfrac{-1\pm\sqrt{1+4u\Theta_0}}{2u}\\
+	\\
+	\beta^\infty & = & \beta^+  = \dfrac{\sqrt{1+4u\Theta_0}-1}{2u} \in [0:\Theta_0]\\
+	\\
+	\beta^\star & = & -\beta^- = \dfrac{\sqrt{1+4u\Theta_0}+1}{2u}\\
+\end{array}
+\right.
+\end{equation}
+
+we write
+\begin{equation}
+	\dfrac{1}{u\beta^2+\beta-\Theta_0} = \dfrac{1}{\sqrt{1+4u\Theta_0}}\left[\dfrac{1}{\beta-\beta^+}-\dfrac{1}{\beta-\beta^-}\right]
+\end{equation}
+so that
+\begin{equation}
+	\left(1+u\beta\right) \left[\dfrac{1}{\beta-\beta^+}-\dfrac{1}{\beta-\beta^-}\right] \partial_t \beta = - k \sqrt{1+4u\Theta_0}
+\end{equation}
+or
+\begin{equation}
+	 \left[ \dfrac{1+u\beta^+}{\beta-\beta^+} - \dfrac{1+u\beta^-}{\beta-\beta^-} \right] \partial_t \beta = - k \sqrt{1+4u\Theta_0}.
+\end{equation}
+We integrate
+\begin{equation}
+	\left(1+u\beta^+\right) \ln\left[ \dfrac{\beta^+-\beta}{\beta^+}\right] 
+	- \left(1+u\beta^-\right) \ln\left[ \dfrac{\beta^--\beta}{\beta^-}\right] = -\left(k \sqrt{1+4u\Theta_0}\right) t 
+\end{equation}
+leading to
+\begin{equation}
+	\left(1+\sqrt{1+4u\Theta_0}\right) \ln\left[ \dfrac{\beta^\infty-\beta}{\beta^\infty}\right] 
+	- \left(1-\sqrt{1+4u\Theta_0}\right) \ln\left[ \dfrac{\beta+\beta^\star }{\beta^\star}\right] = -\left(2 k \sqrt{1+4u\Theta_0}\right) t 
+\end{equation}
+or
+\begin{equation}
+	\ln\left[ \dfrac{\beta^\infty-\beta}{\beta^\infty}\right]
+	 + \dfrac{4u\Theta_0}{\left[1+\sqrt{1+4u\Theta_0}\right]^2} \ln \left[ \dfrac{\beta+\beta^\star }{\beta^\star}\right] = - \dfrac{2 k \sqrt{1+4u\Theta_0}}{\left(1+\sqrt{1+4u\Theta_0}\right)} t
+\end{equation}
+Using
+\begin{equation}
+	Z_u =  \dfrac{4u\Theta_0}{\left[1+\sqrt{1+4u\Theta_0}\right]^2} \in \lbrack0:1\lbrack
+\end{equation}
+we obtain a compact form
+\begin{equation}
+	\ln\left[ \dfrac{\beta^\infty-\beta}{\beta^\infty}\right]
+	 + Z_u \ln \left[ \dfrac{\beta+\beta^\star }{\beta^\star}\right] = -\left(1+Z_u\right) k t
+\end{equation}
+that becomes:
+\begin{equation}
+	\left[ \dfrac{\beta^\infty-\beta}{\beta^\infty}\right] \left[1+\dfrac{\beta}{\beta^\star}\right]^{Z_u}= e^{  -\left(1+Z_u\right) k t }
+\end{equation}
+Since $\beta\leq\Theta_0$, $1/\beta^\star\in[0,\sqrt{\frac{u}{\Theta_0}}]$, we assume
+using 
+\begin{equation}
+	Y_u = \dfrac{Z_u}{\beta^\star} =  \dfrac{8u^2\Theta_0}{\left[1+\sqrt{1+4u\Theta_0}\right]^3}
+\end{equation}
+and noting that
+\begin{equation}
+	Y_u \beta^\infty = \dfrac{(4u\Theta_0)^2}{\left[1+\sqrt{1+4u\Theta_0}\right]^4} = Z_u^2 \in  \lbrack0:1\lbrack
+\end{equation}
+
+\begin{equation}
+	Y_u \beta^2 + \left(1-Y_u\beta^\infty\right) \beta - \beta^\infty\left(1-e^{  -\left(1+Z_u\right) k t }\right) = 0
+\end{equation}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\beta & = & \dfrac{-\left(1-Y_u\beta^\infty\right) + \sqrt{ \left(1-Y_u\beta^\infty\right)^2 + 4Y_u\beta^\infty \left[1-e^{  -\left(1+Z_u\right) k t }\right]}}{2Y_u}\\
+	\\
+	& = & \beta^\infty \left( 
+	\dfrac{
+	\left(Z_u^2-1\right)
+	+
+	\sqrt{
+		\left(Z_u^2-1\right)^2 + 4 Z_u ^2 \left[1-e^{  -\left(1+Z_u\right) k t }\right]
+		}
+	}
+	{2Z_u^2}
+	\right)
+\end{array}
+\right.
+\end{equation}
+
+
 \section{Boundary Values}
 
 \subsection{Initial Times}

@@ -176,10 +176,12 @@ Y_PROGRAM_START()
     {
         ios::ocstream fp("beta_fit.dat");
         leak->load(aorg,vars);
-
+        
+        leak.iode.reset();
+        
         for(double x=0;x<=2*t[N]; x += 10 )
         {
-            const array<double> &Y    = leak.iode.at(x);
+            const array<double> &Y    = leak.iode.update(x);
             const double         beta = leak->beta_of(Y);
             const double         y    = beta*Lambda;
             const double         Theta = vars(aorg,"Theta0") * exp( - vars(aorg,"u") * beta );

@@ -4,6 +4,7 @@
 #include "y/ios/ocstream.hpp"
 #include "y/math/fit/ls.hpp"
 #include "y/math/fit/samples-io.hpp"
+#include "y/type/physics.hpp"
 
 using namespace upsylon;
 using namespace math;
@@ -63,9 +64,14 @@ public:
     virtual double begin() const throw() { return 0; }
     virtual double delta() const throw() { return 1.0; }
 
+    double  beta_of(const Array &Y ) const
+    {
+        return (eps6*Y[I_B6]+eps7*Y[I_B7]);
+    }
+
     virtual double query( const Array &Y, double ) const
     {
-        return Lambda*(eps6*Y[I_B6]+eps7*Y[I_B7]);
+        return Lambda * beta_of(Y);
     }
 
     virtual void compute( Array &dYdt, double, const Array &Y )
@@ -134,7 +140,7 @@ Y_PROGRAM_START()
     vars << "k7" << "Theta0" << "u";
 
     Solver        solver   = ODE::DriverCK<double>::New();
-    
+    solver->eps = 1e-5;
     Leak          leak(solver);
 
     Fit::Type<double>::Function F( &leak, & Leak::Compute );
@@ -178,11 +184,12 @@ Y_PROGRAM_START()
 
         for(double x=0;x<=2*t[N]; x += 10 )
         {
-            const array<double> &Y = leak.iode.state_at(x);
-            const double         y = leak->query(Y,x);
-            const double         beta = y/Lambda;
+            const array<double> &Y    = leak.iode.state_at(x);
+            const double         y    = leak->query(Y,x);
+            const double         beta = leak->beta_of(Y);
             const double         Theta = vars(aorg,"Theta0") * exp( - vars(aorg,"u") * beta );
-            fp("%g %g %g\n", x, , Theta);
+            const double         V     = -1000.0 * Y_R * (37+Y_ZERO) * log(Theta) / Y_FARADAY;
+            fp("%g %g %g %g\n",x,y,Theta,V);
         }
     }
 

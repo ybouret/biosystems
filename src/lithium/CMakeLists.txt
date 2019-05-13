@@ -6,7 +6,9 @@ TARGET_LINK_Y(simalpha lua++ m)
 INSTALL( TARGETS simalpha RUNTIME DESTINATION bin )
 
 
-
+ADD_EXECUTABLE(simpot simpot.cpp)
+TARGET_LINK_Y(simpot m)
+INSTALL( TARGETS simpot RUNTIME DESTINATION bin )
 
 ADD_EXECUTABLE(fit-leak fit-leak.cpp)
 TARGET_LINK_Y(fit-leak lua++ m)

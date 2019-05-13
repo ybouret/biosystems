@@ -69,11 +69,6 @@ public:
         return (eps6*Y[I_B6]+eps7*Y[I_B7]);
     }
 
-    virtual double query( const Array &Y, double ) const
-    {
-        return Lambda * beta_of(Y);
-    }
-
     virtual void compute( Array &dYdt, double, const Array &Y )
     {
         const double beta7 = Y[I_B7];
@@ -110,7 +105,7 @@ public:
     {
         SimPot &self = **this;
         self.load(aorg,vars);
-        return iode.at(t);
+        return Lambda*self.beta_of( iode.at(t) );
     }
 
 
@@ -184,9 +179,9 @@ Y_PROGRAM_START()
 
         for(double x=0;x<=2*t[N]; x += 10 )
         {
-            const array<double> &Y    = leak.iode.state_at(x);
-            const double         y    = leak->query(Y,x);
+            const array<double> &Y    = leak.iode.at(x);
             const double         beta = leak->beta_of(Y);
+            const double         y    = beta*Lambda;
             const double         Theta = vars(aorg,"Theta0") * exp( - vars(aorg,"u") * beta );
             const double         V     = -1000.0 * Y_R * (37+Y_ZERO) * log(Theta) / Y_FARADAY;
             fp("%g %g %g %g\n",x,y,Theta,V);

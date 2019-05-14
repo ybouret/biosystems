@@ -151,26 +151,30 @@ Y_PROGRAM_START()
 
     vars(aorg,"k7")     = 3;
     vars(aorg,"Theta0") = 4.47;
-    vars(aorg,"u")      = 0.7;
+    vars(aorg,"u")      = 0.0;
     vars(aorg,"coeff")  = 1.0;
 
     Fit::LeastSquares<double> ls;
     std::cerr << "Fitting k7" << std::endl;
-    vars.on(used,"k7");
+    vars.on(used,"k7:coeff");
     if(!ls.fit(sample, F, aorg, aerr, used) )
     {
         throw exception("Couldn't fit k7");
     }
     vars.display(std::cerr, aorg, aerr, "\t");
 
-    std::cerr << "Fitting k7/u" << std::endl;
-
-    vars.on(used,"k7:u");
-    if(!ls.fit(sample, F, aorg, aerr, used) )
+    if(false)
     {
-        throw exception("Couldn't fit k7:u");
+        std::cerr << "Fitting k7/u" << std::endl;
+
+        vars.on(used,"k7:u");
+        if(!ls.fit(sample, F, aorg, aerr, used) )
+        {
+            throw exception("Couldn't fit k7:u");
+        }
+        vars.display(std::cerr, aorg, aerr, "\t");
+
     }
-    vars.display(std::cerr, aorg, aerr, "\t");
 
     std::cerr << "Saving points..." << std::endl;
     {
@@ -181,7 +185,7 @@ Y_PROGRAM_START()
         }
     }
 
-    std::cerr << "Saving fit and potential..." << std::endl;
+    std::cerr << "Saving fit and potential for unit coefficient..." << std::endl;
     {
         ios::ocstream fp("beta_fit.dat");
         leak->load(aorg,vars);
@@ -192,13 +196,16 @@ Y_PROGRAM_START()
         {
             const array<double> &Y    = leak.iode.update(x);
             const double         beta = leak->beta_of(Y);
-            const double         y    = beta*Lambda;
+            const double         y    = beta*Lambda*vars(aorg,"coeff");
             const double         Theta = vars(aorg,"Theta0") * exp( - vars(aorg,"u") * beta );
             const double         V     = -1000.0 * Y_R * (37+Y_ZERO) * log(Theta) / Y_FARADAY;
             fp("%g %g %g %g\n",x,y,Theta,V);
         }
     }
 
+
+
+    if(false)
     {
         const string cf = "coeff.dat";
         ios::ocstream::overwrite(cf);

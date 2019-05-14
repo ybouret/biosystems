@@ -34,11 +34,12 @@ public:
     double k6;
     double Theta0;
     double u;
+    double coeff;
 
     explicit SimPot() :
     eps6(1.0/(1.0+lambda_s*(1.0+1.0e-3*d7out))),
     eps7(1.0-eps6),
-    k7(1e-2), k6(sigma*k7), Theta0(4.47), u(0)
+    k7(1e-2), k6(sigma*k7), Theta0(4.47), u(0), coeff(1)
     {
     }
 
@@ -48,6 +49,7 @@ public:
         k6     = sigma * k7;
         Theta0 = vars(aorg,"Theta0");
         u      = vars(aorg,"u");
+        coeff  = vars(aorg,"coeff");
     }
 
     virtual ~SimPot() throw()
@@ -62,6 +64,7 @@ public:
     }
 
     virtual double begin() const throw() { return 0; }
+
     virtual double delta() const throw() { return 1.0; }
 
     double  beta_of(const Array &Y ) const
@@ -105,7 +108,7 @@ public:
     {
         SimPot &self = **this;
         self.load(aorg,vars);
-        return Lambda*self.beta_of( iode.at(t) );
+        return Lambda*self.beta_of( iode.at(t) )*self.coeff;
     }
 
 
@@ -132,7 +135,7 @@ Y_PROGRAM_START()
     std::cerr << "Loaded #" << N << std::endl;
 
     Variables & vars = sample.variables;
-    vars << "k7" << "Theta0" << "u";
+    vars << "k7" << "Theta0" << "u" << "coeff";
 
     Solver        solver   = ODE::DriverCK<double>::New();
     solver->eps = 1e-5;
@@ -149,22 +152,27 @@ Y_PROGRAM_START()
     vars(aorg,"k7")     = 3;
     vars(aorg,"Theta0") = 4.47;
     vars(aorg,"u")      = 0.7;
-
+    vars(aorg,"coeff")  = 1.0;
 
     Fit::LeastSquares<double> ls;
+    std::cerr << "Fitting k7" << std::endl;
     vars.on(used,"k7");
     if(!ls.fit(sample, F, aorg, aerr, used) )
     {
         throw exception("Couldn't fit k7");
     }
+    vars.display(std::cerr, aorg, aerr, "\t");
+
+    std::cerr << "Fitting k7/u" << std::endl;
+
     vars.on(used,"k7:u");
     if(!ls.fit(sample, F, aorg, aerr, used) )
     {
         throw exception("Couldn't fit k7:u");
     }
-
     vars.display(std::cerr, aorg, aerr, "\t");
 
+    std::cerr << "Saving points..." << std::endl;
     {
         ios::ocstream fp("beta.dat");
         for(size_t i=1;i<=N;++i)
@@ -173,6 +181,7 @@ Y_PROGRAM_START()
         }
     }
 
+    std::cerr << "Saving fit and potential..." << std::endl;
     {
         ios::ocstream fp("beta_fit.dat");
         leak->load(aorg,vars);
@@ -190,6 +199,22 @@ Y_PROGRAM_START()
         }
     }
 
+    {
+        const string cf = "coeff.dat";
+        ios::ocstream::overwrite(cf);
+        ios::ocstream::echo(cf,"%g %g %g\n", vars(aorg,"coeff"), vars(aorg,"k7"), vars(aorg,"u"));
+        for( double c=0.9;c>=0.49; c -= 0.05 )
+        {
+            std::cerr << "Fitting with coeff=" << c << std::endl;
+            vars(aorg,"coeff") = c;
+            if(!ls.fit(sample, F, aorg, aerr, used) )
+            {
+                throw exception("Couldn't fit k7:u");
+            }
+            vars.display(std::cerr, aorg, aerr, "\t");
+            ios::ocstream::echo(cf,"%g %g %g\n", vars(aorg,"coeff"), vars(aorg,"k7"), vars(aorg,"u"));
+        }
+    }
 
 
 

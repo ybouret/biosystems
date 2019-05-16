@@ -186,7 +186,7 @@ Y_PROGRAM_START()
     std::cerr << "Loaded #" << N << std::endl;
     hsort(t,C,comparison::increasing<double>);
 
-    const double t_sim = 2.0 * t[N];
+    const double t_sim = 4*3600;
 
     Variables & vars = sample.variables;
     vars << "k7" << "V0" << "km" << "ym";

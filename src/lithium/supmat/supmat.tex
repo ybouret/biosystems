@@ -336,6 +336,18 @@ The isotopic separation is related to the amplification factor by:
 
 \subsection{Potential}
 
+Following the electrical properties, we expect
+$$
+        \delta V_m \propto \delta \LiAll \Rightarrow \partial_t \left. V_m\right\vert_{\LiAll} \propto \partial_t \LiAll
+$$
+and we also assume that the potential regulation tends to recover the initial potential $V_0$ following
+$$
+        \partial_t \left. V_m\right\vert_{\text{cell}} \propto V_0-V_m
+$$
+so that we define the potential evolution by:
+\begin{equation}
+        \partial_t V_m = k_m \left(V_0-V_m\right) + y_m \LiAllOut \partial_t \left[ \epsilon_6 \beta_6 + \epsilon_7 \beta_7\right]
+\end{equation}
 
 
 \section{Boundary Values}

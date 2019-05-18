@@ -1,0 +1,45 @@
+\documentclass[aps,onecolumn,12pt]{revtex4}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{chemarr}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{xfrac}
+\usepackage[dvipsnames]{xcolor}
+%\usepackage{bookman}
+\usepackage{dsfont}
+\usepackage{mathptmx}
+\usepackage{hyperref}
+%\usepackage{rotating}
+
+\begin{document}
+\title{Cooperativity}
+\maketitle
+
+\section{One Layer}
+
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t E_{00} & = & D_{01}-A_{01} + D_{02}-A_{02}\\
+\partial_t E_{01} & = & -D_{01}+A_{01}\\
+\partial_t E_{02} & = & -D_{02}+A_{02}\\
+1                 & = & E_{00}+E_{01}+E_{02} = \sum_{x\leq y} E_{xy}\\
+\end{array}
+\right.
+\end{equation}
+with
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+A_{01} = a_{01} E_{00} C_1\\
+A_{02} = a_{02} E_{00} C_2\\
+D_{01} = d_{01} E_{01}\\
+D_{02} = d_{02} E_{02}\\
+\end{array}
+\right.
+\end{equation}
+
+
+
+\end{document}

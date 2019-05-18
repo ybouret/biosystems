@@ -18,13 +18,28 @@
 
 \section{One Layer}
 
+\subsection{Scheme}
+\begin{equation}
+\boxed{
+\begin{array}{ccc}
+ & & E_{01} \\
+ &  \rotatebox{45}{$\xrightleftharpoons[d_{01}]{a_{01}C_1}$} &     \\
+E_{00} & & \\
+  & \rotatebox{-45}{$\xrightleftharpoons[d_{02}]{a_{02}C_2}$} &     \\
+ & & E_{02} \\
+ \end{array}
+ }
+\end{equation}
+
+\subsection{Equations}
+
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
 \partial_t E_{00} & = & D_{01}-A_{01} + D_{02}-A_{02}\\
 \partial_t E_{01} & = & -D_{01}+A_{01}\\
 \partial_t E_{02} & = & -D_{02}+A_{02}\\
-1                 & = & E_{00}+E_{01}+E_{02} = \sum_{x\leq y} E_{xy}\\
+\mathcal{E}       & = & E_{00}+E_{01}+E_{02} = {\displaystyle \sum_{x\leq y\leq 1} E_{xy}}\\
 \end{array}
 \right.
 \end{equation}
@@ -32,42 +47,73 @@ with
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-A_{01} = a_{01} E_{00} C_1\\
-A_{02} = a_{02} E_{00} C_2\\
-D_{01} = d_{01} E_{01}\\
-D_{02} = d_{02} E_{02}\\
+A_{01} &= &a_{01} E_{00} C_1\\
+A_{02} &= &a_{02} E_{00} C_2\\
+D_{01} &= &d_{01} E_{01}\\
+D_{02} &= &d_{02} E_{02}\\
 \end{array}
 \right.
 \end{equation}
 
+\subsection{Steady-State}
+
 \begin{equation}
-\partial_t
-\begin{bmatrix}
-E_{00}\\
-E_{01}\\
-E_{02}\\
-\end{bmatrix}
-=
-\begin{bmatrix}
-0 & d_{01} & d_{02}\\
-0 & -d_{01} & 0\\
-0 & 0 & -d_{02}\\
-\end{bmatrix}
-\begin{bmatrix}
-E_{00}\\
-E_{01}\\
-E_{02}\\
-\end{bmatrix}
-+
-\begin{bmatrix}
--a_{01}E_{00} & - a_{02} E_{00}\\
-a_{01} E_{00} & 0 \\
-0 & a_{02} E_{00} \\
-\end{bmatrix}
-\begin{bmatrix}
-C_1\\
-C_2\\
-\end{bmatrix}
+\left\lbrace
+\begin{array}{rcl}
+E_{01} = \dfrac{ \dfrac{a_{01}}{d_{01}} C_1 }{1+ \dfrac{a_{01}}{d_{01}} C_1  + \dfrac{a_{02}}{d_{02}} C_2  } \mathcal{E}\\
+\\
+E_{02} = \dfrac{ \dfrac{a_{02}}{d_{02}} C_2  }{1+ \dfrac{a_{01}}{d_{01}} C_1  + \dfrac{a_{02}}{d_{02}} C_2  } \mathcal{E}\\
+\end{array}
+\right.
+\end{equation}
+
+
+\section{Two Layers}
+
+\begin{equation}
+\boxed{
+\begin{array}{ccccc}
+ & & E_{01} & \xrightleftharpoons[d_{11}]{a_{11}C_1} & E_{11}\\
+ &  \rotatebox{45}{$\xrightleftharpoons[d_{01}]{a_{01}C_1}$} &   & \rotatebox{-45}{$\xrightleftharpoons[d_{12}]{a_{12}C_2}$} & \\
+E_{00} & &  & & E_{12}\\ 
+  & \rotatebox{-45}{$\xrightleftharpoons[d_{02}]{a_{02}C_2}$} &  & \rotatebox{45}{$\xrightleftharpoons[d_{21}]{a_{21}C_1}$} &  \\
+  & & E_{02} & \xrightleftharpoons[d_{22}]{a_{22}C_2} & E_{22}\\
+ \end{array}
+ }
+\end{equation}
+
+
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t E_{00} & = & D_{01}-A_{01} + D_{02}-A_{02}\\
+\partial_t E_{01} & = & -D_{01}+A_{01} - A_{11} + D_{11} - A_{12} + D_{12}\\
+\partial_t E_{02} & = & -D_{02}+A_{02} - A_{22} + D_{22} - A_{21} + D_{21}\\
+\partial_t E_{11} & = & A_{11}-D_{11}\\
+\partial_t E_{12} & = & A_{12}-D_{12} + A_{21}-D_{21}\\
+\partial_t E_{22} & = & A_{22}-D_{22}\\
+\mathcal{E}       & = & {\displaystyle \sum_{x\leq y\leq 2} E_{xy}}\\
+\end{array}
+\right.
+\end{equation}
+with
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+A_{01} &= &a_{01} E_{00} C_1\\
+A_{02} &= &a_{02} E_{00} C_2\\
+D_{01} &= &d_{01} E_{01}\\
+D_{02} &= &d_{02} E_{02}\\
+A_{11} &= &a_{11} E_{01} C_1 \\
+D_{11} &= &d_{11} E_{11}\\
+A_{22} &= &a_{22} E_{02} C_2 \\
+D_{22} &= &d_{22} E_{22}\\
+A_{12} & = & a_{12} E_{01} C_2\\
+D_{12} & = & d_{12} E_{12}\\
+A_{21} & = & a_{21} E_{02} C_1\\
+D_{21} & = & d_{21} E_{12}\\
+\end{array}
+\right.
 \end{equation}
 
 

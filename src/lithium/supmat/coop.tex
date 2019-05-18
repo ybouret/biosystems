@@ -104,7 +104,7 @@ A_{01} &= &a_{01} E_{00} C_1\\
 A_{02} &= &a_{02} E_{00} C_2\\
 D_{01} &= &d_{01} E_{01}\\
 D_{02} &= &d_{02} E_{02}\\
-A_{11} &= &a_{11} E_{01} C_1 \\
+A_{11} &= & a_{11} E_{01} C_1 \\
 D_{11} &= &d_{11} E_{11}\\
 A_{22} &= &a_{22} E_{02} C_2 \\
 D_{22} &= &d_{22} E_{22}\\
@@ -115,6 +115,27 @@ D_{21} & = & d_{21} E_{12}\\
 \end{array}
 \right.
 \end{equation}
-
+The second layer yields:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t E_{11} & = & a_{11} E_{01} C_1 - d_{11} E_{11}\\
+\partial_t E_{12} & = & a_{12} E_{01} C_2  + a_{21} E_{02} C_1 - \left(d_{12}+d_{21}\right) E_{12}\\
+\partial_t E_{22} & = & a_{22} E_{02} C_2 -d_{22} E_{22}\\
+\end{array}
+\right.
+\end{equation}
+so that
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl|l}
+	E_{11}^\star & = & k_{11} E_{01}^\star C_1 & k_{11} = \dfrac{a_{11}}{d_{11}}\\
+	 & & & \\
+	E_{22}^\star & = & k_{22} E_{02}^\star C_2 & k_{22} = \dfrac{a_{22}}{d_{22}}\\
+	 & & & \\
+	E_{12}^\star & = & k_{12} E_{01}^\star C_2 + k_{21} E_{02}^\star C_1  & k_{12} = \dfrac{a_{12}}{d_{12}+d_{21}},\; k_{21} = \dfrac{a_{21}}{d_{12}+d_{21}} \\
+\end{array}
+\right.
+\end{equation}
 
 \end{document}

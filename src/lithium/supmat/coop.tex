@@ -119,9 +119,20 @@ The second layer yields:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t E_{11} & = & a_{11} E_{01} C_1 - d_{11} E_{11}\\
-\partial_t E_{12} & = & a_{12} E_{01} C_2  + a_{21} E_{02} C_1 - \left(d_{12}+d_{21}\right) E_{12}\\
-\partial_t E_{22} & = & a_{22} E_{02} C_2 -d_{22} E_{22}\\
+0 & = & A_{11}^\star-D_{11}^\star\\
+0 & = & A_{12}^\star-D_{12}^\star + A_{21}^\star-D_{21}^\star\\
+0 & = & A_{22}^\star-D_{22}^\star\\
+\end{array}
+\right.
+\end{equation}
+or
+
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+0 & = & a_{11} E_{01}^\star C_1 - d_{11} E_{11}^\star\\
+0 & = & a_{12} E_{01}^\star C_2  + a_{21} E_{02}^\star C_1 - \left(d_{12}+d_{21}\right) E_{12}^\star\\
+0 & = & a_{22} E_{02}^\star C_2 -d_{22} E_{22}^\star\\
 \end{array}
 \right.
 \end{equation}
@@ -137,5 +148,46 @@ so that
 \end{array}
 \right.
 \end{equation}
+We are left with the (redundant) first layer equations
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+0 & = & D_{01}^\star-A_{01}^\star + D_{02}^\star-A_{02}^\star\\
+0 & = & -D_{01}^\star+A_{01}^\star  - A_{12}^\star + D_{12}^\star\\
+0 & = & -D_{02}^\star+A_{02}^\star  - A_{21}^\star + D_{21}^\star\\
+\end{array}
+\right.
+\end{equation}
+leading to
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+d_{01}E_{01}^\star + d_{02} E_{02}^\star & = & \left( a_{01}C_1+a_{02}C_2\right)E_{00}^\star\\
+A_{01}^\star & = & A_{12}^\star + D_{01}^\star - D_{12}^\star\\
+A_{02}^\star & = & A_{21}^\star + D_{02}^\star - D_{21}^\star\\ 
+\end{array}
+\right.
+\end{equation}
+or
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+d_{01}E_{01}^\star + d_{02} E_{02}^\star & = & \left( a_{01}C_1+a_{02}C_2\right)E_{00}^\star\\
+a_{01} E_{00}^\star C_1 & = & a_{12} E_{01}^\star C_2  + d_{01}E_{01}^\star - d_{12}E_{12}^\star\\
+a_{02} E_{00}^\star C_2 & = & a_{21}E_{02}^\star C_1 + d_{02}E_{02}^\star - d_{21}E_{12}^\star\\ 
+\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+a_{01} E_{00}^\star C_1 & = & a_{12} E_{01}^\star C_2  + d_{01}E_{01}^\star - d_{12}\left( k_{12} E_{01}^\star C_2 + k_{21} E_{02}^\star C_1 \right)\\
+a_{02} E_{00}^\star C_2 & = & a_{21}E_{02}^\star C_1 + d_{02}E_{02}^\star - d_{21} \left( k_{12} E_{01}^\star C_2 + k_{21} E_{02}^\star C_1 \right)\\ 
+\end{array}
+\right.
+\end{equation}
+
+
 
 \end{document}

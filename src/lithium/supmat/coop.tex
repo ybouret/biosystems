@@ -11,6 +11,7 @@
 \usepackage{mathptmx}
 \usepackage{hyperref}
 %\usepackage{rotating}
+\usepackage{fancybox}
 
 \newcommand{\mychem}[1]{\mathtt{#1}}
 \newcommand{\myconc}[1]{\left[#1\right]}
@@ -23,6 +24,12 @@
 %\large
 \title{Cooperativity}
 \maketitle
+
+\section{Passive Behaviour}
+We have two species $\spx_1$ and $\spx_2$ that may leak throw the membrane
+\begin{equation}
+	\partial_t \left.\myconc{\spx_u}\right\vert_{leak} = k_u \left( e^{\dfrac{-z_u F V_m }{RT}} C_u - \myconc{\spx_u}\right)
+\end{equation}
 
 \section{One Layer}
 
@@ -81,7 +88,9 @@ We assume that the internal components are at a steady-state:
 \end{array}
 \right.
 \end{equation}
-We expect a simplification if $d_{01},d_{02} \gg k^p_1 \proton, k^p_2 \proton$.
+
+\centerline{\shadowbox{\it We expect a simplification if $d_{01},d_{02} \gg k^p_1 \proton, k^p_2 \proton$.}}
+
 Finally:
 \begin{equation}
 \mathcal{E} = E_{00}\left[1+J_1C_1+J_2C_2\right] + E_{0H} \Leftrightarrow E_{00} = \dfrac{\mathcal{E}-E_{0H}}{\underbrace{1+J_1C_1+J_2C_2}_{\mathfrak{D}}}
@@ -100,14 +109,38 @@ so that we have the three equations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \myconc{X_u}_{in} & = & \dfrac{k^p_u J_uC_u}{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right) \proton + \text{other sources...} \\
+	\partial_t \myconc{X_u}  & = & \dfrac{k^p_u J_uC_u}{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right) \proton + k_u \left( e^{\dfrac{-z_u F V_m }{RT}} C_u - \myconc{\spx_u}\right) \\
 	\\
 	\partial_t E_{0H} & = & -k_h E_{0H} + \dfrac{k^p_1 J_1C_1 + k^p_2 J_2 C_2 }{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right) \proton \\
 \end{array}
 \right.
 \end{equation}
 \subsubsection{Normalisation}
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	C_u & = & \epsilon_u C_0\\
+	\\
+	\beta_u & = & \dfrac{\myconc{X_u}}{C_u}\\
+	\\
+	\alpha  & = & \dfrac{E_{0H}}{\mathcal{E}}\\
+	\\
+	J_0 & = & \epsilon_1 J_1  + \epsilon_2 J_2 \\
+\end{array}
+\right.
+\end{equation}
 
+Leading to
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \beta_u & = & \mathcal{E} \left[\dfrac{k^p_u J_u}{1+J_0 C_0}\right] \left(1-\alpha\right) \proton
+	 + k_u \left( e^{\dfrac{-z_u F V_m }{RT}}- \beta_u\right)\\
+	\\
+	\partial_t \alpha  & = &  -k_h\alpha + C_0 \left[\dfrac{k^p_1 \epsilon_1 J_1  + k^p_2 \epsilon_2 J_2   }{1+J_0C_0}\right] \left(1-\alpha\right) \proton\\
+\end{array}
+\right.
+\end{equation}
 
 \section{Two Layers}
 

@@ -12,6 +12,13 @@
 \usepackage{hyperref}
 %\usepackage{rotating}
 
+\newcommand{\mychem}[1]{\mathtt{#1}}
+\newcommand{\myconc}[1]{\left[#1\right]}
+\newcommand{\spx}{\mychem{X}}
+\newcommand{\spproton}{\mychem{H^+}}
+\newcommand{\proton}{\myconc{\spproton}}
+
+
 \begin{document}
 %\large
 \title{Cooperativity}
@@ -22,12 +29,12 @@
 \subsection{Scheme}
 \begin{equation}
 \boxed{
-\begin{array}{ccc}
- & & E_{01} \\
- &  \rotatebox{45}{$\xrightleftharpoons[d_{01}]{a_{01}C_1}$} &     \\
-E_{00} & & \\
-  & \rotatebox{-45}{$\xrightleftharpoons[d_{02}]{a_{02}C_2}$} &     \\
- & & E_{02} \\
+\begin{array}{ccccc}
+ & & E_{01}  &  & \\
+ &  \rotatebox{45}{$+\spx_1^{out}\xrightleftharpoons[d_{01}]{a_{01}C_1}$} &   & \rotatebox{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_1}$} &  \\
+E_{00}  &  & \xleftarrow{\text{recycling  by } k_h } &   & E_{0H} \\
+  & \rotatebox{-45}{$+\spx_2^{out}\xrightleftharpoons[d_{02}]{a_{02}C_2}$} &   & \rotatebox{+45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_2}$} & \\
+ & & E_{02} & & \\
  \end{array}
  }
 \end{equation}
@@ -37,10 +44,11 @@ E_{00} & & \\
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t E_{00} & = & D_{01}-A_{01} + D_{02}-A_{02}\\
-\partial_t E_{01} & = & -D_{01}+A_{01}\\
-\partial_t E_{02} & = & -D_{02}+A_{02}\\
-\mathcal{E}       & = & E_{00}+E_{01}+E_{02} = {\displaystyle \sum_{x\leq y\leq 1} E_{xy}}\\
+\partial_t E_{00} & = & D_{01}-A_{01} + D_{02}-A_{02} + v_h\\
+\partial_t E_{01} & = & -D_{01}+A_{01} -v^p_1 \\
+\partial_t E_{02} & = & -D_{02}+A_{02} -v^p_2\\
+\partial_t E_{0H} & = & v^p_1 + v^p_2 - v_h\\
+\mathcal{E}       & = & E_{00}+E_{01}+E_{02} + E_{0H} = E_{0H} + {\displaystyle \sum_{x\leq y\leq 1} E_{xy}}\\
 \end{array}
 \right.
 \end{equation}
@@ -48,25 +56,57 @@ with
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
+C_1    & = & \myconc{\spx_1^{out}}\\
+C_2    & = & \myconc{\spx_2^{out}}\\
 A_{01} &= &a_{01} E_{00} C_1\\
 A_{02} &= &a_{02} E_{00} C_2\\
 D_{01} &= &d_{01} E_{01}\\
 D_{02} &= &d_{02} E_{02}\\
+v^p_1  &=& k^p_1 E_{01} \proton\\
+v^p_2  &=& k^p_2 E_{02} \proton\\
+v_h    &=& k_x  E_{0H}
 \end{array}
 \right.
 \end{equation}
 
 \subsection{Steady-State}
-
+\subsubsection{Raw Equations}
+We assume that the internal components are at a steady-state:
 \begin{equation}
 \left\lbrace
-\begin{array}{rcl}
-E_{01} = \dfrac{ \dfrac{a_{01}}{d_{01}} C_1 }{1+ \dfrac{a_{01}}{d_{01}} C_1  + \dfrac{a_{02}}{d_{02}} C_2  } \mathcal{E}\\
-\\
-E_{02} = \dfrac{ \dfrac{a_{02}}{d_{02}} C_2  }{1+ \dfrac{a_{01}}{d_{01}} C_1  + \dfrac{a_{02}}{d_{02}} C_2  } \mathcal{E}\\
+\begin{array}{rcll}
+	E_{01}^\star & = & \dfrac{a_{01}}{d_{01}+k^p_1 \proton } E_{00} C_1 & = J_1 E_{00} C_1\\
+	\\
+	E_{02}^\star & = & \dfrac{a_{02}}{d_{02}+k^p_2 \proton } E_{00} C_2 & = J_2 E_{00} C_2\\
 \end{array}
 \right.
 \end{equation}
+We expect a simplification if $d_{01},d_{02} \gg k^p_1 \proton, k^p_2 \proton$.
+Finally:
+\begin{equation}
+\mathcal{E} = E_{00}\left[1+J_1C_1+J_2C_2\right] + E_{0H} \Leftrightarrow E_{00} = \dfrac{\mathcal{E}-E_{0H}}{\underbrace{1+J_1C_1+J_2C_2}_{\mathfrak{D}}}
+\end{equation}
+and:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	E_{01}^\star & = & \dfrac{J_1C_1}{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right)\\
+	\\
+	E_{02}^\star & = & \dfrac{J_2C_2}{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right)
+\end{array}
+\right.
+\end{equation}
+so that we have the three equations:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \myconc{X_u}_{in} & = & \dfrac{k^p_u J_uC_u}{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right) \proton + \text{other sources...} \\
+	\\
+	\partial_t E_{0H} & = & -k_h E_{0H} + \dfrac{k^p_1 J_1C_1 + k^p_2 J_2 C_2 }{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right) \proton \\
+\end{array}
+\right.
+\end{equation}
+\subsubsection{Normalisation}
 
 
 \section{Two Layers}

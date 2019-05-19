@@ -38,9 +38,9 @@ We have two species $\spx_1$ and $\spx_2$ that may leak throw the membrane
 \boxed{
 \begin{array}{ccccc}
  & & E_{01}  &  & \\
- &  \rotatebox{45}{$+\spx_1^{out}\xrightleftharpoons[d_{01}]{a_{01}C_1}$} &   & \rotatebox{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_1}$} &  \\
-E_{00}  &  & \xleftarrow{\text{recycling  by } k_h } &   & E_{0H} \\
-  & \rotatebox{-45}{$+\spx_2^{out}\xrightleftharpoons[d_{02}]{a_{02}C_2}$} &   & \rotatebox{+45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_2}$} & \\
+ &  \rotatebox[origin=c]{45}{$+\spx_1^{out}\xrightleftharpoons[d_{01}]{a_{01}C_1}$} &   & \rotatebox[origin=c]{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_1}$} &  \\
+E_{00}  &  & \xleftarrow{\text{ recycling } k_h } &   & E_{0H} \\
+  & \rotatebox[origin=c]{-45}{$+\spx_2^{out}\xrightleftharpoons[d_{02}]{a_{02}C_2}$} &   & \rotatebox[origin=c]{+45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_2}$} & \\
  & & E_{02} & & \\
  \end{array}
  }
@@ -55,7 +55,7 @@ E_{00}  &  & \xleftarrow{\text{recycling  by } k_h } &   & E_{0H} \\
 \partial_t E_{01} & = & -D_{01}+A_{01} -v^p_1 \\
 \partial_t E_{02} & = & -D_{02}+A_{02} -v^p_2\\
 \partial_t E_{0H} & = & v^p_1 + v^p_2 - v_h\\
-\mathcal{E}       & = & E_{00}+E_{01}+E_{02} + E_{0H} = E_{0H} + {\displaystyle \sum_{x\leq y\leq 1} E_{xy}}\\
+\mathfrak{E}       & = & E_{00}+E_{01}+E_{02} + E_{0H} = E_{0H} + {\displaystyle \sum_{x\leq y\leq 1} E_{xy}}\\
 \end{array}
 \right.
 \end{equation}
@@ -93,15 +93,15 @@ We assume that the internal components are at a steady-state:
 
 Finally:
 \begin{equation}
-\mathcal{E} = E_{00}\left[1+J_1C_1+J_2C_2\right] + E_{0H} \Leftrightarrow E_{00} = \dfrac{\mathcal{E}-E_{0H}}{\underbrace{1+J_1C_1+J_2C_2}_{\mathfrak{D}}}
+\mathfrak{E} = E_{00}\left[1+J_1C_1+J_2C_2\right] + E_{0H} \Leftrightarrow E_{00} = \dfrac{\mathfrak{E}-E_{0H}}{{1+J_1C_1+J_2C_2}}
 \end{equation}
 and:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	E_{01}^\star & = & \dfrac{J_1C_1}{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right)\\
+	E_{01}^\star & = & \dfrac{J_1C_1}{1+J_1C_1+J_2C_2} \left(\mathfrak{E}-E_{0H}\right)\\
 	\\
-	E_{02}^\star & = & \dfrac{J_2C_2}{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right)
+	E_{02}^\star & = & \dfrac{J_2C_2}{1+J_1C_1+J_2C_2} \left(\mathfrak{E}-E_{0H}\right)
 \end{array}
 \right.
 \end{equation}
@@ -109,9 +109,9 @@ so that we have the three equations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \myconc{X_u}  & = & \dfrac{k^p_u J_uC_u}{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right) \proton + k_u \left( e^{\dfrac{-z_u F V_m }{RT}} C_u - \myconc{\spx_u}\right) \\
+	\partial_t \myconc{X_u}  & = & v^p_u +\partial_t \left.\myconc{\spx_u}\right\vert_{leak}  = \dfrac{k^p_u J_uC_u}{1+J_1C_1+J_2C_2} \left(\mathfrak{E}-E_{0H}\right) \proton + k_u \left( e^{\dfrac{-z_u F V_m }{RT}} C_u - \myconc{\spx_u}\right) \\
 	\\
-	\partial_t E_{0H} & = & -k_h E_{0H} + \dfrac{k^p_1 J_1C_1 + k^p_2 J_2 C_2 }{1+J_1C_1+J_2C_2} \left(\mathcal{E}-E_{0H}\right) \proton \\
+	\partial_t E_{0H} & = & -k_h E_{0H} + \dfrac{k^p_1 J_1C_1 + k^p_2 J_2 C_2 }{1+J_1C_1+J_2C_2} \left(\mathfrak{E}-E_{0H}\right) \proton \\
 \end{array}
 \right.
 \end{equation}
@@ -123,18 +123,18 @@ so that we have the three equations:
 	\\
 	\beta_u & = & \dfrac{\myconc{X_u}}{C_u}\\
 	\\
-	\alpha  & = & \dfrac{E_{0H}}{\mathcal{E}}\\
+	\alpha  & = & \dfrac{E_{0H}}{\mathfrak{E}}\\
 	\\
 	J_0 & = & \epsilon_1 J_1  + \epsilon_2 J_2 \\
 \end{array}
 \right.
 \end{equation}
 
-Leading to
+Leading to the three equations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \beta_u & = & \mathcal{E} \left[\dfrac{k^p_u J_u}{1+J_0 C_0}\right] \left(1-\alpha\right) \proton
+	\partial_t \beta_u & = & \mathfrak{E} \left[\dfrac{k^p_u J_u}{1+J_0 C_0}\right] \left(1-\alpha\right) \proton
 	 + k_u \left( e^{\dfrac{-z_u F V_m }{RT}}- \beta_u\right)\\
 	\\
 	\partial_t \alpha  & = &  -k_h\alpha + C_0 \left[\dfrac{k^p_1 \epsilon_1 J_1  + k^p_2 \epsilon_2 J_2   }{1+J_0C_0}\right] \left(1-\alpha\right) \proton\\
@@ -146,12 +146,17 @@ Leading to
 
 \begin{equation}
 \boxed{
-\begin{array}{ccccc}
- & & E_{01} & \xrightleftharpoons[d_{11}]{a_{11}C_1} & E_{11}\\
- &  \rotatebox{45}{$\xrightleftharpoons[d_{01}]{a_{01}C_1}$} &   & \rotatebox{-45}{$\xrightleftharpoons[d_{12}]{a_{12}C_2}$} & \\
-E_{00} & &  & & E_{12}\\ 
-  & \rotatebox{-45}{$\xrightleftharpoons[d_{02}]{a_{02}C_2}$} &  & \rotatebox{45}{$\xrightleftharpoons[d_{21}]{a_{21}C_1}$} &  \\
-  & & E_{02} & \xrightleftharpoons[d_{22}]{a_{22}C_2} & E_{22}\\
+\begin{array}{ccccccc}
+ & &        &                                                  & E_{11} & & \\
+ & &        & \rotatebox[origin=c]{45}{$+X_1^{out}\xrightleftharpoons[d_{11}]{a_{11}C_1}$} & &  \rotatebox[origin=c]{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_{11}}$}& \\
+ & & E_{01} &  & \xleftarrow{\text{ recycling } k_h } & & E_{1H}\\
+ &  \rotatebox[origin=c]{45}{$+X_1^{out}\xrightleftharpoons[d_{01}]{a_{01}C_1}$} &   & \rotatebox[origin=c]{-45}{$+X_2^{out}\xrightleftharpoons[d_{12}]{a_{12}C_2}$} & & \rotatebox[origin=c]{45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_{12}}$}&\\
+E_{00} & &  & & E_{12} & & \\ 
+  & \rotatebox[origin=c]{-45}{$+X_2^{out}\xrightleftharpoons[d_{02}]{a_{02}C_2}$} &  & \rotatebox[origin=c]{45}{$+X_1^{out}\xrightleftharpoons[d_{21}]{a_{21}C_1}$} & & \rotatebox[origin=c]{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_{21}}$} & \\
+  & & E_{02} &   & \xleftarrow{\text{ recycling } k_h } & & E_{2H}\\
+  & &  & \rotatebox[origin=c]{-45}{$+X_2^{out}\xrightleftharpoons[d_{22}]{a_{22}C_2}$} & & \rotatebox[origin=c]{45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_{22}}$} &\\
+  & &  &  & E_{22} & &\\
+
  \end{array}
  }
 \end{equation}
@@ -161,12 +166,14 @@ E_{00} & &  & & E_{12}\\
 \left\lbrace
 \begin{array}{rcl}
 \partial_t E_{00} & = & D_{01}-A_{01} + D_{02}-A_{02}\\
-\partial_t E_{01} & = & -D_{01}+A_{01} - A_{11} + D_{11} - A_{12} + D_{12}\\
-\partial_t E_{02} & = & -D_{02}+A_{02} - A_{22} + D_{22} - A_{21} + D_{21}\\
-\partial_t E_{11} & = & A_{11}-D_{11}\\
-\partial_t E_{12} & = & A_{12}-D_{12} + A_{21}-D_{21}\\
-\partial_t E_{22} & = & A_{22}-D_{22}\\
-\mathcal{E}       & = & {\displaystyle \sum_{x\leq y\leq 2} E_{xy}}\\
+\partial_t E_{01} & = & -D_{01}+A_{01} - A_{11} + D_{11} - A_{12} + D_{12} + v_{1H}\\
+\partial_t E_{02} & = & -D_{02}+A_{02} - A_{22} + D_{22} - A_{21} + D_{21} + v_{2H}\\
+\partial_t E_{11} & = & A_{11}-D_{11} -v^p_{11}\\
+\partial_t E_{12} & = & A_{12}-D_{12} + A_{21}-D_{21} - (v^p_{12}+v^p_{21})\\
+\partial_t E_{22} & = & A_{22}-D_{22} - v^p_{22}\\
+\partial_t E_{1H} & = & v^p_{11}+v^p_{12} - v_{1H}\\
+\partial_t E_{2H} & = & v^p_{22}+v^p_{21} - v_{2H}\\
+\mathfrak{E}      & = & {\displaystyle \sum_{x\leq y\leq 2} E_{xy}}+E_{1H}+E_{2H}\\
 \end{array}
 \right.
 \end{equation}
@@ -186,10 +193,25 @@ A_{12} & = & a_{12} E_{01} C_2\\
 D_{12} & = & d_{12} E_{12}\\
 A_{21} & = & a_{21} E_{02} C_1\\
 D_{21} & = & d_{21} E_{12}\\
+v_{1H} & = & k_h E_{1H}\\
+v_{2H} & = & k_h E_{2H}\\
+v^p_{11} & = & k^p_{11} E_{11} \proton \\
+v^p_{22} & = & k^p_{22} E_{22} \proton \\
+v^p_{12} & = & k^p_{12} E_{12} \proton \\
+v^p_{21} & = & k^p_{21} E_{12} \proton \\
 \end{array}
 \right.
 \end{equation}
-The second layer yields:
+
+And
+\begin{equation}
+	\partial_t \myconc{\spx_1} = v^p_{11}+v^p_{21} + \partial_t \myconc{\spx_1}\vert_{leak},\;\;
+	\partial_t \myconc{\spx_2} = v^p_{22}+v^p_{12} + \partial_t \myconc{\spx_2}\vert_{leak}
+\end{equation}
+
+\end{document}
+The second layer yields:...
+
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}

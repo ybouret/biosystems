@@ -220,7 +220,7 @@ And
 \subsubsection{Second layer as a function of the first layer}
 Using the three equations describing the second layer and assuming that the internal pre-equilibrium is fast, we express:
 \begin{equation}
-E_{1\leq x \leq y } = \mytrn{\vec{C}} \mymat{M_{xy}} \vec{E}_1
+E_{1\leq x \leq y \leq 2 } = <{\vec{C}} \vert \mymat{F_{xy}} \vert \vec{E}_1 >
 \end{equation}
 with
 \begin{equation}
@@ -230,13 +230,77 @@ with
 \\
 \vec{E}_1 & = & \begin{bmatrix} E_{01} \\ E_{02} \end{bmatrix}\\
 \\
-\mymat{M}_{11} & = & 
+\mymat{F}_{11} & = & 
 \begin{bmatrix}
 	f_{11} & 0 \\
 	0 & 0\\
-\end{bmatrix}, \; f_{11} = \dfrac{a_{11}}{d_{11}}
+\end{bmatrix}, \; f_{11} = \dfrac{a_{11}}{d_{11}}\\
+\\
+\mymat{F}_{22} & = & 
+\begin{bmatrix}
+	0 & 0 \\
+	0 & f_{22}\\
+\end{bmatrix}, \; f_{22} = \dfrac{a_{22}}{d_{22}}\\
+\\
+\mymat{F}_{12} & = & 
+\begin{bmatrix}
+	0 & f_{21}\\
+	f_{12} & 0\\
+\end{bmatrix}, \; f_{12} = \dfrac{a_{12}}{d_{21}+d_{12}},\; f_{21} = \dfrac{a_{21}}{d_{21}+d_{12}}\\
 \end{array}
 \right.
+\end{equation}
+
+\subsubsection{First layer as a function of the external components}
+We define:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+K_1 & = & \dfrac{a_{21} d_{12}}{\left(d_{12}+d_{21}\right)d_{02}} \\
+\\
+K_2 & = & \dfrac{a_{12} d_{21}}{\left(d_{12}+d_{21}\right)d_{01}}\\
+\end{array}
+\right.
+\end{equation}
+to write:
+\begin{equation}
+ \begin{bmatrix}
+ d_{01} \left(1+K_2C_2\right) & -d_{02} K_1 C_1 \\
+ -d_{01} K_2 C_2 & d_{02} \left(1+K_1C_1\right)\\
+ \end{bmatrix}
+ \vec{E}_1 = 
+ k_h 
+ \begin{bmatrix}
+ E_{1H}\\
+ E_{2H}\\
+ \end{bmatrix}
+ +E_{00} 
+ \begin{bmatrix}
+ a_{01} & 0 \\
+ 0 & a_{02}\\
+ \end{bmatrix}
+ \vec{C}
+\end{equation}
+We solve:
+\begin{equation}
+	\vec{E}_1 = \dfrac{1}{d_{01}d_{02}\left[1+K_1C_1+K_2C_2\right]}
+	 \begin{bmatrix}
+ d_{01} \left(1+K_2C_2\right) & d_{01} K_2 C_2\\
+  d_{02} K_1 C_1 & d_{02} \left(1+K_1C_1\right)\\
+ \end{bmatrix}
+\left(
+k_h 
+ \begin{bmatrix}
+ E_{1H}\\
+ E_{2H}\\
+ \end{bmatrix}
+ +E_{00} 
+ \begin{bmatrix}
+ a_{01} & 0 \\
+ 0 & a_{02}\\
+ \end{bmatrix}
+ \vec{C}
+\right)
 \end{equation}
 
 \end{document}

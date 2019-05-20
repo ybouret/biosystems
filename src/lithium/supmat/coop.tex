@@ -220,7 +220,9 @@ And
 \subsubsection{Second layer as a function of the first layer}
 Using the three equations describing the second layer and assuming that the internal pre-equilibrium is fast, we express:
 \begin{equation}
+\boxed{
 E_{1\leq x \leq y \leq 2 } = <{\vec{C}} \vert \mymat{F_{xy}} \vert \vec{E}_1 >
+}
 \end{equation}
 with
 \begin{equation}
@@ -249,6 +251,15 @@ with
 \end{bmatrix}, \; f_{12} = \dfrac{a_{12}}{d_{21}+d_{12}},\; f_{21} = \dfrac{a_{21}}{d_{21}+d_{12}}\\
 \end{array}
 \right.
+\end{equation}
+and the second layer mass is
+\begin{equation}
+E_{11} + E_{12} + E_{22} = <{\vec{C}} \vert \mymat{F} \vert \vec{E}_1 >, \;\;
+ \mymat{F} 
+ = \begin{bmatrix}
+	f_{11} & f_{21}\\
+	f_{12} & f_{22}\\
+\end{bmatrix}
 \end{equation}
 
 \subsubsection{First layer as a function of the external components}
@@ -283,6 +294,7 @@ to write:
 \end{equation}
 We solve:
 \begin{equation}
+\boxed{
 	\vec{E}_1 = \dfrac{1}{d_{01}d_{02}\left[1+K_1C_1+K_2C_2\right]}
 	 \begin{bmatrix}
  d_{01} \left(1+K_2C_2\right) & d_{01} K_2 C_2\\
@@ -301,6 +313,13 @@ k_h
  \end{bmatrix}
  \vec{C}
 \right)
+}
+\end{equation}
+
+\subsubsection{Coupling by mass conservation}
+We use:
+\begin{equation}
+	\mathfrak{E} = E_{00} + \underbrace{E_{01} + E_{02}}_{<1 1|\vec{E}_1>} + \underbrace{E_{11} + E_{12} + E_{22}}_{<\vec{C}|\mymat{F}|\vec{E}_1>} + E_{1H} + E_{2H} 
 \end{equation}
 
 \end{document}

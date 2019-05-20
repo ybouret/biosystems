@@ -21,11 +21,14 @@
 
 \newcommand{\myrotate}[2]{\rotatebox[origin=c]{#1}{#2}}
 
+\newcommand{\mytrn}[1]{{#1}^{\!\mathsf{T}}}
+\newcommand{\mymat}[1]{{\bm{#1}}}
+\newcommand{\mydet}[1]{{\left|{#1}\right|}}
 
 \begin{document}
-%\large
 \title{Cooperativity}
 \maketitle
+\tableofcontents
 
 \section{Passive Behaviour}
 We have two species $\spx_1$ and $\spx_2$ that may leak throw the membrane
@@ -145,6 +148,7 @@ Leading to the three equations:
 \end{equation}
 
 \section{Two Layers}
+\subsection{Scheme}
 
 \begin{equation}
 \boxed{
@@ -163,7 +167,7 @@ E_{00} & &  & & E_{12} & & \\
  }
 \end{equation}
 
-
+\subsection{Equations}
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -211,81 +215,30 @@ And
 	\partial_t \myconc{\spx_2} = v^p_{22}+v^p_{12} + \partial_t \myconc{\spx_2}\vert_{leak}
 \end{equation}
 
+\subsection{Steady State}
+
+\subsubsection{Second layer as a function of the first layer}
+Using the three equations describing the second layer and assuming that the internal pre-equilibrium is fast, we express:
+\begin{equation}
+E_{1\leq x \leq y } = \mytrn{\vec{C}} \mymat{M_{xy}} \vec{E}_1
+\end{equation}
+with
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\vec{C}   & = & \begin{bmatrix} C_1 \\ C2 \end{bmatrix}\\
+\\
+\vec{E}_1 & = & \begin{bmatrix} E_{01} \\ E_{02} \end{bmatrix}\\
+\\
+\mymat{M}_{11} & = & 
+\begin{bmatrix}
+	f_{11} & 0 \\
+	0 & 0\\
+\end{bmatrix}, \; f_{11} = \dfrac{a_{11}}{d_{11}}
+\end{array}
+\right.
+\end{equation}
+
 \end{document}
-The second layer yields:...
-
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-0 & = & A_{11}^\star-D_{11}^\star\\
-0 & = & A_{12}^\star-D_{12}^\star + A_{21}^\star-D_{21}^\star\\
-0 & = & A_{22}^\star-D_{22}^\star\\
-\end{array}
-\right.
-\end{equation}
-or
-
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-0 & = & a_{11} E_{01}^\star C_1 - d_{11} E_{11}^\star\\
-0 & = & a_{12} E_{01}^\star C_2  + a_{21} E_{02}^\star C_1 - \left(d_{12}+d_{21}\right) E_{12}^\star\\
-0 & = & a_{22} E_{02}^\star C_2 -d_{22} E_{22}^\star\\
-\end{array}
-\right.
-\end{equation}
-so that
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl|l}
-	E_{11}^\star & = & k_{11} E_{01}^\star C_1 & k_{11} = \dfrac{a_{11}}{d_{11}}\\
-	 & & & \\
-	E_{22}^\star & = & k_{22} E_{02}^\star C_2 & k_{22} = \dfrac{a_{22}}{d_{22}}\\
-	 & & & \\
-	E_{12}^\star & = & k_{12} E_{01}^\star C_2 + k_{21} E_{02}^\star C_1  & k_{12} = \dfrac{a_{12}}{d_{12}+d_{21}},\; k_{21} = \dfrac{a_{21}}{d_{12}+d_{21}} \\
-\end{array}
-\right.
-\end{equation}
-We are left with the (redundant) first layer equations
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-0 & = & D_{01}^\star-A_{01}^\star + D_{02}^\star-A_{02}^\star\\
-0 & = & -D_{01}^\star+A_{01}^\star  - A_{12}^\star + D_{12}^\star\\
-0 & = & -D_{02}^\star+A_{02}^\star  - A_{21}^\star + D_{21}^\star\\
-\end{array}
-\right.
-\end{equation}
-leading to
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-d_{01}E_{01}^\star + d_{02} E_{02}^\star & = & \left( a_{01}C_1+a_{02}C_2\right)E_{00}^\star\\
-A_{01}^\star & = & A_{12}^\star + D_{01}^\star - D_{12}^\star\\
-A_{02}^\star & = & A_{21}^\star + D_{02}^\star - D_{21}^\star\\ 
-\end{array}
-\right.
-\end{equation}
-or
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-d_{01}E_{01}^\star + d_{02} E_{02}^\star & = & \left( a_{01}C_1+a_{02}C_2\right)E_{00}^\star\\
-a_{01} E_{00}^\star C_1 & = & a_{12} E_{01}^\star C_2  + d_{01}E_{01}^\star - d_{12}E_{12}^\star\\
-a_{02} E_{00}^\star C_2 & = & a_{21}E_{02}^\star C_1 + d_{02}E_{02}^\star - d_{21}E_{12}^\star\\ 
-\end{array}
-\right.
-\end{equation}
-
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-a_{01} E_{00}^\star C_1 & = & a_{12} E_{01}^\star C_2  + d_{01}E_{01}^\star - d_{12}\left( k_{12} E_{01}^\star C_2 + k_{21} E_{02}^\star C_1 \right)\\
-a_{02} E_{00}^\star C_2 & = & a_{21}E_{02}^\star C_1 + d_{02}E_{02}^\star - d_{21} \left( k_{12} E_{01}^\star C_2 + k_{21} E_{02}^\star C_1 \right)\\ 
-\end{array}
-\right.
-\end{equation}
-
-
 
 \end{document}

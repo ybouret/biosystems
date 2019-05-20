@@ -19,6 +19,8 @@
 \newcommand{\spproton}{\mychem{H^+}}
 \newcommand{\proton}{\myconc{\spproton}}
 
+\newcommand{\myrotate}[2]{\rotatebox[origin=c]{#1}{#2}}
+
 
 \begin{document}
 %\large
@@ -38,9 +40,9 @@ We have two species $\spx_1$ and $\spx_2$ that may leak throw the membrane
 \boxed{
 \begin{array}{ccccc}
  & & E_{01}  &  & \\
- &  \rotatebox[origin=c]{45}{$+\spx_1^{out}\xrightleftharpoons[d_{01}]{a_{01}C_1}$} &   & \rotatebox[origin=c]{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_1}$} &  \\
+ &  \myrotate{45}{$\xrightleftharpoons[d_{01}]{+\spx_1^{out},\;a_{01}}$} &   & \myrotate{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_1}$} &  \\
 E_{00}  &  & \xleftarrow{\text{ recycling } k_h } &   & E_{0H} \\
-  & \rotatebox[origin=c]{-45}{$+\spx_2^{out}\xrightleftharpoons[d_{02}]{a_{02}C_2}$} &   & \rotatebox[origin=c]{+45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_2}$} & \\
+  & \myrotate{-45}{$\xrightleftharpoons[d_{02}]{+\spx_2^{out},\;a_{02}}$} &   & \myrotate{+45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_2}$} & \\
  & & E_{02} & & \\
  \end{array}
  }
@@ -148,13 +150,13 @@ Leading to the three equations:
 \boxed{
 \begin{array}{ccccccc}
  & &        &                                                  & E_{11} & & \\
- & &        & \rotatebox[origin=c]{45}{$+X_1^{out}\xrightleftharpoons[d_{11}]{a_{11}C_1}$} & &  \rotatebox[origin=c]{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_{11}}$}& \\
+ & &        & \myrotate{45}{$\xrightleftharpoons[d_{11}]{+\spx_1^{out},\;a_{11}}$} & &  \myrotate{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_{11}}$}& \\
  & & E_{01} &  & \xleftarrow{\text{ recycling } k_h } & & E_{1H}\\
- &  \rotatebox[origin=c]{45}{$+X_1^{out}\xrightleftharpoons[d_{01}]{a_{01}C_1}$} &   & \rotatebox[origin=c]{-45}{$+X_2^{out}\xrightleftharpoons[d_{12}]{a_{12}C_2}$} & & \rotatebox[origin=c]{45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_{12}}$}&\\
+ &  \rotatebox[origin=c]{45}{$\xrightleftharpoons[d_{01}]{+\spx_1^{out},\;a_{01}}$} &   & \myrotate{-45}{$\xrightleftharpoons[d_{12}]{+\spx_2^{out},\;a_{12}}$} & & \rotatebox[origin=c]{45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_{12}}$}&\\
 E_{00} & &  & & E_{12} & & \\ 
-  & \rotatebox[origin=c]{-45}{$+X_2^{out}\xrightleftharpoons[d_{02}]{a_{02}C_2}$} &  & \rotatebox[origin=c]{45}{$+X_1^{out}\xrightleftharpoons[d_{21}]{a_{21}C_1}$} & & \rotatebox[origin=c]{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_{21}}$} & \\
+  & \myrotate{-45}{$\xrightleftharpoons[d_{02}]{+\spx_2^{out},\;a_{02}}$} &  & \myrotate{45}{$\xrightleftharpoons[d_{21}]{+\spx_1^{out},\;a_{21}}$} & & \myrotate{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_{21}}$} & \\
   & & E_{02} &   & \xleftarrow{\text{ recycling } k_h } & & E_{2H}\\
-  & &  & \rotatebox[origin=c]{-45}{$+X_2^{out}\xrightleftharpoons[d_{22}]{a_{22}C_2}$} & & \rotatebox[origin=c]{45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_{22}}$} &\\
+  & &  & \myrotate{-45}{$\xrightleftharpoons[d_{22}]{+\spx_2^{out},\;a_{22}}$} & & \myrotate{45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_{22}}$} &\\
   & &  &  & E_{22} & &\\
 
  \end{array}

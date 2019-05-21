@@ -277,30 +277,11 @@ K_2 & = &  d_{21} f_{12}\\
 \end{equation}
 to write:
 \begin{equation}
- \begin{bmatrix}
- d_{01} + K_2C_2 &  -C_1 K_1 \\
-              -C_2 K_2 & d_{02} + K_1C_1 \\
- \end{bmatrix}
- \vec{E}_1 = 
- k_h 
- \begin{bmatrix}
- E_{1H}\\
- E_{2H}\\
- \end{bmatrix}
- +E_{00} 
- \begin{bmatrix}
- a_{01} & 0 \\
- 0 & a_{02}\\
- \end{bmatrix}
- \vec{C}
-\end{equation}
-We solve:
-\begin{equation}
 \boxed{
-	\vec{E}_1 = \dfrac{1}{d_{01}d_{02}\left[1+K_1C_1+K_2C_2\right]}
-	 \begin{bmatrix}
- d_{01} \left(1+K_2C_2\right) & d_{01} K_2 C_2\\
-  d_{02} K_1 C_1 & d_{02} \left(1+K_1C_1\right)\\
+	\vec{E}_1 =  \dfrac{1}{d_{01} d_{02}+ C_2 K_2 d_{02}+C_1K_1 d_{01} }	
+ \begin{bmatrix}
+   d_{02} + K_1 C_1 & K_1 C_1 \\
+   K_2C_2 & d_{01} + K_2 C_2 \\
  \end{bmatrix}
 \left(
 k_h 

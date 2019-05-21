@@ -157,7 +157,7 @@ In particular, with
 	= \dfrac{\mathfrak{E} \left[\dfrac{k^p_u J_u}{1+J_0 C_0}\right] \proton_0 + k_u  \Theta_0
 	}
 	{
-	\mathfrak{E} \left[\dfrac{k^p_v J_v}{1+J_0 C_0}\right] \proton_0 + k_v  \Theta_v
+	\mathfrak{E} \left[\dfrac{k^p_v J_v}{1+J_0 C_0}\right] \proton_0 + k_v  \Theta_0
 	}
 \end{equation}
 
@@ -290,7 +290,7 @@ and
 	\end{bmatrix}
 	\\
 	\\
-	\partial_t \myconc{\spx_2} & = & <\vec{C}|\mymat{G}_2|\vec{E}_1> + k_1\left(\Theta C_2 - \myconc{\spx_1}\right), &
+	\partial_t \myconc{\spx_2} & = & <\vec{C}|\mymat{G}_2|\vec{E}_1> + k_1\left(\Theta C_2 - \myconc{\spx_2}\right), &
 	\mymat{G}_2 = 
 	\begin{bmatrix}
 	0              & f_{21} k^p_{21}\\
@@ -315,7 +315,10 @@ K_2 & = &  d_{21} f_{12}\\
 \mymat{M}_1  & = &  \begin{bmatrix}
    d_{02} + K_1 C_1 & K_1 C_1 \\
    K_2C_2 & d_{01} + K_2 C_2 \\
- \end{bmatrix}
+ \end{bmatrix} =  \begin{bmatrix}
+   d_{02}  &  0 \\
+   0  & d_{01}   \\
+   \end{bmatrix} + |\vec{C}><\vec{K}|
 \\
 \\
 \vec{E}_H & = & \begin{bmatrix}
@@ -343,6 +346,17 @@ k_h
  \vec{C}
 \right)
 }
+\end{equation}
+and we find that
+\begin{equation}
+\left.\vec{E}_1\right\vert_{t\to0} =  \dfrac{E_{000}}{ \mathfrak{D} }
+	\mymat{M}_1	
+ \mymat{A}_0
+ \vec{C}
+\end{equation}
+And we can express
+\begin{equation}
+	\partial_t \myconc{X_u}_{t\to0}  =   	<\vec{C}|\mymat{G}_u|\vec{E}_{1,t\to0}> + k_u\Theta C_u 
 \end{equation}
 
 \subsubsection{Coupling by mass conservation}
@@ -376,7 +390,28 @@ We use the vectors
 \end{array}
 \right.
 \end{equation}
-
-\end{document}
+and
+\begin{equation}
+	E_{00} = 
+	\dfrac
+	{\mathfrak{D}\mathfrak{E}-< \mathfrak{D} \vec{P}_1 + k_h\mytrn{\mymat{M}}_1 \vec{Q_1} | \vec{E}_H>}
+	{\left( \mathfrak{D} + <\mytrn{\mymat{M}}_1\vec{Q}_1|\mymat{A}_0\vec{C}>\right)}
+\end{equation}
+and
+\begin{equation}
+	E_{000} = 
+	\dfrac
+	{\mathfrak{D}\mathfrak{E}}
+	{\left( \mathfrak{D} + <\mytrn{\mymat{M}}_1\vec{Q}_1|\mymat{A}_0\vec{C}>\right)}
+\end{equation}
+leading to
+\begin{equation}
+	\partial_t \myconc{X_u}_{t\to0}  =   \dfrac{\mathfrak{E}}{\left( \mathfrak{D} + <\mytrn{\mymat{M}}_1\vec{Q}_1|\mymat{A}_0\vec{C}>\right)}	
+	<\vec{C}|\mymat{G}_u|\mymat{M}_1\mymat{A}_0\vec{C}> + k_u\Theta C_u 
+\end{equation}
+so that
+\begin{equation}
+	\partial_t {\beta_{u,t\to0}} = \dfrac{B_u C_0}{1+L_u C_0 + W_u C_0^2} + k_u \Theta
+\end{equation}
 
 \end{document}

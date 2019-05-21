@@ -309,17 +309,35 @@ k_h
 \end{equation}
 
 \subsubsection{Coupling by mass conservation}
-We use the vector
+We use the vectors
 \begin{equation}
 	\vec{P}_1 = 
 	\begin{bmatrix}
 	1\\
 	1\\
-	\end{bmatrix}
+	\end{bmatrix},
+	\;\;
+\vec{Q}_1  =  \vec{P}_1 + \mytrn{\mymat{F}}\vec{C} \\
 \end{equation}
 
 \begin{equation}
-	\mathfrak{E} = E_{00} + \underbrace{E_{01} + E_{02}}_{<\vec{P}_1|\vec{E}_1>} + \underbrace{E_{11} + E_{12} + E_{22}}_{<\vec{C}|\mymat{F}|\vec{E}_1>} + E_{1H} + E_{2H} 
+\left\lbrace
+\begin{array}{rcl}
+\mathfrak{E} & = & E_{00} + \underbrace{E_{01} + E_{02}}_{<\vec{P}_1|\vec{E}_1>} + \underbrace{E_{11} + E_{12} + E_{22}}_{<\vec{C}|\mymat{F}|\vec{E}_1>} + E_{1H} + E_{2H} \\
+\\
+\mathfrak{E} & = & E_{00} + <\vec{Q}_1|\vec{E}_1> +  <\vec{P}_1|\vec{E}_H>\\
+\\
+\mathfrak{D}\mathfrak{E} & = & 
+\mathfrak{D} E_{00} + 
+<\vec{Q}_1|\mymat{M}_1|\left(
+	k_h  \vec{E}_H +E_{00} \mymat{A}_0 \vec{C} \right)> +  \mathfrak{D} <\vec{P}_1|\vec{E}_H>\\
+	\\
+ & = & E_{00} \left( \mathfrak{D} + <\vec{Q}_1|\mymat{M}_1|\mymat{A}_0\vec{C}>\right) + 
+\mathfrak{D} <\vec{P}_1|\vec{E}_H> + k_h <\vec{Q}_1|\mymat{M}_1|\vec{E}_H>\\
+\\
+& = & E_{00} \left( \mathfrak{D} + <\mytrn{\mymat{M}}_1\vec{Q}_1|\mymat{A}_0\vec{C}>\right) + < \mathfrak{D} \vec{P}_1 + k_h\mytrn{\mymat{M}}_1 \vec{Q_1} | \vec{E}_H>\\
+\end{array}
+\right.
 \end{equation}
 
 \end{document}

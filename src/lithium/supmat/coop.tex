@@ -272,37 +272,54 @@ We define:
 K_1 & = & d_{12} f_{21} \\
 \\
 K_2 & = &  d_{21} f_{12}\\
+\\
+\mathfrak{D} & = & d_{01} d_{02}+ C_2 K_2 d_{02}+C_1K_1 d_{01}\\
+\\
+\mymat{M}_1  & = &  \begin{bmatrix}
+   d_{02} + K_1 C_1 & K_1 C_1 \\
+   K_2C_2 & d_{01} + K_2 C_2 \\
+ \end{bmatrix}
+\\
+\\
+\vec{E}_H & = & \begin{bmatrix}
+ E_{1H}\\
+ E_{2H}\\
+ \end{bmatrix}\\
+ \\
+ \mymat{A}_0 & = & \begin{bmatrix}
+ a_{01} & 0 \\
+ 0 & a_{02}\\
+ \end{bmatrix}\\
 \end{array}
 \right.
 \end{equation}
 to write:
 \begin{equation}
 \boxed{
-	\vec{E}_1 =  \dfrac{1}{d_{01} d_{02}+ C_2 K_2 d_{02}+C_1K_1 d_{01} }	
- \begin{bmatrix}
-   d_{02} + K_1 C_1 & K_1 C_1 \\
-   K_2C_2 & d_{01} + K_2 C_2 \\
- \end{bmatrix}
-\left(
+	\vec{E}_1 =  \dfrac{1}{ \mathfrak{D} }
+	\mymat{M}_1	
+ \left(
 k_h 
- \begin{bmatrix}
- E_{1H}\\
- E_{2H}\\
- \end{bmatrix}
+ \vec{E}_H
  +E_{00} 
- \begin{bmatrix}
- a_{01} & 0 \\
- 0 & a_{02}\\
- \end{bmatrix}
+ \mymat{A}_0
  \vec{C}
 \right)
 }
 \end{equation}
 
 \subsubsection{Coupling by mass conservation}
-We use:
+We use the vector
 \begin{equation}
-	\mathfrak{E} = E_{00} + \underbrace{E_{01} + E_{02}}_{<1 1|\vec{E}_1>} + \underbrace{E_{11} + E_{12} + E_{22}}_{<\vec{C}|\mymat{F}|\vec{E}_1>} + E_{1H} + E_{2H} 
+	\vec{P}_1 = 
+	\begin{bmatrix}
+	1\\
+	1\\
+	\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+	\mathfrak{E} = E_{00} + \underbrace{E_{01} + E_{02}}_{<\vec{P}_1|\vec{E}_1>} + \underbrace{E_{11} + E_{12} + E_{22}}_{<\vec{C}|\mymat{F}|\vec{E}_1>} + E_{1H} + E_{2H} 
 \end{equation}
 
 \end{document}

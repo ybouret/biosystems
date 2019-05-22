@@ -353,8 +353,8 @@ We define the following constants:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-K_6 & = & d_{67} f_{76} \\
-K_7 & = &  d_{76} f_{67}\\
+K_6 & = & d_{67} f_{76}/d_{07} \\
+K_7 & = &  d_{76} f_{67}/d_{06}\\
 \end{array}
 \right.
 \end{equation}
@@ -362,8 +362,8 @@ so that the first layer equation becomes:
 	
 \begin{equation}
 \begin{bmatrix}
-d_{06} + C_7 K_7 & -C_6K_6\\
--C_7K_7 & d_{07} + C_6 K_6 \\
+d_{06} \left(1+ K_7\LiOut{7}\right) & -d_{07}K_6\LiOut{6}\\
+-K_7\LiOut{7}d_{06} & d_{07}\left(1 + K_6\LiOut{6}\right) \\
 \end{bmatrix}
 \vec{E}_1 = k_h \vec{E}_H 
 + E_{00}
@@ -379,15 +379,27 @@ Leading to
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-D_1 & = & d_{06}d_{07} + d_{06} K_6 C_6 + d_{07} K_7 C_7  \\
+D_1 & = & 1 +    K_6\LiOut{6} +  K_7 \LiOut{7}  \\
 \vec{E}_1 & = &\dfrac{1}{D_1}
+\underbrace{
+\begin{bmatrix}
+d_{06}^{-1} & 0 \\
+0 & d_{07}^{-1} \\
+\end{bmatrix}
+}_{\mymat{D}_0^{-1}}
+\left(
+\mymat{I}_d+
+\underbrace{
 	\begin{bmatrix}
-	d_{07} + C_6 K_6 & C_6 K_6\\
-	C_7 K_7 & d_{06} + C_7 K_7 \\
+	K_6\LiOut{6} & K_6\LiOut{6}\\
+	K_7\LiOut{7} & K_7 \LiOut{7}\\
 	\end{bmatrix}
+	}_{\mymat{M}_1}
+		\right)
 	\left( 
 	k_h \vec{E}_h + E_{00} \mymat{A}_0 \vec{C}
-	\right)\\
+	\right)
+	\\
 \end{array}
 \right.
 \end{equation}

@@ -247,14 +247,16 @@ And
 
 \subsubsection{Second layer as a function of the first layer}
 
-We define the first layer variables as
+We define:
+\begin{itemize}
+\item the first layer variables:
 \begin{equation}
 	\vec{E}_1 = \begin{bmatrix}
 	E_{06}\\
 	E_{07}\\
 	\end{bmatrix}
 \end{equation}
-and the second layer as
+\item and the second layer variables:
 \begin{equation}
 	\vec{E}_2 = \begin{bmatrix}
 	E_{66}\\
@@ -262,18 +264,23 @@ and the second layer as
 	E_{77}\\
 	\end{bmatrix}
 \end{equation}
-and
+\item the outer concentrations:
 \begin{equation}
 	\vec{C} = 
 	\begin{bmatrix}
 	\LiOut{6}\\
 	\LiOut{7}\\
 	\end{bmatrix}
+	=
+	\LiAllOut
+	\begin{bmatrix}
+	\epsilon_6\\
+	\epsilon_7\\
+	\end{bmatrix}
 \end{equation}
+\end{itemize}
 
 Using the three equations describing the second layer and assuming that the internal pre-equilibrium is fast, we express:
-
-
 
 \begin{equation}
 \boxed{
@@ -319,7 +326,7 @@ and
 \begin{equation}
 \left\lbrace
 \begin{array}{rcll}
-	\partial_t \Li{6} & = & <\vec{C}|\mymat{G}_6|\vec{E}_1> + k_6\left(\Theta \LiOut{6} - \Li{6}\right), &
+	\partial_t \Li{6} & = & <\vec{C}|\mymat{G}_6|\vec{E}_1> \proton+ k_6\left(\Theta \LiOut{6} - \Li{6}\right), &
 	\mymat{G}_6 = 
 	\begin{bmatrix}
 	f_{66}k^p_{66} & f_{76} k^p_{67} \\
@@ -327,7 +334,7 @@ and
 	\end{bmatrix}
 	\\
 	\\
-	\partial_t \Li{7} & = & <\vec{C}|\mymat{G}_7|\vec{E}_1> + k_1\left(\Theta \LiOut{6} - \Li{6}\right), &
+	\partial_t \Li{7} & = & <\vec{C}|\mymat{G}_7|\vec{E}_1> \proton + k_1\left(\Theta \LiOut{6} - \Li{6}\right), &
 	\mymat{G}_2 = 
 	\begin{bmatrix}
 	0              & f_{76} k^p_{76}\\
@@ -338,17 +345,39 @@ and
 \right.
 \end{equation}
 
-\end{document}
 
 \subsubsection{First layer as a function of the external components}
-We define:
+We define the following constants:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-K_1 & = & d_{12} f_{21} \\
-\\
-K_2 & = &  d_{21} f_{12}\\
-\\
+K_6 & = & d_{67} f_{76} \\
+K_7 & = &  d_{76} f_{67}\\
+\end{array}
+\right.
+\end{equation}
+so that the first layer equation becomes:
+	
+\begin{equation}
+\begin{bmatrix}
+d_{06} + C_7 K_7 & -C_6K_6\\
+-C_7K_7 & d_{07} + C_6 K_6 \\
+\end{bmatrix}
+\vec{E}_1 = k_h \vec{E}_H 
++ E_{00}
+\underbrace{
+\begin{bmatrix}
+a_{06} & 0 \\
+0 & a_{07} \\
+\end{bmatrix}
+}_{\mymat{A}_0}
+\vec{C}
+\end{equation}
+
+\end{document}
+
+%%%
+
 \mathfrak{D} & = & d_{01} d_{02}+ C_2 K_2 d_{02}+C_1K_1 d_{01}\\
 \\
 \mymat{M}_1  & = &  \begin{bmatrix}

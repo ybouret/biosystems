@@ -9,7 +9,7 @@
 \usepackage{bookman}
 \usepackage{dsfont}
 %\usepackage{mathptmx}
-%usepackage{hyperref}
+%\usepackage{hyperref}
 %\usepackage{rotating}
 \usepackage{fancybox}
 
@@ -53,6 +53,8 @@ We have two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane
 \section{One Layer}
 
 \subsection{Scheme}
+{
+\Large
 \begin{equation}
 \boxed{
 \begin{array}{ccccc}
@@ -64,6 +66,7 @@ E_{00}  &  & \xleftarrow{\text{ recycling } k_h } &   & E_{0H} \\
  \end{array}
  }
 \end{equation}
+}
 
 \subsection{Equations}
 
@@ -279,6 +282,8 @@ We define:
 	\epsilon_6\\
 	\epsilon_7\\
 	\end{bmatrix}
+	=
+	\LiAllOut\vec{\epsilon}
 \end{equation}
 \end{itemize}
 
@@ -397,118 +402,27 @@ d_{06}^{-1} & 0 \\
 	}_{\mymat{M}_1}
 		\right)
 	\left( 
-	k_h \vec{E}_h + E_{00} \mymat{A}_0 \vec{C}
+	k_h \vec{E}_H + E_{00} \mymat{A}_0 \vec{C}
 	\right)
 	\\
 \end{array}
 \right.
 \end{equation}
-\end{document}
 
-%%%
-
-\mathfrak{D} & = & d_{01} d_{02}+ C_2 K_2 d_{02}+C_1K_1 d_{01}\\
-\\
-\mymat{M}_1  & = &  \begin{bmatrix}
-   d_{02} + K_1 C_1 & K_1 C_1 \\
-   K_2C_2 & d_{01} + K_2 C_2 \\
- \end{bmatrix} =  \begin{bmatrix}
-   d_{02}  &  0 \\
-   0  & d_{01}   \\
-   \end{bmatrix} + |\vec{C}><\vec{K}|
-\\
-\\
-\vec{E}_H & = & \begin{bmatrix}
- E_{1H}\\
- E_{2H}\\
- \end{bmatrix}\\
- \\
- \mymat{A}_0 & = & \begin{bmatrix}
- a_{01} & 0 \\
- 0 & a_{02}\\
- \end{bmatrix}\\
-\end{array}
-\right.
-\end{equation}
-to write:
-\begin{equation}
-\boxed{
-	\vec{E}_1 =  \dfrac{1}{ \mathfrak{D} }
-	\mymat{M}_1	
- \left(
-k_h 
- \vec{E}_H
- +E_{00} 
- \mymat{A}_0
- \vec{C}
-\right)
-}
-\end{equation}
-and we find that
-\begin{equation}
-\left.\vec{E}_1\right\vert_{t\to0} =  \dfrac{E_{000}}{ \mathfrak{D} }
-	\mymat{M}_1	
- \mymat{A}_0
- \vec{C}
-\end{equation}
-And we can express
-\begin{equation}
-	\partial_t \myconc{X_u}_{t\to0}  =   	<\vec{C}|\mymat{G}_u|\vec{E}_{1,t\to0}> + k_u\Theta C_u 
-\end{equation}
-
-\subsubsection{Coupling by mass conservation}
-We use the vectors
-\begin{equation}
-	\vec{P}_1 = 
-	\begin{bmatrix}
-	1\\
-	1\\
-	\end{bmatrix},
-	\;\;
-\vec{Q}_1  =  \vec{P}_1 + \mytrn{\mymat{F}}\vec{C} \\
-\end{equation}
-
+\subsection{Using Mass Conservation}
+Using $$\vec{P}_1=\begin{bmatrix}1\\1\\\end{bmatrix}$$,
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\mathfrak{E} & = & E_{00} + \underbrace{E_{01} + E_{02}}_{<\vec{P}_1|\vec{E}_1>} + \underbrace{E_{11} + E_{12} + E_{22}}_{<\vec{C}|\mymat{F}|\vec{E}_1>} + E_{1H} + E_{2H} \\
-\\
-\mathfrak{E} & = & E_{00} + <\vec{Q}_1|\vec{E}_1> +  <\vec{P}_1|\vec{E}_H>\\
-\\
-\mathfrak{D}\mathfrak{E} & = & 
-\mathfrak{D} E_{00} + 
-<\vec{Q}_1|\mymat{M}_1|\left(
-	k_h  \vec{E}_H +E_{00} \mymat{A}_0 \vec{C} \right)> +  \mathfrak{D} <\vec{P}_1|\vec{E}_H>\\
-	\\
- & = & E_{00} \left( \mathfrak{D} + <\vec{Q}_1|\mymat{M}_1|\mymat{A}_0\vec{C}>\right) + 
-\mathfrak{D} <\vec{P}_1|\vec{E}_H> + k_h <\vec{Q}_1|\mymat{M}_1|\vec{E}_H>\\
-\\
-& = & E_{00} \left( \mathfrak{D} + <\mytrn{\mymat{M}}_1\vec{Q}_1|\mymat{A}_0\vec{C}>\right) + < \mathfrak{D} \vec{P}_1 + k_h\mytrn{\mymat{M}}_1 \vec{Q_1} | \vec{E}_H>\\
+\mathsf{E}    & = & E_{00} + \underbrace{E_{11}+E_{12}+E_{22}}_{<\vec{C}|\mymat{F}|\vec{E}_1>} + \underbrace{E_{01}+E_{02}}_{<\vec{P}_1|\vec{E}_1>} + E_{6H} + E_{7H}\\
+D_1\mathsf{E} & = & D_1E_{00} + D_1 <\vec{P}_1|\vec{E}_H> + 
+	\left( <\vec{P}_1| + <\vec{C}|\mymat{F}| \right) 
+	\left[ \mymat{D}_0^{-1} \left(\mymat{I}_d+\mymat{M}_1\right)\right]
+	| k_h \vec{E}_H + E_{00} \mymat{A}_0 \vec{C} > \\
+	& = & \\
 \end{array}
 \right.
 \end{equation}
-and
-\begin{equation}
-	E_{00} = 
-	\dfrac
-	{\mathfrak{D}\mathfrak{E}-< \mathfrak{D} \vec{P}_1 + k_h\mytrn{\mymat{M}}_1 \vec{Q_1} | \vec{E}_H>}
-	{\left( \mathfrak{D} + <\mytrn{\mymat{M}}_1\vec{Q}_1|\mymat{A}_0\vec{C}>\right)}
-\end{equation}
-and
-\begin{equation}
-	E_{000} = 
-	\dfrac
-	{\mathfrak{D}\mathfrak{E}}
-	{\left( \mathfrak{D} + <\mytrn{\mymat{M}}_1\vec{Q}_1|\mymat{A}_0\vec{C}>\right)}
-\end{equation}
-leading to
-\begin{equation}
-	\partial_t \myconc{X_u}_{t\to0}  =   \dfrac{\mathfrak{E}}{\left( \mathfrak{D} + <\mytrn{\mymat{M}}_1\vec{Q}_1|\mymat{A}_0\vec{C}>\right)}	
-	<\vec{C}|\mymat{G}_u|\mymat{M}_1\mymat{A}_0\vec{C}> + k_u\Theta C_u 
-\end{equation}
-so that
-\begin{equation}
-	\partial_t {\beta_{u,t\to0}} = \dfrac{B_u C_0}{1+L_u C_0 + W_u C_0^2} + k_u \Theta
-\end{equation}
 
 \end{document}
+

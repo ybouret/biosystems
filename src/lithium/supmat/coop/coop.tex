@@ -45,7 +45,7 @@
 
 
 \section{Passive Behaviour}
-We have two species $\spLi{6}$ and $\spLi{7}$ that may leak throw the membrane:
+We have two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane:
 \begin{equation}
 	\partial_t \myleak{\Li{u}} = k_u \left( e^{\dfrac{-\Faraday V_m }{RT}} \LiOut{u} - \Li{u}\right)
 \end{equation}
@@ -180,15 +180,15 @@ In particular, with
 \begin{equation}
 \boxed{
 \begin{array}{ccccccc}
- & &        &                                                  & E_{11} & & \\
- & &        & \myrotate{45}{$\xrightleftharpoons[d_{11}]{+\spx_1^{out},\;a_{11}}$} & &  \myrotate{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_{11}}$}& \\
- & & E_{01} &  & \xleftarrow{\text{ recycling } k_h } & & E_{1H}\\
- &  \rotatebox[origin=c]{45}{$\xrightleftharpoons[d_{01}]{+\spx_1^{out},\;a_{01}}$} &   & \myrotate{-45}{$\xrightleftharpoons[d_{12}]{+\spx_2^{out},\;a_{12}}$} & & \rotatebox[origin=c]{45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_{12}}$}&\\
-E_{00} & &  & & E_{12} & & \\ 
-  & \myrotate{-45}{$\xrightleftharpoons[d_{02}]{+\spx_2^{out},\;a_{02}}$} &  & \myrotate{45}{$\xrightleftharpoons[d_{21}]{+\spx_1^{out},\;a_{21}}$} & & \myrotate{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_{21}}$} & \\
-  & & E_{02} &   & \xleftarrow{\text{ recycling } k_h } & & E_{2H}\\
-  & &  & \myrotate{-45}{$\xrightleftharpoons[d_{22}]{+\spx_2^{out},\;a_{22}}$} & & \myrotate{45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_{22}}$} &\\
-  & &  &  & E_{22} & &\\
+ & &        &                                                  & E_{66} & & \\
+ & &        & \myrotate{45}{$\xrightleftharpoons[d_{66}]{+\spLiOut{6},\;a_{66}}$} & &  \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{66}}$}& \\
+ & & E_{06} &  & \xleftarrow{\text{ recycling } k_h } & & E_{6H}\\
+ &  \myrotate{45}{$\xrightleftharpoons[d_{06}]{+\spLiOut{6},\;a_{06}}$} &   & \myrotate{-45}{$\xrightleftharpoons[d_{67}]{+\spLiOut{7},\;a_{67}}$} & & \myrotate{45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{67}}$}&\\
+E_{00} & &  & & E_{67}(=E_{76}) & & \\ 
+  & \myrotate{-45}{$\xrightleftharpoons[d_{07}]{+\spLiOut{7},\;a_{07}}$} &  & \myrotate{45}{$\xrightleftharpoons[d_{76}]{+\spLiOut{6},\;a_{76}}$} & & \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{76}}$} & \\
+  & & E_{07} &   & \xleftarrow{\text{ recycling } k_h } & & E_{7H}\\
+  & &  & \myrotate{-45}{$\xrightleftharpoons[d_{77}]{+\spLiOut{7},\;a_{77}}$} & & \myrotate{45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{77}}$} &\\
+  & &  &  & E_{77} & &\\
 
  \end{array}
  }

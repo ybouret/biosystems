@@ -1,4 +1,5 @@
 all:
 
 clean:
-	rm -f *.dat *.log *.aux *.out *.synctex.gz supmat.pdf *.toc coop.pdf
+	@rm -f *.aux *.log *.synctex.gz supmat*.pdf *.dat *.out *.toc
+	@$(MAKE) -C coop clean

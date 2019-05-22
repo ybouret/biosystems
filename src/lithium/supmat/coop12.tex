@@ -1,4 +1,4 @@
-\documentclass[aps,onecolumn,11pt]{revtex4}
+\documentclass[aps,onecolumn,12pt]{revtex4}
 \usepackage{graphicx}
 \usepackage{amssymb,amsfonts,amsmath,amsthm}
 \usepackage{chemarr}
@@ -6,27 +6,18 @@
 \usepackage{pslatex}
 \usepackage{xfrac}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{bookman}
+%\usepackage{bookman}
 \usepackage{dsfont}
-%\usepackage{mathptmx}
-%usepackage{hyperref}
+\usepackage{mathptmx}
+\usepackage{hyperref}
 %\usepackage{rotating}
 \usepackage{fancybox}
 
 \newcommand{\mychem}[1]{\mathtt{#1}}
-\newcommand{\myconc}[1]{\big[#1\big]}
-
-\newcommand{\Faraday}{\mathrm{F}}
+\newcommand{\myconc}[1]{\left[#1\right]}
 \newcommand{\spx}{\mychem{X}}
-\newcommand{\spLi}[1]{{\!~^{#1}\mychem{Li}}}
-\newcommand{\Li}[1]{\myconc{\spLi{#1}}}
-\newcommand{\spproton}{\mychem{H}}
+\newcommand{\spproton}{\mychem{H^+}}
 \newcommand{\proton}{\myconc{\spproton}}
-
-\newcommand{\myleak}[1]{\left.{#1}\right\vert_{\mathrm{leak}}}
-\newcommand{\myout}[1]{{#1}_{\tiny\mathrm{out}}}
-\newcommand{\LiOut}[1]{\myout{\Li{#1}}}
-\newcommand{\spLiOut}[1]{\myout{\spLi{#1}}}
 
 \newcommand{\myrotate}[2]{\rotatebox[origin=c]{#1}{#2}}
 
@@ -34,20 +25,15 @@
 \newcommand{\mymat}[1]{{\bm{#1}}}
 \newcommand{\mydet}[1]{{\left|{#1}\right|}}
 
-\newcommand{\LiAll}{\Lambda}
-\newcommand{\LiAllOut}{\myout{\LiAll}}
-
-
 \begin{document}
 \title{Cooperativity}
 \maketitle
-%\tableofcontents
-
+\tableofcontents
 
 \section{Passive Behaviour}
-We have two species $\spLi{6}$ and $\spLi{7}$ that may leak throw the membrane:
+We have two species $\spx_1$ and $\spx_2$ that may leak throw the membrane
 \begin{equation}
-	\partial_t \myleak{\Li{u}} = k_u \left( e^{\dfrac{-\Faraday V_m }{RT}} \LiOut{u} - \Li{u}\right)
+	\partial_t \left.\myconc{\spx_u}\right\vert_{leak} = k_u \left( e^{\dfrac{-z_u F V_m }{RT}} C_u - \myconc{\spx_u}\right)
 \end{equation}
 
 \section{One Layer}
@@ -56,11 +42,11 @@ We have two species $\spLi{6}$ and $\spLi{7}$ that may leak throw the membrane:
 \begin{equation}
 \boxed{
 \begin{array}{ccccc}
- & & E_{06}  &  & \\
- &  \myrotate{45}{$\xrightleftharpoons[d_{06}]{+\spLiOut{6},\;a_{06}}$} &   & \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_6}$} &  \\
+ & & E_{01}  &  & \\
+ &  \myrotate{45}{$\xrightleftharpoons[d_{01}]{+\spx_1^{out},\;a_{01}}$} &   & \myrotate{-45}{$\xrightarrow[-\spx_1^{in}]{+ \spproton, \; k^p_1}$} &  \\
 E_{00}  &  & \xleftarrow{\text{ recycling } k_h } &   & E_{0H} \\
-  & \myrotate{-45}{$\xrightleftharpoons[d_{07}]{+\spLiOut{7},\;a_{02}}$} &   & \myrotate{+45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_7}$} & \\
- & & E_{07} & & \\
+  & \myrotate{-45}{$\xrightleftharpoons[d_{02}]{+\spx_2^{out},\;a_{02}}$} &   & \myrotate{+45}{$\xrightarrow[-\spx_2^{in}]{+ \spproton, \; k^p_2}$} & \\
+ & & E_{02} & & \\
  \end{array}
  }
 \end{equation}
@@ -70,11 +56,11 @@ E_{00}  &  & \xleftarrow{\text{ recycling } k_h } &   & E_{0H} \\
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t E_{00} & = & D_{06}-A_{06} + D_{07}-A_{07} + v_h\\
-\partial_t E_{06} & = & -D_{06}+A_{06} -v^p_6 \\
-\partial_t E_{07} & = & -D_{07}+A_{07} -v^p_7\\
-\partial_t E_{0H} & = & v^p_6 + v^p_7 - v_h\\
-\mathsf{E}       & = & E_{00}+E_{01}+E_{02} + E_{0H} = E_{0H} + {\displaystyle \sum_{x\leq y\leq 1} E_{xy}}\\
+\partial_t E_{00} & = & D_{01}-A_{01} + D_{02}-A_{02} + v_h\\
+\partial_t E_{01} & = & -D_{01}+A_{01} -v^p_1 \\
+\partial_t E_{02} & = & -D_{02}+A_{02} -v^p_2\\
+\partial_t E_{0H} & = & v^p_1 + v^p_2 - v_h\\
+\mathfrak{E}       & = & E_{00}+E_{01}+E_{02} + E_{0H} = E_{0H} + {\displaystyle \sum_{x\leq y\leq 1} E_{xy}}\\
 \end{array}
 \right.
 \end{equation}
@@ -82,13 +68,15 @@ with
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-A_{06} &= &a_{06} E_{00} \LiOut{6}\\
-A_{07} &= &a_{07} E_{00} \LiOut{7}\\
-D_{06} &= &d_{06} E_{06}\\
-D_{07} &= &d_{07} E_{07}\\
-v^p_6  &=& k^p_6 E_{06} \proton\\
-v^p_7  &=& k^p_7 E_{07} \proton\\
-v_h    &=& k_h   E_{0H}
+C_1    & = & \myconc{\spx_1^{out}}\\
+C_2    & = & \myconc{\spx_2^{out}}\\
+A_{01} &= &a_{01} E_{00} C_1\\
+A_{02} &= &a_{02} E_{00} C_2\\
+D_{01} &= &d_{01} E_{01}\\
+D_{02} &= &d_{02} E_{02}\\
+v^p_1  &=& k^p_1 E_{01} \proton\\
+v^p_2  &=& k^p_2 E_{02} \proton\\
+v_h    &=& k_x  E_{0H}
 \end{array}
 \right.
 \end{equation}
@@ -99,9 +87,9 @@ We assume that the internal components are at a steady-state:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcll}
-	E_{06}^\star & = & \dfrac{a_{06}}{d_{06}+k^p_6 \proton } E_{00} \LiOut{6} & = J_6 E_{00} \LiOut{6}\\
+	E_{01}^\star & = & \dfrac{a_{01}}{d_{01}+k^p_1 \proton } E_{00} C_1 & = J_1 E_{00} C_1\\
 	\\
-	E_{07}^\star & = & \dfrac{a_{07}}{d_{07}+k^p_7 \proton } E_{00} \LiOut{7} & = J_7 E_{00} \LiOut{7}\\
+	E_{02}^\star & = & \dfrac{a_{02}}{d_{02}+k^p_2 \proton } E_{00} C_2 & = J_2 E_{00} C_2\\
 \end{array}
 \right.
 \end{equation}
@@ -110,15 +98,15 @@ We assume that the internal components are at a steady-state:
 
 Finally:
 \begin{equation}
-\mathsf{E} = E_{00}\left(1+J_6\LiOut{6}+J_7\LiOut{7}\right) + E_{0H} \Leftrightarrow E_{00} = \dfrac{\mathsf{E}-E_{0H}}{1+J_6\LiOut{6}+J_7\LiOut{7}}
+\mathfrak{E} = E_{00}\left[1+J_1C_1+J_2C_2\right] + E_{0H} \Leftrightarrow E_{00} = \dfrac{\mathfrak{E}-E_{0H}}{{1+J_1C_1+J_2C_2}}
 \end{equation}
 and:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	E_{06}^\star & = & \dfrac{J_6\LiOut{6}}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(\mathsf{E}-E_{0H}\right)\\
+	E_{01}^\star & = & \dfrac{J_1C_1}{1+J_1C_1+J_2C_2} \left(\mathfrak{E}-E_{0H}\right)\\
 	\\
-	E_{07}^\star & = & \dfrac{J_7\LiOut{7}}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(\mathsf{E}-E_{0H}\right)\\
+	E_{02}^\star & = & \dfrac{J_2C_2}{1+J_1C_1+J_2C_2} \left(\mathfrak{E}-E_{0H}\right)
 \end{array}
 \right.
 \end{equation}
@@ -126,9 +114,9 @@ so that we have the three equations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \Li{u}  & = & v^p_u +\partial_t \myleak{\Li{u}}  = \dfrac{k^p_u J_u \LiOut{u}}{1+\sum_v J_v \LiOut{v}} \left(\mathsf{E}-E_{0H}\right) \proton + k_u \left( e^{\frac{-\Faraday V_m }{RT}} \LiOut{u} - \Li{u}\right) \\
+	\partial_t \myconc{X_u}  & = & v^p_u +\partial_t \left.\myconc{\spx_u}\right\vert_{leak}  = \dfrac{k^p_u J_uC_u}{1+J_1C_1+J_2C_2} \left(\mathfrak{E}-E_{0H}\right) \proton + k_u \left( e^{\dfrac{-z_u F V_m }{RT}} C_u - \myconc{\spx_u}\right) \\
 	\\
-	\partial_t E_{0H} & = & -k_h E_{0H} + \dfrac{\sum_v k^p_u J_u \LiOut{u}}{1+\sum_v J_v \LiOut{v}} \left(\mathsf{E}-E_{0H}\right) \proton \\
+	\partial_t E_{0H} & = & -k_h E_{0H} + \dfrac{k^p_1 J_1C_1 + k^p_2 J_2 C_2 }{1+J_1C_1+J_2C_2} \left(\mathfrak{E}-E_{0H}\right) \proton \\
 \end{array}
 \right.
 \end{equation}
@@ -136,13 +124,13 @@ so that we have the three equations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\Li{u} & = & \epsilon_u \LiAllOut\\
+	C_u & = & \epsilon_u C_0\\
 	\\
-	\beta_u & = & \dfrac{\Li{u}}{\LiOut{u}}\\
+	\beta_u & = & \dfrac{\myconc{X_u}}{C_u}\\
 	\\
-	\alpha  & = & \dfrac{E_{0H}}{\mathsf{E}}\\
+	\alpha  & = & \dfrac{E_{0H}}{\mathfrak{E}}\\
 	\\
-	J_0 & = & \epsilon_6 J_6  + \epsilon_7 J_7 \\
+	J_0 & = & \epsilon_1 J_1  + \epsilon_2 J_2 \\
 \end{array}
 \right.
 \end{equation}
@@ -151,25 +139,25 @@ Leading to the three equations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \beta_u & = & \mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_0 \LiAllOut}\right] \left(1-\alpha\right) \proton
+	\partial_t \beta_u & = & \mathfrak{E} \left[\dfrac{k^p_u J_u}{1+J_0 C_0}\right] \left(1-\alpha\right) \proton
 	 + k_u \left( e^{\dfrac{-z_u F V_m }{RT}}- \beta_u\right)\\
 	\\
-	\partial_t \alpha  & = &  -k_h\alpha + \LiAllOut \left[\dfrac{ \sum_v k^p_v \epsilon_v J_v}{1+J_0\LiAllOut}\right] \left(1-\alpha\right) \proton\\
+	\partial_t \alpha  & = &  -k_h\alpha + C_0 \left[\dfrac{k^p_1 \epsilon_1 J_1  + k^p_2 \epsilon_2 J_2   }{1+J_0C_0}\right] \left(1-\alpha\right) \proton\\
 \end{array}
 \right.
 \end{equation}
 
 In particular, with
 \begin{equation}
-	\Theta = e^{\dfrac{-\Faraday V_m }{RT}}
+	\Theta = e^{\dfrac{-z_u F V_m }{RT}}
 \end{equation}
 
 \begin{equation}
 	\left.\dfrac{\beta_u}{\beta_v}\right\vert_{t\to0} \simeq \left.\dfrac{\partial_t \beta_u}{\partial_t\beta_v}\right\vert_{t\to0}
-	= \dfrac{\mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_0 \LiAllOut}\right] \proton_0 + k_u  \Theta_0
+	= \dfrac{\mathfrak{E} \left[\dfrac{k^p_u J_u}{1+J_0 C_0}\right] \proton_0 + k_u  \Theta_0
 	}
 	{
-	\mathsf{E} \left[\dfrac{k^p_v J_v}{1+J_0 \LiAllOut}\right] \proton_0 + k_v  \Theta_0
+	\mathfrak{E} \left[\dfrac{k^p_v J_v}{1+J_0 C_0}\right] \proton_0 + k_v  \Theta_0
 	}
 \end{equation}
 

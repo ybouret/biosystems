@@ -315,29 +315,30 @@ E_{66} + E_{67} + E_{77} = <{\vec{C}} \vert \mymat{F} \vert \vec{E}_1 >, \;\;
 \end{equation}
 and
 
-\end{document}
 
 \begin{equation}
 \left\lbrace
 \begin{array}{rcll}
-	\partial_t \myconc{\spx_1} & = & <\vec{C}|\mymat{G}_1|\vec{E}_1> + k_1\left(\Theta C_1 - \myconc{\spx_1}\right), &
-	\mymat{G}_1 = 
+	\partial_t \Li{6} & = & <\vec{C}|\mymat{G}_6|\vec{E}_1> + k_6\left(\Theta \LiOut{6} - \Li{6}\right), &
+	\mymat{G}_6 = 
 	\begin{bmatrix}
-	f_{11}k^p_{11} & f_{21} k^p_{12} \\
-	f_{12}k^p_{12} & 0 \\
+	f_{66}k^p_{66} & f_{76} k^p_{67} \\
+	f_{67}k^p_{67} & 0 \\
 	\end{bmatrix}
 	\\
 	\\
-	\partial_t \myconc{\spx_2} & = & <\vec{C}|\mymat{G}_2|\vec{E}_1> + k_1\left(\Theta C_2 - \myconc{\spx_2}\right), &
+	\partial_t \Li{7} & = & <\vec{C}|\mymat{G}_7|\vec{E}_1> + k_1\left(\Theta \LiOut{6} - \Li{6}\right), &
 	\mymat{G}_2 = 
 	\begin{bmatrix}
-	0              & f_{21} k^p_{21}\\
-	f_{12}k^p_{21} & f_{22}k^p_{22}\\
+	0              & f_{76} k^p_{76}\\
+	f_{67}k^p_{76} & f_{77}k^p_{77}\\
 	\end{bmatrix}
 	\\
 \end{array}
 \right.
 \end{equation}
+
+\end{document}
 
 \subsubsection{First layer as a function of the external components}
 We define:

@@ -198,15 +198,15 @@ E_{00} & &  & & E_{67}(=E_{76}) & & \\
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\partial_t E_{00} & = & D_{01}-A_{01} + D_{02}-A_{02}\\
-\partial_t E_{01} & = & -D_{01}+A_{01} - A_{11} + D_{11} - A_{12} + D_{12} + v_{1H}\\
-\partial_t E_{02} & = & -D_{02}+A_{02} - A_{22} + D_{22} - A_{21} + D_{21} + v_{2H}\\
-\partial_t E_{11} & = & A_{11}-D_{11} -v^p_{11}\\
-\partial_t E_{12} & = & A_{12}-D_{12} + A_{21}-D_{21} - (v^p_{12}+v^p_{21})\\
-\partial_t E_{22} & = & A_{22}-D_{22} - v^p_{22}\\
-\partial_t E_{1H} & = & v^p_{11}+v^p_{12} - v_{1H}\\
-\partial_t E_{2H} & = & v^p_{22}+v^p_{21} - v_{2H}\\
-\mathfrak{E}      & = & {\displaystyle \sum_{x\leq y\leq 2} E_{xy}}+E_{1H}+E_{2H}\\
+\partial_t E_{00} & = & D_{06}-A_{06} + D_{07}-A_{07}\\
+\partial_t E_{06} & = & -D_{06}+A_{06} - A_{66} + D_{66} - A_{67} + D_{67} + v_{6H}\\
+\partial_t E_{07} & = & -D_{07}+A_{07} - A_{77} + D_{77} - A_{76} + D_{76} + v_{7H}\\
+\partial_t E_{66} & = & A_{66}-D_{66} -v^p_{66}\\
+\partial_t E_{67} & = & A_{67}-D_{67} + A_{76}-D_{76} - (v^p_{67}+v^p_{76})\\
+\partial_t E_{77} & = & A_{77}-D_{77} - v^p_{77}\\
+\partial_t E_{6H} & = & v^p_{66}+v^p_{67} - v_{6H}\\
+\partial_t E_{7H} & = & v^p_{77}+v^p_{76} - v_{7H}\\
+\mathfrak{E}      & = & {\displaystyle \sum_{x\leq y\leq 7} E_{xy}}+E_{6H}+E_{7H}\\
 \end{array}
 \right.
 \end{equation}
@@ -214,35 +214,37 @@ with
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-A_{01} &= &a_{01} E_{00} C_1\\
-A_{02} &= &a_{02} E_{00} C_2\\
-D_{01} &= &d_{01} E_{01}\\
-D_{02} &= &d_{02} E_{02}\\
-A_{11} &= & a_{11} E_{01} C_1 \\
-D_{11} &= &d_{11} E_{11}\\
-A_{22} &= &a_{22} E_{02} C_2 \\
-D_{22} &= &d_{22} E_{22}\\
-A_{12} & = & a_{12} E_{01} C_2\\
-D_{12} & = & d_{12} E_{12}\\
-A_{21} & = & a_{21} E_{02} C_1\\
-D_{21} & = & d_{21} E_{12}\\
-v_{1H} & = & k_h E_{1H}\\
-v_{2H} & = & k_h E_{2H}\\
-v^p_{11} & = & k^p_{11} E_{11} \proton \\
-v^p_{22} & = & k^p_{22} E_{22} \proton \\
-v^p_{12} & = & k^p_{12} E_{12} \proton \\
-v^p_{21} & = & k^p_{21} E_{12} \proton \\
+A_{06}   & = & a_{06} E_{00} \LiOut{6}\\
+A_{07}   & = & a_{07} E_{00} \LiOut{7}\\
+D_{06}   & = & d_{06} E_{06}\\
+D_{07}   & = & d_{07} E_{07}\\
+A_{66}   & = & a_{66} E_{06} \LiOut{6} \\
+D_{66}   & = & d_{66} E_{66}\\
+A_{77}   & = & a_{77} E_{07} \LiOut{7} \\
+D_{77}   & = & d_{77} E_{77}\\
+A_{67}   & = & a_{67} E_{06} \LiOut{7}\\
+D_{67}   & = & d_{67} E_{67}\\
+A_{76}   & = & a_{76} E_{07} \LiOut{6}\\
+D_{76}   & = & d_{76} E_{67}\\
+v_{6H}   & = & k_h E_{6H}\\
+v_{7H}   & = & k_h E_{7H}\\
+v^p_{66} & = & k^p_{66} E_{66} \proton \\
+v^p_{77} & = & k^p_{77} E_{77} \proton \\
+v^p_{67} & = & k^p_{67} E_{67} \proton \\
+v^p_{76} & = & k^p_{76} E_{67} \proton \\
 \end{array}
 \right.
 \end{equation}
 
 And
 \begin{equation}
-	\partial_t \myconc{\spx_1} = v^p_{11}+v^p_{21} + \partial_t \myconc{\spx_1}\vert_{leak},\;\;
-	\partial_t \myconc{\spx_2} = v^p_{22}+v^p_{12} + \partial_t \myconc{\spx_2}\vert_{leak}
+	\partial_t \LiOut{6} = v^p_{66}+v^p_{76} + \partial_t \myleak{\LiOut{6}},\;\;
+	\partial_t \LiOut{7} = v^p_{77}+v^p_{67} + \partial_t \myconc{\spx_2}\vert_{leak}
 \end{equation}
 
 \subsection{Steady State}
+
+\end{document}
 
 \subsubsection{Second layer as a function of the first layer}
 

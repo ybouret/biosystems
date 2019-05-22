@@ -379,14 +379,11 @@ Leading to
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-K_6' & = & K_6/d_{06}\\
-K_7' & = & K_7/d_{07}\\
-D_{1} & = & 1+ C_7 K_7'+ C_6 K_6'\\
-\\
-\vec{E}_1 & = & \dfrac{1}{D_1}
+D_1 & = & d_{06}d_{07} + d_{06} K_6 C_6 + d_{07} K_7 C_7  \\
+\vec{E}_1 & = &\dfrac{1}{D_1}
 	\begin{bmatrix}
-	1/d_{06} + C_6 K_6' & C_6 K_6'\\
-	C_7 K_7' & 1/d_{07} + C_7 K_7' \\
+	d_{07} + C_6 K_6 & C_6 K_6\\
+	C_7 K_7 & d_{06} + C_7 K_7 \\
 	\end{bmatrix}
 	\left( 
 	k_h \vec{E}_h + E_{00} \mymat{A}_0 \vec{C}
@@ -394,7 +391,6 @@ D_{1} & = & 1+ C_7 K_7'+ C_6 K_6'\\
 \end{array}
 \right.
 \end{equation}
-
 \end{document}
 
 %%%

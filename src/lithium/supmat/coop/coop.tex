@@ -24,7 +24,7 @@
 \newcommand{\proton}{\myconc{\spproton}}
 
 \newcommand{\myleak}[1]{\left.{#1}\right\vert_{\mathrm{leak}}}
-\newcommand{\myout}[1]{{#1}_{\tiny\mathrm{out}}}
+\newcommand{\myout}[1]{{#1}_{\mathrm{out}}}
 \newcommand{\LiOut}[1]{\myout{\Li{#1}}}
 \newcommand{\spLiOut}[1]{\myout{\spLi{#1}}}
 
@@ -399,8 +399,8 @@ Leading to
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-D_1 & = & 1 +    K_6\LiOut{6} +  K_7 \LiOut{7}  \\
-\vec{E}_1 & = &\dfrac{1}{D_1}
+W_1 & = & 1 +    K_6\LiOut{6} +  K_7 \LiOut{7}  \\
+\vec{E}_1 & = &\dfrac{1}{W_1}
 \underbrace{
 \begin{bmatrix}
 d_{06}^{-1} & 0 \\
@@ -429,11 +429,14 @@ Using $$\vec{P}_1=\begin{bmatrix}1\\1\\\end{bmatrix}$$,
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\mathsf{E}    & = & E_{00} + \underbrace{E_{11}+E_{12}+E_{22}}_{<\vec{C}|\mymat{F}|\vec{E}_1>} + \underbrace{E_{01}+E_{02}}_{<\vec{P}_1|\vec{E}_1>} + E_{6H} + E_{7H}\\
-D_1\mathsf{E} & = & D_1E_{00} + D_1 <\vec{P}_1|\vec{E}_H> + 
+\mathsf{E}    & = & E_{00} 
++ \underbrace{E_{11}+E_{12}+E_{22}}_{<\vec{C}|\mymat{F}|\vec{E}_1>} 
++ \underbrace{E_{01}+E_{02}}_{<\vec{P}_1|\vec{E}_1>} 
++ \underbrace{E_{6H} + E_{7H}}_{<\vec{P}_1|\vec{E}_H>}\\
+W_1\mathsf{E} & = & W_1E_{00} + W_1 <\vec{P}_1|\vec{E}_H> + 
 	\left( <\vec{P}_1| + <\vec{C}|\mymat{F}| \right) 
 	\left[ \mymat{D}_0^{-1} \left(\mymat{I}_d+\mymat{M}_1\right)\right]
-	| k_h \vec{E}_H + E_{00} \mymat{A}_0 \vec{C} > \\
+	| \mymat{M}_H \vec{E}_H + E_{00} \mymat{A}_0 \vec{C} > \\
 	& = & \\
 \end{array}
 \right.

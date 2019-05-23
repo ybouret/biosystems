@@ -186,11 +186,11 @@ In particular, with
 \begin{array}{ccccccc}
  & &        &                                                  & E_{66} & & \\
  & &        & \myrotate{45}{$\xrightleftharpoons[d_{66}]{+\spLiOut{6},\;a_{66}}$} & &  \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{66}}$}& \\
- & & E_{06} &  & \xleftarrow{\text{ recycling } k_h } & & E_{6H}\\
+ & & E_{06} &  & \xleftarrow{\text{ recycling } k^h_6 } & & E_{6H}\\
  &  \myrotate{45}{$\xrightleftharpoons[d_{06}]{+\spLiOut{6},\;a_{06}}$} &   & \myrotate{-45}{$\xrightleftharpoons[d_{67}]{+\spLiOut{7},\;a_{67}}$} & & \myrotate{45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{67}}$}&\\
 E_{00} & &  & & E_{67}(=E_{76}) & & \\ 
   & \myrotate{-45}{$\xrightleftharpoons[d_{07}]{+\spLiOut{7},\;a_{07}}$} &  & \myrotate{45}{$\xrightleftharpoons[d_{76}]{+\spLiOut{6},\;a_{76}}$} & & \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{76}}$} & \\
-  & & E_{07} &   & \xleftarrow{\text{ recycling } k_h } & & E_{7H}\\
+  & & E_{07} &   & \xleftarrow{\text{ recycling } k^h_7 } & & E_{7H}\\
   & &  & \myrotate{-45}{$\xrightleftharpoons[d_{77}]{+\spLiOut{7},\;a_{77}}$} & & \myrotate{45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{77}}$} &\\
   & &  &  & E_{77} & &\\
 
@@ -231,8 +231,8 @@ A_{67}   & = & a_{67} E_{06} \LiOut{7}\\
 D_{67}   & = & d_{67} E_{67}\\
 A_{76}   & = & a_{76} E_{07} \LiOut{6}\\
 D_{76}   & = & d_{76} E_{67}\\
-v_{6H}   & = & k_h E_{6H}\\
-v_{7H}   & = & k_h E_{7H}\\
+v_{6H}   & = & k^h_6 E_{6H}\\
+v_{7H}   & = & k^h_7 E_{7H}\\
 v^p_{66} & = & k^p_{66} E_{66} \proton \\
 v^p_{77} & = & k^p_{77} E_{77} \proton \\
 v^p_{67} & = & k^p_{67} E_{67} \proton \\
@@ -285,6 +285,15 @@ We define:
 	=
 	\LiAllOut\vec{\epsilon}
 \end{equation}
+\item the protonated enzymes:
+\begin{equation}
+	\vec{E}_H = 
+	\begin{bmatrix}
+	E_{6H}\\
+	E_{7H}\\
+	\end{bmatrix}
+\end{equation}
+
 \end{itemize}
 
 Using the three equations describing the second layer and assuming that the internal pre-equilibrium is fast, we express:
@@ -370,7 +379,13 @@ so that the first layer equation becomes:
 d_{06} \left(1+ K_7\LiOut{7}\right) & -d_{07}K_6\LiOut{6}\\
 -K_7\LiOut{7}d_{06} & d_{07}\left(1 + K_6\LiOut{6}\right) \\
 \end{bmatrix}
-\vec{E}_1 = k_h \vec{E}_H 
+\vec{E}_1 = \underbrace{
+\begin{bmatrix}
+	h^h_6 & 0 \\
+	0     & k^h_7\\
+\end{bmatrix}
+}_{\mymat{M}_H}
+\vec{E}_H 
 + E_{00}
 \underbrace{
 \begin{bmatrix}
@@ -402,7 +417,7 @@ d_{06}^{-1} & 0 \\
 	}_{\mymat{M}_1}
 		\right)
 	\left( 
-	k_h \vec{E}_H + E_{00} \mymat{A}_0 \vec{C}
+	\mymat{M}_H \vec{E}_H + E_{00} \mymat{A}_0 \vec{C}
 	\right)
 	\\
 \end{array}

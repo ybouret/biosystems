@@ -443,12 +443,12 @@ and
 \begin{equation}
 \boxed{
 	E_{00} = \dfrac{W_1 \mathsf{E} - <\vec{P_1} + \mytrn{\mymat{F}} \vec{C}| \left( \mymat{D}_0^{-1} \mymat{M}_1' \mymat{R}_H \right) | \vec{E}_H> }
-	{ W_1+\underbrace{<\vec{P_1} + \mytrn{\mymat{F}} \vec{C}| \underbrace{\left( \mymat{D}_0^{-1} \mymat{M}_1' \mymat{A}_0 \right)}_{\mymat{M}_0} | \vec{C}>}_{W_0}}
+	{ W_1+\underbrace{<\vec{P_1} + \mytrn{\mymat{F}} \vec{C}| \underbrace{\left( \mymat{D}_0^{-1} \mymat{M}_1' \mymat{A}_0 \right)}_{\mymat{M}_0} | \vec{C}>}_{W_3}}
 }
 \end{equation}
 In particular
 \begin{equation}
-	E_{00}^\varnothing = \dfrac{W_1 \mathsf{E}}{W_1+W_0}
+	E_{00}^\varnothing = \dfrac{W_1 \mathsf{E}}{W_1+W_3}
 \end{equation}
 and
 \begin{equation}
@@ -456,18 +456,41 @@ and
 \begin{array}{rcl}
 	W_1 \vec{E}_1^\varnothing & = & E_{00}^\varnothing  \mymat{M}_0 \vec{C}\\
 	\\
-	\vec{E}_1^\varnothing     & = & \dfrac{\mathsf{E}}{W_1+W_0}\mymat{M}_0 \vec{C}\\
+	\vec{E}_1^\varnothing     & = & \dfrac{\mathsf{E}}{W_1+W_3}\mymat{M}_0 \vec{C}\\
 \end{array}
 \right.
 \end{equation}
 We deduce
 \begin{equation}
-	E_{xy}^\varnothing = \dfrac{\mathsf{E}}{W_1+W_0} <\vec{C}|\mymat{F}_{xy}\mymat{M}_0|\vec{C}>
+	E_{xy}^\varnothing = \dfrac{\mathsf{E}}{W_1+W_3} <\vec{C}|\mymat{F}_{xy}\mymat{M}_0|\vec{C}>
 \end{equation}
 and
 \begin{equation}
-	\partial_t \Li{x}^\varnothing = <\vec{C}|\mymat{G}_x|\vec{E}_1^\varnothing> \proton_0 + k_x \Theta \myout{\Li{x}}
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \Li{x}^\varnothing & = & <\vec{C}|\mymat{G}_x|\vec{E}_1^\varnothing> \proton_0 + k_x \Theta \myout{\Li{x}}\\
+	\\
+	 & = & \dfrac{\mathsf{E}\proton_0}{W_1+W_3} <\vec{C}|\mymat{G}_x|\mymat{M}_0|\vec{C}> + k_x \Theta \myout{\Li{x}}\\
+	 \\
+	 & = & \dfrac{\mathsf{E}\proton_0}{W_1+W_3} \left( <\vec{C}|\mymat{Q}_x|\vec{C}> + <\vec{L}_x|\vec{C}>\right)\myout{\Li{x}} + k_x \Theta \myout{\Li{x}}  \\
+\end{array}
+\right.
 \end{equation}
+so that
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t \beta_x^\varnothing & = & \dfrac{\mathsf{E}\proton_0}{W_1+W_3} \left( <\vec{C}|\mymat{Q}_x|\vec{C}> + <\vec{L}_x|\vec{C}>\right) + k_x \Theta \\
+\\
+& = & \mathsf{E}\proton_0 \dfrac{\mathsf{N}_x(\LiAllOut)}{1+\mathsf{D}_x(\LiAllOut)} + k_x \Theta \\
+\end{array}
+\right.
+\end{equation}
+where 
+\begin{itemize}
+\item ${\mathsf{N}_x}$ is a {\bf second} order polynomial without constant term
+\item ${\mathsf{D}_x}$ is a {\bf third } order polynomial without constant term
+\end{itemize}
 
 \end{document}
 

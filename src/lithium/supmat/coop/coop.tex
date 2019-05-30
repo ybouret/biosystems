@@ -179,6 +179,7 @@ In particular, with
 
 \section{Two Layers}
 \subsection{Scheme}
+\subsubsection{Dependant Scheme}
 {
 \Large
 \begin{equation}
@@ -198,6 +199,25 @@ E_{00} & &  & & E_{67}(=E_{76}) & & \\
  }
 \end{equation}
 }
+with no restriction on microscopic values.
+
+\subsubsection{Independency hypothesis}
+If we assume that the microscopic rates depends only on the "naked" lithium and not on the protein state:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+k^h_6    & = & k^h_7\\
+\\
+a_{76}   & = & a_{66}\\
+d_{76}   & = & d_{66}\\
+k^p_{76} & = & k^p_{66}\\
+\\
+a_{67}   & = & a_{77}\\
+d_{67}   & = & d_{77}\\
+k^p_{67} & = & k^p_{77}\\
+\end{array}
+\right.
+\end{equation}
 
 \subsection{Equations}
 \begin{equation}
@@ -243,8 +263,8 @@ v^p_{76} & = & k^p_{76} E_{67} \proton \\
 
 And
 \begin{equation}
-	\partial_t \LiOut{6} = v^p_{66}+v^p_{76} + \partial_t \myleak{\LiOut{6}},\;\;
-	\partial_t \LiOut{7} = v^p_{77}+v^p_{67} + \partial_t \myconc{\spx_2}\vert_{leak}
+	\partial_t \Li{6} = v^p_{66}+v^p_{76} + \partial_t \myleak{\Li{6}},\;\;
+	\partial_t \Li{7} = v^p_{77}+v^p_{67} + \partial_t \myleak{\Li{7}}
 \end{equation}
 
 \subsection{Steady State}
@@ -307,7 +327,7 @@ with
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\mymat{F}_{11} & = & 
+\mymat{F}_{66} & = & 
 \begin{bmatrix}
 	f_{66} & 0 \\
 	0 & 0\\

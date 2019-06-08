@@ -36,6 +36,8 @@
 
 \newcommand{\LiAll}{\Lambda}
 \newcommand{\LiAllOut}{\myout{\LiAll}}
+\newcommand{\inpLi}[1]{\text{+}\spLiOut{#1}}
+\newcommand{\outLi}[1]{\text{-}\spLiOut{#1}}
 
 
 \begin{document}
@@ -59,9 +61,9 @@ We have two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane
 \boxed{
 \begin{array}{ccccc}
  & & E_{06}  &  & \\
- &  \myrotate{45}{$\xrightleftharpoons[d_{06}]{+\spLiOut{6},\;a_{06}}$} &   & \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_6}$} &  \\
+ &  \myrotate{45}{$\xrightleftharpoons[\outLi{6},\;d_{06}]{+\spLiOut{6},\;a_{06}}$} &   & \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_6}$} &  \\
 E_{00}  &  & \xleftarrow{\text{ recycling } k_h } &   & E_{0H} \\
-  & \myrotate{-45}{$\xrightleftharpoons[d_{07}]{+\spLiOut{7},\;a_{02}}$} &   & \myrotate{+45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_7}$} & \\
+  & \myrotate{-45}{$\xrightleftharpoons[\outLi{7},\;d_{07}]{+\spLiOut{7},\;a_{02}}$} &   & \myrotate{+45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_7}$} & \\
  & & E_{07} & & \\
  \end{array}
  }
@@ -186,13 +188,13 @@ In particular, with
 \boxed{
 \begin{array}{ccccccc}
  & &        &                                                  & E_{66} & & \\
- & &        & \myrotate{45}{$\xrightleftharpoons[d_{66}]{+\spLiOut{6},\;a_{66}}$} & &  \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{66}}$}& \\
+ & &        & \myrotate{45}{$\xrightleftharpoons[\outLi{6},\;d_{66}]{\inpLi{6},\;a_{66}}$} & &  \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{66}}$}& \\
  & & E_{06} &  & \xleftarrow{\text{ recycling } k^h_6 } & & E_{6H}\\
- &  \myrotate{45}{$\xrightleftharpoons[d_{06}]{+\spLiOut{6},\;a_{06}}$} &   & \myrotate{-45}{$\xrightleftharpoons[d_{67}]{+\spLiOut{7},\;a_{67}}$} & & \myrotate{45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{67}}$}&\\
+ &  \myrotate{45}{$\xrightleftharpoons[\outLi{6},\;d_{06}]{\inpLi{6},\;a_{06}}$} &   & \myrotate{-45}{$\xrightleftharpoons[\outLi{7},\;d_{67}]{\inpLi{7},\;a_{67}}$} & & \myrotate{45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{67}}$}&\\
 E_{00} & &  & & E_{67}(=E_{76}) & & \\ 
-  & \myrotate{-45}{$\xrightleftharpoons[d_{07}]{+\spLiOut{7},\;a_{07}}$} &  & \myrotate{45}{$\xrightleftharpoons[d_{76}]{+\spLiOut{6},\;a_{76}}$} & & \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{76}}$} & \\
+  & \myrotate{-45}{$\xrightleftharpoons[\outLi{7},\;d_{07}]{\inpLi{7},\;a_{07}}$} &  & \myrotate{45}{$\xrightleftharpoons[\outLi{6},\;d_{76}]{\inpLi{6},\;a_{76}}$} & & \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{76}}$} & \\
   & & E_{07} &   & \xleftarrow{\text{ recycling } k^h_7 } & & E_{7H}\\
-  & &  & \myrotate{-45}{$\xrightleftharpoons[d_{77}]{+\spLiOut{7},\;a_{77}}$} & & \myrotate{45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{77}}$} &\\
+  & &  & \myrotate{-45}{$\xrightleftharpoons[\outLi{7},\;d_{77}]{\inpLi{7},\;a_{77}}$} & & \myrotate{45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{77}}$} &\\
   & &  &  & E_{77} & &\\
 
  \end{array}
@@ -208,12 +210,12 @@ If we assume that the microscopic rates depends only on the "naked" lithium and 
 \begin{array}{rcl}
 k^h_6    & = & k^h_7\\
 \\
-a_{76}   & = & a_{66}\\
-d_{76}   & = & d_{66}\\
+a_{76}   & = & a_{66} = a_{06} \\
+d_{76}   & = & d_{66} = d_{06} \\
 k^p_{76} & = & k^p_{66}\\
 \\
-a_{67}   & = & a_{77}\\
-d_{67}   & = & d_{77}\\
+a_{67}   & = & a_{77} = a_{07} \\
+d_{67}   & = & d_{77} = d_{07} \\
 k^p_{67} & = & k^p_{77}\\
 \end{array}
 \right.

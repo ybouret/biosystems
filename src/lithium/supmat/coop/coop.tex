@@ -336,21 +336,21 @@ with
 \begin{array}{rcl}
 \mymat{F}_{66} & = & 
 \begin{bmatrix}
-	f_{66} & 0 \\
+	\dfrac{a_{66}}{d_{66}} & 0 \\
 	0 & 0\\
-\end{bmatrix}, \; f_{66} = \dfrac{a_{66}}{d_{66}}\\
+\end{bmatrix} \\
 \\
 \mymat{F}_{77} & = & 
 \begin{bmatrix}
 	0 & 0 \\
-	0 & f_{77}\\
-\end{bmatrix}, \; f_{77} = \dfrac{a_{77}}{d_{77}}\\
+	0 & \dfrac{a_{77}}{d_{77}}\\
+\end{bmatrix}  \\
 \\
 \mymat{F}_{67} & = & 
 \begin{bmatrix}
-	0 & f_{76}\\
-	f_{67} & 0\\
-\end{bmatrix}, \; f_{67} = \dfrac{a_{67}}{d_{76}+d_{67}},\; f_{76} = \dfrac{a_{76}}{d_{76}+d_{67}}\\
+	0 &\dfrac{a_{76}}{d_{76}+d_{67}}\\
+	\dfrac{a_{67}}{d_{76}+d_{67}} & 0\\
+\end{bmatrix} \\
 \end{array}
 \right.
 \end{equation}
@@ -358,10 +358,7 @@ and the second layer mass is
 \begin{equation}
 E_{66} + E_{67} + E_{77} = <{\vec{C}} \vert \mymat{F} \vert \vec{E}_1 >, \;\;
  \mymat{F} 
- = \begin{bmatrix}
-	f_{66} & f_{76}\\
-	f_{67} & f_{77}\\
-\end{bmatrix}
+ =  \mymat{F}_{66} + \mymat{F}_{67}  + \mymat{F}_{77} 
 \end{equation}
 and
 
@@ -370,19 +367,21 @@ and
 \left\lbrace
 \begin{array}{rcl}
 	\partial_t \Li{6} & = & <\vec{C}|\mymat{G}_6|\vec{E}_1> \proton+ k_6\left(\Theta \LiOut{6} - \Li{6}\right)\\
-	\mymat{G}_6 &= & k^p_{66} \mymat{F}_{66} + k^p_{67}\mymat{F}_{67} = 
-	\begin{bmatrix}
-	f_{66}k^p_{66} & f_{76} k^p_{67} \\
-	f_{67}k^p_{67} & 0 \\
-	\end{bmatrix}
+	\mymat{G}_6 &= & k^p_{66} \mymat{F}_{66} + k^p_{67}\mymat{F}_{67} 
+%	= 
+%	\begin{bmatrix}
+%	f_{66}k^p_{66} & f_{76} k^p_{67} \\
+%	f_{67}k^p_{67} & 0 \\
+%	\end{bmatrix}
 	\\
 	\\
 	\partial_t \Li{7} & = & <\vec{C}|\mymat{G}_7|\vec{E}_1> \proton + k_7\left(\Theta \LiOut{7} - \Li{7}\right)\\
-	\mymat{G}_7 & = & k^p_{77} \mymat{F}_{77} + k^p_{76}\mymat{F}_{67} = 
-	\begin{bmatrix}
-	0              & f_{76} k^p_{76}\\
-	f_{67}k^p_{76} & f_{77}k^p_{77}\\
-	\end{bmatrix}
+	\mymat{G}_7 & = & k^p_{77} \mymat{F}_{77} + k^p_{76}\mymat{F}_{67} 
+%	= 
+%	\begin{bmatrix}
+%	0              & f_{76} k^p_{76}\\
+%	f_{67}k^p_{76} & f_{77}k^p_{77}\\
+%	\end{bmatrix}
 	\\
 \end{array}
 \right.

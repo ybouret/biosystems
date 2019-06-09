@@ -34,17 +34,22 @@
 \newcommand{\mymat}[1]{{\bm{#1}}}
 \newcommand{\mydet}[1]{{\left|{#1}\right|}}
 
+\usepackage{ifthen}
+
+
 \newcommand{\LiAll}{\Lambda}
 \newcommand{\LiAllOut}{\myout{\LiAll}}
 \newcommand{\inpLi}[1]{\text{+}\spLiOut{#1}}
 \newcommand{\outLi}[1]{\text{-}\spLiOut{#1}}
+
+\newcommand{\mycolor}[2]{\ifthenelse{\equal{#1}{6}}{{\color{Orange}#2}}{{\color{Cerulean}#2}}}
+
 
 
 \begin{document}
 \title{Cooperativity}
 \maketitle
 %\tableofcontents
-
 
 \section{Passive Behaviour}
 We have two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane:
@@ -188,13 +193,13 @@ In particular, with
 \boxed{
 \begin{array}{ccccccc}
  & &        &                                                  & E_{66} & & \\
- & &        & \myrotate{45}{$\xrightleftharpoons[\outLi{6},\;d_{66}]{\inpLi{6},\;a_{66}}$} & &  \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{66}}$}& \\
+ & &        & \myrotate{45}{\mycolor{6}{$\xrightleftharpoons[\outLi{6},\;d_{66}]{\inpLi{6},\;a_{66}}$}} & &  \myrotate{-45}{\mycolor{6}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{66}}$}}& \\
  & & E_{06} &  & \xleftarrow{\text{ recycling } k^h_6 } & & E_{6H}\\
- &  \myrotate{45}{$\xrightleftharpoons[\outLi{6},\;d_{06}]{\inpLi{6},\;a_{06}}$} &   & \myrotate{-45}{$\xrightleftharpoons[\outLi{7},\;d_{67}]{\inpLi{7},\;a_{67}}$} & & \myrotate{45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{67}}$}&\\
+ &  \myrotate{45}{\mycolor{6}{$\xrightleftharpoons[\outLi{6},\;d_{06}]{\inpLi{6},\;a_{06}}$}} &   & \myrotate{-45}{\mycolor{7}{$\xrightleftharpoons[\outLi{7},\;d_{67}]{\inpLi{7},\;a_{67}}$}} & & \myrotate{45}{\mycolor{7}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{67}}$}}&\\
 E_{00} & &  & & E_{67}(=E_{76}) & & \\ 
-  & \myrotate{-45}{$\xrightleftharpoons[\outLi{7},\;d_{07}]{\inpLi{7},\;a_{07}}$} &  & \myrotate{45}{$\xrightleftharpoons[\outLi{6},\;d_{76}]{\inpLi{6},\;a_{76}}$} & & \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{76}}$} & \\
+  & \myrotate{-45}{\mycolor{7}{$\xrightleftharpoons[\outLi{7},\;d_{07}]{\inpLi{7},\;a_{07}}$}} &  & \myrotate{45}{\mycolor{6}{$\xrightleftharpoons[\outLi{6},\;d_{76}]{\inpLi{6},\;a_{76}}$}} & & \myrotate{-45}{\mycolor{6}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_{76}}$}} & \\
   & & E_{07} &   & \xleftarrow{\text{ recycling } k^h_7 } & & E_{7H}\\
-  & &  & \myrotate{-45}{$\xrightleftharpoons[\outLi{7},\;d_{77}]{\inpLi{7},\;a_{77}}$} & & \myrotate{45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{77}}$} &\\
+  & &  & \myrotate{-45}{\mycolor{7}{$\xrightleftharpoons[\outLi{7},\;d_{77}]{\inpLi{7},\;a_{77}}$}} & & \myrotate{45}{\mycolor{7}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_{77}}$}} &\\
   & &  &  & E_{77} & &\\
 
  \end{array}

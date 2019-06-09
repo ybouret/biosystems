@@ -550,7 +550,7 @@ We also assume that:
 \right.
 \end{equation}
 \end{itemize}
-so that
+We compute:
 \begin{equation}
 	\vec{L}_7  = i_7 u_7^2 
 	\underbrace{
@@ -580,6 +580,30 @@ so that
 \mathsf{N}_6 & = & U \; \mathsf{N}_7
 \end{array} 
 \right.
+\end{equation}
+And with
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\vec{L}_d & = &
+\begin{bmatrix}
+(2D+1) U\\
+(D+1)
+\end{bmatrix}\\
+\\
+\mymat{Q}_d & =  &
+\begin{bmatrix}
+(2D+1)U^2 & (D+1)U \\
+(D+1) U   & (D+2)  \\
+\end{bmatrix}\\
+\\
+T_d & = & C_7^3 + (1+D)[C_7^2(UC_6)+C_7(UC_6)^2] + D (UC_6)^3 \\
+\end{array}
+\right.
+\end{equation}
+we get
+\begin{equation}
+	\mathsf{D} = \dfrac{1}{1+D} \left[ u_7 <\vec{C}|\vec{L}_d> + u_7^2 <\vec{C}|\mymat{Q}_d|\vec{C}> + u_7^3 T_d \right]
 \end{equation}
 
 \end{document}

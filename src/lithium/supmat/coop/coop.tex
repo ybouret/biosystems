@@ -186,7 +186,6 @@ In particular, with
 
 \section{Two Layers}
 \subsection{Scheme}
-\subsubsection{Dependant Scheme}
 {
 \Large
 \begin{equation}
@@ -208,23 +207,6 @@ E_{00} & &  & & E_{67}(=E_{76}) & & \\
 }
 with no restriction on microscopic values.
 
-\subsubsection{Independency hypothesis}
-If we assume that the microscopic rates depends only on the "naked" lithium and not on the protein state:
-\begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-k^h_6    & = & k^h_7\\
-\\
-a_{76}   & = & a_{66} = a_{06} \\
-d_{76}   & = & d_{66} = d_{06} \\
-k^p_{76} & = & k^p_{66}\\
-\\
-a_{67}   & = & a_{77} = a_{07} \\
-d_{67}   & = & d_{77} = d_{07} \\
-k^p_{67} & = & k^p_{77}\\
-\end{array}
-\right.
-\end{equation}
 
 \subsection{Equations}
 \begin{equation}
@@ -393,8 +375,9 @@ We define the following constants:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-K_6 & = & d_{67} f_{76}/d_{07} \\
-K_7 & = &  d_{76} f_{67}/d_{06}\\
+K_6 & = & \dfrac{d_{67}}{d_{07}}\dfrac{a_{76}}{d_{76}+d_{67}} \\
+\\
+K_7 & = &  \dfrac{d_{76}}{d_{06}}\dfrac{a_{67}}{d_{76}+d_{67}}\\
 \end{array}
 \right.
 \end{equation}
@@ -526,6 +509,77 @@ Finally:
 {
 \mathsf{E}\proton_0 \dfrac{\mathsf{N}_6(\LiAllOut)}{1+\mathsf{D}(\LiAllOut)} + k_6 \Theta 
 }
+\end{equation}
+
+\section{Independency hypothesis}
+If we assume that the microscopic rates depends only on the "naked" lithium and not on the protein state:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+k^h_6    & = & k^h_7 = k_h\\
+\\
+a_{76}   & = & a_{66} = a_{06} = a^r_6\\
+d_{76}   & = & d_{66} = d_{06} = d^r_6\\
+k^p_{76} & = & k^p_{66} = i_6\\
+\\
+a_{67}   & = & a_{77} = a_{07} = a^r_7 \\
+d_{67}   & = & d_{77} = d_{07} = d^r_7\\
+k^p_{67} & = & k^p_{77} = i_7\\
+\end{array}
+\right.
+\end{equation}
+We also assume that:
+\begin{itemize}
+\item the {\bf detachment} speed up is the same, meaning that
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	i_6 & = & D \; i_7\\
+	d^r_6 & = & D \; d^r_7\\
+\end{array}
+\right.
+\end{equation}
+\item the {\bf formation} ratio are
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	a^r_6 & = & u_6 \; d^r_6\\
+	a^r_7 & = & u_7 \; d^r_7 \\
+	u_6   & = & U u_7 \\
+\end{array}
+\right.
+\end{equation}
+\end{itemize}
+so that
+\begin{equation}
+	\vec{L}_7  = i_7 u_7^2 
+	\underbrace{
+	\begin{bmatrix}
+	DU\\
+	1
+	\end{bmatrix}
+	}_{\vec{L}}
+	\\,
+	\;\;\vec{L}_6 = U \cdot \vec{L}_7
+\end{equation}
+and
+\begin{equation}
+\mymat{Q}_7 = \dfrac{i_7 u_7^3}{1+D}
+\begin{bmatrix}
+	D^2 U^2 & DU \\
+	DU      & 1\\
+\end{bmatrix}
+= \dfrac{i_7 u_7^3}{1+D} \vec{L} \mytrn{\vec{L}},\;\; \mymat{Q_6} = U \mymat{Q}_7
+\end{equation}
+so that
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\mathsf{N}_7 & = & <\vec{C}|\mymat{Q}_7|\vec{C}> + <\vec{L}_7|\vec{C}> \\
+ & = & i_7 u_7^2  <\vec{L}|\vec{C}> \left[ 1 + \dfrac{u_7}{1+D}  <\vec{L}|\vec{C}> \right]\\
+\mathsf{N}_6 & = & U \; \mathsf{N}_7
+\end{array} 
+\right.
 \end{equation}
 
 \end{document}

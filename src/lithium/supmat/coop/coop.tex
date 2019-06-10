@@ -545,7 +545,7 @@ We also assume that:
 \begin{array}{rcl}
 	a^r_6 & = & u_6 \; d^r_6\\
 	a^r_7 & = & u_7 \; d^r_7 \\
-	u_6   & = & U u_7 \\
+	u_6   & = & \kappa u_7 \\
 \end{array}
 \right.
 \end{equation}
@@ -555,29 +555,33 @@ We compute:
 	\vec{L}_7  = i_7 u_7^2 
 	\underbrace{
 	\begin{bmatrix}
-	DU\\
+	D\kappa\\
 	1
 	\end{bmatrix}
 	}_{\vec{L}}
 	\\,
-	\;\;\vec{L}_6 = U \cdot \vec{L}_7
+	\;\;\vec{L}_6 = \kappa \cdot \vec{L}_7
 \end{equation}
 and
 \begin{equation}
 \mymat{Q}_7 = \dfrac{i_7 u_7^3}{1+D}
 \begin{bmatrix}
-	D^2 U^2 & DU \\
-	DU      & 1\\
+	D^2 \kappa^2 & D\kappa \\
+	D\kappa      & 1\\
 \end{bmatrix}
-= \dfrac{i_7 u_7^3}{1+D} \vec{L} \mytrn{\vec{L}},\;\; \mymat{Q_6} = U \mymat{Q}_7
+= \dfrac{i_7 u_7^3}{1+D} \vec{L} \mytrn{\vec{L}},\;\; \mymat{Q_6} = \kappa \mymat{Q}_7
 \end{equation}
 so that
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
 \mathsf{N}_7 & = & <\vec{C}|\mymat{Q}_7|\vec{C}> + <\vec{L}_7|\vec{C}> \\
+\\
  & = & i_7 u_7^2  <\vec{L}|\vec{C}> \left[ 1 + \dfrac{u_7}{1+D}  <\vec{L}|\vec{C}> \right]\\
-\mathsf{N}_6 & = & U \; \mathsf{N}_7
+ \\
+ & = & i_7 \left[  u_7^2  <\vec{L}|\vec{C}> + \dfrac{u_7^3}{1+D} <\vec{L}|\vec{C}>^2 \right]\\
+ \\
+\mathsf{N}_6 & = & \kappa \; \mathsf{N}_7
 \end{array} 
 \right.
 \end{equation}
@@ -587,17 +591,17 @@ And with
 \begin{array}{rcl}
 \vec{L}_d & = &
 \begin{bmatrix}
-(2D+1) U\\
+(2D+1) \kappa\\
 (D+1)
 \end{bmatrix}\\
 \\
 \mymat{Q}_d & =  &
 \begin{bmatrix}
-(2D+1)U^2 & (D+1)U \\
-(D+1) U   & (D+2)  \\
+(2D+1)\kappa^2 & (D+1)\kappa \\
+(D+1) \kappa   & (D+2)  \\
 \end{bmatrix}\\
 \\
-T_d & = & C_7^3 + (1+D)[C_7^2(UC_6)+C_7(UC_6)^2] + D (UC_6)^3 \\
+T_d & = & C_7^3 + (1+D)[C_7^2(\kappa C_6)+C_7(\kappa C_6)^2] + D (\kappa C_6)^3 \\
 \end{array}
 \right.
 \end{equation}

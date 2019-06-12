@@ -534,8 +534,8 @@ We also assume that:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	i_6 & = & D \; i_7\\
-	d^r_6 & = & D \; d^r_7\\
+	i_6 & = & \rho \; i_7\\
+	d^r_6 & = & \rho \; d^r_7\\
 \end{array}
 \right.
 \end{equation}
@@ -564,12 +564,12 @@ We compute:
 \end{equation}
 and
 \begin{equation}
-\mymat{Q}_7 = \dfrac{i_7 u_7^3}{1+D}
+\mymat{Q}_7 = \dfrac{i_7 u_7^3}{1+\rho}
 \begin{bmatrix}
-	D^2 \kappa^2 & D\kappa \\
-	D\kappa      & 1\\
+	\rho^2 \kappa^2 & \rho\kappa \\
+	\rho\kappa      & 1\\
 \end{bmatrix}
-= \dfrac{i_7 u_7^3}{1+D} \vec{L} \mytrn{\vec{L}},\;\; \mymat{Q_6} = \kappa \mymat{Q}_7
+= \dfrac{i_7 u_7^3}{1+\rho} \vec{L} \mytrn{\vec{L}},\;\; \mymat{Q_6} = \kappa \mymat{Q}_7
 \end{equation}
 so that
 \begin{equation}
@@ -577,9 +577,9 @@ so that
 \begin{array}{rcl}
 \mathsf{N}_7 & = & <\vec{C}|\mymat{Q}_7|\vec{C}> + <\vec{L}_7|\vec{C}> \\
 \\
- & = & i_7 u_7^2  <\vec{L}|\vec{C}> \left[ 1 + \dfrac{u_7}{1+D}  <\vec{L}|\vec{C}> \right]\\
+ & = & i_7 u_7^2  <\vec{L}|\vec{C}> \left[ 1 + \dfrac{u_7}{1+\rho}  <\vec{L}|\vec{C}> \right]\\
  \\
- & = & i_7 \left[  u_7^2  <\vec{L}|\vec{C}> + \dfrac{u_7^3}{1+D} <\vec{L}|\vec{C}>^2 \right]\\
+ & = & i_7 \left[  u_7^2  <\vec{L}|\vec{C}> + \dfrac{u_7^3}{1+\rho} <\vec{L}|\vec{C}>^2 \right]\\
  \\
 \mathsf{N}_6 & = & \kappa \; \mathsf{N}_7
 \end{array} 
@@ -591,23 +591,23 @@ And with
 \begin{array}{rcl}
 \vec{L}_d & = &
 \begin{bmatrix}
-(2D+1) \kappa\\
-(D+1)
+(2\rho+1) \kappa\\
+(\rho+1)
 \end{bmatrix}\\
 \\
 \mymat{Q}_d & =  &
 \begin{bmatrix}
-(2D+1)\kappa^2 & (D+1)\kappa \\
-(D+1) \kappa   & (D+2)  \\
+(2\rho+1)\kappa^2 & (\rho+1)\kappa \\
+(\rho+1) \kappa   & (\rho+2)  \\
 \end{bmatrix}\\
 \\
-T_d & = & C_7^3 + (1+D)[C_7^2(\kappa C_6)+C_7(\kappa C_6)^2] + D (\kappa C_6)^3 \\
+T_d & = & C_7^3 + (1+\rho)[C_7^2(\kappa C_6)+C_7(\kappa C_6)^2] + \rho (\kappa C_6)^3 \\
 \end{array}
 \right.
 \end{equation}
 we get
 \begin{equation}
-	\mathsf{D} = \dfrac{1}{1+D} \left[ u_7 <\vec{C}|\vec{L}_d> + u_7^2 <\vec{C}|\mymat{Q}_d|\vec{C}> + u_7^3 T_d \right]
+	\mathsf{D} = \dfrac{1}{1+\rho} \left[ u_7 <\vec{C}|\vec{L}_d> + u_7^2 <\vec{C}|\mymat{Q}_d|\vec{C}> + u_7^3 T_d \right]
 \end{equation}
 
 \end{document}

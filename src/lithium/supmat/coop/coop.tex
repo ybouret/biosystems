@@ -175,6 +175,7 @@ In particular, with
 \end{equation}
 
 \begin{equation}
+\label{eq:level1}
 	\left.\dfrac{\beta_u}{\beta_v}\right\vert_{t\to0} \simeq \left.\dfrac{\partial_t \beta_u}{\partial_t\beta_v}\right\vert_{t\to0}
 	= \dfrac{\mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_0 \LiAllOut}\right] \proton_0 + k_u  \Theta_0
 	}
@@ -517,6 +518,7 @@ Finally:
 
 If we assume that the microscopic rates depends only on the "naked" lithium and not on the protein state:
 \begin{equation}
+\label{eq:indep}
 \left\lbrace
 \begin{array}{rcl}
 k^h_6    & = & k^h_7 = k_h\\
@@ -626,12 +628,25 @@ We obtain, using \eqref{eq:C}:
 \right.
 \end{equation}
 
+and
+
+\begin{equation}
+\left.\dfrac{\beta_7}{\beta_6}\right\vert_{\varnothing} = 
+\dfrac{
+	\left(\mathsf{E}\proton_0 \dfrac{\mathsf{N}_7(\LiAllOut)}{1+\mathsf{D}(\LiAllOut)}\right) + k_7 \Theta 
+}
+{
+	\kappa \left(\mathsf{E}\proton_0 \dfrac{\mathsf{N}_7(\LiAllOut)}{1+\mathsf{D}(\LiAllOut)}\right) + \sigma k_7 \Theta 
+}
+\end{equation}
+
+
 \subsubsection{Effect Evaluation}
 For a $\spLi{7}$ dominant solution and $\rho\approx1$, we get
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\widetilde{\mathsf{N}}_7(\LiAllOut) & = & \underbrace{i_7 u_7}_{v_7} \left[ \left(u_7\LiAllOut\right) + \dfrac{1}{2} \left(u_7\LiAllOut\right)^2\right]\\
+	\widetilde{\mathsf{N}}_7(\LiAllOut) & = &  {i_7 u_7}  \left[ \left(u_7\LiAllOut\right) + \dfrac{1}{2} \left(u_7\LiAllOut\right)^2\right]\\
 	\\
 	\widetilde{\mathsf{D}}(\LiAllOut)   & = & \dfrac{3}{2} \left[  \left(u_7\LiAllOut\right) + \left(u_7\LiAllOut\right)^2 + \dfrac{1}{3} \left(u_7\LiAllOut\right)^3 \right] \\
 \end{array}
@@ -639,8 +654,14 @@ For a $\spLi{7}$ dominant solution and $\rho\approx1$, we get
 \end{equation}
 and we obtain:
 \begin{equation}
-	\dfrac{\widetilde{\mathsf{N}}_7(\LiAllOut)}{1+\widetilde{\mathsf{D}}(\LiAllOut)} = \dfrac{X}{1+X+X^2},\;\; X=C_0u_7
+	\dfrac{\widetilde{\mathsf{N}}_7(\LiAllOut)}{1+\widetilde{\mathsf{D}}(\LiAllOut)} =  {i_7 u_7} \dfrac{X}{1+X+X^2},\;\; X=C_0u_7
 \end{equation}
+
+\begin{center}
+	\includegraphics[width=0.5\textwidth]{f.png}
+\end{center}
+This means that for $X\ll 1$, or $C_0\ll\dfrac{1}{u_7}$, an increase in concentration will decrease the initial ratio, which is never the case when dealing with
+the 1-layer expression stated in equation \eqref{eq:level1}.
 
 \end{document}
 

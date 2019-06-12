@@ -280,6 +280,7 @@ We define:
 \end{equation}
 \item the outer concentrations:
 \begin{equation}
+\label{eq:C}
 	\vec{C} = 
 	\begin{bmatrix}
 	\LiOut{6}\\
@@ -512,6 +513,8 @@ Finally:
 \end{equation}
 
 \section{Independency hypothesis}
+\subsection{Simplification}
+
 If we assume that the microscopic rates depends only on the "naked" lithium and not on the protein state:
 \begin{equation}
 \left\lbrace
@@ -608,6 +611,35 @@ T_d & = & C_7^3 + (1+\rho)[C_7^2(\kappa C_6)+C_7(\kappa C_6)^2] + \rho (\kappa C
 we get
 \begin{equation}
 	\mathsf{D} = \dfrac{1}{1+\rho} \left[ u_7 <\vec{C}|\vec{L}_d> + u_7^2 <\vec{C}|\mymat{Q}_d|\vec{C}> + u_7^3 T_d \right]
+\end{equation}
+
+\subsection{Effect of external Lithium}
+\subsubsection{Compact Expressions}
+We obtain, using \eqref{eq:C}:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\mathsf{N}_7(\LiAllOut) & = & i_7u_7 \left[ <\vec{L}|\vec{\epsilon}> (u_7\LiAllOut) +  \dfrac{\left(u_7\LiAllOut\right)^2}{1+\rho}  <\vec{L}|\vec{\epsilon}>^2 \right]\\
+	\mathsf{D}(\LiAllOut)   & = & \dfrac{1}{1+\rho} \left[ <\vec{L}_d|\vec{\epsilon}> (u_7\LiAllOut) + <\vec{\epsilon}|\mymat{Q}_d|\vec{\epsilon}>\left(u_7\LiAllOut\right)^2 
+	+  T_\epsilon \left(u_7\LiAllOut\right)^3\right]\\
+\end{array}
+\right.
+\end{equation}
+
+\subsubsection{Effect Evaluation}
+For a $\spLi{7}$ dominant solution and $\rho\approx1$, we get
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\widetilde{\mathsf{N}}_7(\LiAllOut) & = & \underbrace{i_7 u_7}_{v_7} \left[ \left(u_7\LiAllOut\right) + \dfrac{1}{2} \left(u_7\LiAllOut\right)^2\right]\\
+	\\
+	\widetilde{\mathsf{D}}(\LiAllOut)   & = & \dfrac{3}{2} \left[  \left(u_7\LiAllOut\right) + \left(u_7\LiAllOut\right)^2 + \dfrac{1}{3} \left(u_7\LiAllOut\right)^3 \right] \\
+\end{array}
+\right.
+\end{equation}
+and we obtain:
+\begin{equation}
+	\dfrac{\widetilde{\mathsf{N}}_7(\LiAllOut)}{1+\widetilde{\mathsf{D}}(\LiAllOut)} = \dfrac{X}{1+X+X^2},\;\; X=C_0u_7
 \end{equation}
 
 \end{document}

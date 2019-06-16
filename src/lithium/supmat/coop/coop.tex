@@ -42,7 +42,7 @@
 \newcommand{\inpLi}[1]{\text{+}\spLiOut{#1}}
 \newcommand{\outLi}[1]{\text{-}\spLiOut{#1}}
 
-\newcommand{\mycolor}[2]{\ifthenelse{\equal{#1}{6}}{{\color{Red}#2}}{{\color{OliveGreen}#2}}}
+\newcommand{\mycolor}[2]{\ifthenelse{\equal{#1}{6}}{{\color{Red}#2}}{{\color{Green}#2}}}
 
 
 
@@ -66,9 +66,9 @@ We have two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane
 \boxed{
 \begin{array}{ccccc}
  & & E_{06}  &  & \\
- &  \myrotate{45}{$\xrightleftharpoons[\outLi{6},\;d_{06}]{+\spLiOut{6},\;a_{06}}$} &   & \myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_6}$} &  \\
+ &  \mycolor{6}{\myrotate{45}{$\xrightleftharpoons[\outLi{6},\;d_{06}]{+\spLiOut{6},\;a_{06}}$}} &   & \mycolor{6}{\myrotate{-45}{$\xrightarrow[-\spLi{6}]{+ \spproton, \; k^p_6}$}} &  \\
 E_{00}  &  & \xleftarrow{\text{ recycling } k_h } &   & E_{0H} \\
-  & \myrotate{-45}{$\xrightleftharpoons[\outLi{7},\;d_{07}]{+\spLiOut{7},\;a_{02}}$} &   & \myrotate{+45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_7}$} & \\
+  & \mycolor{7}{\myrotate{-45}{$\xrightleftharpoons[\outLi{7},\;d_{07}]{+\spLiOut{7},\;a_{02}}$}} &   & \mycolor{7}{\myrotate{+45}{$\xrightarrow[-\spLi{7}]{+ \spproton, \; k^p_7}$}} & \\
  & & E_{07} & & \\
  \end{array}
  }
@@ -416,50 +416,41 @@ and
 
 
 \subsubsection{First layer as a function of the external components}
+We define:
+\begin{equation}
+\mymat{A}_0 =\begin{bmatrix}
+a_{06} & 0 \\
+0 & a_{07} \\
+\end{bmatrix},\;\;
+\mymat{D}_0 = 
+\begin{bmatrix}
+d_{06} & 0 \\
+0 & d_{07} \\
+\end{bmatrix},\;\;
+\mymat{R}_H =
+\begin{bmatrix}
+k^h_6 & 0 \\
+0 & k^h_7 \\
+\end{bmatrix}
+\end{equation}
+
 We define the following constants:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-K_6 & = & \dfrac{d_{67}}{d_{07}}\dfrac{a_{76}}{d_{76}+d_{67}} \\
+K_6 & = & \dfrac{1}{d_{07}}  \dfrac{a_{76}d_{67}}{d_{67}+d_{76}} \\
 \\
-K_7 & = &  \dfrac{d_{76}}{d_{06}}\dfrac{a_{67}}{d_{76}+d_{67}}\\
+K_7 & = &  \dfrac{1}{d_{06}} \dfrac{a_{67}d_{76}}{d_{67}+d_{76}} \\
 \end{array}
 \right.
-\end{equation}
-so that the first layer equation becomes:
-	
-\begin{equation}
-\begin{bmatrix}
-d_{06} \left(1+ K_7\LiOut{7}\right) & -d_{07}K_6\LiOut{6}\\
--K_7\LiOut{7}d_{06} & d_{07}\left(1 + K_6\LiOut{6}\right) \\
-\end{bmatrix}
-\vec{E}_1 = \underbrace{
-\begin{bmatrix}
-	k^h_6 & 0 \\
-	0     & k^h_7\\
-\end{bmatrix}
-}_{\mymat{R}_H}
-\vec{E}_H 
-+ E_{00}
-\underbrace{
-\begin{bmatrix}
-a_{06} & 0 \\
-0 & a_{07} \\
-\end{bmatrix}
-}_{\mymat{A}_0}
-\vec{C}
 \end{equation}
 Leading to
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
 W_1 & = & 1 +    K_6\LiOut{6} +  K_7 \LiOut{7}  \\
-W_1 \vec{E}_1 & = & \underbrace{
-\begin{bmatrix}
-d_{06}^{-1} & 0 \\
-0 & d_{07}^{-1} \\
-\end{bmatrix}
-}_{\mymat{D}_0^{-1}}
+\\
+W_1 \vec{E}_1 & = & \mymat{D}_0^{-1}
 \underbrace{
 \left(
 \mymat{I}_d+
@@ -474,6 +465,8 @@ d_{06}^{-1} & 0 \\
 	\mymat{R}_H \vec{E}_H + E_{00} \mymat{A}_0 \vec{C}
 	\right)
 	\\
+\\
+W_1 \vec{\alpha}_1 & = & \mymat{D}_0^{-1} \mymat{M}_1' \left( \mymat{R}_H \vec{\alpha}_1 + \alpha_{00} \mymat{A}_0 \vec{C} \right)\\
 \end{array}
 \right.
 \end{equation}

@@ -466,7 +466,7 @@ W_1 \vec{E}_1 & = & \mymat{D}_0^{-1}
 	\right)
 	\\
 \\
-W_1 \vec{\alpha}_1 & = & \mymat{D}_0^{-1} \mymat{M}_1' \left( \mymat{R}_H \vec{\alpha}_1 + \alpha_{00} \mymat{A}_0 \vec{C} \right)\\
+W_1 \vec{\alpha}_1 & = & \mymat{D}_0^{-1} \mymat{M}_1' \left( \mymat{R}_H \vec{\alpha}_H + \alpha_{00} \mymat{A}_0 \vec{C} \right)\\
 \end{array}
 \right.
 \end{equation}
@@ -489,10 +489,21 @@ W_1\mathsf{E} & = & W_1E_{00} + <\vec{P_1} + \mytrn{\mymat{F}} \vec{C} | W_1 \ve
 and
 \begin{equation}
 \boxed{
-	E_{00} = \dfrac{W_1 \mathsf{E} - <\vec{P_1} + \mytrn{\mymat{F}} \vec{C}| \left( \mymat{D}_0^{-1} \mymat{M}_1' \mymat{R}_H \right) | \vec{E}_H> }
-	{ W_1+\underbrace{<\vec{P_1} + \mytrn{\mymat{F}} \vec{C}| \underbrace{\left( \mymat{D}_0^{-1} \mymat{M}_1' \mymat{A}_0 \right)}_{\mymat{M}_0} | \vec{C}>}_{W_3}}
+\begin{array}{rcl}
+	E_{00} & = & \dfrac{W_1 \mathsf{E} - <\vec{P_1} + \mytrn{\mymat{F}} \vec{C}| \left( \mymat{D}_0^{-1} \mymat{M}_1' \mymat{R}_H \right) | \vec{E}_H> }
+	{ W_1+\underbrace{<\vec{P_1} + \mytrn{\mymat{F}} \vec{C}| \underbrace{\left( \mymat{D}_0^{-1} \mymat{M}_1' \mymat{A}_0 \right)}_{\mymat{M}_0} | \vec{C}>}_{W_3}} \\
+	\\
+	\alpha_{00} & = & \dfrac{W_1   - <\vec{P_1} + \mytrn{\mymat{F}} \vec{C}| \left( \mymat{D}_0^{-1} \mymat{M}_1' \mymat{R}_H \right) | \vec{\alpha}_H> }
+	{ W_1+ W_3 }\\
+\end{array}
 }
 \end{equation}
+
+\begin{equation}
+\partial_t \Li{x} = \mathsf{E} <\vec{C}|\mymat{G}_x|\vec{\alpha}_1> \proton+ k_x\left(\Theta \LiOut{x} - \Li{x}\right)\\
+\end{equation}
+
+......
 In particular
 \begin{equation}
 	E_{00}^\varnothing = \dfrac{W_1 \mathsf{E}}{W_1+W_3}

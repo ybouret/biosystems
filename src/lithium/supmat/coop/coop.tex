@@ -330,7 +330,12 @@ We define:
 	\epsilon_7\\
 	\end{bmatrix}
 	=
-	\LiAllOut\vec{\epsilon}
+	\LiAllOut\vec{\epsilon},\;\;
+	\mymat{\Delta}_C = 
+	\begin{bmatrix}
+	C_6 & 0\\
+	 0& C_7\\
+	\end{bmatrix}
 \end{equation}
 \item the protonated enzymes:
 \begin{equation}
@@ -344,6 +349,19 @@ We define:
 	\alpha_{6H}\\
 	\alpha_{7H}\\
 	\end{bmatrix} 
+\end{equation}
+\item the projecting items
+\begin{equation}
+	\vec{L}_1 = 
+	\begin{bmatrix}
+	1\\
+	1\\
+	\end{bmatrix},\;\;
+	\mymat{Q}_1 = 
+	\begin{bmatrix}
+	1&1\\
+	1&1\\
+	\end{bmatrix}
 \end{equation}
 
 \end{itemize}
@@ -438,9 +456,11 @@ We define the following constants:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-K_6 & = & \dfrac{1}{d_{07}}  \dfrac{a_{76}d_{67}}{d_{67}+d_{76}} \\
+K_6 & = & \dfrac{1}{d_{07}d_{06}}  \dfrac{a_{76}d_{67}}{d_{67}+d_{76}} \\
 \\
-K_7 & = &  \dfrac{1}{d_{06}} \dfrac{a_{67}d_{76}}{d_{67}+d_{76}} \\
+K_7 & = &  \dfrac{1}{d_{06}d_{07}} \dfrac{a_{67}d_{76}}{d_{67}+d_{76}} \\
+\\
+\mymat{\Delta}_K & = & \begin{bmatrix} K_6 & 0 \\ 0 & K7 \\ \end{bmatrix}
 \end{array}
 \right.
 \end{equation}
@@ -448,25 +468,27 @@ Leading to
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-W_1 & = & 1 +    K_6\LiOut{6} +  K_7 \LiOut{7}  \\
+W_1 & = & 1 +  <\vec{L}_1| \mymat{\Delta}_K \mymat{D}_0 | \vec{C}> \\
 \\
-W_1 \vec{E}_1 & = & \mymat{D}_0^{-1}
-\underbrace{
-\left(
-\mymat{I}_d+
-\underbrace{
-	\begin{bmatrix}
-	K_6\LiOut{6} & K_6\LiOut{6}\\
-	K_7\LiOut{7} & K_7 \LiOut{7}\\
-	\end{bmatrix}
-	}_{\mymat{M}_1}
-		\right)}_{\mymat{M}_1'}
-	\left( 
+\mymat{M_1} & = & \mymat{D}_0^{-1} + \mymat{\Delta}_C \mymat{\Delta}_K \mymat{Q}_1 \\
+\\
+W_1 \vec{E}_1 & = & \mymat{M}_1 \left( 
 	\mymat{R}_H \vec{E}_H + E_{00} \mymat{A}_0 \vec{C}
-	\right)
-	\\
-\\
-W_1 \vec{\alpha}_1 & = & \mymat{D}_0^{-1} \mymat{M}_1' \left( \mymat{R}_H \vec{\alpha}_H + \alpha_{00} \mymat{A}_0 \vec{C} \right)\\
+	\right)\\
+%\mymat{D}_0^{-1}
+%\underbrace{
+%\left(
+%\mymat{I}_d+
+%\underbrace{
+%	\begin{bmatrix}
+%	K_6\LiOut{6} & K_6\LiOut{6}\\
+%	K_7\LiOut{7} & K_7 \LiOut{7}\\
+%	\end{bmatrix}
+%	}_{\mymat{M}_1}
+%		\right)}_{\mymat{M}_1'}
+%	\left( 
+%	\mymat{R}_H \vec{E}_H + E_{00} \mymat{A}_0 \vec{C}
+%	\right)\\
 \end{array}
 \right.
 \end{equation}

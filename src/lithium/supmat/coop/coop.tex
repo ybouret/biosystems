@@ -494,20 +494,25 @@ W_1 \vec{E}_1 & = & \mymat{M}_1 \left(
 \end{equation}
 
 \subsection{Using Mass Conservation}
-Using $$\vec{P}_1=\begin{bmatrix}1\\1\\\end{bmatrix}$$
+We replace:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
 \mathsf{E}    & = & E_{00} 
 + \underbrace{E_{11}+E_{12}+E_{22}}_{<\vec{C}|\mymat{F}|\vec{E}_1>} 
-+ \underbrace{E_{01}+E_{02}}_{<\vec{P}_1|\vec{E}_1>} 
-+ \underbrace{E_{6H} + E_{7H}}_{<\vec{P}_1|\vec{E}_H>}\\
-W_1\mathsf{E} & = & W_1E_{00} + <\vec{P_1} + \mytrn{\mymat{F}} \vec{C} | W_1 \vec{E}_1 > +  < W_1\vec{P_1} | \vec{E}_H>\\
-     & = &  W_1E_{00} + <\vec{P_1} + \mytrn{\mymat{F}} \vec{C}| \left( \mymat{D}_0^{-1} \mymat{M}_1' \mymat{R}_H \right) | \vec{E}_H> + 
-     <\vec{P_1} + \mytrn{\mymat{F}} \vec{C}| \left( \mymat{D}_0^{-1} \mymat{M}_1' \mymat{A}_0 \right) | \vec{C}> E_{00}
++ \underbrace{E_{01}+E_{02}}_{<\vec{L}_1|\vec{E}_1>} 
++ \underbrace{E_{6H} + E_{7H}}_{<\vec{L}_1|\vec{E}_H>}\\
+\\
+W_1 \mathsf{E} & = & W_1 E_{00} + < \vec{L}_1 + \mytrn{\mymat{F}}\vec{C} | W_1 \vec{E}_1 > + <W_1 \vec{L}_1|\vec{E}_H> \\
+& = & W_1 E_{00} + < \vec{L}_1 + \mytrn{\mymat{F}}\vec{C} | \mymat{M}_1 \left( 
+	\mymat{R}_H \vec{E}_H + E_{00} \mymat{A}_0 \vec{C}\right) > + <W_1 \vec{L}_1|\vec{E}_H> \\
+	& = & E_{00} \left(W_1 + < \vec{L}_1 + \mytrn{\mymat{F}}\vec{C}| \mymat{M}_1 \mymat{A}_0 |\vec{C} >\right) +
+	\left( <W_1\vec{L}_1|\vec{E}_H> + < \vec{L}_1 + \mytrn{\mymat{F}}\vec{C}| \mymat{M}_1 \mymat{R}_H | \vec{E}_H> \right) \\
 \end{array}
 \right.
 \end{equation}
+\end{document}
+
 and
 \begin{equation}
 \boxed{

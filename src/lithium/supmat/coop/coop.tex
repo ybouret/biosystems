@@ -501,14 +501,25 @@ W_1 \mathsf{E} & = & W_1 E_{00} + < \vec{L}_1 + \mytrn{\mymat{F}}\vec{C} | W_1 \
 \end{array}
 \right.
 \end{equation}
-so that
+We define
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	W_3 & = & < \vec{L}_1 + \mytrn{\mymat{F}}\vec{C} | \mymat{M}_1  \mymat{\Delta}_A \vec{C} >\\
+	\\
+	& = & \displaystyle <\vec{L}_3|\vec{C}> + <\vec{C}|\mymat{Q}_3|\vec{C}> + \sum_{i+j=3}C_6^i C_7^j Z_{ij}  \\
+\end{array}
+\right.
+\end{equation}
+
 \begin{equation}
 \begin{array}{rcl}
-	E_{00}      &=&\dfrac{W_1}{W_1 + < \vec{L}_1 + \mytrn{\mymat{F}}\vec{C} | \mymat{M}_1  \mymat{\Delta}_A \vec{C} >} \left[\mathsf{E}-(E_{6H}+E_{7H})\right]\\
+	E_{00}      &=&\dfrac{W_1}{W_1 + W_3} \left[\mathsf{E}-(E_{6H}+E_{7H})\right]\\
 	\\
-	\alpha_{00} &=& \dfrac{W_1}{W_1 + < \vec{L}_1 + \mytrn{\mymat{F}}\vec{C} | \mymat{M}_1  \mymat{\Delta}_A \vec{C} >} \left[1-(\alpha_{6H}+\alpha_{7H})\right]\\
+	\alpha_{00} &=& \dfrac{W_1}{W_1 +W_3} \left[1-(\alpha_{6H}+\alpha_{7H})\right]\\
 \end{array}
 \end{equation}
+
 
 \end{document}
 

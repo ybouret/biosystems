@@ -114,9 +114,9 @@ We assume that the internal components are at a steady-state:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcll}
-	E_{06}^\star & = & \dfrac{a_{06}}{d_{06}+k^p_6 \proton } E_{00} \LiOut{6} & = J_6 E_{00} \LiOut{6}\\
+	E_{06}^\star & = & \dfrac{a_{06}}{d_{06}+k^p_6 \proton } E_{00} \LiOut{6} & = J_6^h E_{00} \LiOut{6}\\
 	\\
-	E_{07}^\star & = & \dfrac{a_{07}}{d_{07}+k^p_7 \proton } E_{00} \LiOut{7} & = J_7 E_{00} \LiOut{7}\\
+	E_{07}^\star & = & \dfrac{a_{07}}{d_{07}+k^p_7 \proton } E_{00} \LiOut{7} & = J_7^h E_{00} \LiOut{7}\\
 \end{array}
 \right.
 \end{equation}
@@ -125,15 +125,15 @@ We assume that the internal components are at a steady-state:
 
 Finally:
 \begin{equation}
-\mathsf{E} = E_{00}\left(1+J_6\LiOut{6}+J_7\LiOut{7}\right) + E_{0H} \Leftrightarrow E_{00} = \dfrac{\mathsf{E}-E_{0H}}{1+J_6\LiOut{6}+J_7\LiOut{7}}
+\mathsf{E} = E_{00}\left(1+J_6^h\LiOut{6}+J_7^h\LiOut{7}\right) + E_{0H} \Leftrightarrow E_{00} = \dfrac{\mathsf{E}-E_{0H}}{1+J_6^h\LiOut{6}+J_7^h\LiOut{7}}
 \end{equation}
 and:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	E_{06}^\star & = & \dfrac{J_6\LiOut{6}}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(\mathsf{E}-E_{0H}\right)\\
+	E_{06}^\star & = & \dfrac{J_6^h\LiOut{6}}{1+J_6^h\LiOut{6}+J_7^h\LiOut{7}} \left(\mathsf{E}-E_{0H}\right)\\
 	\\
-	E_{07}^\star & = & \dfrac{J_7\LiOut{7}}{1+J_6\LiOut{6}+J_7\LiOut{7}} \left(\mathsf{E}-E_{0H}\right)\\
+	E_{07}^\star & = & \dfrac{J_7^h\LiOut{7}}{1+J_6^h\LiOut{6}+J_7^h\LiOut{7}} \left(\mathsf{E}-E_{0H}\right)\\
 \end{array}
 \right.
 \end{equation}
@@ -141,9 +141,9 @@ so that we have the three equations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \Li{u}  & = & v^p_u +\partial_t \myleak{\Li{u}}  = \dfrac{k^p_u J_u \LiOut{u}}{1+\sum_v J_v \LiOut{v}} \left(\mathsf{E}-E_{0H}\right) \proton + k_u \left( \Theta \LiOut{u} - \Li{u}\right) \\
+	\partial_t \Li{u}  & = & v^p_u +\partial_t \myleak{\Li{u}}  = \dfrac{k^p_u J_u^h \LiOut{u}}{1+\sum_v J_v^h \LiOut{v}} \left(\mathsf{E}-E_{0H}\right) \proton + k_u \left( \Theta \LiOut{u} - \Li{u}\right) \\
 	\\
-	\partial_t E_{0H} & = & -k_h E_{0H} + \dfrac{\sum_v k^p_u J_u \LiOut{u}}{1+\sum_v J_v \LiOut{v}} \left(\mathsf{E}-E_{0H}\right) \proton \\
+	\partial_t E_{0H} & = & -k_h E_{0H} + \dfrac{\sum_v k^p_u J_u^h \LiOut{u}}{1+\sum_v J_v^h \LiOut{v}} \left(\mathsf{E}-E_{0H}\right) \proton \\
 \end{array}
 \right.
 \end{equation}
@@ -157,7 +157,7 @@ so that we have the three equations:
 	\\
 	\alpha  & = & \dfrac{E_{0H}}{\mathsf{E}}\\
 	\\
-	J_0 & = & \epsilon_6 J_6  + \epsilon_7 J_7 \\
+	J_h & = & \epsilon_6 J_6^h  + \epsilon_7 J_7^h \\
 \end{array}
 \right.
 \end{equation}
@@ -166,10 +166,10 @@ Leading to the three equations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \beta_u & = & \mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_0 \LiAllOut}\right] \left(1-\alpha\right) \proton
+	\partial_t \beta_u & = & \mathsf{E} \left[\dfrac{k^p_u J_u^h}{1+J_0 \LiAllOut}\right] \left(1-\alpha\right) \proton
 	 + k_u \left( \Theta - \beta_u\right)\\
 	\\
-	\partial_t \alpha  & = &  -k_h\alpha + \LiAllOut \left[\dfrac{ \sum_v k^p_v \epsilon_v J_v}{1+J_0\LiAllOut}\right] \left(1-\alpha\right) \proton\\
+	\partial_t \alpha  & = &  -k_h\alpha + \LiAllOut \left[\dfrac{ \sum_v k^p_v \epsilon_v J_v^h}{1+J_h\LiAllOut}\right] \left(1-\alpha\right) \proton\\
 \end{array}
 \right.
 \end{equation}
@@ -178,10 +178,10 @@ In particular:
 \begin{equation}
 \label{eq:level1}
 	\left.\dfrac{\beta_u}{\beta_v}\right\vert_{t\to0} \simeq \left.\dfrac{\partial_t \beta_u}{\partial_t\beta_v}\right\vert_{t\to0}
-	= \dfrac{\mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_0 \LiAllOut}\right] \proton_0 + k_u  \Theta_0
+	= \dfrac{\mathsf{E} \left[\dfrac{k^p_u J_u^h}{1+J_h \LiAllOut}\right] \proton_0 + k_u  \Theta_0
 	}
 	{
-	\mathsf{E} \left[\dfrac{k^p_v J_v}{1+J_0 \LiAllOut}\right] \proton_0 + k_v  \Theta_0
+	\mathsf{E} \left[\dfrac{k^p_v J_v^h}{1+J_h \LiAllOut}\right] \proton_0 + k_v  \Theta_0
 	}
 \end{equation}
 
@@ -256,10 +256,10 @@ v^p_{76} & = & k^p_{76} E_{67} \proton  \\%& v'^p_{76} & = & k^p_{76} \alpha_{67
 And
 \begin{equation}
 \left\lbrace
-\begin{array}{rclcl}
-	\partial_t \Li{6} & = & v^p_{66}+v^p_{76} + \partial_t \myleak{\Li{6}} & = & \partial_t \myleak{\Li{6}} + \mathsf{E} \left( v'^p_{66}+v'^p_{76}\right) \\
+\begin{array}{rcl}
+	\partial_t \Li{6} & = & v^p_{66}+v^p_{76} + \partial_t \myleak{\Li{6}} \\ %& = & \partial_t \myleak{\Li{6}} + \mathsf{E} \left( v'^p_{66}+v'^p_{76}\right) \\
 	\\
-	\partial_t \Li{7} & = & v^p_{77}+v^p_{67} + \partial_t \myleak{\Li{7}} & = & \partial_t \myleak{\Li{7}} + \mathsf{E} \left( v'^p_{66}+v'^p_{76}\right)\\
+	\partial_t \Li{7} & = & v^p_{77}+v^p_{67} + \partial_t \myleak{\Li{7}} \\ %& = & \partial_t \myleak{\Li{7}} + \mathsf{E} \left( v'^p_{66}+v'^p_{76}\right)\\
 \end{array}
 \right.
 \end{equation}

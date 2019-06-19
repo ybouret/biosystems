@@ -337,38 +337,38 @@ Using the three equations describing the second layer and assuming that the inte
 
 \begin{equation}
 \boxed{
-E_{xy} = <{\vec{C}} \vert \mymat{F_{xy}} \vert \vec{E}_1 >,\;\alpha_{xy} = <{\vec{C}} \vert \mymat{F_{xy}} \vert \vec{\alpha}_1 >
+E_{xy} = <{\vec{C}} \vert \mymat{F_{xy}^h} \vert \vec{E}_1 > 
 }
 \end{equation}
 with
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\mymat{F}_{66} & = & 
+\mymat{F}_{66}^h & = & 
 \begin{bmatrix}
-	\dfrac{a_{66}}{d_{66}} & 0 \\
+	\dfrac{a_{66}}{d_{66}+h k^p_{66}} & 0 \\
 	0 & 0\\
 \end{bmatrix} \\
 \\
-\mymat{F}_{77} & = & 
+\mymat{F}_{77}^h & = & 
 \begin{bmatrix}
 	0 & 0 \\
-	0 & \dfrac{a_{77}}{d_{77}}\\
+	0 & \dfrac{a_{77}}{d_{77}+hk^p_{77}}\\
 \end{bmatrix}  \\
 \\
-\mymat{F}_{67} & = & 
+\mymat{F}_{67}^h & = & 
 \begin{bmatrix}
-	0 &\dfrac{a_{76}}{d_{76}+d_{67}}\\
-	\dfrac{a_{67}}{d_{76}+d_{67}} & 0\\
+	0 &\dfrac{a_{76}}{d_{76}+d_{67}+h(k^p_{76}+k^p_{67})}\\
+	\dfrac{a_{67}}{d_{76}+d_{67}+h(k^p_{76}+k^p_{67})} & 0\\
 \end{bmatrix} \\
 \end{array}
 \right.
 \end{equation}
 and the second layer mass is
 \begin{equation}
-E_{66} + E_{67} + E_{77} = <{\vec{C}} \vert \mymat{F} \vert \vec{E}_1 >, \;\;
+E_{66} + E_{67} + E_{77} = <{\vec{C}} \vert \mymat{F}_h \vert \vec{E}_1 >, \;\;
  \mymat{F} 
- =  \mymat{F}_{66} + \mymat{F}_{67}  + \mymat{F}_{77} 
+ =  \mymat{F}_{66}^h + \mymat{F}_{67}^h  + \mymat{F}_{77}^h
 \end{equation}
 and
 
@@ -376,31 +376,17 @@ and
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \Li{6} & = & <\vec{C}|\mymat{G}_6|\vec{E}_1> \proton+ k_6\left(\Theta \LiOut{6} - \Li{6}\right)\\
-	& = & \mathsf{E} <\vec{C}|\mymat{G}_6|\vec{\alpha}_1> \proton+ k_6\left(\Theta \LiOut{6} - \Li{6}\right)\\
-	\mymat{G}_6 &= & k^p_{66} \mymat{F}_{66} + k^p_{67}\mymat{F}_{67} 
-%	= 
-%	\begin{bmatrix}
-%	f_{66}k^p_{66} & f_{76} k^p_{67} \\
-%	f_{67}k^p_{67} & 0 \\
-%	\end{bmatrix}
+	\partial_t \Li{6} & = & <\vec{C}|\mymat{G}_6^h|\vec{E}_1> \proton+ k_6\left(\Theta \LiOut{6} - \Li{6}\right)\\
+	\mymat{G}_6^h &= & k^p_{66} \mymat{F}_{66}^h + k^p_{67}\mymat{F}_{67}^h	\\
 	\\
-	\\
-	\partial_t \Li{7} & = & <\vec{C}|\mymat{G}_7|\vec{E}_1> \proton + k_7\left(\Theta \LiOut{7} - \Li{7}\right)\\
-		& = & \mathsf{E} <\vec{C}|\mymat{G}_7|\vec{\alpha}_1> \proton+ k_7\left(\Theta \LiOut{7} - \Li{7}\right)\\
-	\mymat{G}_7 & = & k^p_{77} \mymat{F}_{77} + k^p_{76}\mymat{F}_{67} 
-%	= 
-%	\begin{bmatrix}
-%	0              & f_{76} k^p_{76}\\
-%	f_{67}k^p_{76} & f_{77}k^p_{77}\\
-%	\end{bmatrix}
-	\\
+	\partial_t \Li{7} & = & <\vec{C}|\mymat{G}_7^h|\vec{E}_1> \proton + k_7\left(\Theta \LiOut{7} - \Li{7}\right)\\
+	\mymat{G}_7^h & = & k^p_{77} \mymat{F}_{77}^h + k^p_{76}\mymat{F}_{67}^h \\
 \end{array}
 \right.
 \end{equation}
 
 
-\subsubsection{First layer as a function of the external components}
+\subsection{First layer as a function of the external components}
 We define:
 \begin{equation}
 \mymat{\Delta}_A =\begin{bmatrix}

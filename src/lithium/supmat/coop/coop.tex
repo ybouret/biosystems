@@ -505,11 +505,11 @@ and finally:
 \left\lbrace
 \begin{array}{rcl}
 	\partial_t \beta_x & = & 
-	\dfrac{\mathsf{E}\proton}{W_1+W_3} \left[1-(\alpha_{6H}+\alpha_{7H})\right] \left( <\vec{L}_x|\vec{\epsilon}> \LiAllOut + <\vec{\epsilon}|\mymat{Q}_x|\vec{\epsilon}>\LiAllOut^2\right) 
+	\dfrac{\mathsf{E}\proton}{W_1+W_3} \left[1-(\alpha_{6}+\alpha_{7})\right] \left( <\vec{L}_x|\vec{\epsilon}> \LiAllOut + <\vec{\epsilon}|\mymat{Q}_x|\vec{\epsilon}>\LiAllOut^2\right) 
 	+ k_x \left(\Theta - \beta_x\right)\\
 	\\
-	\partial_t \alpha_{x} & = &  \epsilon_x  \dfrac{\LiAllOut \proton}{W_1+W_3} \left[1-(\alpha_{6H}+\alpha_{7H})\right] \left( <\vec{L}_x|\vec{\epsilon}> \LiAllOut + <\vec{\epsilon}|\mymat{Q}_x|\vec{\epsilon}>\LiAllOut^2\right) 
-	- k_x^h \alpha_{xH}
+	\partial_t \alpha_{x} & = &  \epsilon_x  \dfrac{\LiAllOut \proton}{W_1+W_3} \left[1-(\alpha_{6}+\alpha_{7})\right] \left( <\vec{L}_x|\vec{\epsilon}> \LiAllOut + <\vec{\epsilon}|\mymat{Q}_x|\vec{\epsilon}>\LiAllOut^2\right) 
+	- k_x^h \alpha_{x}
 	\\
 	\\
 	W_1 & = & 1 +  <\vec{L}_1| \mymat{\Delta}_K \mymat{\Delta}_D | \vec{\epsilon}> \LiAllOut \\
@@ -519,8 +519,25 @@ and finally:
 \right.
 \end{equation}
 
-\subsubsection{Boundary Values}
-
+\subsection{Conclusion on boundary values}
+We observe that:
+\begin{equation}
+\alpha_x^\infty \propto \epsilon_x
+\end{equation}
+so, morphologically, the two-layers model shall produce the same curves than the one-layer model.
+But if we evaluate:
+\begin{equation}
+	\left.\dfrac{\beta_7}{\beta_7}\right\vert_\varnothing = 
+	\dfrac{ \dfrac{\mathsf{N}_7(\LiAllOut)}{1+\mathsf{D}(\LiAllOut)}+k_7 \Theta}
+	{  \dfrac{\mathsf{N}_6(\LiAllOut)}{1+\mathsf{D}(\LiAllOut)} +k_6 \Theta}
+\end{equation}
+where
+\begin{itemize}
+\item ${\mathsf{N}_6}$ and  ${\mathsf{N}_7}$ are  {\bf second} order polynomials without constant term
+\item ${\mathsf{D}}$ is a {\bf third } order polynomial without constant term
+\end{itemize}
+there shall exist a set of parameters which allows the initial $\delta_7$ to decrease with $\LiAllOut$, which is
+strictly impossible for the one-layer model.
 
 \section{Independency hypothesis}
 \subsection{Simplification}

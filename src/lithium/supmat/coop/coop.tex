@@ -421,7 +421,7 @@ Leading to
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-W_1 & = & 1 +  <\vec{L}_1| \mymat{\Delta}_K \mymat{\Delta}_D | \vec{C}> \\
+W_1 & = & 1 +  <\vec{L}_1| \mymat{\Delta}_K \mymat{\Delta}_D | \vec{C}> = 1+ <\vec{L}_w|\vec{C}> \\
 \\
 \mymat{M_1} & = & \mymat{\Delta}_D^{-1} + \mymat{\Delta}_C \mymat{\Delta}_K \mymat{Q}_1 \\
 \\
@@ -512,7 +512,7 @@ and finally:
 	- k_x^h \alpha_{x}
 	\\
 	\\
-	W_1 & = & 1 +  <\vec{L}_1| \mymat{\Delta}_K \mymat{\Delta}_D | \vec{\epsilon}> \LiAllOut \\
+	W_1 & = & 1 +  <\vec{L}_w | \vec{\epsilon}> \LiAllOut \\
 	\\
 	W_3 & = & \displaystyle <\vec{L}_3|\vec{\epsilon}> \LiAllOut + <\vec{\epsilon}|\mymat{Q}_3|\vec{\epsilon}> \LiAllOut^2+ \left(\sum_{i+j=3}\epsilon_6^i \epsilon_7^j Z_{ij}\right) \LiAllOut^3 \\
 \end{array}
@@ -582,6 +582,26 @@ We also assume that:
 \end{equation}
 \end{itemize}
 
+\subsection{New expressions}
+
+\begin{equation}
+\vec{L}_7 = i_7 u_7^2 
+\begin{bmatrix}
+	\kappa \rho \\
+	1\\
+\end{bmatrix} =  i_7 u_7^2 \vec{L}',\;\;
+\mymat{Q_7} = \dfrac{i_7u^3}{1+\rho} |\vec{L}'><\vec{L}'|,\;\; \vec{L}_6 = \kappa \vec{L}_7, \;\; \mymat{Q}_6 = \kappa \mymat{Q}_7
+\end{equation}
+and
+\begin{equation}
+	\vec{L}_w = \dfrac{u_7}{1+\rho} \vec{L}',\;\;
+	\vec{L}_3 = u_7 \begin{bmatrix} \kappa \\ 1 \\ \end{bmatrix},\;\;
+	\mymat{Q}_3 = u_7^2 
+	\begin{bmatrix}
+	\dfrac{2\rho+1}{\rho+1} \kappa^2 & \kappa \\
+	\kappa & \dfrac{\rho+2}{\rho+1}\\
+	\end{bmatrix}
+\end{equation}
 
 \end{document}
 

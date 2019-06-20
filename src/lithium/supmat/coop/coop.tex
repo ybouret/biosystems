@@ -534,10 +534,25 @@ But if we evaluate:
 where
 \begin{itemize}
 \item ${\mathsf{N}_6}$ and  ${\mathsf{N}_7}$ are  {\bf second} order polynomials without constant term
+\begin{equation}
+\mathsf{N}_x = <\vec{L}_x|\vec{\epsilon}> \LiAllOut + <\vec{\epsilon}|\mymat{Q}_x|\vec{\epsilon}>\LiAllOut^2
+\end{equation}
 \item ${\mathsf{D}}$ is a {\bf third } order polynomial without constant term
 \end{itemize}
 there shall exist a set of parameters which allows the initial $\delta_7$ to decrease with $\LiAllOut$, which is
 strictly impossible for the one-layer model.
+We have the compact form:
+\begin{equation}
+\boxed{
+\left\lbrace
+\begin{array}{rcl}
+	\partial_t \beta_x  & = & \mathsf{E}\proton \dfrac{\mathsf{N}_x}{1+\mathsf{D}} \left[ 1-\alpha_6-\alpha_7\right] + k_x \left(\Theta-\beta_x\right)\\
+	\\
+	\partial_t \alpha_x & = & \epsilon_x \LiAllOut \proton \dfrac{\mathsf{N}_x}{1+\mathsf{D}} \left[ 1-\alpha_6-\alpha_7\right] - k^h_x \alpha_x \\
+\end{array}
+\right.
+}
+\end{equation}
 
 \section{Independency hypothesis}
 \subsection{Simplification}

@@ -17,12 +17,12 @@
 \newcommand{\myconc}[1]{\big[#1\big]}
 
 \newcommand{\Faraday}{\mathrm{F}}
-\newcommand{\spx}{\mychem{X}}
 \newcommand{\spLi}[1]{{\!~^{#1}\mychem{Li}}}
 \newcommand{\Li}[1]{\myconc{\spLi{#1}}}
 \newcommand{\spproton}{\mychem{H}}
 \newcommand{\proton}{\myconc{\spproton}}
 
+\newcommand{\deltaLi}{\delta\spLi{7}}
 \newcommand{\myleak}[1]{\left.{#1}\right\vert_{\mathrm{leak}}}
 \newcommand{\myout}[1]{{#1}_{\mathrm{out}}}
 \newcommand{\LiOut}[1]{\myout{\Li{#1}}}
@@ -39,6 +39,7 @@
 
 \newcommand{\LiAll}{\Lambda}
 \newcommand{\LiAllOut}{\myout{\LiAll}}
+\newcommand{\deltaLiOut}{\myout{\deltaLi}}
 \newcommand{\inpLi}[1]{\text{+}\spLiOut{#1}}
 \newcommand{\outLi}[1]{\text{-}\spLiOut{#1}}
 
@@ -51,8 +52,68 @@
 \maketitle
 %\tableofcontents
 
+\section{Description}
+\subsection{Isotopic Separation}
+We have two species $\spLi{6}$ and $\spLi{7}$ and a solution can be defined by the isotopic 
+separation:
+\begin{equation}
+	\deltaLi = 10^3 \left[ 
+	\dfrac{
+	\left(\dfrac{\Li{7}}{\Li{6}}\right)
+	}
+	{
+	\left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard}
+	}
+	- 1 \right]
+\end{equation}
+and alternatively:
+\begin{equation}
+	\left(\dfrac{\Li{7}}{\Li{6}}\right) = \lambda_s \left[ 1+10^{-3} \deltaLi \right]
+\end{equation}
+where we are using:
+\begin{equation}
+	\lambda_s = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} %=  12.0192
+\end{equation}
+We define:
+\begin{equation}
+	\LiAll = \Li{6}+\Li{7}
+\end{equation}
+and we got the relations:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\Li{6} & = & \dfrac{1}{1+\lambda_s[1+10^{-3}\deltaLi]} \LiAll \\
+\\
+\Li{7} & = &  \dfrac{\lambda_s[1+10^{-3}\deltaLi]}{1+\lambda_s[1+10^{-3}\deltaLi]}\LiAll\\
+\end{array}
+\right.
+\end{equation}
+\subsection{Numerical Values}
+For the current experiments:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\lambda_s   & = & 12.0192\\
+	\deltaLiOut & = & 14.57\\
+	\LiOut{6}   & = & \epsilon_6 \LiAllOut, \;\;\epsilon_6\simeq 0.076\\
+	\LiOut{7}   & = & \epsilon_7 \LiAllOut, \;\;\epsilon_7\simeq 0.924\\
+\end{array}
+\right. 
+\end{equation}
+If we use the normalised values:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+	\beta_6 & = & \dfrac{\Li{6}}{\LiOut{6}}\\
+	\\
+	\beta_7 & = & \dfrac{\Li{7}}{\LiOut{7}}\\
+\end{array}
+\right.
+\end{equation}
+
+
 \section{Passive Behaviour}
-We have two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane:
+The two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}

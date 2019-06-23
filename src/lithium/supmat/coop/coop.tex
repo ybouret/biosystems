@@ -16,13 +16,13 @@
 \newcommand{\mychem}[1]{\mathtt{#1}}
 \newcommand{\myconc}[1]{\big[#1\big]}
 
-\newcommand{\Faraday}{\mathrm{F}}
+\newcommand{\Faraday}{\mathcal{F}}
 \newcommand{\spLi}[1]{{\!~^{#1}\mychem{Li}}}
 \newcommand{\Li}[1]{\myconc{\spLi{#1}}}
 \newcommand{\spproton}{\mychem{H}}
 \newcommand{\proton}{\myconc{\spproton}}
 
-\newcommand{\deltaLi}{\delta\spLi{7}}
+\newcommand{\deltaLi}{\delta\!\!\spLi{7}}
 \newcommand{\myleak}[1]{\left.{#1}\right\vert_{\mathrm{leak}}}
 \newcommand{\myout}[1]{{#1}_{\mathrm{out}}}
 \newcommand{\LiOut}[1]{\myout{\Li{#1}}}
@@ -107,13 +107,18 @@ If we use the normalised values:
 	\beta_6 & = & \dfrac{\Li{6}}{\LiOut{6}}\\
 	\\
 	\beta_7 & = & \dfrac{\Li{7}}{\LiOut{7}}\\
+	\\
+	\dfrac{\beta_7}{\beta_6} & = & \dfrac{\left[1+10^{-3}\deltaLi\right]}{\left[1+10^{-3}\deltaLiOut\right]}\\
+	\\
+	\deltaLi & = & 10^3 \left( \left[1+10^{-3}\deltaLiOut\right]\dfrac{\beta_7}{\beta_6} -1 \right)\\
 \end{array}
 \right.
 \end{equation}
 
 
-\section{Passive Behaviour}
-The two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane:
+\section{Electro-osmotic Intake}
+\subsection{Goldman-Hodgkins-Katz (GHK) Flux}
+The two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane by borrowing some ionic channels:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -121,6 +126,18 @@ The two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane:
 	\partial_t \myleak{\Li{u}} & = & k_u \left( \Theta \LiOut{u} - \Li{u}\right)\\
 \end{array}
 \right.
+\end{equation}
+According to the GHK theory, $k_6$ and $k_7$ are the whole cell permeability to $\spLi{6}$ and $\spLi{7}$ respectively,
+and should depend on the potential. But in any case, this permeability arises from a diffusive process, and we expect the ratio to be constant:
+\begin{equation}
+	\dfrac{k_6}{k_7} \simeq \sigma = 1.00229
+\end{equation}
+
+\subsection{Potential Regulation}
+One the one hand, since this intake is not electroneutral, it shall produces a drift in the cell polarisation. But on the other hand, the cell is able to regulate its potential 
+by a mechanism that we shall simply model by a first order return function:
+\begin{equation}
+	\partial_t V_m = \gamma \left( \partial_t \myleak{\Li{6}} + \partial_t \myleak{\Li{7}} \right) + k_m \left(V_m-V_0\right)
 \end{equation}
 
 \section{One Layer}

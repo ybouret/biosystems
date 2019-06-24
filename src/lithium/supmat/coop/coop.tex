@@ -102,6 +102,7 @@ For the current experiments:
 \end{equation}
 If we use the normalised values:
 \begin{equation}
+\label{eq:beta}
 \left\lbrace
 \begin{array}{rcl}
 	\beta_6 & = & \dfrac{\Li{6}}{\LiOut{6}}\\
@@ -226,13 +227,14 @@ so that we have the three equations:
 \right.
 \end{equation}
 \subsubsection{Normalisation}
+We use the definitions of Eq \eqref{eq:beta} and the following:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\LiOut{u} & = & \epsilon_u \LiAllOut\\
-	\\
-	\beta_u & = & \dfrac{\Li{u}}{\LiOut{u}}\\
-	\\
+%	\LiOut{u} & = & \epsilon_u \LiAllOut\\
+%	\\
+%	\beta_u & = & \dfrac{\Li{u}}{\LiOut{u}}\\
+%	\\
 	\alpha  & = & \dfrac{E_{0H}}{\mathsf{E}}\\
 	\\
 	J_0 & = & \epsilon_6 J_6  + \epsilon_7 J_7 \\
@@ -256,7 +258,7 @@ In particular:
 \begin{equation}
 \label{eq:level1}
 	\left.\dfrac{\beta_u}{\beta_v}\right\vert_{t\to0} \simeq \left.\dfrac{\partial_t \beta_u}{\partial_t\beta_v}\right\vert_{t\to0}
-	= \dfrac{\mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_h \LiAllOut}\right] \proton_0 + k_u  \Theta_0
+	= \dfrac{\mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_0 \LiAllOut}\right] \proton_0 + k_u  \Theta_0
 	}
 	{
 	\mathsf{E} \left[\dfrac{k^p_v J_v}{1+J_0 \LiAllOut}\right] \proton_0 + k_v  \Theta_0

@@ -72,7 +72,7 @@ and alternatively:
 \end{equation}
 where we are using:
 \begin{equation}
-	\lambda_s = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} %=  12.0192
+	\rho_s = \left(\dfrac{\Li{7}}{\Li{6}}\right)_{standard} %=  12.0192
 \end{equation}
 We define:
 \begin{equation}
@@ -82,9 +82,9 @@ and we obtain the relations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-\Li{6} & = & \dfrac{1}{1+\lambda_s[1+10^{-3}\deltaLi]} \LiAll \\
+\Li{6} & = & \dfrac{1}{1+\rho_s[1+10^{-3}\deltaLi]} \LiAll \\
 \\
-\Li{7} & = &  \dfrac{\lambda_s[1+10^{-3}\deltaLi]}{1+\lambda_s[1+10^{-3}\deltaLi]}\LiAll\\
+\Li{7} & = &  \dfrac{\rho_s[1+10^{-3}\deltaLi]}{1+\rho_s[1+10^{-3}\deltaLi]}\LiAll\\
 \end{array}
 \right.
 \end{equation}
@@ -93,7 +93,7 @@ For the current experiments:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\lambda_s   & = & 12.0192\\
+	\rho_s   & = & 12.0192\\
 	\deltaLiOut & = & 14.57\\
 	\LiOut{6}   & = & \epsilon_6 \LiAllOut, \;\;\epsilon_6\simeq 0.076\\
 	\LiOut{7}   & = & \epsilon_7 \LiAllOut, \;\;\epsilon_7\simeq 0.924\\
@@ -131,6 +131,7 @@ The two species $\spLi{6}$ and $\spLi{7}$ that may leak through the membrane by 
 According to the GHK theory, both $k_6$ and $k_7$ are the whole cell permeability to $\spLi{6}$ and $\spLi{7}$ respectively,
 and should depend on the potential. But in any case, this permeability arises from a diffusive process, and we expect the ratio to be constant:
 \begin{equation}
+\label{eq:sigma}
 	\dfrac{k_6}{k_7} \simeq \sigma = 1.00229
 \end{equation}
 
@@ -730,7 +731,7 @@ We analytically obtain:
 \left.\dfrac{N_7(\LiAllOut)}{1+\mathsf{D}(\LiAllOut)}\right\vert_{\epsilon_6\ll\epsilon_7} \simeq i_7 u_7 \mathsf{Q}\left(u_7\LiAllOut\right),\;\;\mathsf{Q}(X) = \dfrac{X}{1+X+X^2}
 \end{equation}
 and a graph of $\mathsf{Q}$ is shown on Figure \ref{fig:Q}. 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \begin{center}
 \input{fig/q}
 \end{center}
@@ -739,6 +740,50 @@ and a graph of $\mathsf{Q}$ is shown on Figure \ref{fig:Q}.
 This function represents the catalytic weight of $NHE$, and experimentally we must have $u_7\LiAllOut<1$ to observe the dose effect.
 
 \subsection{Final Coupled Equations}
+
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\partial_t V_m & = & \Gamma \left[ \epsilon_6 k_6 \left(\exp\left[ -\dfrac{\Faraday V_m}{RT} \right] - \beta_6\right) + \epsilon_7 k_7 \left(\exp\left[ -\dfrac{\Faraday V_m}{RT} \right] - \beta_7\right)\right] + k_m \left(V_0 - V_m\right)\\
+\\
+\partial_t \beta_6 & = & \nu_6 \dfrac{\proton}{\proton_0} \left[ 1-\alpha_6-\alpha_7\right] + k_6 \left(\exp\left[ -\dfrac{\Faraday V_m}{RT} \right] - \beta_6\right) \\
+\\
+\partial_t \beta_7 & = & \nu_7 \dfrac{\proton}{\proton_0} \left[ 1-\alpha_6-\alpha_7\right] + k_7 \left(\exp\left[ -\dfrac{\Faraday V_m}{RT} \right] - \beta_7\right) \\
+\\
+\partial_t \alpha_6 & = & \epsilon_6 \lambda_6  \dfrac{\proton}{\proton_0}\left[ 1-\alpha_6-\alpha_7\right] - k_h \alpha_6\\
+\\
+\partial_t \alpha_7 & = & \epsilon_7 \lambda_7  \dfrac{\proton}{\proton_0} \left[ 1-\alpha_6-\alpha_7\right] - k_h \alpha_7\\
+\end{array}
+\right.
+\end{equation}
+with the constants:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcll}
+\Gamma & = & \gamma \LiAllOut & \text{(in volts)}\\
+\\
+\nu_6 & = & \kappa \nu_7, \;\; \nu_7  =  \mathsf{E}\proton_0 \dfrac{\mathsf{N}_7(\LiAllOut)}{1+\mathsf{D}(\LiAllOut)} & \text{(NHE Effect, in s$^{-1}$)}\\
+\\
+\lambda_6 & = & \kappa \lambda_7, \;\; \lambda_7  =  \proton_0 \LiAllOut \dfrac{\mathsf{N}_7(\LiAllOut)}{1+\mathsf{D}(\LiAllOut)} & \text{(Lithium Effect, in s$^{-1}$)}\\
+\\
+\sigma    & = & 1.00229 & \text{(diffusive speedup, Eq. \eqref{eq:sigma})}\\
+\\
+k_6 & = & \sigma k_7 & \text{(in s$^{-1}$)}\\
+\\
+k_m &  & & \text{(in s$^{-1}$)}\\
+\end{array}
+\right.
+\end{equation}
+
+\subsection{Specific Cases}
+
+\subsubsection{Electroosmotic Only Intake}
+
+\subsubsection{Initial Isotopic Separation}
+
+
+
+\subsection{...}
 
 \end{document}
 

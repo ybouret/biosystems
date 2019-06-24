@@ -141,7 +141,7 @@ by a mechanism that we shall simply model by a first order return function:
 	\partial_t V_m = \gamma \left( \partial_t \myleak{\Li{6}} + \partial_t \myleak{\Li{7}} \right) + k_m \left(V_0-V_m\right)
 \end{equation}
 
-\section{One Layer}
+\section{Catalytic One-Layer NHE}
 
 \subsection{Kinetic Scheme}
 {
@@ -279,7 +279,7 @@ on the $\eta$ factor, which is experimentally much greater than one.
 Nonetheless, the value of $\eta$ is {\bf decreasing} with $\LiAllOut$, meaning that the isotopic separation is decreasing with respect to the total lithium concentration.
 Accordingly, we have to derive a higher order model.
 
-\section{Two Layers Model : Cooperativity}
+\section{Catalytic Two-Layers NHE : Cooperativity}
 \subsection{Full Kinetic Scheme}
 {
 \Large
@@ -631,6 +631,8 @@ We have the compact form:
 \boxed{
 \left\lbrace
 \begin{array}{rcl}
+	\Theta & = & \exp\left[ -\dfrac{\Faraday V_m}{RT}\right]\\
+	\\
 	\partial_t V_m & = & \gamma\LiAllOut \left[\sum_x \epsilon_x k_x \left( \Theta -\beta_x \right)  \right] + k_m\left(V_0-V_m\right)\\
 	\\
 	\partial_t \beta_x  & = & \mathsf{E}\proton \dfrac{\mathsf{N}_x}{1+\mathsf{D}} \left[ 1-\alpha_6-\alpha_7\right] + k_x \left(\Theta-\beta_x\right)\\
@@ -684,7 +686,7 @@ We also assume that:
 \end{equation}
 \end{itemize}
 
-\subsection{New expressions}
+\subsection{New Algebraic Expressions}
 We obtain:
 \begin{equation}
 \vec{L}_7 = i_7 u_7^2 
@@ -723,6 +725,20 @@ W_3 & = & \left(u_7\LiAllOut\right) <\vec{\tilde{L}}|\vec{\epsilon}> + \left(u_7
 \end{array}
 \right.
 \end{equation}
+We analytically obtain:
+\begin{equation}
+\left.\dfrac{N_7(\LiAllOut)}{1+\mathsf{D}(\LiAllOut)}\right\vert_{\epsilon_6\ll\epsilon_7} \simeq i_7 u_7 \mathsf{Q}\left(u_7\LiAllOut\right),\;\;\mathsf{Q}(X) = \dfrac{X}{1+X+X^2}
+\end{equation}
+and a graph of $\mathsf{Q}$ is shown on Figure \ref{fig:Q}. 
+\begin{figure}[!h]
+\begin{center}
+\input{fig/q}
+\end{center}
+\caption{\label{fig:Q} Effect of the total lithium concentration on the catalytic intensity}
+\end{figure}
+This function represents the catalytic weight of $NHE$, and experimentally we must have $u_7\LiAllOut<1$ to observe the dose effect.
+
+\subsection{Final Coupled Equations}
 
 \end{document}
 

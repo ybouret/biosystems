@@ -48,7 +48,7 @@
 
 
 \begin{document}
-\title{Cooperativity}
+\title{Lithium Isotopic Separation:\\ From Electroosmosis to NHE Cooperativity}
 \maketitle
 %\tableofcontents
 
@@ -138,12 +138,12 @@ and should depend on the potential. But in any case, this permeability arises fr
 One the one hand, since this intake is not electroneutral, it shall produces a drift in the cell polarisation. But on the other hand, the cell is able to regulate its potential 
 by a mechanism that we shall simply model by a first order return function:
 \begin{equation}
-	\partial_t V_m = \gamma \left( \partial_t \myleak{\Li{6}} + \partial_t \myleak{\Li{7}} \right) + k_m \left(V_m-V_0\right)
+	\partial_t V_m = \gamma \left( \partial_t \myleak{\Li{6}} + \partial_t \myleak{\Li{7}} \right) + k_m \left(V_0-V_m\right)
 \end{equation}
 
 \section{One Layer}
 
-\subsection{Scheme}
+\subsection{Kinetic Scheme}
 {
 \Large
 \begin{equation}
@@ -159,7 +159,7 @@ E_{00}  &  & \xleftarrow{\text{ recycling } k_h } &   & E_{0H} \\
 \end{equation}
 }
 
-\subsection{Equations}
+\subsection{Differential Equations}
 
 \begin{equation}
 \left\lbrace
@@ -187,20 +187,19 @@ v_h    &=& k_h   E_{0H}
 \right.
 \end{equation}
 
-\subsection{Steady-State}
-\subsubsection{Raw Equations}
-We assume that the internal components are at a steady-state:
+\subsection{Pre-Equilibria Hypothesis}
+\subsubsection{Lithium Intake Rate}
+We assume that the reversible forms some pre-equilibria before allowing the irreversible reactions to occur.
 \begin{equation}
 \left\lbrace
 \begin{array}{rcll}
-	E_{06}^\star & = & \dfrac{a_{06}}{d_{06}+k^p_6 \proton } E_{00} \LiOut{6} & = J_6 E_{00} \LiOut{6}\\
+	E_{06}^\star & = & \dfrac{a_{06}}{d_{06} } E_{00} \LiOut{6} & = J_6 E_{00} \LiOut{6}\\
 	\\
-	E_{07}^\star & = & \dfrac{a_{07}}{d_{07}+k^p_7 \proton } E_{00} \LiOut{7} & = J_7 E_{00} \LiOut{7}\\
+	E_{07}^\star & = & \dfrac{a_{07}}{d_{07}  } E_{00} \LiOut{7} & = J_7 E_{00} \LiOut{7}\\
 \end{array}
 \right.
 \end{equation}
 
-\centerline{\shadowbox{\it We expect a simplification if $d_{01},d_{02} \gg k^p_1 \proton, k^p_2 \proton$.}}
 
 Finally:
 \begin{equation}
@@ -242,32 +241,46 @@ We use the definitions of Eq \eqref{eq:beta} and the following:
 \right.
 \end{equation}
 
-Leading to the three equations:
+We are left with the four equations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
-	\partial_t \beta_u & = & \mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_0 \LiAllOut}\right] \left(1-\alpha\right) \proton
-	 + k_u \left( \Theta - \beta_u\right)\\
-	\\
-	\partial_t \alpha  & = &  -k_h\alpha + \LiAllOut \left[\dfrac{ \sum_v k^p_v \epsilon_v J_v}{1+J_0\LiAllOut}\right] \left(1-\alpha\right) \proton\\
+\partial_t V_m & = & \gamma\LiAllOut \left[\sum_x \epsilon_x k_x \left( \exp\left[ -\frac{\Faraday V_m}{RT}\right] -\beta_x \right)  \right] + k_m\left(V_0-V_m\right)\\
+\\
+\partial_t \beta_u & = & \mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_0 \LiAllOut}\right] \left(1-\alpha\right) \proton
+	 + k_u \left( \exp\left[-\frac{\Faraday V_m}{RT}\right] - \beta_u\right)\\
+\\
+\partial_t \alpha  & = &  -k_h\alpha + \LiAllOut \left[\dfrac{ \sum_v k^p_v \epsilon_v J_v}{1+J_0\LiAllOut}\right] \left(1-\alpha\right) \proton\\
 \end{array}
 \right.
 \end{equation}
 
-In particular:
+\subsubsection{Initial Isotopic Separation}
+The evaluation of the initial yields:
 \begin{equation}
 \label{eq:level1}
-	\left.\dfrac{\beta_u}{\beta_v}\right\vert_{t\to0} \simeq \left.\dfrac{\partial_t \beta_u}{\partial_t\beta_v}\right\vert_{t\to0}
-	= \dfrac{\mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_0 \LiAllOut}\right] \proton_0 + k_u  \Theta_0
+	\left(\dfrac{\beta_7}{\beta_6}\right)^\varnothing \simeq \left(\dfrac{\partial_t \beta_7}{\partial_t\beta_6}\right)^\varnothing
+	= \dfrac{\mathsf{E} \left[\dfrac{k^p_7 J_7}{1+J_0 \LiAllOut}\right] \proton_0 + k_7  \Theta_0
 	}
 	{
-	\mathsf{E} \left[\dfrac{k^p_v J_v}{1+J_0 \LiAllOut}\right] \proton_0 + k_v  \Theta_0
+	\mathsf{E} \left[\dfrac{k^p_6 J_6}{1+J_0 \LiAllOut}\right] \proton_0 + k_6  \Theta_0
 	}
 \end{equation}
+Let us define:
+\begin{equation}
+	\kappa = \dfrac{k^p_6 J_6}{k^p_7 J_7}, \;\; \eta = \dfrac{ \mathsf{E} \proton_0 }{ k_7  \Theta_0 } \left[\dfrac{k^p_7 J_7}{1+J_0 \LiAllOut}\right] 
+\end{equation}
+to obtain:
+\begin{equation}
+	\left(\dfrac{\beta_7}{\beta_6}\right)^\varnothing = \dfrac{1+\eta}{\eta\kappa+\sigma}
+\end{equation}
+We see that for a catalytic speedup $\kappa$ greater than the diffusive speedup $\sigma$, we reach some higher isotopic separations (lower $\deltaLi$), depending
+on the $\eta$ factor, which is experimentally much greater than one.
+Nonetheless, the value of $\eta$ is {\bf decreasing} with $\LiAllOut$, meaning that the isotopic separation is decreasing with respect to the total lithium concentration.
+Accordingly, we have to derive a higher order model.
 
-
-\section{Two Layers}
-\subsection{Scheme}
+\section{Two Layers Model : Cooperativity}
+\subsection{Full Kinetic Scheme}
 {
 \Large
 \begin{equation}
@@ -287,10 +300,10 @@ E_{00} & &  & & E_{67}(=E_{76}) & & \\
  }
 \end{equation}
 }
-with no restriction on microscopic values.
+with \textit{a priori} no restriction on microscopic values.
 
 
-\subsection{Equations}
+\subsection{Differential Equations}
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -413,46 +426,45 @@ We define:
 
 \subsection{Second layer as a function of the first layer}
 
-Using the three equations describing the second layer and assuming that the internal pre-equilibrium is fast, we express:
-
+Using the three equations describing the second layer and assuming that the internal pre-equilibria are reached, we find
+that the second layer components are bilinear combinations of the first layer components:
 \begin{equation}
 \boxed{
 E_{xy} = <{\vec{C}} \vert \mymat{F_{xy}} \vert \vec{E}_1 > 
 }
 \end{equation}
-with
+with:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
 \mymat{F}_{66} & = & 
 \begin{bmatrix}
-	\dfrac{a_{66}}{d_{66}+h k^p_{66}} & 0 \\
+	\dfrac{a_{66}}{d_{66} } & 0 \\
 	0 & 0\\
 \end{bmatrix} \\
 \\
 \mymat{F}_{77} & = & 
 \begin{bmatrix}
 	0 & 0 \\
-	0 & \dfrac{a_{77}}{d_{77}+hk^p_{77}}\\
+	0 & \dfrac{a_{77}}{d_{77} }\\
 \end{bmatrix}  \\
 \\
 \mymat{F}_{67} & = & 
 \begin{bmatrix}
-	0 &\dfrac{a_{76}}{d_{76}+d_{67}+h(k^p_{76}+k^p_{67})}\\
-	\dfrac{a_{67}}{d_{76}+d_{67}+h(k^p_{76}+k^p_{67})} & 0\\
+	0 &\dfrac{a_{76}}{d_{76}+d_{67}}\\
+	\dfrac{a_{67}}{d_{76}+d_{67}} & 0\\
 \end{bmatrix} \\
 \end{array}
 \right.
 \end{equation}
-and the second layer mass is
+and the second layer mass as a function of the first layer values is:
 \begin{equation}
 E_{66} + E_{67} + E_{77} = <{\vec{C}} \vert \mymat{F} \vert \vec{E}_1 >, \;\;
  \mymat{F} 
  =  \mymat{F}_{66} + \mymat{F}_{67}  + \mymat{F}_{77}
 \end{equation}
-and
 
-
+We also get a compact writing of the lithium intake:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -467,28 +479,21 @@ and
 
 
 \subsection{First layer as a function of the external components}
-We define:
-\begin{equation}
-\mymat{\Delta}_A =\begin{bmatrix}
-a_{06} & 0 \\
-0 & a_{07} \\
-\end{bmatrix},\;\;
-\mymat{\Delta}_D = 
-\begin{bmatrix}
-d_{06} & 0 \\
-0 & d_{07} \\
-\end{bmatrix},\;\;
-\mymat{\Delta}_H =
-\begin{bmatrix}
-k^h_6 & 0 \\
-0 & k^h_7 \\
-\end{bmatrix}
-\end{equation}
-
 We define the following constants:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
+\mymat{\Delta}_A &= &\begin{bmatrix}
+a_{06} & 0 \\
+0 & a_{07} \\
+\end{bmatrix}\\
+\\
+\mymat{\Delta}_D & = & 
+\begin{bmatrix}
+d_{06} & 0 \\
+0 & d_{07} \\
+\end{bmatrix} \\
+\\
 K_6 & = & \dfrac{1}{d_{07}d_{06}}  \dfrac{a_{76}d_{67}}{d_{67}+d_{76}} \\
 \\
 K_7 & = &  \dfrac{1}{d_{06}d_{07}} \dfrac{a_{67}d_{76}}{d_{67}+d_{76}} \\
@@ -497,29 +502,26 @@ K_7 & = &  \dfrac{1}{d_{06}d_{07}} \dfrac{a_{67}d_{76}}{d_{67}+d_{76}} \\
 \end{array}
 \right.
 \end{equation}
-Leading to
+Leading to the algebraic expressions:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
 W_1 & = & 1 +  <\vec{L}_1| \mymat{\Delta}_K \mymat{\Delta}_D | \vec{C}> = 1+ <\vec{L}_w|\vec{C}> \\
 \\
 \mymat{M_1} & = & \mymat{\Delta}_D^{-1} + \mymat{\Delta}_C \mymat{\Delta}_K \mymat{Q}_1 \\
-\\
-W_1 \vec{E}_1 & = & \mymat{M}_1 \left( 
-	\mymat{\Delta}_H \vec{E}_H + E_{00} \mymat{\Delta}_A \vec{C}
-	\right)\\
 \end{array}
 \right.
 \end{equation}
-and since me made that the lithium intake is slow w.r.t the pre-equilbria, then me must assume that the
-recycling is slow as well (otherwise $\vec{E}_H=\vec{0}$).
-And we finally got
+Thus, the first layer expression as a function of the entry layer is
 \begin{equation}
-	W_1 \vec{E}_1  \simeq E_{00} \mymat{M}_1  \mymat{\Delta}_A \vec{C}
+\boxed
+{
+W_1 \vec{E}_1  =  E_{00} \mymat{M}_1  \mymat{\Delta}_A \vec{C}
+}
 \end{equation}
 
-\subsection{Using Mass Conservation to compute the Entry Layer}
-We replace:
+\subsection{Using Mass Conservation to compute the entry layer}
+We expand and factorise:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -534,7 +536,7 @@ W_1 \mathsf{E} & = & W_1 E_{00} + < \vec{L}_1 + \mytrn{\mymat{F}}\vec{C} | W_1 \
 \end{array}
 \right.
 \end{equation}
-We define
+We define the cubic form:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -544,17 +546,16 @@ We define
 \end{array}
 \right.
 \end{equation}
-
+Thus, the entry concentration amounts to:
 \begin{equation}
-\left\lbrace
-\begin{array}{rcl}
-	E_{00}      &=&\dfrac{W_1}{W_1 + W_3} \left[\mathsf{E}-(E_{6H}+E_{7H})\right]\\
-\end{array}
-\right.
+\boxed{
+ E_{00}  = \dfrac{W_1}{W_1 + W_3} \left[\mathsf{E}-(E_{6H}+E_{7H})\right]
+ }
 \end{equation}
 
 \subsection{Expressing the Rates}
-We deduce the rate for the for involved species:
+We deduce the rate for the for involved species. By factorising the terms by $\LiOut{x}$, we write the result using some vectors 
+$\vec{L}_x$ and some matrix $\mymat{Q}_x$:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -562,14 +563,17 @@ We deduce the rate for the for involved species:
 \\
  & = & \dfrac{E_{00}}{W1} \proton \left( <\vec{L}_x|\vec{C}> + <\vec{C}|\mymat{Q}_x|\vec{C}>\right) \LiOut{x}+ k_x\left(\Theta \LiOut{x} - \Li{x}\right)\\
  \\
- \\
  \partial_t E_{xH} & = & <\vec{C}|\mymat{G}_6|\vec{E}_1> \proton - k_x^h E_{xH}\\
  \\
  & = & \dfrac{E_{00}}{W_1} \proton \left( <\vec{L}_x|\vec{C}> + <\vec{C}|\mymat{Q}_x|\vec{C}>\right) \LiOut{x} - k_x^h E_{xH} \\
 \end{array}
 \right.
 \end{equation}
-We now write the adimensional variable rates:
+We now write the adimensional variable rates, using the natural definitions:
+\begin{equation}
+\alpha_x = \dfrac{E_{xH}}{\mathsf{E}}
+\end{equation}
+and the almost final equations for the concentration ratios are:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -580,13 +584,14 @@ We now write the adimensional variable rates:
 \right.
 \end{equation}
 and finally:
-
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
+\partial_t V_m & = & \gamma\LiAllOut \left[\sum_x \epsilon_x k_x \left( \exp\left[ -\frac{\Faraday V_m}{RT}\right] -\beta_x \right)  \right] + k_m\left(V_0-V_m\right)\\
+\\
 	\partial_t \beta_x & = & 
 	\dfrac{\mathsf{E}\proton}{W_1+W_3} \left[1-(\alpha_{6}+\alpha_{7})\right] \left( <\vec{L}_x|\vec{\epsilon}> \LiAllOut + <\vec{\epsilon}|\mymat{Q}_x|\vec{\epsilon}>\LiAllOut^2\right) 
-	+ k_x \left(\Theta - \beta_x\right)\\
+	+ k_x \left(\exp\left[-\frac{\Faraday V_m}{RT}\right] - \beta_x\right)\\
 	\\
 	\partial_t \alpha_{x} & = &  \epsilon_x  \dfrac{\LiAllOut \proton}{W_1+W_3} \left[1-(\alpha_{6}+\alpha_{7})\right] \left( <\vec{L}_x|\vec{\epsilon}> \LiAllOut + <\vec{\epsilon}|\mymat{Q}_x|\vec{\epsilon}>\LiAllOut^2\right) 
 	- k_x^h \alpha_{x}
@@ -626,6 +631,8 @@ We have the compact form:
 \boxed{
 \left\lbrace
 \begin{array}{rcl}
+	\partial_t V_m & = & \gamma\LiAllOut \left[\sum_x \epsilon_x k_x \left( \Theta -\beta_x \right)  \right] + k_m\left(V_0-V_m\right)\\
+	\\
 	\partial_t \beta_x  & = & \mathsf{E}\proton \dfrac{\mathsf{N}_x}{1+\mathsf{D}} \left[ 1-\alpha_6-\alpha_7\right] + k_x \left(\Theta-\beta_x\right)\\
 	\\
 	\partial_t \alpha_x & = & \epsilon_x \LiAllOut \proton \dfrac{\mathsf{N}_x}{1+\mathsf{D}} \left[ 1-\alpha_6-\alpha_7\right] - k^h_x \alpha_x \\

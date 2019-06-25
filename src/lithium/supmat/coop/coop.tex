@@ -45,7 +45,11 @@
 
 \newcommand{\mycolor}[2]{\ifthenelse{\equal{#1}{6}}{{\color{Red}#2}}{{\color{Green}#2}}}
 
+\DeclareMathOperator\erf{erf}
+\newcommand{\pH}{\ensuremath{\mathrm{pH}}}
+\newcommand{\NHE}[1]{\ensuremath{\mathrm{NHE}_{#1}}}
 
+\newcommand{\todo}[1]{\framebox{#1}}
 
 \begin{document}
 \title{Lithium Isotopic Separation:\\ From Electroosmosis to NHE Cooperativity}
@@ -145,6 +149,7 @@ by a mechanism that we shall simply model by a first order return function:
 \section{Catalytic One-Layer NHE}
 
 \subsection{Kinetic Scheme}
+We use $E$ to describe the $NHE$ state.
 {
 \Large
 \begin{equation}
@@ -161,7 +166,7 @@ E_{00}  &  & \xleftarrow{\text{ recycling } k_h } &   & E_{0H} \\
 }
 
 \subsection{Differential Equations}
-
+The evolution of the species and the total enzyme conservation are described by:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -173,7 +178,7 @@ E_{00}  &  & \xleftarrow{\text{ recycling } k_h } &   & E_{0H} \\
 \end{array}
 \right.
 \end{equation}
-with
+with the kinetic terms:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -249,7 +254,7 @@ We are left with the four equations:
 \partial_t V_m & = & \gamma\LiAllOut \left[\sum_x \epsilon_x k_x \left( \exp\left[ -\frac{\Faraday V_m}{RT}\right] -\beta_x \right)  \right] + k_m\left(V_0-V_m\right)\\
 \\
 \partial_t \beta_u & = & \mathsf{E} \left[\dfrac{k^p_u J_u}{1+J_0 \LiAllOut}\right] \left(1-\alpha\right) \proton
-	 + k_u \left( \exp\left[-\frac{\Faraday V_m}{RT}\right] - \beta_u\right)\\
+	 + k_u \left( \exp\left[-\frac{\Faraday V_m}{RT}\right] - \beta_u\right),\;\;u\in\lbrace6,7\rbrace\\
 \\
 \partial_t \alpha  & = &  -k_h\alpha + \LiAllOut \left[\dfrac{ \sum_v k^p_v \epsilon_v J_v}{1+J_0\LiAllOut}\right] \left(1-\alpha\right) \proton\\
 \end{array}
@@ -269,19 +274,20 @@ The evaluation of the initial yields:
 \end{equation}
 Let us define:
 \begin{equation}
-	\kappa = \dfrac{k^p_6 J_6}{k^p_7 J_7}, \;\; \eta = \dfrac{ \mathsf{E} \proton_0 }{ k_7  \Theta_0 } \left[\dfrac{k^p_7 J_7}{1+J_0 \LiAllOut}\right] 
+	\kappa = \dfrac{k^p_6 J_6}{k^p_7 J_7}, \;\; \phi = \dfrac{ \mathsf{E} \proton_0 }{ k_7  \Theta_0 } \left[\dfrac{k^p_7 J_7}{1+J_0 \LiAllOut}\right] 
 \end{equation}
 to obtain:
 \begin{equation}
-	\left(\dfrac{\beta_7}{\beta_6}\right)^\varnothing = \dfrac{1+\eta}{\eta\kappa+\sigma}
+	\left(\dfrac{\beta_7}{\beta_6}\right)^\varnothing = \dfrac{1+\phi}{\sigma+\phi\kappa}
 \end{equation}
 We see that for a catalytic speedup $\kappa$ greater than the diffusive speedup $\sigma$, we reach some higher isotopic separations (lower $\deltaLi$), depending
-on the $\eta$ factor, which is experimentally much greater than one.
-Nonetheless, the value of $\eta$ is {\bf decreasing} with $\LiAllOut$, meaning that the isotopic separation is decreasing with respect to the total lithium concentration.
+on the $\phi$ factor, which is experimentally much greater than one.
+Nonetheless, the value of $\phi$ is {\bf decreasing} with $\LiAllOut$, meaning that the isotopic separation is decreasing with respect to the total lithium concentration.
 Accordingly, we have to derive a higher order model.
 
 \section{Catalytic Two-Layers NHE : Cooperativity}
 \subsection{Full Kinetic Scheme}
+The cooperative model may be written as the following scheme, with \textit{a priori} no restriction on microscopic values:
 {
 \Large
 \begin{equation}
@@ -301,10 +307,10 @@ E_{00} & &  & & E_{67}(=E_{76}) & & \\
  }
 \end{equation}
 }
-with \textit{a priori} no restriction on microscopic values.
 
 
 \subsection{Differential Equations}
+We convert the scheme into a set of differential equations:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -320,8 +326,7 @@ with \textit{a priori} no restriction on microscopic values.
 \end{array}
 \right.
 \end{equation}
-
-with
+where we build up the terms:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}%|rcl}
@@ -346,8 +351,7 @@ v^p_{76} & = & k^p_{76} E_{67} \proton  \\%& v'^p_{76} & = & k^p_{76} \alpha_{67
 \end{array}
 \right.
 \end{equation}
-
-And
+and the different lithium intakes are:
 \begin{equation}
 \left\lbrace
 \begin{array}{rcl}
@@ -742,6 +746,7 @@ This function represents the catalytic weight of $NHE$, and experimentally we mu
 \subsection{Final Coupled Equations}
 
 \begin{equation}
+\label{eq:full}
 \left\lbrace
 \begin{array}{rcl}
 \partial_t V_m & = & \Gamma \left[ \epsilon_6 k_6 \left(\exp\left[ -\dfrac{\Faraday V_m}{RT} \right] - \beta_6\right) + \epsilon_7 k_7 \left(\exp\left[ -\dfrac{\Faraday V_m}{RT} \right] - \beta_7\right)\right] + k_m \left(V_0 - V_m\right)\\
@@ -776,14 +781,83 @@ k_m &  & & \text{(in s$^{-1}$)}\\
 \end{equation}
 
 \subsection{Specific Cases}
+\subsubsection{Initial Isotopic Separation}
+We obtain:
+\begin{equation}
+	\left(\dfrac{\beta_7}{\beta_6}\right)^\varnothing = \dfrac{\nu_7+k_7\Theta_0}{\kappa \nu_7+\sigma k_7 \Theta_0} 
+	= r^\varnothing = \dfrac{1+10^{-3} \deltaLi^\varnothing}{1+10^{-3}\deltaLiOut}
+\end{equation}
 
 \subsubsection{Electroosmotic Only Intake}
 
-\subsubsection{Initial Isotopic Separation}
+\section{Simulation}
+
+\subsection{Information from pH recovery}
+Since the kinetic scheme depends on $\proton$, other measurements were performed to monitor the pH rise after the initial acidification, 
+and are reported on Figure \ref{fig:protons} for different total external lithium concentrations. Since we do not include in this model the full homeostasis,
+we take $\proton$ as an experiment-dependent input, and it appears that we get roughly:
+\begin{equation}
+\label{eq:hfit}
+	\proton \simeq \proton_0 + \left(\proton_\infty-\proton_0\right) \dfrac{t}{t+t_h} = \proton_\infty + \left(\proton_0 - \proton_\infty\right) \dfrac{t_h}{t+t_h},
+\end{equation}
+and we use this equation to fit the current data as indicated on Figure \ref{fig:protons}. It is important to remember that $\proton_\infty$ depends on $\LiAllOut$.
+From the measurements, we use an heuristic expression for $\proton$ dynamics depending on $\LiAllOut$:
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+t_h & = & \dfrac{A_h}{\erf\left(B_h\LiAllOut\right)}\\
+A_h & = & 24.7      \pm 3.2 \text{ s}\\
+B_h & = & 0.034     \pm 0.011\text{ mM}^{-1}\\ 
+\end{array}
+\right.
+\end{equation}
+and
+\begin{equation}
+\left\lbrace
+\begin{array}{rcl}
+\pH_0      & = & 5.92 \pm 0.2 \\
+\pH_\infty & = & \pH_0 + \left(7.40-\pH_0\right) \dfrac{\LiAllOut}{\LiAll_h+\LiAllOut}\\
+\LiAll_h   & = & 15.2\pm4.2\text{ mM}\\
+\end{array}
+\right.
+\end{equation}
 
 
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{fig/protons.pdf}
+\end{center}
+\caption{\label{fig:protons} Fit (lines, according to Eq. \eqref{eq:hfit}) of apparent experimental protons intake (open circles).}
+\end{figure}
 
-\subsection{...}
+\subsection{Information from another work about proton recycling}
+The proton exit rate by $\NHE{1}$ was studied elsewhere \todo{ref EMBO Lacroix,Counillon}, and this rate depends itself on the inner pH.
+From the data presented in figure 3a of that manuscript which shows that the $\NHE{1}$ turnover rate with $\proton$ is a sigmoid function, we
+assume:
+\begin{equation}
+\label{eq:kh}
+\left\lbrace
+\begin{array}{rcl}
+k_h & = & k_0 \eta(h)\\
+\eta(h) & \approx & \dfrac{\left(\frac{h}{h_\eta}\right)^{p_\eta}}{1+\left(\frac{h}{h_\eta}\right)^{p_\eta}} \approx 
+        \dfrac
+{
+10^{p_\eta(\mathrm{pH}_\eta-\mathrm{pH})}
+}
+{
+1+10^{p_\eta(\mathrm{pH}_\eta-\mathrm{pH})}
+}\\
+h_\eta & = & 4\,10^{-7} \; \text{M}\\
+\mathrm{pH}_\eta & = & 6.39 \\
+p_\eta & = & 1.7 \\
+\end{array}
+\right.
+\end{equation}
+and we note that:
+\begin{equation}
+	\eta'(h) = \left(\dfrac{p_\eta}{h}\right) \dfrac{\left(\frac{h}{h_\eta}\right)^{p_\eta}}{\left[1+\left(\frac{h}{h_\eta}\right)^{p_\eta}\right]^2}  > 0
+\end{equation}
+
 
 \end{document}
 
